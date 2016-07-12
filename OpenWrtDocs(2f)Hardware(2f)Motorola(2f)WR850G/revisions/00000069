@@ -1,0 +1,274 @@
+= Motorola WR850G =
+
+[[TableOfContents]]
+
+= Hardware versions =
+
+The WR850G has three different versions (v1, v2, v3).
+
+== WR850G v1 ==
+The WR850G v1 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is a mini-PCI card.
+
+[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Motorola/WR850G?action=AttachFile&amp;do=get&amp;target=wr850gv1_open.jpg WR850gV1 open box]
+
+== WR850G v2 ==
+The WR850G v2 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM (memory addressing wraps address to ram, so when it boots, the simple memory size routine doesn't check for address wrapping, so it reports 32Mb). The wireless NIC is integrated to the board.
+
+Note: In at least three (feagle814's, rgh12's, tl's) WR850G v2, there is 16MB of RAM onboard.  DO NOT try the 32mb enablement hack on the WR850G v2 without first verifying how much RAM you really have (see earlier paragraph on the address wrap problem)!
+
+ISSI I!S42S16400B1-7T is a 8MB chip (1Mbx16x4, 64Mb total [divided by 8 = 8megabytes]).  G-Link GL!T5640L16-6TC is also an 8MB chip.  If you have the ISSI I!S42S16800xx-7t it is a 16MB chip (2Mbx16x4 128Mb total [divided by 8 = 16megabytes]). There are two RAM chips installed on the v2 router, the other one is on the back side of the circuitboard.  Since the Linksys wrt54gs has 32megabytes of ram (2 chips also) installed in it, and if you wanted to use the same packages as it does, then you must either change the 8MB chips to 16MB chips, or live with the fact that you will be somewhat restricted in what you can do with the smaller amount of memory available (possibly limiting what packages you can safely run). If you are really lucky, you may not have to do anything at all (if you have the 16MB chips installed already).
+
+The WR850G v2 is housed in gray plastic and sports a reverse SMA antenna connector. 
+
+/!\ Warning: It has been reported at least once that the WR850GV2 may not rewrite NVRAM once it has been erased, causing damage to the router.  However, frop and Eagle_Fire have never had issues clearing the NVRAM of a WR850Gv2 - please note that the lan_ipaddr may revert to 192.168.1.1 upon reset of NVRAM.
+
+[http://ra.vendomar.ee/%7eivo/wr850gv2_open.jpg WR850gV2 open box]
+
+== WR850G v3 ==
+The WR850G v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is integrated to the board.
+
+G-Link GL!T5640L16-6TC is a 8MB chip.  Your router should have two of these.  Check the bottom of the PCB for the second one.
+
+The WR850G v3 version is housed in black pastic and has a hard wired non removable (without desoldering) antenna.
+
+[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Motorola/WR850G?action=AttachFile&amp;do=get&amp;target=wr850gv3_open.jpg WR850gV3 open box]
+
+== WE800G ==
+The WE800G http://broadband.motorola.com/consumers/products/we800g/default.asp is a Wireless Ethernet Bridge. With it attached an Ethernet-equipped hardware can join a wireless home or small office network. It is a way to add wireless capability to a PC without adding a wireless card or to make an ethernet ready printer wireless. It has one wired ethernet port and wireless.
+
+No details are currently available as to its features.
+
+== WE850G ==
+The WE850G http://broadband.motorola.com/consumers/products/we850g/default.asp is the expected replacement for the WE800G. At the time of this writing no information was available on the motorola website.
+
+No details are currently available as to its features.
+
+= Obtaining Official Motorola Firmware =
+
+If you ever need to revert your router to official Motorola firmware, it can be downloaded from their website.  The downloaded `.exe` files are self-extracting `.zip`'s; any unzipping software should be able to handle them.  They contain a `.trx` firmware file, as well as `.pdf` documentation.
+
+ * [http://broadband.motorola.com/consumers/products/WR850g/downloads/Motorola_WR850G_4.03.exe Version 4.03] is useful for its debug mode, which was dropped in later versions.
+ * [http://broadband.motorola.com/consumers/products/WR850g/downloads/Motorola_WR850G_5.13.exe Version 5.13]
+ * [http://broadband.motorola.com/consumers/products/WR850g/downloads/Motorola_WR850_6.1.4.exe Version 6.1.4] is the current version (as of Jan 2006) 
+ * [http://broadband.motorola.com/consumers/support/default.asp?SupportSection=HomeNetworking Motorola's Support Site] has links only to their ''current'' firmware version.  Note that you need to scroll down to the WR850G section.
+ * [http://broadband.motorola.com/consumers/support/gpl_codes.asp Source Code] (currently for [http://broadband.motorola.com/consumers/support/GPL/WR850G_V5.12_GPL.tgz 5.12], [http://broadband.motorola.com/consumers/support/GPL/WR850G_V5.13_GPL.tgz 5.13], and [http://broadband.motorola.com/consumers/support/GPL/WR850G_V6.1.4_GPL.tgz 6.1.4])
+
+= How To Enable Boot Wait =
+
+ * Install Motorola Firmware Version 4.03 onto the router. (see above)
+ * Login to the router's web page and go to `/frame_debug.asp`
+ * Type in: `nvram set boot_wait=on`
+ * Type in: `nvram commit`
+ * Reboot and do tftp. 
+
+/!\ Some users report that boot_wait only functions for one reboot after setting it from the web interface. To be sure that is the case reboot the WR850G after to "boot_wait=on" procedure. If the box is up again then issue "nvram get boot_wait" on the very same /frame_debug.asp page. At least the WR850G v2 does act like this.
+
+To ensure the boot_wait will remain "on" then the first thing you should do after upgrade to OpenWRT is to log into it with telnet and issue:
+{{{
+nvram set boot_wait=on; nvram commit
+}}}
+
+The WR850G boot utility always comes up as 192.168.10.1. To test this, try, set a static IP on your router and plug in to a wired port with your PC in the IP range 192.168.10.x, then in a Windows command prompt, get "ping -t 192.168.10.1" going and power cycle the router, you should get about 4 pings on 192.168.10.1 from the bootloader '''if boot_wait is set'''.
+
+== Alternate Initial Loading Method ==
+The '''nvram set boot_wait=on''' method above did not put the router into 192.168.10.1 for me so I tried the following. I believe I had already upgraded my WR850g per:  [[BR]]
+WR850G 4.03 Firmware Release Notes [[BR]]
+Part Number 515750-001[[BR]]
+Product WR850G[[BR]]
+Release Version 4.03[[BR]]
+Date 05/04[[BR]]
+[[BR]]
+With the version 4.03 the '''control''' page has an option '''upgrade firmware'''. I tried this and it complained that the openwrt-wr850g-squashfs.bin file was not a trx file. I renamed the file to .trx instead and it uploaded. After the upload the modem light blinked red for about a minute. [[BR]]
+Initially I was unable to connect to the router however, I followed the Motorola instructions and unplugged the device and went and made tea. When I plugged it back in, I put into a different pc and using the original IP address (I had used 192.168.1.5) in the brower pulled up the openwrt welcome page. BINGO and a lot easier. [[BR]]
+
+Note: When I first loaded OpenWrt, I was able to find the IP for the device. I ran etheral protocol analyzer and only saw spanning tree protocol messages from the router's ethernet mac address and about every fourth message was a ppoe query. I couldn't find the IP address of the router using etheral. [[BR]] 
+
+= Finding the serial ports on the WR850G =
+
+The primary reason for finding serial ports on the router is to help in debricking.  There is no way to load firmware from the serial port.  However, given a simple typing mistake for an nvram value, you will be able to have a console shell to help fix a typo problem.  I have used my v1 serial port thousands of times already from nvram mistakes.  The most major, deleting all nvram variables (do not try this --kko).
+
+== WR850G ==
+Version 1 of the WR850G has no onboard UART.  This means that all you have available are control and data lines on a header labeled J5.  There is no connector on these pins, so one would need to be added.  A conversion board may then be made with a UART connected to this header and will give you a serial port.  This information derived from [http://wl500g.info/showthread.php?t=587&page=1&pp=15 Technik]:
+
+ * Open the WR850G. Serial data and control is labeled J5, pinout as follows:
+ * Note: This is a male, 2x20 pin connector
+
+{{{
+ D0 - O o - A0
+ D1 - o o - A1
+ D2 - o o - A2
+ D3 - o o - CHSL
+ D4 - o o - /CS
+ D5 - o o - /RD
+ D6 - o o - /WR
+ D7 - o o - MR
+VCC - o o - INT1
+GND - o o - SIN
+}}}
+
+ * Here is a circuit to connect to this header for a serial port.  Note pin 2 here connects to pin 1 above.
+ attachment:wr850g-serial.png
+
+== WR850G v2 & v3 ==
+
+First serial port:
+
+ * Open the WR850G. The plastic is hard and the clips are strong - use force! Serial is labeled RJP1, pinout as follows:
+
+{{{
+        o
+      o o - RX
+GND - o o
+      o o
+VCC - o o - TX
+}}}
+
+
+Second serial port:
+
+While the first serial port is easy to find (and described in the "non-experimental" installation section above), the second serial port is quite well hidden.  On the bottom of the board near the serial connector you'll notice there are two small black components labeled "0".  Next to them there are solder pads where you'd expect two more "0" components to go - but they're missing!  On the set of pads away from the serial connector, the second serial port signals are exposed.  Get out your fine-tipped soldering iron and solder some fine wires to the pads opposite the serial connector.  RR93 is data out of the WR, and RR94 is data in.
+
+
+= Reverting an OpenWRT WR850G to the Official Motorola Firmware =
+ '' Note: These instructions are Windows-centered ''
+ 1. Obtain a Motorola `.trx` firmware file (see above, Obtaining Official Motorola Firmware)
+ 1. Edit the file to remove Motorola's 8 byte header (everything before "HDR0").  This can be done with a hex editor (such as HHD for Windows) or with the Unix `dd(1)` command:        (be sure to see the note below)
+{{{
+ $ dd if=WR850G_V403.trx of=WR850G_V403.stripped.trx ibs=1 skip=8 }}} 
+'''Note:''' At least some bootloader version does not work with such a stripped file but will instead take the unstripped .trx-file. If flashing does not work in the later steps, try again without this step.
+ 1. Make sure your "boot_wait" NVRAM value is set to "on" and saved (I use "Putty" for telneting/ssh).
+ 1. Set your local machine's IP address to 192.168.10.5 (or anything between 192.168.10.2 and 192.168.10.254) and mask to 255.255.255.0.
+ 1. Open up a console window and change to the directory the Motorola firmware is in.
+ 1. Type in: "TFTP -i 192.168.10.1 PUT filename.bin" where "filename.bin" is your Motorola firmware.  '''DON'T HIT ENTER JUST YET!'''
+ 1. Unplug your WR850G, plug it back in and wait a second.
+ 1. Now hit Enter in your console window.
+ 1. Your TFTP transfer should finish in a few seconds.  '''WAIT AT LEAST 60 SECONDS FOR THE FLASH TO PROGRAM!'''
+ 1. Unplug your WR850G and plug it back in.  You now will have the old firmware.
+ 1. Reset your local machine's IP address and mask back to where it was (DHCP on my machine, for example).
+
+ '' (Originally posted by [http://forum.openwrt.org/viewtopic.php?pid=10048#p10048 killerbobjr] modifyed for AMD by sapier) ''
+
+= Debricking a WR850G that has "boot_wait" set to "on" =
+ 1. Follow either the intructions above to revert to original firmware or  ["OpenWrtDocs/Installing"] install a new openwrt firmware.
+
+
+= Debricking a WR850G that did _NOT_ have "boot_wait" set to "on" =
+/!\ WARNING: Using this "pin shorting" method is no longer officially supported by OpenWrt.  You risk damage to your router if you try this method.  '''The preferred method of debricking is with a serial console.'''
+ '' Note: These instructions are Windows-centered ''
+ 1. Unplug the Wr850G and open it up -- unscrew the one torx screw in the back (you can use a hex key driver if that's handy), then pop open the cover.  You will have to CAREFULLY pry the top off with quite a bit of force.  Use your fingers.  If it feels like you're about to break it, don't worry, it's pretty tough -- just try to not bend the top, which will stress crack the plastic.
+ 1. Locate the flash chip (right next to the internal antenna).  On mine it's an Intel T!E28F320.  All the V3 WR850G's have this.  If it's an older V2 or V1, it might have an AMD chip.
+ 1. Set your local machine's IP address to 192.168.10.5 (or anything between 192.168.10.2 and 192.168.10.254) and mask to 255.255.255.0.
+ 1. Open up a console window and change to the directory the firmware is in.
+ 1. Type in: "TFTP -i 192.168.10.1 PUT filename.bin" where "filename.bin" is the firmware.  '''DON'T HIT ENTER JUST YET!'''
+ 1. Get a sewing needle or pin.
+ 1. If you have an '''Intel''' flash chip, count down on the LEFT side (lettering on the chip should be upright) to lead 15.  CAREFULLY insert the sewing needle between leads 15 and 16* -- it should NOT require any force.
+ 1. If you have an '''AMD''' chip, still on the LEFT side of the chip as at the intel version but try shortcircuiting pins 2/3 3/4 or 4/5 but be CAREULL too and don't shortcircuit more than one pair at once! (no guarantee that won't fry your wr850g but one of that pin combinations did it for me I don't remember which one exactly as I started 1/2 2/3 3/4 ... but it wasn't the first and I didn't try many combinations ;-) )[[BR]]
+ 1. My router has a '''SST 39VF3201''' chip, and I was able to get it to accept firmware by shorting pins 2 and 3. I had to get the datasheet from the SST web site and find out which pins are the address lines.[[BR]]
+ 1. Now plug in your WR850G while holding the needle in place.
+ 1. Wait two to three seconds, then remove the needle.
+ 1. Now hit Enter in your console window.
+ 1. Your TFTP transfer should finish in a few seconds.  '''WAIT AT LEAST 60 SECONDS FOR THE FLASH TO PROGRAM!'''
+ 1. Unplug your WR850G and plug it back in.  You now will have debricked the WR850G.
+ 1. Reset your local machine's IP address and mask back to where it was (DHCP on my machine).
+ 1. If you have loaded the OpenWrt firmware, telnet in and change the "lan_ipaddr" NVRAM value to 192.168.1.1 and reboot your router.
+
+ * The reason we use leads 15-16 is because those address lines are right at the beginning of the kernel firmware area in the flash chip, and if the CFE/bootloader detects a corrupted kernel, it will automatically go into a TFTP receiving mode. AMD don't know if it's the same reason but I think it's.
+
+ '' (Originally posted by [http://forum.openwrt.org/viewtopic.php?pid=10048#p10048 killerbobjr] ) ''
+
+= Opening the WR850G case =
+
+This is a very tricky-to-open case, really.
+
+== The easy way ==
+
+ * Take that 1 screw off, preferably with a torx screwdriver (size T8).
+
+ * There are 5 hooks what are keeping the WR850G case together. Hooks itself are put to the case cover and the hook sockets are on the bottom half of the case. Find out the place of an hook socket and press it. If the place is right then you should hear the hook to pop out the hook socket. Note: The force needed will not break the case nor the socket hooks. The front 2 hooks are the hardest to open.
+
+== The hard way ==
+
+ * Take that 1 screw off, preferably with a torx screwdriver (size T8).
+
+ * Then you could pry the rest of it open with a screw driver while breaking the plastic hooks.
+
+'''OR'''
+
+ * Use a strong thin narrow blade (for ex. a sparkplug gapper or razor blade) to press the plastic hook in while you pry it open with a screw driver. Make the sparkplug gapper look like a 2 prong fork at the end separated by about 2mm. Each prong should be about 1.5mm.
+
+''Note: you must apply a lot of force, you will feel like it's going to break but it will finally pop open, ideally. YMMV.''
+
+= GPIO info =
+
+Light layout is 7 lights:
+Power, Modem, Wireless, 4x LAN.  All capable of bi-color, at least the LEDs are.
+
+== WR850G ==
+ * gpio 7 controls the "Wireless" "green" light (0=on, 1=off)
+ * gpio 6 controls the "Modem" network interface (0=off, 1=on)
+ * gpio 5 controls the "Wireless" "red" light (0=on, 1=off)
+ * gpio 4 controls the "Power" "green" light (0=off, 1=on)
+ * gpio 3 controls the "Power" "red flashing" light (0=on/flashing, 1=off)
+ * gpio 2 unknown (possibly 4port switch LEDs, 1 turns all on)
+ * gpio 1 uart enable (if connected)
+ * gpio 0 is the reset button (0=pressed, 1=not)
+
+== WR850G v2 & v3 ==
+ * gpio 7 controls the red half of the "Modem" light (0=on, 1=switch-controlled)
+ * gpio 6 controls the green half of the "Modem" light (0=on, 1=off, hi-z=switch-controlled) - not sure if this will fry the switch if overridden.  Couple seconds didn't hurt it.
+ * gpio 5 is the reset button (0=pressed, 1=not)
+ * gpio 4 appears to be input -short the pin to ground it reports 00 -unshort/floating it comes back to 01 
+ * gpio 3 always returns 1, setting value doesn't alter that.
+ * gpio 2 appears disconnected (pin is floating)
+ * gpio 1 is the "Power" light color.  (0=red, 1=green)
+ * gpio 0 is the "Wireless" light.  (0=green, 1=off)
+
+= LAN port layout =
+
+== WR850G v1 ==
+
+5 LAN ports are internally numbered differently despite the equipment case saying something else:
+LAN port 4=0; LAN port 3=1; LAN port 2=2; LAN port 1=3; WAN port=4
+
+Question: If this comment [:OpenWrtDocs/Configuration?highlight=%28vlan+layout+to+keep+port+1+in+vlan0%29#head-d4a38eefb51a1ad7e8e1c18a68cb8a936b46be4d:from just above here] is true 
+ It's a good idea when choosing a vlan layout to keep port 1 in vlan0. At least the WRT54GS v1.0 will not accept new firmware via TFTP if port 1 is in another VLAN. 
+Does the WR850G need to keep LAN port 0, 1 or 3 in VLAN0?
+
+= Software  and Misc Items =
+== DHCP ==
+The nvram variable for '''dhcp_start''' should be a '''number''' as opposed to an '''ip address'''. [[BR]]
+'''Presumably''' The number is the offset from lan_ipaddr and '''dhcp_end''' should also be a number.   [[BR]]
+
+== Loading Firmware ==
+It seems that the WR850G frequently will not function right after an upload. Although not confirmed, it is as if there is a heat issue. Let it sit for a while to cool & then it is OK.
+
+== TRX files ==
+The WR850G requires a Motorola header prefixed on the TRX files. OpenWrt motorola files are currently supplied as .bin files. Do not load OpenWrt TRX without prefixing the header. The TRX files supplied by Motorola already have the headers.
+
+== Switches ==
+Depending on which model you have, you will either have the broadcom "robo" switch or the admtek ADM6996L ("adm"). RC5 will automatically try both and provide you with a set of directories under /proc/switch/eth0/. The /proc/switch/eth0/vlan/*/ports behave exactly like the vlan*port variables documented on the wiki.
+
+== V2 Memory  ==
+Motorola WR850g v2 16MB RAM flash 4MB
+
+Booting reports [[BR]]
+CFE for Motorola WR850G v2.03, Release date: Jan. 13, 2004 [[BR]]
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.50.21.0 [[BR]]
+CPU type 0x29007: 200MHz [[BR]]
+Total memory: 0x2000000 bytes (32MB) *** The 16MB is counted '''twice''' in error! ***[[BR]]
+
+Free reports
+ * 14,348 total memory 9,588 used 4,760 free
+du -s reports
+ * 19,788
+
+== Asterix on the WR850G ==
+Beacuse the WR850G has 16MB of memory you can run Asterix on it. [[BR]]
+http://wiki.openwrt.org/OpenWrtDocs/Hardware/Motorola/WR850G/Asterix
+
+= Links =
+http://www.quanttrom.net/index.php?/categories/5-WR850G [[BR]]
+http://forum.openwrt.org/search.php?search_id=693880669 [[BR]]
+
+----
+CategoryModel

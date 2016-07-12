@@ -1,0 +1,173 @@
+= Cisco AP 1200 =
+
+{{{
+CPU : PowerPC 405GP @ 200 Mhz
+Flash : 8Mo
+RAM : 16Mo
+Ethernet :  yes
+JTAG : ?
+USB : no
+Serial : yes (Cisco cable needed)
+Wi-Fi : Cisco Aironet Mini PCI b/g
+}}}
+
+== Bootloader version ==
+
+{{{
+C1200 Boot Loader (C1200-BOOT-M) Version 12.2(8)JA, EARLY DEPLOYMENT RELEASE SOFTWARE (fc1)
+TAC Support: http://www.cisco.com/tac
+Compiled Wed 12-Feb-03 15:23 by hqluong
+}}}
+
+== PCI bus ==
+{{{
+*********************************
+Bus 0 slot 3
+Vendor ID    = 0x14b9
+Device ID    = 0xa506
+CMD    = 0x0007
+STATUS    = 0x02b0
+Revision ID     = 0x00
+Class Code     = 0x0000
+Cache Line Size     = 0x08
+Latency Timer     = 0x40
+Header Type = 0x00
+Builtin Self Test  = 0x00
+BAR0 requires I/O mapping, size 256
+BAR0 val   = 0x0000ff01
+BAR1 requires MEM mapping, size 65536
+BAR1 val    = 0x00000008
+BAR2 requires MEM mapping, size 262144
+BAR2 val   = 0x00000000
+BAR3 requires MEM mapping, size 0
+BAR3 val    = 0x00000000
+BAR4 requires MEM mapping, size 0
+BAR4 val    = 0x00000000
+BAR5 requires MEM mapping, size 0
+BAR5 val    = 0x00000000
+Subsys Vendor ID   = 0x14b9
+Subsys ID   = 0x5100
+Interrupt Line  = 0x00
+Interrupt Pin  = 0x01
+Min Gnt  = 0x04
+Max Latency  = 0x04
+}}}
+
+
+== Memory layout ==
+
+{{{
+ap: memory
+Text:   0x00e80000 - 0x00eaeb30 (0x0002eb30 bytes)
+Rotext: 0x00eaeb30 - 0x00eaeb30 (0x00000000 bytes)
+Data:   0x00eaeb30 - 0x00eba768 (0x0000bc38 bytes)
+Bss:    0x00ebc930 - 0x00ede9ac (0x0002207c bytes)
+Stack:  0x00ede9ac - 0x00eee9ac (0x00010000 bytes)
+Heap:   0x00eee9b0 - 0x00ffd800 (0x0010ee50 bytes)
+
+Bottom heap utilization is 31 percent.
+Top heap utilization is 0 percent.
+Total heap utilization is 31 percent.
+Total bytes: 0x10ee50 (1109584)
+Bytes used: 0x54ec4 (347844)
+Bytes available: 0xb9f8c (761740)
+
+Alternate heap utilization is 0 percent.
+Total alternate heap bytes: 0xe7d000 (15192064)
+Alternate heap bytes used: 0x0 (0)
+Alternate heap bytes available: 0xe7d000 (15192064)
+}}}
+
+Saved registers :
+
+{{{
+ap: dump_save_regs
+
+ Saved Regs in OCM:
+ MSR = 0x00000000
+ LR = 0x00e881a0
+ ESR = 0x00000000
+ SRR0 = 0x00008c08
+ SRR1 = 0x00000000
+ SRR2 = 0x00042400
+ SRR3 = 0x00000000
+ DBCR0 = 0x00110000
+ DBCR1 = 0x00000000
+ DBSR = 0x0c1c0300
+ TSR = 0xc4000000
+ TCR = 0x00000000
+ DEAR = 0x00000000
+}}}
+
+=== Entering boot loader mode ===
+
+You have to press the MODE button while powering the device for about 30 seconds. Make sure you have disconnected the Ethernet cable, otherwise, the device will download a config from a broadcast address.
+
+Once done, you should get the following prompt :
+
+{{{
+ap:
+}}}
+
+=== Transfering files to the bootloader ===
+
+Once you have the boot loader prompt, initialise the flash, tftp and ethernet subsystems :
+
+{{{
+flash_init
+ether_init
+tftp_init
+}}}
+
+Now, you can download files using a remote TFTP server to the access point. The default IP address is 10.0.0.1, but might have been changed, so to read it, just display the "env_vars" file :
+
+{{{
+cat flash:env_vars
+}}}
+
+Now, to copy a flash, using the following command :
+
+{{{
+copy tftp://<TFTP server IP address>/file flash:/file
+}}}
+
+There is no default destination for a file, so you must supply its destination. Storing it on the flash is a convenient way to test.
+
+=== Image layout ===
+
+The Cisco IOS files are flat tarballs (tar cf <file.tar> directory/), with the following naming convention :
+{{{
+<model name>-<image type>-mx-<version>/
+}}}
+
+This directory contains several files :
+
+{{{
+*.img : firmware files for the Aironet WLAN card
+info : description file
+html/ : HTML pages if selected HTML web interface
+<model name>-<image type>-mx-<version> : the IOS kernel
+}}}
+
+The IOS image structure is the following :
+
+{{{
+u32 MZIP (magic header)
+u32 Version (1)
+u32 00 00 30 00 (0 in ASCII)
+u32 00 00 00 01
+u32 00 00 00 01
+u32[7] 0
+u32 checksum ?
+u32 00 00 00 70
+u32 00 00 30 00
+u32 00 00 00 01
+u32[2] checksum2 ?
+zeroes
+----
+ZIP file
+}}}
+
+=== Booting images ===
+
+The IOS bootloader will refuse to boot any file that does not look like a valid MZIP image (see the header before).

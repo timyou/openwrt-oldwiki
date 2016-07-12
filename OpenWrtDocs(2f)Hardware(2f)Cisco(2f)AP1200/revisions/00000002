@@ -1,0 +1,39 @@
+Cisco AP 1200
+
+{{{
+CPU : PowerPC 405GP
+Flash : 8Mo
+RAM : 16Mo
+Ethernet :  yes
+JTAG : ?
+USB : no
+Serial : yes (Cisco cable needed)
+Wi-Fi : Cisco Aironet Mini PCI b/g
+}}}
+
+
+== Memory layout ==
+
+{{{
+ap: memory
+Text:   0x00e80000 - 0x00eaeb30 (0x0002eb30 bytes)
+Rotext: 0x00eaeb30 - 0x00eaeb30 (0x00000000 bytes)
+Data:   0x00eaeb30 - 0x00eba768 (0x0000bc38 bytes)
+Bss:    0x00ebc930 - 0x00ede9ac (0x0002207c bytes)
+Stack:  0x00ede9ac - 0x00eee9ac (0x00010000 bytes)
+Heap:   0x00eee9b0 - 0x00ffd800 (0x0010ee50 bytes)
+
+Bottom heap utilization is 31 percent.
+Top heap utilization is 0 percent.
+Total heap utilization is 31 percent.
+Total bytes: 0x10ee50 (1109584)
+Bytes used: 0x54ec4 (347844)
+Bytes available: 0xb9f8c (761740)
+
+Alternate heap utilization is 0 percent.
+Total alternate heap bytes: 0xe7d000 (15192064)
+Alternate heap bytes used: 0x0 (0)
+Alternate heap bytes available: 0xe7d000 (15192064)
+}}}
+
+

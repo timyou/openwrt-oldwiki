@@ -1,0 +1,29 @@
+1122562259000000	00000001	SAVENEW	BackupAndRestore	203.217.18.166	203-217-18-166.perm.iinet.net.au	1108652199.49.48013		um.
+1122562860000000	00000002	SAVE	BackupAndRestore	203.217.18.166	203-217-18-166.perm.iinet.net.au	1108652199.49.48013		I'm learning moinmoin
+1123053111000000	00000003	SAVE	BackupAndRestore	194.77.75.2	n15-2.dsl.vianetworks.de	1123051425.25.63580		Beispiel eines tar Scripts Example of a tar script with upload
+1131814552000000	00000004	SAVE	BackupAndRestore	84.145.8.33	p54910821.dip0.t-ipconnect.de	1117454370.53.3153		Updated
+1131814663000000	00000005	SAVE	BackupAndRestore	84.145.8.33	p54910821.dip0.t-ipconnect.de	1117454370.53.3153		
+1135450896000000	00000006	SAVE	BackupAndRestore	138.88.4.161	pool-138-88-4-161.res.east.verizon.net	1135447855.91.61990		Made image backup/restore a bit safer. Split howto into image/file methods.
+1164150237000000	00000007	SAVE	BackupAndRestore	80.144.70.146	p50904692.dip0.t-ipconnect.de	1164149592.06.40205		Added alternative backup script
+1164295865000000	00000008	SAVE	BackupAndRestore	80.144.13.215	p50900DD7.dip0.t-ipconnect.de	1164149592.06.40205		added some notes on known_hosts problems
+1167432432000000	00000009	SAVE	BackupAndRestore	66.224.227.170	66-224-227-170.atgi.net	1146253425.81.2910		
+1173077420000000	00000010	SAVE	BackupAndRestore	85.238.77.227	dsl85-238-77-227.pool.tvnet.hu	1173075822.49.51441		Asked an example of file based restore
+1173897234000000	00000011	SAVE	BackupAndRestore	66.46.137.126	mail.testdepot.net	1173897133.64.54382		
+1173897379000000	00000012	SAVE	BackupAndRestore	66.46.137.126	mail.testdepot.net	1173897133.64.54382		
+1178372793000000	00000013	SAVE	BackupAndRestore	85.10.2.45	cpe-85-10-2-45.dynamic.amis.net	1154119971.84.48724		
+1183604840000000	00000014	SAVE	BackupAndRestore	207.112.59.25	dsl-207-112-59-25.tor.primus.ca	1165281867.07.35097		added a netcat backup method
+1183605047000000	00000015	SAVE	BackupAndRestore	207.112.59.25	dsl-207-112-59-25.tor.primus.ca	1165281867.07.35097		
+1210612375000000	00000016	SAVE	BackupAndRestore	207.236.66.194	rhpl-lib.on.ca	1165281867.07.35097		added a table of contents
+1210613505000000	00000017	SAVE	BackupAndRestore	207.236.66.194	owa.integria.com	1165281867.07.35097		made secions more reader-friendly
+1210613575000000	00000018	SAVE	BackupAndRestore	207.236.66.194	owa.integria.com	1165281867.07.35097		moving the recommended way to the top
+1210613963000000	00000019	SAVE	BackupAndRestore	207.236.66.194	outbound.rhpl.richmondhill.on.ca	1165281867.07.35097		clarified usage of hostnames
+1210614093000000	00000020	SAVE	BackupAndRestore	207.236.66.194	owa.integria.com	1165281867.07.35097		improved formatting
+1210614714000000	00000021	SAVE	BackupAndRestore	207.236.66.194	rhpl-lib.on.ca	1165281867.07.35097		added explanations of commands to the netcat method
+1210615230000000	00000022	SAVE	BackupAndRestore	207.236.66.194	owa.integria.com	1165281867.07.35097		added even more explanation about using hostnames
+1210615887000000	00000023	SAVE	BackupAndRestore	207.236.66.194	owa.integria.com	1165281867.07.35097		
+1210616053000000	00000024	SAVE	BackupAndRestore	207.236.66.194	rhpl-lib.on.ca	1165281867.07.35097		fixed OpenWrt formatting
+1210629900000000	00000025	SAVE	BackupAndRestore	206.248.128.117	206-248-128-117.dsl.teksavvy.com	1165281867.07.35097		forgot a verb
+1210630500000000	00000026	SAVE	BackupAndRestore	206.248.128.117	206-248-128-117.dsl.teksavvy.com	1165281867.07.35097		more formatting and grammar fixes
+1227253130000000	00000027	SAVE	BackupAndRestore	76.110.248.244	c-76-110-248-244.hsd1.fl.comcast.net	1227252575.43.48120		just adding that kamikaze can be restored via tftp
+1227253426000000	00000028	SAVE	BackupAndRestore	76.110.248.244	c-76-110-248-244.hsd1.fl.comcast.net	1227252575.43.48120		just adding that kamikaze can be restored via tftp
+1232228541000000	00000029	SAVE	BackupAndRestore	80.99.11.219	catv-80-99-11-219.catv.broadband.hu	1232228105.85.21562		resolve edit confilicts

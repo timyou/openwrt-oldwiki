@@ -1,0 +1,160 @@
+Décrire ici « OpenWrtDocs/Hardware/Huawei/HG550 ».
+
+= Home Gateway 550 Huawei ( 9Box ) =
+== Pictures: ==
+http://rapaces.zehome.com/autophoto/9Box//IMG_0215.JPG attachment:rapaces.zehome.com/autophoto/9Box//IMG_0212.JPG
+
+
+== Informations: ==
+This box is used by 9Telecom, French ISP.
+
+
+
+
+
+== Debugging: ==
+=== Bootup messages: ===
+{{{
+CFE version 1.0.37-0.6 for BCM96348 (32bit,SP,BE) Build Date: Thu Oct 13 22:38:22 CST 2005 () Copyright (C) 2000,2001,2002,2003 Broadcom Corporation. }}}
+
+
+Login: admin Password: admin
+
+> help
+
+? help logout reboot adsl atm brctl cat df dumpcfg echo ifconfig kill arp defaultgateway dhcpserver dns lan passwd ppp remoteaccess restoredefault route save swversion wan ping ps pwd sntp sysinfo tftp voice wlctl ipfltout ipfltin macflt svcacl ipacl natsrc natacl showfailtimes
+
+> cat /proc/cpuinfo system type             : 96348GW processor               : 0 cpu model               : BCM6348 V0.7 BogoMIPS                : 254.77 wait instruction        : no microsecond timers      : yes tlb_entries             : 32 extra interrupt vector  : no hardware watchpoint     : no VCED exceptions         : not available VCEI exceptions         : not available
+
+> df -h Filesystem                Size      Used Available Use% Mounted on /dev/mtdblock0            8.9M      8.9M         0 100% / tmpfs                   200.0k     92.0k    108.0k  46% /var
+
+> sysinfo Number of processes: 21
+
+ . 12:03am  up 3 min,
+
+load average: 1 min:1.26, 5 min:0.75, 15 min:0.30
+
+ . total         used         free       shared      buffers
+
+ . Mem:        14264        13180         1084            0         1428
+
+ . Swap:            0            0            0
+
+Total:        14264        13180         1084
+
+> ps -aux
+
+ . PID TTY     Uid        Size State Command
+  . 1         admin      2736   S   init 2         admin         0   S   [keventd] 3         admin         0   S   [ksoftirqd_CPU0] 4         admin         0   S   [kswapd] 5         admin         0   S   [bdflush] 6         admin         0   S   [kupdated] 7         admin         0   S   [mtdblockd]
+  . 13         admin      2792   S   -sh 37         admin      3040   D   insmod adsldd.o 59         admin      2608   S   cfm
+ 227         admin       604   S   pvc2684d 563         admin      2704   S   klogd 566         admin      2748   S   syslogd -C -l 7 571         admin      2584   S   sshd 573         admin      2584   S   telnetd 578         admin       944   S   bftpd 579         admin      2720   S   tftpd 599         admin      2928   S   vodsl mgcp_start 192.168.1.100 HUAWEI_HG550 604         admin      2584   S   httpd 622         admin      1176   S   pppd -c 8.35.1 -i nas_8_35 -u 0003c9d53a9a@
+
+ . 1743         admin      2780   S   sh -c ps -aux 1744         admin      2732   R   ps -aux
+
+> cat /etc/passwd admin:F/OgTmWA/b4eg:0:0:Administrator:/:/bin/sh support:.LJwCZUrrLFBE:0:0:Technical Support:/:/bin/sh user:kW9XV.HB9hiJY:0:0:Normal User:/:/bin/sh nobody:jQHAUipG6ec6k:0:0:nobody for ftp:/:/bin/sh
+
+> ifconfig br0             Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9A
+
+ . inet addr:192.168.1.251  Bcast:192.168.1.255  Mask:255.255.255.0 UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:288 errors:0 dropped:0 overruns:0 frame:0 TX packets:272 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:27816 (27.1 kiB)  TX bytes:26054 (25.4 kiB)
+
+br1             Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9B
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+eth0            Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9A
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:291 errors:0 dropped:0 overruns:0 frame:0 TX packets:272 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:33219 (32.4 kiB)  TX bytes:27250 (26.6 kiB) Interrupt:30 Base address:0x6800
+
+lo              Link encap:Local Loopback
+
+ . inet addr:127.0.0.1  Mask:255.0.0.0 UP LOOPBACK RUNNING  MTU:16436  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_48        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A1
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_49        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A2
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_50        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9F
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_65        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A0
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_8_35        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A3
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_255_65535   Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9E
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+> ifconfig -a atm0            Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+
+ . [NO FLAGS]  MTU:0  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+br0             Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9A
+
+ . inet addr:192.168.1.251  Bcast:192.168.1.255  Mask:255.255.255.0 UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:293 errors:0 dropped:0 overruns:0 frame:0 TX packets:277 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:28236 (27.5 kiB)  TX bytes:26544 (25.9 kiB)
+
+br1             Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9B
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+cpcs0           Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+
+ . [NO FLAGS]  MTU:65535  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+dsl0            Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+
+ . [NO FLAGS]  MTU:0  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+eth0            Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9A
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:296 errors:0 dropped:0 overruns:0 frame:0 TX packets:277 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:33729 (32.9 kiB)  TX bytes:27760 (27.1 kiB) Interrupt:30 Base address:0x6800
+
+eth1            Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9B
+
+ . BROADCAST MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:15 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:1596 (1.5 kiB) Interrupt:28 Base address:0x6000
+
+lo              Link encap:Local Loopback
+
+ . inet addr:127.0.0.1  Mask:255.0.0.0 UP LOOPBACK RUNNING  MTU:16436  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:0 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_48        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A1
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_49        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A2
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_50        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9F
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_65        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A0
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_8_35        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A3
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_255_65535   Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9E
+
+ . UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+usb0            Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9C
+
+ . BROADCAST MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+wl0             Link encap:Ethernet  HWaddr 00:16:38:5F:CE:5C
+
+ . BROADCAST MULTICAST  MTU:1500  Metric:1 RX packets:0 errors:0 dropped:0 overruns:0 frame:0 TX packets:0 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:100 RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB) Interrupt:32
+
+> cat /proc/modules ipt_tcpmss_j            2524   0 (unused) ipt_state                552   0 (unused) ipt_mark_j               668   0 (unused) ipt_mark                 364   0 (unused) ipt_limit                956   0 (unused) ipt_REDIRECT             708   0 (unused) ipt_MASQUERADE          1380   0 (unused) ipt_LOG                 3532   0 (unused) ipt_FTOS                 972   0 (unused) ip_nat_wm               1208   0 (unused) ip_nat_tftp             1720   0 (unused) ip_nat_pt              58920   0 (unused) ip_nat_pptp             1692   0 (unused) ip_nat_irc              2296   0 (unused) ip_nat_ipsec            5628   0 (unused) ip_nat_h323             4672   0 (unused) ip_nat_ftp              3128   0 (unused) ip_conntrack_wm         1228   0 (unused) ip_conntrack_tftp       1548   0 (unused) ip_conntrack_pt        51156   0 (unused) ip_conntrack_pptp       3244   0 (unused) ip_conntrack_irc        2716   0 (unused) ip_conntrack_ipsec      7460   0 (unused) ip_conntrack_h323       5100   0 (unused) ip_conntrack_ftp        3804   0 (unused) iptable_mangle          1916   0 (unused) iptable_nat            18440   9 [ipt_REDIRECT ipt_MASQUERADE ip_nat_wm ip_nat_tftp ip_na] ip_conntrack           22992  10 [ipt_state ipt_REDIRECT ipt_MASQUERADE ip_nat_wm ip_nat_] iptable_filter          1708   0 (unused) ip_tables              14624  14 [ipt_tcpmss_j ipt_state ipt_mark_j ipt_mark ipt_limit ip] wl                    391424   0 (unused) bcm_usb                17568   0 bcm_enet               21760   2 endpointdd           1203760   0 (unused) bcmprocfs              10504   0 adsldd                134196   0 (unused) blaa                    8084   0 (unused) atmapi                 51792   0 [adsldd blaa]

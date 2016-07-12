@@ -1,0 +1,78 @@
+I need to forward and allow external access to various ports, but editing the default firewall.user is error-prone and complex.  Here's an example of what my firewall.user looks like:
+{{{
+#!/bin/sh
+. /etc/fwlib.sh
+flush_firewall
+
+### Ports accessible on the router from the WAN
+# allow_port 22 # SSH
+# allow_port 80 # HTTP
+# allow_port 465 # HTTPS
+
+### Ports accessible to client machines.
+forward_port 22 server
+forward_port 80 server
+forward_port 465 server
+### if we really need _all_ ports...
+# register_dmz server
+
+# forward workstation port for application development
+forward_port 8080 workstation1
+
+# forward a few utility port-ranges to make it easier to deal with
+# bittorrent configurations and the like
+forward_port 10000:10099 workstation1
+forward_port 10100:10199 laptop1
+forward_port 10200:10299 laptop2
+}}}
+And here's the extremely simple firewall library that it uses:  (Sadly it does require that you maintain an /etc/hosts file in order to make it work)
+{{{
+#!/bin/sh
+
+. /etc/functions.sh
+
+WAN=$(nvram get wan_ifname)
+LAN=$(nvram get lan_ifname)
+
+flush_firewall () {
+    iptables -F input_rule
+    iptables -F output_rule
+    iptables -F forwarding_rule
+    iptables -t nat -F prerouting_rule
+    iptables -t nat -F postrouting_rule
+}
+
+### BIG FAT DISCLAIMER
+### The "-i $WAN" literally means packets that came in over the $WAN interface;
+### this WILL NOT MATCH packets sent from the LAN to the WAN address.
+
+allow_port () {
+    ALLOWPORT=$1
+
+    iptables -t nat -A prerouting_rule -i $WAN -p tcp --dport $ALLOWPORT -j ACCEPT
+    iptables        -A input_rule      -i $WAN -p tcp --dport $ALLOWPORT -j ACCEPT
+}
+
+sucky_resolve () {
+    HOSTNAME=$1
+    grep $HOSTNAME /etc/hosts | cut -f 1 -d ' '
+}
+
+forward_port() {
+    ALLOWPORT=$1
+    ALLOWHOSTNAME=$2
+    ALLOWHOST=`sucky_resolve $ALLOWHOSTNAME`
+
+    echo "FORWARDING $ALLOWPORT TO $ALLOWHOSTNAME ($ALLOWHOST)"
+    iptables -t nat -A prerouting_rule -i $WAN -p tcp --dport $ALLOWPORT -j DNAT --to $ALLOWHOST
+    iptables        -A forwarding_rule -i $WAN -p tcp --dport $ALLOWPORT -d $ALLOWHOST -j ACCEPT
+}
+
+register_dmz () {
+     ALLOWHOSTNAME=$1
+     DMZHOST=`sucky_resolve $ALLOWHOSTNAME`
+     iptables -t nat -A prerouting_rule -i $WAN -j DNAT --to $DMZHOST
+     iptables        -A forwarding_rule -i $WAN -d $DMZHOST -j ACCEPT
+}
+
+}}}

@@ -1,0 +1,62 @@
+The Asus WL-500W is partially supported from kamikaze.
+
+N mode wireless is not functional at this time as far as I could ascertain.  Stock images will also not work.  In order for you to use this device you must be able to operate the serial console, or perhaps more easily accomplished you will need to compile your own image from source.  You will need to edit the broadcom.sh file and the network config as illustrated below. If you are not comfortable with building from source on your own here are some basic instructions: !!!Disclaimer #1!!! I am in no way responsible for the safety of you, your router, or your computer.  These instructions worked for me.  They may not for you.  If they don't you may end up with a $100 paperweight, and that's your problem not mine.  That said...these should in all reality not cause any dangers, and if you brick your router you can most likely flash back to regular asus firmware and try again.  That's a hint BTW...go download a regular copy of the asus firmware esp. if you are relying on this router for internet! 1. On the local computer install the base packages: sudo aptitude install build-essential gawk binutils flex bison autoconf gettext texinfo sharutils subversion libncurses5-dev ncurses-term zlib1g-dev (I use ubuntu fiesty, if you use another distro that doesn't use apt-get or aptitude...you're on your own to figure out the command). 2.
+
+{{{
+cd ~
+svn co https://svn.openwrt.org/openwrt/trunk/ kamikaze
+svn co https://svn.openwrt.org/openwrt/packages/ ~/kamikaze/feeds/packages/
+make package/symlinks
+make menuconfig}}}
+3. On your own for a little...choose the packages you want/need.  Make sure to set the system to broadcom 2.4 and I used profile set to asus wl-500g Premium
+4. #Make
+5. Get some food, come back in 10min-1hr.
+6. Anything error out?  If not continue on...if so well fix it. 7.
+
+{{{
+#cd build_mipsel
+#cp -rp root /tmp/root
+#cd /tmp/root/etc/config
+#vi network
+}}}
+You can of course substitute your favourite text editor for vi. now make this new network file look like this:
+
+{{{
+#### VLAN configuration
+config switch eth0
+option vlan0    "0 1 2 3 4 5u"
+#### Loopback configuration
+config interface loopback
+option ifname   "lo"
+option proto    static
+option ipaddr   127.0.0.1
+option netmask  255.0.0.0
+#### LAN configuration
+config interface lan option type     bridge
+option ifname   "eth0 wl0"
+option proto    static option ipaddr   192.168.1.1
+option netmask  255.255.255.0
+#### WAN configuration
+config interface wan
+option ifname   "eth1" option proto    dhcp 8.
+}}}
+{{{
+#cd ../../lib/wifi
+#vi broadcom.sh}}}
+There is a line waay down you need to change it to be: channel ${channel:-5} instead of ${channel:+channel $channel}
+9.  Phewww if you're still with me and never compiled a openwrt image I salute you.  Now time to make that new image and the squashfs
+
+{{{
+#cd ~/kamikaze
+#staging_dir_mipsel/bin/mksquashfs-lzma /tmp/root /tmp/squashfs -nopad -noappend -root-owned -le
+#staging_dir_mipsel/bin/trx -o ~/wl500w-openwrt.trx \
+                    -f build_mipsel/linux-2.4-brcm/loader.gz \
+                    -f build_mipsel/linux-2.4-brcm/vmlinux.lzma -a 1024 \
+                    -f /tmp/squashfs}}}
+10.  If all is well in the world (ie you didn't make any typos) you should now have a new custom made wl500w image sitting in your home directory waiting for you.
+11. Unplug router, replug it in while holding in the black reset button.  Watch for a slowly blinking power light.
+
+12.  TFTP your image to the router.  Make a kamikaze, drink, enjoy.
+
+----
+CategoryModel CategoryModel

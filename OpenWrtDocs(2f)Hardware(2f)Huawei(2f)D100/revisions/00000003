@@ -1,0 +1,87 @@
+= Huawei D100 3G USB WiFi Router =
+
+[[Anchor(hardware)]] [[Anchor(Hardware)]]
+
+== Hardware ==
+=== Info ===
+||'''Architecture''' ||MIPS ||
+||'''Vendor''' ||Broadcom ||
+||'''Bootloader''' ||CFE ||
+||'''System-On-Chip''' ||Broadcom BCM5354 ||
+||'''CPU Speed''' ||240 Mhz ||
+||'''Flash size''' ||4Mbyte (Spansion S29GL032A 2M x 16) ||
+||'''RAM''' ||32Mbyte (Hynix HY5DU561622ETP 16M x 16 DDR SDRAM) ||
+||'''Wireless''' ||Integrated Broadcom 802.11b/g Wireless LAN Controller ||
+||'''Ethernet''' ||Integrated Robo switch BCM5325 ||
+||'''USB''' ||1x USB 2.0 OnChip (USB connected to 3G Modem Host Port by flying leads. Probably only suited for speeds up to 12Mbps) ||
+||'''Serial''' ||Yes - via test points, see bottom PCB photo below||
+||'''JTAG''' ||Unknown ||
+
+=== Photos ===
+=== Top ===
+
+attachment:D100_top.jpg
+
+=== Bottom ===
+
+attachment:D100_bottom_withserial.jpg
+
+== Bootloader ==
+
+Huawei is using the CFE bootloader from Broadcom, but appear to have modified it slightly - Note the CFE reboot flags. This may or may not be to do with the soft off power support on the D100. 
+
+{{{
+CFE version 1.0.37 for BCM947XX (32bit,SP,LE)
+Build Date: �Ի  9��  1 09:21:11 CST 2008 (x127667@old_server.com)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena
+Initializing Devices.
+Boot partition size = 262144(0x40000)
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 
+CFE reboot flag0 = 0x12345678, flag1 = 0x0,flag2 = 0xffffffff,reboot_number = 0x1
+CPU type 0x29029: 240MHz
+Total memory: 32768 KBytes
+}}}
+
+Unlike the ASUS routers running on the BCM5354, there is no recovery mode when the reset button is held down on power up. In the case of the D100, when the reset button is held in during power up, CFE resets the NVRAM back to factory default settings (There is a MTD partition called Factory). 
+
+{{{
+Committing NVRAM..1,2.done
+Waiting for reset button release...done
+Decompressing...........done
+}}}
+
+Uploading firmware with a TRX header via the D100's WebGUI reports "Parsing error on the name of the uploaded file" and as this product is new at the time of writing and no firmware upgrades have yet to be released, we will probably have to wait for an upgrade file before we can work out the format.
+
+Hence the only way to upload firmware to the D100 at present is via the console port. With a console port attached, press CTRL-C to cancel Automatic startup. If you hold the power button down on the D100, the D100 will switch off as soon as booting is interrupted. If this occurs, start pressing CTRL-C rapidly and very briefly press and release the D100's power button.
+
+{{{
+Device eth0:  hwaddr 00-1E-10-85-49-FC, ipaddr 192.168.1.1, mask 255.255.255.0
+        gateway not set, nameserver not set
+Automatic startup canceled via Ctrl-C
+CFE clear reboot_number: reboot_flag0 = 0x12345678, reboot_flag1 = 0x0,reboot_flag2 = 0xfff0
+web info: Waiting for connection on socket 0.
+CFE> 
+}}}
+
+At this point, the CFE bootloader has a recovery webpage accessible. This is probably designed to help the end user when corrupt firmware is uploaded. 
+
+attachment:D100_recovery_web_page.jpg
+
+However once again it doesn't accept firmware in a TRX format. 
+
+The best way to upload your new firmware to your D100 is to pull it from a TFTP server :
+
+{{{
+CFE> flash -noheader 192.168.1.100:/openwrt-brcm47xx-squashfs.trx flash1.trx
+Reading 192.168.1.100:/openwrt-brcm47xx-squashfs.trx: Done. 3215360 bytes read
+Programming...done. 3215360 bytes written
+*** command status = 0
+CFE> reboot
+}}}
+
+
+
+
+ 

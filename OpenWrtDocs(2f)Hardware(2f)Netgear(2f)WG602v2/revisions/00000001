@@ -1,0 +1,13 @@
+== Netgear Firmware ==
+Binary firmare releases can be found on the Netgear [http://kbserver.netgear.com/products/WG602v2.asp WG602v2 support] web page:
+
+ * [ftp://downloads.netgear.com/files/wg602_v2_apfirmware_3_2rc6.zip 3.2 rc6]
+
+GPL source code releases are available from the Netgear [http://kbserver.netgear.com/kb_web_files/n101238.asp GPL Open Source code] web page:
+
+ * [ftp://downloads.netgear.com/files/GPL/wg602-code-3.2rc6.tar.bz2 3.2 rc6]
+
+== OpenWRT ==
+Yet untested.
+----
+CategoryModel

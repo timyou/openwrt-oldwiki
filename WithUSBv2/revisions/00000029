@@ -1,0 +1,18 @@
+Embedded "OpenWrt" devices which offer USB v2.0 support
+||<tablestyle="TEXT-ALIGN: left"> ||'''Asus ''' ||'''Asus ''' ||'''Asus ''' ||'''Freecom''' ||'''Linksys ''' ||'''Maxtor ''' ||'''Netgear ''' ||||<style="TEXT-ALIGN: center">'''Siemens ''' ||'''Simpletech ''' ||'''US Robotics ''' ||
+|| ||'''[http://www.asus.com/products4.aspx?l1=12&l2=43&l3=0&model=359&modelmenu=1 WL-500G Deluxe] ''' ||'''[http://www.asus.com/products4.aspx?l1=12&l2=43&l3=0&model=1121&modelmenu=1 WL-500G Premium] ''' ||'''[http://www.asus.com/products4.aspx?l1=12&l2=44&l3=0&model=979&modelmenu=1 WL-700gE] ''' ||'''[http://www.freecom.com/ecProduct_detail.asp?ID=2347 FSG-3]''' ||'''[http://www.linksys.com/servlet/Satellite?childpagename=US/Layout&packedargs=c=L_Product_C2&cid=1137028967848&pagename=Linksys/Common/VisitorWrapper WRTSL54GS] ''' ||[http://www.maxtor.com/portal/site/Maxtor/menuitem.ba88f6d7cf664718376049b291346068/?channelpath=/en_us/Products/Network%20Storage/Maxtor%20Shared%20Storage%20Family/Maxtor%20Shared%20Storage Shared Storage] [http://www.maxtor.com/portal/site/Maxtor/menuitem.5d2b41d3cef51dfe29dd10a191346068/?channelpath=/en_us/Support/Product+Support/Network+Storage/Maxtor+Shared+Storage+Family/Maxtor+Shared+Storage+Plus (+plus)]''' ''' ||'''[http://www.netgear.com/products/details/WGT634U.php WGT634U] ''' ||||<style="TEXT-ALIGN: center">'''[http://gigaset.siemens.com/shc/0,1935,hq_en_0_89729_rArNrNrNrN,00.html SE551] ''' ||'''[http://www.simpletech.com/commercial/simpleshare/index.php Simpleshare Office Storage Server] ''' ||'''[http://www.usr.com/products/networking/wireless-product.asp?sku=USR5461 USR5461] ''' ||
+||'''Status''' (with OpenWrt) ||[:OpenWrtDocs/Hardware/Asus/WL500GD:Supported] ||[:OpenWrtDocs/Hardware/Asus/WL500GP:Supported] ||[:OpenWrtDocs/Hardware/Asus/WL700gE:WiP] ||[:FreecomFSG3:WiP] ||[:OpenWrtDocs/Hardware/Linksys/WRTSL54GS:Supported] ||[:OpenWrtDocs/Hardware/Maxtor:Untested] ||[:OpenWrtDocs/Hardware/Netgear/WGT634U:WiP] ||||<style="TEXT-ALIGN: left">No ||Untested ||Untested ||
+||'''USB v2.0 ports ''' ||2 ||2 ||3 ||4 ||1 ||2 ||1 ||||<style="TEXT-ALIGN: center">1 ||2 ||1 ||
+||'''Serial ''' ||Yes ||Yes ||Yes ||Yes ||Yes ||Yes ||Yes ||||<style="TEXT-ALIGN: center">Yes ||Yes ||? ||
+||'''WikiPedia:JTAG ''' ||No ||No ||No ||Yes ||Yes ||Yes ||No ||||<style="TEXT-ALIGN: left">Yes ||Yes ||? ||
+||'''CPU''' ||BCM5365 ||BCM4704 ||BCM4780 ||Intel IXP422 ||BCM4704 ||Broadcom ||BCM5365 ||||<style="TEXT-ALIGN: center">Broadcom ||Broadcom ||Broadcom ||
+||'''MHz''' ||200 ||266 ||300 ||266 ||266 ||300 ||200 ||||<style="TEXT-ALIGN: center">240 ||300 ||200 ||
+||'''Flash MB ''' ||4 ||8 ||2 ||4 ||8 ||2 ||8 ||||<style="TEXT-ALIGN: center">2 ||? ||2 ||
+||'''RAM MB''' ||32 ||32 ||64 ||64 ||32 ||32 ||32 ||||<style="TEXT-ALIGN: center">16 ||32 ||8 ||
+||'''Boot_wait ''' ||On ||On ||On ||N/A ||Off ||? ||N/A ||||<style="TEXT-ALIGN: center">N/A ||? ||On ||
+||'''[http://en.wikipedia.org/wiki/MiniPCI Mini-PCI] or integrated WLAN''' ||Integrated ||Mini-PCI ||Integrated ||Empty Mini-PCI ||Integrated ||? ||Mini-PCI ||||<style="TEXT-ALIGN: center">? ||None ||Integrated ||
+||[:HardwareAcceleratedCrypto:HarwareAcceleratedCrypto] ||Yes ||Yes ||Yes ||Yes ||Yes ||Yes ||Yes ||||<style="TEXT-ALIGN: center">? ||? ||? ||
+||'''IDE or SATA''' ||No ||No ||IDE, 3,5" ||IDE, 3,5" and eSATA ||No ||No ||No ||||<style="TEXT-ALIGN: center">No ||No ||No ||
+||'''Dimension''' (mm) ||185*205*36 ||162*215*43 ||240*160*45 ||140*175*44 ||140*140*27 || ||120*175*28 ||||<style="TEXT-ALIGN: center"> || || ||
+||'''Dimension''' (mm, PCB only) || || ||244*244 || || || || ||||<style="TEXT-ALIGN: center"> || || ||
+||'''Weight''' (g) ||500 ||510 ||1400 ||950 ||270 || ||300 ||||<style="TEXT-ALIGN: center"> || || ||

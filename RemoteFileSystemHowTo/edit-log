@@ -1,0 +1,21 @@
+1127503842000000	00000001	SAVENEW	RemoteFileSystemHowTo	82.67.205.67	nthill.dyndns.org	1104929839.08.29390		
+1128723336000000	00000002	SAVE	RemoteFileSystemHowTo	82.67.205.67	nthill.dyndns.org	1104929839.08.29390		
+1128851458000000	00000003	SAVE	RemoteFileSystemHowTo	24.22.164.35	c-24-22-164-35.hsd1.wa.comcast.net	1128851166.08.6668		Updated install instructions, alternate info on avoiding user/pass on cmdline
+1129118061000000	00000004	SAVE	RemoteFileSystemHowTo	82.67.205.67	nthill.dyndns.org	1104929839.08.29390		
+1133217124000000	00000005	SAVE	RemoteFileSystemHowTo	84.155.139.138	p549B8B8A.dip0.t-ipconnect.de	1133214568.4.55635		
+1133236995000000	00000006	SAVE	RemoteFileSystemHowTo	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		
+1138499999000000	00000007	SAVE	RemoteFileSystemHowTo	24.77.160.235	S0106000f6636f4fc.wp.shawcable.net	1138334771.69.10619		mount.cifs workaround
+1139382845000000	00000008	SAVE	RemoteFileSystemHowTo	71.210.68.166	71-210-68-166.farg.qwest.net	1139181803.2.399		
+1139394824000000	00000009	SAVE	RemoteFileSystemHowTo	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		typo
+1143346814000000	00000010	SAVE	RemoteFileSystemHowTo	66.93.61.124	dsl093-061-124.pit1.dsl.speakeasy.net	1143346289.22.11842		
+1143346947000000	00000011	SAVE	RemoteFileSystemHowTo	66.93.61.124	dsl093-061-124.pit1.dsl.speakeasy.net	1143346289.22.11842		
+1148081694000000	00000012	SAVE	RemoteFileSystemHowTo	72.136.151.19	CPE0080c6efec46-CM014240008661.cpe.net.cable.rogers.com	1148081509.75.548		"automagically" is not a word
+1148166757000000	00000013	SAVE	RemoteFileSystemHowTo	82.238.202.139	nico-and-co.dyndns.org	1104929839.08.29390		CIFS: add a note on mandatory mount options and remove wrong advices
+1162185953000000	00000014	SAVE	RemoteFileSystemHowTo	218.214.10.235	218-214-10-235.people.net.au	1162119458.14.17229		
+1172206164000000	00000015	SAVE	RemoteFileSystemHowTo	207.112.70.4	dsl-207-112-70-4.tor.primus.ca	1165281867.07.35097		removed a confusing sentence about ssh accounts
+1189376361000000	00000016	SAVE	RemoteFileSystemHowTo	69.79.217.205	Dynamic-IP-6979217205.cable.net.co	1189376235.75.21868		
+1190742526000000	00000017	SAVE	RemoteFileSystemHowTo	82.130.28.123	kop3.kyla.fi	1134733164.32.32545		(kmod-fs-nfs for Kamikaze)
+1194537432000000	00000018	SAVE	RemoteFileSystemHowTo	196.1.58.55	grog.frogfoot.net	1182113101.22.37582		Add back NFS mount example that was removed in revision 16.
+1208032064000000	00000019	SAVE	RemoteFileSystemHowTo	74.236.251.94	adsl-074-236-251-094.sip.owb.bellsouth.net	1208030929.24.22137		
+1208032370000000	00000020	SAVE	RemoteFileSystemHowTo	74.236.251.94	adsl-074-236-251-094.sip.owb.bellsouth.net	1208030929.24.22137		Add information on auto mounting at boot
+1208032679000000	00000021	SAVE	RemoteFileSystemHowTo	74.236.251.94	adsl-074-236-251-094.sip.owb.bellsouth.net	1208030929.24.22137		

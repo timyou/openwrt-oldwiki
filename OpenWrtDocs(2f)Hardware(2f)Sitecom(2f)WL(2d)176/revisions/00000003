@@ -1,0 +1,31 @@
+=== Chipset ===
+
+The Sitecom WL-176 is based on the RDC 3211 x86 compatible chipset. It is nearly the same device as the WL-153, but has two additional USB ports for storage.
+
+=== Serial port ===
+
+The serial port is labeled T1.
+
+attachment:serial_wl-176.jpg
+
+
+
+More info on the board:
+
+CPU
+RDC R3210-X
+R3210GCL3G
+
+Switch
+RTL 8305SC
+
+Wireless MINI-PCI
+Ralink RT2561ST
+P/N 1244-416-01Z
+
+SDRAM Memory
+2x PSC A2V28S40CTP Total: 2x16MB SDRAM = 32MB
+
+Flash Memory Macronics
+MX T063321
+29LV320CBTC-70G (32Mbit = 4Mbyte)

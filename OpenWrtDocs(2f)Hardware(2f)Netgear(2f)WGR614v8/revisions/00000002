@@ -1,0 +1,31 @@
+= Netgear WGR614 v8 =
+the WGR614 v8 is based on an Atheros System on a Chip (Soc). It has an ??? MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+== Hardware Versions ==
+
+there appear to be multiple versions of several Netgear routers. the one described on this page is the following:
+
+{{{
+Hardware Version  	V8
+Firmware Version 	V1.0.17_1.0.17NA
+}}}
+
+This information can be found at the top of the 'router status page' in the web interface.
+
+== Telnet Hack == 
+
+the telnet hack does not appear to work on this device.
+
+== De-Bricking ==
+
+while i havent managed to de-brick a device, i can tell you this much.
+
+to get a device that is bricked to generate a single arp broadcast, hold down the reset button and let it boot.
+
+at first, you will get green lights on all the network ports (and the wan port), and a green power light.
+then, it will switch to yellow lights on power, diag, and the lan/wan ports.
+after that, it will drop the lights on the lan/wan ports.
+if at that exact moment you release the reset button, the power light will flash, and it will arp once out the lan ports.
+if you miss that moment, the lan port you're connected to will light up, and the power light will turn green. (diag is still yellow)
+then the lan port will go out, and the power light will stay green. (diag is still yellow)
+then the lan port will light up green again. release the reset button just long enough for the power light to turn yellow, then tap the reset button again.

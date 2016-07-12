@@ -1,0 +1,222 @@
+= Netgear DG834G v1 =
+== Hardware ==
+|| || Original entry || Weedys ||
+|| CPU |||| TI AR7 TNETD7300GDU ||
+|| Flash || AMD AM29LV320 || 29DL32BF-70PFTN ||
+|| SDRAM || ICSI IC42S16800-7T || V54C3128164VAT7 ||
+|| LAN MAC/PHY Switch |||| Marvell 88E6060-RCJ ||
+|| WLAN |||| TI TNETW1130GVF ||
+
+== Serial Console ==
+{{{
+ ________________right__________________
+|                                       \
+_power   Pin 1: GND      ----> []       |
+_plug    Pin 2: TX       ----> ()       | Front of DG834G
+|        Pin 3: VCC(3.3V)----> ()       |
+|        Pin 4: RX       ----> ()       led
+|                           JP603       |
+|                                       led
+|                                       |
+
+}}}
+The serial port is JP603, it is on the right side of the PCB, between the power plug and the eth4 led, and is oriented with pin1 closest to the edge of the board. I did not find a +5V line to feed the ADM233LJ (pin compatible max233), so I used an external alim. Then minicom@115200,8N1 started to show the kernel output, and give a busybox console.
+(I used a DKU-5 no problems -- Weedy)
+
+== SquashFS-LZMA ==
+starting from frimware Ver. 3.1.25, the file system is squashfs with LZMA compression (previously it was cramfs), Here is '''unsquashfs for lzma specific to this board''' attachment:squashfs%2D%32.%31%2Dr%32%2Dlzma.tar.bz%32
+
+= Netgear DG834G v2 =
+== Hardware ==
+'''Update please'''
+|| CPU || TI AR7 (TNETD7301GDU) ||
+|| Flash || 4 MByte (MX 29LV320ABTC-90, [http://www.cassy.de/fbox7050/mx29lv320.pdf datasheet]) ||
+|| SDRAM || 16 MByte (ISSI IS42S16800A-7T, [http://www.issi.com/pdf/42S16800A.pdf datasheet]) ||
+|| LAN MAC/PHY Switch || Marvell 88E6060-RCJ ||
+|| WLAN || TI TNET??? ||
+
+== Serial Console ==
+{{{
+|                                        led
+|         Pin 4: RX       ----> ()       |
+|         Pin 3: VCC(3.3V)----> ()       |
+|         Pin 2: TX       ----> ()       |
+|         Pin 1: GND      ----> []  tick led     Front of DG834G
+|                            JP603       |
+|                                  power led
+|                                        |
+|_______________________________________/
+}}}
+The console is JP603 and is oriented with pin1 closest to the edge of the board like the v1 . It is located roughly behind the tick led on the front left of the board, just off the edge of the MiniPCI connector. It was half hidden by the MAC address sticker on my unit. It's the only header I could find; only 4 pins and wasn't soldered up at all. I took a voltage tap of an adjacent 74xx chip to power my MAX232. Settings are 115200,8,N,1.
+
+= Netgear DG834G V3 =
+== Hardware ==
+'''Update please'''
+|| CPU || TI AR7 TNETD7200ZDW ||
+|| Flash || Macronix 29LV320 ||
+|| SDRAM || ??? ||
+|| LAN MAC/PHY Switch || Marvell 88E6060 ||
+|| WLAN || TI TNETW1350A ||
+== Serial console ==
+
+Same as the v2.
+
+= ADAM2 =
+The DG834(G) bootloader, ADAM2, calculates a checksum of the image in flash memory. If this checksum fails, the router won't boot. OpenWRT does not include this checksum (stored in the image), although it could be added. http://members.iinet.net.au/~mlanagan/ is a tool that builds custom firmware with this checksum. The following instructions, however, disable the checksum verification.
+
+=== Replacing ADAM2 ===
+Partially taken from http://www.earth.li/~noodles/blog/dg834g/dg834g-openwrt.html and http://www.earth.li/~noodles/hardware-dg834g.html
+
+==== Getting access to your router ====
+ 1. Enable debug mode (telnet access)
+  . Go to the following URL in your router: http://192.168.0.1/setup.cgi?todo=debug
+ 
+ 1. Telnet into your router
+  . {{{
+telnet 192.168.1.1
+}}}
+ 1. '''Make sure to give adam2 an ip'''
+  .{{{
+echo "my_ipaddress 192.168.0.1" > /proc/sys/dev/adam2/environment
+}}}
+
+==== Backing things up ====
+If you make a mistake, these backups are very useful. MTD layout is listed later on the page.
+
+ 1. Backup each mtd block.
+  . {{{
+ls /dev/mtdblock
+
+dd if=/dev/mtdblock/2 of=/tmp/mtd2.bin
+...
+}}}
+ 1. Start a web server on your router so you can download your mtd images.
+  . {{{
+cd /tmp
+mini_httpd -p 1080
+}}}
+ 1. Download the files you just backed up. You can find them at http://192.168.0.1:1080/mtdX.bin.
+==== Patching ADAM2 ====
+'''*It is possible to brick your router if you make a mistake. Check the md5sums!!!*'''
+
+ 1. Since you're going to modify mtd2.bin, make sure you have the correct file/version. The md5 hash of mtd2.bin is 0530bfdf00ec155f4182afd70da028c1. If it isn't, stop. This is for 0.18.01 as distributed by Netgear.
+ 1. Using a hex editor (hexedit in unix), go to offest 0x3944 in mtd2.bin. You should see these 4 bytes: 44 09 00 0C (representing a jal 0x90002510 during execution). Replace these 4 bytes with 0 (representing nop).
+ 1. Confirm the new md5 hash is d8a2f4623bf6f64b7427812f0e849aa7.
+==== Replacing ADAM2 ====
+If your new md5sum matches up ok then you should copy the patched mtd2.bin over to the Netgear; wget is installed on it, so assuming you can put the image on a web/ftp server somewhere that shouldn't be hard. Then you can do dd if=adam2-fix.bin of=/dev/mtdblock/2 (assuming you called the patched image adam2-fix.bin) on the Netgear, which should patch the ADAM2 image. At this point you cross your fingers and hope it went ok, and restart the device. If it comes up, fantastic. If not, then you're unfortunately a bit stuck - my version of the DG834G has no obvious JTAG port and as such if the bootloader dies there's no way to get in. FWIW I've had a couple of success reports though, as well as my own attempt. Don't attempt this if you don't know what you're doing though.
+
+= Installing Openwrt =
+== MTD Layout ==
+ADAM2 stores the mtd partition layout in env variables. Depending on your hardware, there will be different numbers of mtd partitions with slightly different layout. Most devices have separated partitions for the kernel and the filesystem, which is not supported by OpenWrt. But it is possible to add a partition where kernel and rootfs will be together.
+
+The first step is to determine the original layout:
+
+{{{
+ftp 192.168.0.1
+Connected to 192.168.0.1.
+220 ADAM2 FTP Server ready.
+Name (192.168.1.1:user): adam2
+331 Password required for adam2.
+Password:
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+GETENV mtd0
+mtd0                  0x900d0000,0x903e0000
+200 GETENV command successful
+GETENV mtd1
+mtd1                  0x90020000,0x900d0000
+200 GETENV command successful
+GETENV mtd2
+mtd2                  0x90000000,0x90020000
+200 GETENV command successful
+GETENV mtd3
+mtd3                  0x903e0000,0x903f0000
+200 GETENV command successful
+GETENV mtd4
+501 mtd4 environment variable not set.
+}}}
+Here we can see that {{{mtd1}}} (kernel) and {{{mtd0}}} (filesystem) together go from {{{0x90020000}}} to {{{0x903e0000}}}, these values can vary by some KBytes depending on your machine.
+
+We can also see that {{{mtd3}}} is the last partition and that there is no partition spanning kernel '''and''' filesystem. So we just add it:
+
+{{{
+SETENV mtd4,0x90020000,0x903e0000
+200 SETENV command successful
+}}}
+
+Note - If you're accessing ADAM2 via the serial console you can also create MTD using a similar command (note the casing and the spaces are different)
+
+{{{
+setenv mtd4 0x90020000,0x903e0000
+}}}
+
+
+After that, we can flash {{{openwrt-ar7-2.6-squashfs.bin}}} to {{{mtd4}}} via ftp.
+
+'''The AR7 installation instructions instruct you to create mtd4, but this might already in use by the DG834(G). In that case create mtd5.'''
+
+'''During the pause before the upload, ADAM2 erases the mtd block (I think)'''
+
+''' v1 '''
+{{{
+mtd0                  0x900d0000,0x903e0000 RootFS
+mtd1                  0x90020000,0x900d0000 Kernel
+mtd2                  0x90000000,0x90020000 ADAM2
+mtd3                  0x903e0000,0x903f0000 Probably ADAM2 config
+}}}
+''' v2 (i think?) '''
+{{{
+mtd0    0x900d0000,0x903e0000   RootFS
+mtd1    0x90020000,0x900d0000   Kernel
+mtd2    0x90000000,0x90020000   ADAM2
+mtd3    0x903e0000,0x903f0000   Probably Netgear firmware config
+mtd4    0x903f0000,0x90400000   Probably ADAM2 config
+}}}
+
+=== Flashing via ftp: one image file ===
+'''Replace X with the correct mtd.'''
+{{{
+ftp 192.168.0.1
+Connected to 192.168.0.1.
+220 ADAM2 FTP Server ready.
+Name (192.168.0.1:user): adam2
+331 Password required for adam2.
+Password:
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+ftp> quote "MEDIA FLSH"
+200 Media set to FLSH.
+ftp> bin
+200 Type set to I.
+ftp> put "openwrt-ar7-2.6-squashfs.bin" "fs mtdX"
+local: openwrt-ar7-2.6-squashfs.bin: fs mtdX
+200 Port command successful.
+150 Opening BINARY mode data connection for file transfer.
+226 Transfer complete.
+2319503 bytes sent in 14.64 secs (106.6 kB/s)
+ftp> quote REBOOT
+221-Thank you for using the FTP service on ADAM2.
+221 Goodbye.
+}}}
+
+Wait for it to reboot and enjoy.
+{{{
+
+
+BusyBox v1.7.2 (2007-10-05 16:40:15 EDT) built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r9149) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:~$
+}}}
+----
+CategoryModel ["CategoryAR7Device"]

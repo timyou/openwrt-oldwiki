@@ -1,0 +1,207 @@
+== D-Link DIR-330 ==
+
+=== Hardware ===
+
+{{{
+CPU : Broadcom BCM5836PKPBG
+Flash : Spansion S29GL064A (8Mbytes)
+RAM : 2x16Mbytes
+Switch : 5325e
+Wi-Fi : BCM4318
+Serial : yes
+USB : yes
+JTAG : yes
+}}}
+
+=== Serial pinout ===
+
+There is an unpopulated 6 pin header (J3) which is very probably the serial console.
+
+Another unpopulated 14 pin header (J4) is the JTAG header. Finally, there is another JTAG header for the Wi-Fi chipset (J8) with 14 pin.
+
+You can solder a Mini-PCI connnector just between the Wi-Fi chipset and the switch controller.
+
+{{{
+Antenna connector
+
+[x] : RX
+[x] : TX
+[x] : NC
+[x] : NC
+[x] : GND
+[x] : VCC
+
+LEDs
+}}}
+
+
+=== Bootlog ===
+
+{{{
+Decompressing...........done
+Decompressing...........done
+
+
+CFE version 1.0.37 for BCM947XX (32bit,SP,LE)
+Build Date: Tue Jan 16 20:33:15 CST 2007 (tony@macpaul-x60)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena
+Initializing Devices.
+flash_init () : boot size initialize
+Boot partition size = 262144(0x40000)
+TOP type flash ..
+TOP type flash ..
+TOP type flash ..
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.131.35.4
+rndis0: Broadcom USB RNDIS Network Adapter (P-t-P)
+et1: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.131.35.4
+CPU type 0x29006: 264MHz
+Total memory: 32768 KBytes
+
+Total memory used by CFE:  0x80300000 - 0x803A0C90 (658576)
+Initialized Data:          0x80336450 - 0x80338C60 (10256)
+BSS Area:                  0x80338C60 - 0x8033AC90 (8240)
+Local Heap:                0x8033AC90 - 0x8039EC90 (409600)
+Stack Area:                0x8039EC90 - 0x803A0C90 (8192)
+Text (code) segment:       0x80300000 - 0x80336450 (222288)
+Boot area (physical):      0x003A1000 - 0x003E1000
+Relocation Factor:         I:00000000 - D:00000000
+
+Device eth0:  hwaddr 00-90-4C-4E-33-77, ipaddr 192.168.0.2, mask 255.255.255.0
+        gateway not set, nameserver not set
+Loader:elf Filesys:tftp Dev:eth0 File:192.168.0.100:vmlinux Options:(null)
+Loading: Failed.
+Could not load 192.168.0.100:vmlinux: File not found
+Loader:raw Filesys:raw Dev:flash0.os File: Options:(null)
+Loading: ... 1626112 bytes read
+Entry at 0x80001000
+Closing network.
+Starting program at 0x80001000
+CPU revision is: 00029006
+Primary instruction cache 16kb, linesize 16 bytes (2 ways)
+Primary data cache 16kb, linesize 16 bytes (2 ways)
+Linux version 2.4.20 (tony@bb) (gcc version 3.2.3 with Broadcom modifications) #86 Wed Feb 14 20:47:21 CST 2007
+Setting the PFC to its default value
+Determined physical RAM map:
+ memory: 02000000 @ 00000000 (usable)
+On node 0 totalpages: 8192
+zone(0): 8192 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock2 noinitrd console=ttyS0,115200
+CPU: BCM4704 rev 9 at 264 MHz
+Calibrating delay loop... 263.78 BogoMIPS
+Memory: 30592k/32768k available (1391k kernel code, 2176k reserved, 112k data, 64k init, 0k highmem)
+Dentry cache hash table entries: 4096 (order: 3, 32768 bytes)
+Inode cache hash table entries: 2048 (order: 2, 16384 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+PCI: Fixing up bus 0
+PCI: Fixing up bridge
+PCI: Fixing up bus 1
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xb8000300 (irq = 3) is a 16550A
+ttyS01 at 0xb8000400 (irq = 0) is a 16550A
+PPP generic driver version 2.4.2
+PPP Deflate Compression module registered
+PPP BSD Compression module registered
+MPPE/MPPC encryption/compression module registered
+ Amd/Fujitsu Extended Query Table v1.3 at 0x0040
+Physically mapped flash: Swapping erase regions for broken CFI table.
+number of CFI chips: 1
+Flash device: 0x800000 at 0x1c000000
+Physically mapped flash: cramfs filesystem found at block 938
+Creating 5 MTD partitions on "Physically mapped flash":
+0x00000000-0x00040000 : "boot"
+0x00040000-0x007e0000 : "linux"
+0x000ea88c-0x007e0000 : "rootfs"
+0x007e0000-0x007f0000 : "factory"
+0x007f0000-0x00800000 : "nvram"
+sflash: found no supported devices
+usb.c: registered new driver hub
+usb-ohci.c: USB OHCI at membase 0xb8003000, IRQ 6
+usb-ohci.c: usb-00:03.0, PCI device 14e4:4715
+usb.c: new USB bus registered, assigned bus number 1
+hub.c: USB hub found
+hub.c: 2 ports detected
+usb.c: registered new driver usblp
+printer.c: v0.11: USB Printer Device Class driver
+Initializing Cryptographic API
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 4096)
+ip_conntrack version 2.1 (256 buckets, 2048 max) - 344 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+Create proc for alg success
+alg match module released on Feb  8 2007, 20:06:03
+register_sysctl_table V2 OK
+ipt_time enhanced loading
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.7 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (cramfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 64k freed
+Algorithmics/MIPS FPU Emulator v1.5
+pci/1/1/ccode=US
+Using /lib/modules/2.4.20/kernel/drivers/net/et/et.o
+insmod: il.o: no module by that name found
+Using /lib/modules/2.4.20/kernel/drivers/net/wl/wl.o
+insmod: scsi_mod.o: no module by that name found
+insmod: sd_mod.o: no module by that name found
+insmod: usbcore.o: no module by that name found
+insmod: usb-ohci.o: no module by that name found
+insmod: usb-storage.o: no module by that name found
+insmod: fat.o: no module by that name found
+insmod: vfat.o: no module by that name found
+insmod: msdos.o: no module by that name found
+Hit enter to continue...Wed Nov 15 01:02:00 GMT 2006
+telnetd: starting
+  port: 23; interface: br0; login program: /usr/sbin/login.sh
+vlan0: Operation not supported
+eth2: Numerical result out of range
+eth2: Operation not supported
+eth2: Invalid argument
+eth2: Invalid argument
+eth2: Invalid argument
+vlan0: Operation not supported
+eth2: Numerical result out of range
+eth2: Operation not supported
+eth2: Invalid argument
+eth2: Invalid argument
+eth2: Invalid argument
+No interface specified. Quitting...
+restore (30) to phyaddr
+Start firewall ...
+End  firewall ...
+Hit enter to continue...info, udhcp client (v0.9.8) started
+No interface specified. Quitting...
+eth0 dhcpc
+eth0: No such process
+eth0: No such process
+eth0: No such process
+fopen /tmp/resolv.conf: No such file or directory
+alarm...
+Hit enter to continue...
+}}}
+
+=== Flashing OpenWrt on the DIR-330 ===
+
+The D-Link DIR-330 can run both brcm-2.4 and brcm47xx-2.6. We recommend you use brcm-2.4 anyway. To flash the device, you will need to access CFE for now :
+
+{{{
+flash -noheader <ip address of the TFTP server>: openwrt-brcm-2.4-squashfs.trx flash1.trx
+}}}

@@ -1,0 +1,223 @@
+= Linksys WAG200G =
+The Linksys WAG200G, and its EU variant (WAG200G-EU), is an ADSL 2+ home gateway which integrates a 4 port switch and an 802.11G wireless  acccess point.
+
+== Specifications ==
+ * ADSL 1/2/2+ support (up to 24Mbps)
+ * 4 10/100 Ethernet port switch
+ * IEEE 802.11b/g compliant
+
+== Hardware ==
+The router is based on the Texas Instruments AR7 platform (AR7WRD) which features an integrated MIPS(TM)-based 32-bit RISC core, a digital signal processor-based trans- ceiver and an ADSL Analog Front-End (AFE).
+
+|| || <style="text-align: center;"> Hardware components ||||
+|| Component || Chip || Description ||
+|| SoC || TI TNETD7200ZDW || TI AR7 System-on-Chip ||
+|| CPU || MIPS 4KEc V4.8 || MIPS-32 RISC core @ 211MHz ||
+|| SDRAM || Mira P2V28S40BTP || 16MB DRAM (28Mx8bit words) ||
+|| Flash || MXIC 29LV320MBTC || 4MB (4Mx8 single voltage 3V only) ||
+|| LAN MAC/PHY || Marvell 88E6060-RCJ || 6-Port Fast Ethernet Switch ||
+|| Bus || VLYNQ || Used slot for wireless card ||
+|| WLAN || TI TNETW1350A || Wireless MAC & Baseband Processor ||
+|| RF || TI TNETW3422 & TNETW3428 || Direct Conversion & RF Front-End ||
+
+Picture of the board (as reported in [1]):
+
+
+
+=== Serial Console ===
+The AR7 integrates a dual 16550 UART for remote console: on of the two is accessibile via the 4-pin header (which need to be soldered) (1 in the following picture under the barcode sticker)
+
+The pin layout is:
+1 GND (black wire on the photo)
+2 TX (white wire on the photo)
+3 Vcc (red wire on the photo)
+4 RX (blue wire on the photo)
+
+Note that a voltage level adapter need to be done before attaching the pin to the PC serial port. I have successfully attached the serial console as described here (MAX232. Settings are 115200,8,N,1.).
+You cannot plug directly those pins to your pc serial port. You need a RS232-TTL level adapter.
+
+See OpenWrtDocs/Customizing/Hardware/Serial_Console
+I actually used 
+=== JTAG ===
+The AR7 JTAG connector is JPXX (2 in picture)
+The pinout and specifications are the same of others AR7 devices that is 14 ping ejtag 2.6.
+
+The pinout is the following:
+nTRST 1  2   GND
+TDI   3  4   GND
+TDO   5  6   GND
+TMS   7  8   GND
+TCK   9  10  GND
+nSRST 11 12  n/a
+n/a   13 14  Vcc
+
+You can use Hairydairymaid Debrick Utility with a Xilinx cable.
+
+== Software ==
+* ADAM2 boot loader
+* Linux kernel version 2.4.17 ( in Linksys version 1.00.07 )
+* squashfs filesystem for main software image
+* 64Kb, flash based NVRAM ( as in ohter ADAM2 based devices )
+* precompiled, binary-only kernel modules for AR7, DSL, WLAN and onboard LED's.
+
+== ADAM2 ==
+
+== Diagnostic command output ==
+# ls /dev/mtdblock/
+/dev/mtdblock/0 /dev/mtdblock/2 /dev/mtdblock/4
+/dev/mtdblock/1 /dev/mtdblock/3 /dev/mtdblock/5
+
+# cat mtd
+dev: size erasesize name
+mtd0: 002d0000 00010000 "mtd0"
+mtd1: 000b0000 00010000 "mtd1"
+mtd2: 00020000 00010000 "mtd2"
+mtd3: 00010000 00010000 "mtd3"
+mtd4: 00010000 00010000 "mtd4"
+mtd5: 00040000 00010000 "mtd5"
+
+# cat cpuinfo
+processor : 0
+cpu model : MIPS 4KEc V4.8
+BogoMIPS : 211.35
+wait instruction : no
+microsecond timers : yes
+extra interrupt vector : yes
+hardware watchpoint : yes
+VCED exceptions : not available
+VCEI exceptions : not available
+
+# cat sys/dev/adam2/environment
+maca 00:14:bf:6f:81:b2
+macb 00:14:bf:6f:81:b3
+memsize 0x01000000
+flashsize 0x00400000
+modetty0 115200,n,8,1,hw
+modetty1 115200,n,8,1,hw
+bootserport tty0
+cpufrequency 211968000
+sysfrequency 105984000
+bootloaderVersion 0.22.02
+ProductID WAG200G
+HWRevision Unknown
+SerialNumber none
+my_ipaddress 169.254.87.1
+prompt WAG200G
+firstfreeaddress 0x9401bd20
+req_fullrate_freq 125000000
+mtd0 0x900d0000,0x903a0000
+mtd1 0x90020000,0x900d0000
+mtd2 0x90000000,0x90020000
+mtd3 0x903e0000,0x903f0000
+mtd4 0x903f0000,0x90400000
+mtd5 0x903a0000,0x903e0000
+oam_lb_timeout 100
+
+# cat partitions
+major minor #blocks name
+
+31 0 2880 mtdblocka
+31 1 704 mtdblockb
+31 2 128 mtdblockc
+31 3 64 mtdblockd
+31 4 64 mtdblocke
+31 5 256 mtdblockf
+
+# cat meminfo
+total: used: free: shared: buffers: cached:
+Mem: 14581760 12328960 2252800 0 1191936 4251648
+Swap: 0 0 0
+MemTotal: 14240 kB
+MemFree: 2200 kB
+MemShared: 0 kB
+Buffers: 1164 kB
+Cached: 4152 kB
+SwapCached: 0 kB
+Active: 1060 kB
+Inactive: 5336 kB
+HighTotal: 0 kB
+HighFree: 0 kB
+LowTotal: 14240 kB
+LowFree: 2200 kB
+SwapTotal: 0 kB
+SwapFree: 0 kB
+
+# cat tty/driver/serial
+serinfo:1.0 driver:5.05c revision:2001-07-08
+0: uart:16550A port:A8610E00 irq:15 baud:7944 tx:6225 rx:0 RTS|DTR
+1: uart:unknown port:A8610F00 irq:16
+
+# cat wlan/hal/acxParams
+-------- ConfigOptionsFixed ----------
+NVSVersion = 04 1b 06 00 12 00 00 06
+ProductId =
+ManufactureId =
+dot11MacAddress = 00:00:53:90:2c:dc
+ProbeDelay = 17
+EndofMemory = 0x1010104
+dot11CCAModeSupported = 0
+dot11DiversitySupport = 5
+dot11ShortPreambleOptionImplemented = 1
+dot11PBCCOptionImplemented = 6
+dot11ChanneAgilityPresent = 0
+dot11PHYType = 2
+dot11TempType = 1
+-------- ACX100 elements ----------
+AntennaList (0) =
+SupportedPowerLevels (2) = 0x1e00 0xa00
+SupportedDataRates (5) = 0x02 0x04 0x11 0x22 0x44
+SupportedRegDomains (0) =
+
+# ps -ef
+PID Uid VmSize Stat Command
+1 root 288 S init
+2 root SW [keventd]
+3 root SWN [ksoftirqd_CPU0]
+4 root SW [kswapd]
+5 root SW [bdflush]
+6 root SW [kupdated]
+7 root SW [mtdblockd]
+29 root 196 S /usr/sbin/download
+43 root 220 S /usr/sbin/utelnetd -p 23 -d
+45 root 224 S /sbin/klogd
+55 root 484 S wpa_auth
+65 root 284 S /sbin/syslogd -f /etc/syslog.conf
+74 root 176 S /usr/sbin/ntp -t 3600 -z GMT-8
+81 root 252 S /usr/sbin/mini_httpd -d /www -r Linksys WAG200G -c *
+88 root 224 S /usr/sbin/crond
+90 root 172 S /usr/sbin/scfgmgr
+92 root 204 S /usr/sbin/atm_monitor
+96 root 168 S /usr/sbin/cmd_agent_ap
+97 root 168 S /usr/sbin/pb_ap
+98 root 160 S /usr/sbin/wizd
+116 root 716 S /usr/sbin/upnpd nas0 br0 30 4
+118 root 348 S -sh
+119 root 716 S /usr/sbin/upnpd nas0 br0 30 4
+120 root 716 S /usr/sbin/upnpd nas0 br0 30 4
+122 root 716 S /usr/sbin/upnpd nas0 br0 30 4
+123 root 716 S /usr/sbin/upnpd nas0 br0 30 4
+124 root 716 S /usr/sbin/upnpd nas0 br0 30 4
+142 root 716 S /usr/sbin/upnpd nas0 br0 30 4
+21465 root 416 S -sh
+21993 root 292 R ps -ef
+
+# lsmod
+Module Size Used by
+tiap 843072 1
+led 3880 0
+push_button 1544 1
+tiatm 122440 0
+
+=== MTD Layout ===
+
+= Installing OpenWRT =
+
+
+= References =
+Here you can find most of the hardware and software details of the WAG200G-EU: http://woytekm.googlepages.com/linksyswag200g-eu
+
+http://www.linux-mips.org/wiki/AR7#AR7
+
+http://ar7.wikispaces.com/
+
+http://archive.seattlewireless.net/index.cgi/ADAM2

@@ -1,0 +1,52 @@
+'''Asus WL-500G'''
+
+The WL-500G is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb RAM.
+It has an USB v1.1 Port and a parallel port. No serial port, but a JTAG interface.
+The wireless NIC is a mini-PCI card. boot_wait is on by default. 
+You can not configure the network switch to use different IP configurations for every LAN port.
+There are two network cards integrated, one for the 4 LAN ports and one for the WAN port. 
+For flashing you can use the following shellscript:
+{{{
+#!/bin/bash
+
+# recovery script for wl500g
+#
+# Copyright (C) 2004 by Oleg I. Vdovikin <oleg@cs.msu.su>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+#
+if [ -z "$1" ] || [ ! -f $1 ]; then
+    echo Usage: $0 openwrt-linux.trx
+cat << EOF
+IMPORTANT:
+   1) be sure POWER led is flashing (If this is not a case
+      poweroff the device, push the reset button & power on
+      it again, then release button)
+   2) connect your pc to the LAN port
+   3) be sure your link is up and has an address in the
+      192.168.1.0/24 address range (and not the 192.168.1.1)
+EOF
+    exit 0
+fi
+echo Confirming IP address setting...
+echo -en "get ASUSSPACELINK\x01\x01\xa8\xc0 /dev/null\nquit\n" | tftp 192.168.1.1
+echo Recovering 192.168.1.1 using $1...
+echo -en "binary\nput $1 ASUSSPACELINK\nquit\n" | tftp 192.168.1.1
+echo Please wait until leds stops flashing.
+}}}
+
+In failsafe mode, the telnetd will respond on the WAN port, not the LAN interface.
+
+Here is a nice photo of the internals: http://www.ixbt.com/comm/wireless/asus-wl-500g/minipci.jpg

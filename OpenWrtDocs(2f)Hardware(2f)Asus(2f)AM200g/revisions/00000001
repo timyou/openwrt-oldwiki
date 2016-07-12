@@ -1,0 +1,453 @@
+= General Information =
+Asus AM200g is a high performance ADSL/ADSL2/ADSL2+ gateway. It has a built-in IEEE 802.11g wireless AP, VoIP (with Lifeline Support) and USB port for mass-storage or printer. More specific informations can be found on [http://www.asus.com/products.aspx?modelmenu=2&model=1113&l1=13&l2=97&l3=0&l4=0 Asus site].
+
+This device is based on BCM6348 chip.
+
+= Hardware =
+'''1) Connections '''
+||'''Count'''||'''Type'''||'''Function'''||
+||1 ||Button ||On/off button ||
+||1 || ||DC 18V, 1A||
+||1 ||RJ-11 ||Line (PSTN)||
+||2 ||RJ-11||Phone (analog)||
+||1 ||PS/2||Console||
+||1 ||USB ||Host||
+||1 ||USB ||Slave||
+||1 ||Button ||Reset button||
+||4 ||RJ-45||LAN||
+||1 ||RJ-11 Port||ADSL||
+
+''Image of the back side of the router:''
+
+http://router.smurv.cz/asus/IMG_3464.JPG
+
+'''2) LEDs '''
+
+''Image of the front side of the router:''
+
+http://router.smurv.cz/asus/IMG_3467.JPG
+
+'''3) Chips'''
+
+||BROADCOM||BROADCOM||BROADCOM||BROADCOM||SAMSUNG 652||MX T064421||
+||BCM6348KPBG||BCM4318KFBG||BCM6341KPBG||BCM5325EKQMG||K4S641632K-UC60||29LV320CBTC-90G||
+||CG0622 P20||S0645 P11||TT0546 P10||RG0651 P11||S6416 ZKJ381IIS||2T087300||
+||785035 01||801006 N1A||758492 M5||806711 1A|| ||TAIWAN||
+
+'''4) Images ''' 
+
+Image of the top of the motherboard (from the front):
+
+http://router.smurv.cz/asus/IMG_3445.JPG
+
+Image of the top of the motherboard (from the back):
+
+http://router.smurv.cz/asus/IMG_3447.JPG
+
+'''5) Serial ''' 
+
+''I don't know. Is this Serial? Someone please tell me.''
+
+http://router.smurv.cz/asus/IMG_3464_1.JPG
+
+http://router.smurv.cz/asus/IMG_3463.JPG
+
+'''6) JTAG '''
+
+''I don't know. Is this JTAG? Someone please tell me.''
+
+http://router.smurv.cz/asus/IMG_3459.JPG
+
+= System Information =
+
+'''1) cat /proc/version'''
+{{{
+Linux version  (@) ()
+}}}
+
+'''2) cat /proc/cpuinfo'''
+{{{
+system type             : 96348GW-11
+processor               : 0
+cpu model               : BCM6348 V0.7
+BogoMIPS                : 255.59
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : yes
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+'''3) cat /proc/meminfo'''
+{{{
+MemTotal:        13820 kB
+MemFree:           364 kB
+Buffers:           368 kB
+Cached:           3876 kB
+SwapCached:          0 kB
+Active:           5564 kB
+Inactive:          924 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        13820 kB
+LowFree:           364 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+Dirty:               0 kB
+Writeback:           0 kB
+Mapped:           4848 kB
+Slab:             3700 kB
+Committed_AS:     4560 kB
+PageTables:        380 kB
+VmallocTotal:  1048560 kB
+VmallocUsed:      2580 kB
+VmallocChunk:  1044552 kB
+}}}
+
+'''4) cat /proc/iomem'''
+{{{
+00000000-00f9ffff : System RAM
+  00010000-0017de53 : Kernel code
+  0017de54-001e70bf : Kernel data
+10000000-10ffffff : bcm63xx pci memory space
+  10000000-1000ffff : 0000:00:01.0
+  10010000-1001ffff : 0000:00:02.0
+    10010000-1001ffff : ohci_hcd
+  10020000-1002ffff : 0000:00:02.1
+    10020000-1002ffff : ohci_hcd
+  10030000-1003ffff : 0000:00:02.2
+    10030000-1003ffff : ehci_hcd
+}}}
+
+'''5) cat /proc/interrupts'''
+{{{
+           CPU0       
+  5:      20002            MIPS  brcm_5
+  6:        240            MIPS  brcm_6, brcm_6, brcm_6
+  7:   14418676            MIPS  timer
+ 10:          0            MIPS  brcm_10
+ 12:     174810            MIPS  brcm_12
+ 13:    3905503            MIPS  brcm_13
+ 14:          0            MIPS  brcm_14
+ 22:          0            MIPS  brcm_22
+ 24:          0            MIPS  brcm_24
+ 30:    1497586            MIPS  brcm_30
+ 32:    1075559            MIPS  brcm_32
+ 33:          0            MIPS  brcm_33
+
+ERR:          0
+}}}
+
+'''6) cat /proc/modules'''
+{{{
+vfat 9664 1 - Live 0xc00cf000
+fat 35696 1 vfat, Live 0xc00d8000
+endpointdd 1242960 0 - Live 0xc02b9000
+vnet 592 0 - Live 0xc000a000
+ipt_state 544 2 - Live 0xc00c6000
+ipt_mark 416 0 - Live 0xc00c4000
+ipt_limit 896 2 - Live 0xc00c2000
+ipt_connlimit 1696 0 - Live 0xc00c0000
+ipt_TCPMSS 2304 2 - Live 0xc00b9000
+ipt_REDIRECT 768 0 - Live 0xc00bb000
+ipt_MASQUERADE 1536 1 - Live 0xc00b5000
+ipt_MARK 704 0 - Live 0xc00b7000
+ipt_LOG 4064 2 - Live 0xc008c000
+ipt_FTOS 992 0 - Live 0xc00b3000
+ip_nat_tftp 1120 0 - Live 0xc00b1000
+ip_nat_irc 1536 0 - Live 0xc00af000
+ip_nat_ftp 2208 0 - Live 0xc00a1000
+ip_conntrack_tftp 1008 0 - Live 0xc009f000
+ip_conntrack_irc 18928 1 ip_nat_irc, Live 0xc00a9000
+ip_conntrack_ftp 19792 1 ip_nat_ftp, Live 0xc00a3000
+ip_nat_h323 2208 0 - Live 0xc009d000
+ip_conntrack_h323 18960 1 ip_nat_h323, Live 0xc0097000
+ip_nat_pptp 2048 0 - Live 0xc0095000
+ip_conntrack_pptp 3312 0 - Live 0xc0093000
+ip_nat_gre 1280 0 - Live 0xc0091000
+ip_conntrack_gre 2064 2 ip_nat_pptp,ip_conntrack_pptp, Live 0xc008f000
+iptable_mangle 960 0 - Live 0xc004e000
+iptable_nat 15248 9 ipt_REDIRECT,ipt_MASQUERADE,ip_nat_tftp,ip_nat_irc,ip_nat_ftp,ip_nat_h323,ip_nat_pptp,ip_nat_gre, Live 0xc0060000
+ip_conntrack 24400 16 ipt_state,ipt_connlimit,ipt_REDIRECT,ipt_MASQUERADE,ip_nat_tftp,ip_nat_irc,ip_nat_ftp,ip_conntrack_tftp,ip_conntrack_irc,ip_conntrack_ftp,ip_nat_h323,ip_conntrack_h323,ip_nat_pptp,ip_conntrack_pptp,ip_conntrack_gre,iptable_nat, Live 0xc0059000
+iptable_filter 928 1 - Live 0xc004c000
+ip_tables 14144 13 ipt_state,ipt_mark,ipt_limit,ipt_connlimit,ipt_TCPMSS,ipt_REDIRECT,ipt_MASQUERADE,ipt_MARK,ipt_LOG,ipt_FTOS,iptable_mangle,iptable_nat,iptable_filter, Live 0xc0054000
+sd_mod 14368 2 - Live 0xc001e000
+sg 25888 0 - Live 0xc0044000
+usb_storage 21792 1 - Live 0xc003d000
+wl 522576 0 - Live 0xc0133000
+bcm_usb 15920 0 - Live 0xc000c000
+bcm_enet 22000 1 vnet, Live 0xc0036000
+bcmprocfs 12288 0 - Live 0xc0014000
+adsldd 135488 0 - Live 0xc0065000
+blaa_dd 6880 0 - Live 0xc0011000
+atmapi 57872 2 adsldd,blaa_dd, Live 0xc0026000
+}}}
+
+'''7) cat /proc/devices'''
+{{{
+Character devices:
+  1 mem
+  2 pty
+  3 ttyp
+  4 ttyS
+  5 /dev/tty
+  5 /dev/console
+ 10 misc
+ 21 sg
+108 ppp
+180 usb
+205 atmapi
+206 bcrmboard
+208 adsl
+209 endpoint
+212 bcm
+
+Block devices:
+  8 sd
+ 31 mtdblock
+ 65 sd
+ 66 sd
+ 67 sd
+ 68 sd
+ 69 sd
+ 70 sd
+ 71 sd
+128 sd
+129 sd
+130 sd
+131 sd
+132 sd
+133 sd
+134 sd
+135 sd
+}}}
+
+'''8) cat /proc/pci'''
+{{{
+PCI devices found:
+  Bus  0, device   1, function  0:
+    Network controller: PCI device 14e4:4318 (Broadcom Corporation) (rev 2).
+      IRQ 32.
+      Master Capable.  Latency=64.  
+      Non-prefetchable 32 bit memory at 0x10000000 [0x1000ffff].
+  Bus  0, device   2, function  0:
+    USB Controller: Philips Semiconductors USB 1.1 Host Controller (rev 48).
+      IRQ 6.
+      Master Capable.  Latency=64.  Min Gnt=1.Max Lat=42.
+      Non-prefetchable 32 bit memory at 0x10010000 [0x1001ffff].
+  Bus  0, device   2, function  1:
+    USB Controller: Philips Semiconductors USB 1.1 Host Controller (#2) (rev 48).
+      IRQ 6.
+      Master Capable.  Latency=64.  Min Gnt=1.Max Lat=42.
+      Non-prefetchable 32 bit memory at 0x10020000 [0x1002ffff].
+  Bus  0, device   2, function  2:
+    USB Controller: Philips Semiconductors USB 2.0 Host Controller (rev 48).
+      IRQ 6.
+      Master Capable.  Latency=64.  Min Gnt=2.Max Lat=16.
+      Non-prefetchable 32 bit memory at 0x10030000 [0x1003ffff].
+}}}
+
+'''9) df'''
+{{{
+Filesystem           1k-blocks      Used Available Use% Mounted on
+/dev/mtdblock0            3072      3072         0 100% /
+tmpfs                      224       192        32  86% /var
+/dev/sda1              1740512    201952   1538560  12% /var/usb/usb_1
+}}}
+
+'''10) ifconfig -a'''
+{{{
+atm0            Link encap:UNSPEC  HWaddr xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx 
+                [NO FLAGS]  MTU:0  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0 
+                RX bytes:1465919520 (1.3 GiB)  TX bytes:279541056 (266.5 MiB)
+
+br0             Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                inet addr:192.168.1.1  Bcast:192.168.1.255  Mask:255.255.255.0
+                UP BROADCAST RUNNING ALLMULTI MULTICAST  MTU:1500  Metric:1
+                RX packets:1510244 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:1849387 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0 
+                RX bytes:199464275 (190.2 MiB)  TX bytes:1399361605 (1.3 GiB)
+
+cpcs0           Link encap:UNSPEC  HWaddr xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx  
+                [NO FLAGS]  MTU:65535  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0 
+                RX bytes:1465919520 (1.3 GiB)  TX bytes:279541056 (266.5 MiB)
+
+dsl0            Link encap:UNSPEC  HWaddr xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx-xx  
+                [NO FLAGS]  MTU:0  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0 
+                RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0            Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx 
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:1540178 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:1899500 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:251613533 (239.9 MiB)  TX bytes:1470235004 (1.3 GiB)
+                Interrupt:30 Base address:0x6800 
+
+eth0.2          Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:1540096 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:1884631 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:251604711 (239.9 MiB)  TX bytes:1468146855 (1.3 GiB)
+                
+
+eth0.3          Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:42 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:14790 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:3708 (3.6 KiB)  TX bytes:2077312 (1.9 MiB)
+                
+
+eth0.4          Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                BROADCAST MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:26 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:0 (0.0 B)  TX bytes:3884 (3.7 KiB)
+                
+
+eth0.5          Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                BROADCAST MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:24 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:0 (0.0 B)  TX bytes:3736 (3.6 KiB)
+                
+
+lo              Link encap:Local Loopback  
+                inet addr:127.0.0.1  Mask:255.0.0.0
+                UP LOOPBACK RUNNING  MTU:16436  Metric:1
+                RX packets:123 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:123 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0 
+                RX bytes:3563 (3.4 KiB)  TX bytes:3563 (3.4 KiB)
+
+nas_8_48        Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:1841405 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:1504956 errors:0 dropped:1345 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:1385858753 (1.2 GiB)  TX bytes:242232828 (231.0 MiB)
+
+ppp_8_48_1      Link encap:Point-Point Protocol  
+                inet addr:62.177.78.54  P-t-P:88.146.111.31  Mask:255.255.255.255
+                UP POINTOPOINT RUNNING NOARP MULTICAST  MTU:1492  Metric:1
+                RX packets:1837719 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:1501328 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:3 
+                RX bytes:1370991344 (1.2 GiB)  TX bytes:193936312 (184.9 MiB)
+
+usb0            Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                BROADCAST MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+wl0             Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:179391 errors:0 dropped:0 overruns:0 frame:36003
+                TX packets:189454 errors:17 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:130025665 (124.0 MiB)  TX bytes:102473982 (97.7 MiB)
+                Interrupt:32 
+
+wl0.1           Link encap:Ethernet  HWaddr xx:xx:xx:xx:xx:xx  
+                BROADCAST MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:1000 
+                RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+}}}
+
+'''11) help'''
+{{{
+?
+help
+logout
+reboot
+adsl
+atm
+brctl
+cat
+ethctl
+ddns
+df
+dumpcfg
+echo
+ifconfig
+kill
+arp
+defaultgateway
+dhcpserver
+dns
+lan
+passwd
+ppp
+remoteaccess
+restoredefault
+route
+save
+swversion
+wan
+ping
+ps
+pwd
+sntp
+sysinfo
+tftp
+voice
+wlctl
+wlan
+}}}
+
+'''12) sh'''
+{{{
+BusyBox v1.00 (2005.04.12-18:11+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+}}}
+
+'''13) help ''(in shell)'''''
+{{{
+Built-in commands:
+-------------------
+        . : break cd continue eval exec exit export help login newgrp
+        read readonly set shift times trap umask wait [ busybox cat chmod
+        cp date df dmesg echo expr false hostname ifconfig init insmod
+        kill klogd ledctrl linuxrc ln logger logread ls mkdir mount msh
+        ping ps pwd reboot rm rmmod route sendarp sh sync sysinfo syslogd
+        test tftp tftpd top true tty umount vconfig
+
+}}}
+
+'''14) ls ''(in shell)'''''
+{{{
+var      mnt      webs     sbin     lib      etc
+proc     dev      usr      linuxrc  images   bin
+}}}
+
+= Firmware and Firmware Hacks =
+I have only original firmware from Asus in binary format. You can download it from my site - [http://router.smurv.cz/asus/JOYCE_IAD_U2_B_306063520_cfe_fs_kernel here]. 
+
+= Compatibility with OpenWRT =
+-- untested --
+
+= Misc =
+I can upload more detailed photos of the router motherboard or provide more information. To contact me: smurvik [at] gmail [DOT] com
+
+
+CategoryModel ["CategoryBCM63xx"]

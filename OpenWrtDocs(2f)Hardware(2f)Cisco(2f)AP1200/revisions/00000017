@@ -1,0 +1,145 @@
+= Cisco AP 1200 =
+
+{{{
+CPU : PowerPC 405GP @ 200 Mhz
+Flash : 8MB Intel strataflash 28F128J3A
+RAM : 16MB
+Ethernet :  yes
+JTAG : ?
+USB : no
+Serial : yes (Cisco cable needed)
+Wi-Fi : Cisco Aironet Mini PCI b/g
+}}}
+
+== Bootloader version ==
+
+{{{
+C1200 Boot Loader (C1200-BOOT-M) Version 12.2(8)JA, EARLY DEPLOYMENT RELEASE SOFTWARE (fc1)
+TAC Support: http://www.cisco.com/tac
+Compiled Wed 12-Feb-03 15:23 by hqluong
+}}}
+
+This bootloader can be downloaded at : http://www.cisco.com/warp/public/779/smbiz/misc/
+
+== Memory layout ==
+
+{{{
+ap: memory
+Text:   0x00e80000 - 0x00eaeb30 (0x0002eb30 bytes)
+Rotext: 0x00eaeb30 - 0x00eaeb30 (0x00000000 bytes)
+Data:   0x00eaeb30 - 0x00eba768 (0x0000bc38 bytes)
+Bss:    0x00ebc930 - 0x00ede9ac (0x0002207c bytes)
+Stack:  0x00ede9ac - 0x00eee9ac (0x00010000 bytes)
+Heap:   0x00eee9b0 - 0x00ffd800 (0x0010ee50 bytes)
+
+Bottom heap utilization is 31 percent.
+Top heap utilization is 0 percent.
+Total heap utilization is 31 percent.
+Total bytes: 0x10ee50 (1109584)
+Bytes used: 0x54ec4 (347844)
+Bytes available: 0xb9f8c (761740)
+
+Alternate heap utilization is 0 percent.
+Total alternate heap bytes: 0xe7d000 (15192064)
+Alternate heap bytes used: 0x0 (0)
+Alternate heap bytes available: 0xe7d000 (15192064)
+}}}
+
+== Saved registers ==
+
+{{{
+ap: dump_save_regs
+
+ Saved Regs in OCM:
+ MSR = 0x00000000
+ LR = 0x00e881a0
+ ESR = 0x00000000
+ SRR0 = 0x00008c08
+ SRR1 = 0x00000000
+ SRR2 = 0x00042400
+ SRR3 = 0x00000000
+ DBCR0 = 0x00110000
+ DBCR1 = 0x00000000
+ DBSR = 0x0c1c0300
+ TSR = 0xc4000000
+ TCR = 0x00000000
+ DEAR = 0x00000000
+}}}
+
+Some more details about those registers : http://www.go-ecs.com/ppc/ppctek1.htm
+
+=== Entering boot loader mode ===
+
+You have to press the MODE button while powering the device for about 30 seconds. Make sure you have disconnected the Ethernet cable, otherwise, the device will download a config from a broadcast address.
+
+Once done, you should get the following prompt :
+
+{{{
+ap:
+}}}
+
+=== Transfering files to the bootloader ===
+
+Once you have the boot loader prompt, initialise the flash, tftp and ethernet subsystems :
+
+{{{
+flash_init
+ether_init
+tftp_init
+}}}
+
+Now, you can download files using a remote TFTP server to the access point. The default IP address is 10.0.0.1, but might have been changed, so to read it, just display the "env_vars" file :
+
+{{{
+cat flash:env_vars
+}}}
+
+Now, to copy a flash, using the following command :
+
+{{{
+copy tftp://<TFTP server IP address>/file flash:/file
+}}}
+
+There is no default destination for a file, so you must supply its destination. Storing it on the flash is a convenient way to test.
+
+=== Image layout ===
+
+The Cisco IOS files are flat tarballs (tar cf <file.tar> directory/), with the following naming convention :
+{{{
+<model name>-<image type>-mx-<version>/
+}}}
+
+This directory contains several files :
+
+{{{
+*.img : firmware files for the Aironet WLAN card
+info : description file
+html/ : HTML pages if selected HTML web interface
+<model name>-<image type>-mx-<version> : the IOS kernel
+}}}
+
+The IOS image structure is the following :
+
+{{{
+struct ios_header {
+        uint32_t        magic;          /* Magic MZIP */
+        uint32_t        version;        /* MZIP version */
+        uint32_t        comp_ep;        /* Compressor entry point */
+        uint32_t        rsvd1[2];       /* Unused */
+        char            pad[32];        /* Padding */
+        uint32_t        product_code;   /* Unused */
+        uint32_t        hdr_size;       /* Header size */
+        uint32_t        ios_ep;         /* IOS entry point */
+        uint32_t        file_type;      /* Compression type */
+        uint32_t        file_size;      /* Compressed file size - garbage */
+        uint32_t        decomp_size;    /* Decompressed file size */
+        uint32_t        ver_code;       /* Probably the version code */
+        char            padding[32];    /* Padding before the compressed file */
+} __attribute__((packed));
+----
+Then compressed file (zip, pkzip or bzip2)
+}}}
+
+=== Booting images ===
+
+The IOS bootloader will refuse to boot any file that does not look like a valid MZIP image (see the header before).

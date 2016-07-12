@@ -1,0 +1,300 @@
+{{{
+Bootloader : Bootbase
+OS : ZyNOS
+Flash : 4Mb Macronix 29LV320BT-90
+RAM : 16Mb Hynix
+WLAN : Texas Instruments TNETW113OGVF (mini-PCI)
+USB : yes
+Serial : yes
+JTAG : yes
+}}}
+
+Serial Pinout :
+
+
+{{{
+ VCC  TX   RX        GND
+  x    x    x    ()   x       LEDS
+}}}
+
+9600 8n1
+
+Services :
+
+ Password for services : 1234
+
+ Telnet
+ FTP (root/1234)
+ WEB
+ IDENT
+
+
+It is not possible to login via the web interface when you are logged by console, and probably vice versa.
+
+== Hacking the ZyXEL P-335WT ==
+
+This device uses Bootbase as bootloader and ZynOS as Operating system. It runs in Big-endian mode (adm5120eb-2.6 target).
+
+Here are several useful informations :
+
+Entering advanced debug mode :
+
+ATEN1,<code>
+
+{{{
+MAC Address
+of LAN port	Password y for ATENx,y
+...0 or ...8	10F0A563
+...1 or ...9	887852B1
+...2 or ...A	C43C2958
+...3 or ...B	621E14AC
+...4 or ...C	310F0A56
+...5 or ...D	1887852B
+...6 or ...E	8C43C295
+...7 or ... F	C621E14A
+}}}
+
+Loading an image via Xmodem :
+
+ATUP<load address>,<size in bytes>
+
+== FLASH/ROM layout ==
+{{{
+ATMP
+ROMIO image start at bfc08000
+code version: 
+code start: 80008000
+code length: 1E80C2
+memMapTab: 16 entries, start = bfc30000, checksum = FD5E
+$RAM Section:
+  0: BootExt(RAMBOOT), start=80008000, len=18000
+  1: BootData(RAM), start=80020000, len=8000
+  2: HTPCode(RAMCODE), start=80020000, len=18000
+  3: HTPData(RAM), start=8003c000, len=14000
+  4: RasCode(RAMCODE), start=80020000, len=6F0000
+  5: RasData(RAM), start=80710000, len=8F0000
+$ROM Section:
+  6: BootBas(ROMIMG), start=bfc00000, len=4000
+  7: DbgArea(ROMIMG), start=bfc04000, len=2000
+  8: RomDir2(ROMDIR), start=bfc06000, len=2000
+  9: BootExt(ROMIMG), start=bfc08030, len=17FD0
+ 10: HTPCode(ROMBIN), start=bfc20000, len=10000
+     (Compressed)
+     Version: HTP_P335WT V1.0, start: bfc20030
+< Press any key to Continue >
+     Length: AE14, Checksum: 9AE0
+     Compressed Length: 2CE5, Checksum: 80D9
+ 11: MemMapT(ROMMAP), start=bfc30000, len=C00
+ 12: termcap(ROMIMG), start=bfc30c00, len=400
+ 13: RomDefa(ROMIMG), start=bfc31000, len=2000
+ 14: tiwlan(ROMIMG), start=bfc33000, len=1F000
+ 15: RasCode(ROMBIN), start=bfc52000, len=1FE000
+     (Compressed)
+     Version: RAS P335WT, start: bfc52030
+     Length: 4D31F0, Checksum: 010C
+     Compressed Length: 19E0C1, Checksum: BF6A
+}}}
+
+== Bootstrapping Linux ==
+
+Thanks to Gabor Juhos and his CFE, we can now bootstrap a Linux kernel, the procedure is described in this raw bootlog.
+
+{{{
+Bootbase Version: V1.05 | 04/20/2004 10:36:26                                                                 
+RAM: Size=16384 Kbytes                                                                                        
+DRAM POST: Testing: 16384K                                                                                    
+OK                                                                                                            
+FLASH: AMD 32M                                                                                                
+                                                                                                              
+ZyNOS Version: V3.60(JO.4) | 03/03/2006 16:30:00                                                              
+                                                                                                              
+Press any key to enter debug mode within 3 seconds.                                                           
+..........                                                                                                    
+Enter Debug Mode                                                                                              
+ATEN1,C43C2958                                                                                                
+OK                                                                                                            
+ATUP80020000,2B000
+Starting XMODEM upload (CRC mode)....                                                                         
+C
+Total 175232 bytes received
+
+OK
+ATGO80020000
+[EINI]
+[HELO]
+
+[ZBSS]
+
+[MAIN]
+
+[BGIN]
+
+[TMRI]
+
+[KMEM]
+
+[CONS]
+
+[EXCV]
+
+[CIOK]
+
+
+CFE version 1.2.5 for P-335 (32bit,SP,BE,MIPS)
+Built on Sun, 22 Apr 2007 15:17:13 +0200 by Yuhi@jonagold
+Built with gcc version 3.4.1 broadcom_2004e_341 (SpecifixInc)
+Copyright (C) 2000,2001,2002,2003,2004,2005 Broadcom Corporation.
+Copyright (C) 2006,2007 Gabor Juhos
+
+
+[AREN]
+Initializing Arena.
+
+[PCIC]
+Initializing PCI. [normal]
+
+[PCIH]
+
+[PCIB]
+
+[PCIS]
+PCI bus 0 slot 0/0: ADMtek ADM5120 Host Bridge (host bridge)
+PCI bus 0 slot 2/0: Texas Instruments product 0x9066 (miscellaneous network)
+
+[DEVI]
+Initializing Devices.
+CPU type 0x1800B: 175MHz
+Total memory: 0x1000000 bytes (16MB)
+
+Total memory used by CFE:  0x80500000 - 0x80DAD740 (9099072)
+Initialized Data:          0x80529218 - 0x8052AC50 (6712)
+BSS Area:                  0x8052AC50 - 0x8052B740 (2800)
+Local Heap:                0x8052B740 - 0x80DAB740 (8912896)
+Stack Area:                0x80DAB740 - 0x80DAD740 (8192)
+Text (code) segment:       0x80500000 - 0x80529218 (168472)
+Boot area (physical):      0x004BF000 - 0x004FF000
+Relocation Factor:         I:00000000 - D:00000000
+
+[ENVI]
+
+
+[FINI]
+
+[AUTO]
+
+[CFE ]
+
+[CFE2]
+CFE_RAM> ifconfig eth0 -addr=192.168.9.254
+Device eth0:  hwaddr 00-41-44-4D-51-20, ipaddr 192.168.9.254, mask not set
+        gateway not set, nameserver not set
+*** command status = 0
+
+[CFE2]
+CFE_RAM> load -elf -tftp 192.168.9.253:vmlinuxadm
+Loader:elf Filesys:tftp Dev:eth0 File:192.168.9.253:vmlinuxadm Options:(null)
+Loading: 0x80001000/2226076 0x80222000/1273686 0x80358f56/98506 Entry at 0x80238000
+*** command status = 0
+
+[CFE2]
+CFE_RAM> go
+Closing network.
+Starting program at 0x80238000
+
+
+[RUN!]
+Linux version 2.6.19.2 (fainelli@anaconda.int-evry.fr) (gcc version 4.1.2) #2 Sun Apr 22 16:40:56 CEST 2007
+ADM5120 revision 8, running at 175MHz
+Boot loader is: CFE
+Booted from   : NOR flash
+Board is      : Compex WP54G-WRT
+GETENV: envname is memsize
+GETENV: returning 0x001000000
+CPU revision is: 0001800b
+ADM5120 board setup
+Determined physical RAM map:
+ memory: 00c8e000 @ 00372000 (usable)
+Initrd not found or empty - disabling initrd
+Built 1 zonelists.  Total pages: 4064
+Kernel command line: console=ttyS0,115200 rootfs=jffs2,squashfs init=/etc/preinit
+Primary instruction cache 8kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 8kB, 2-way, linesize 16 bytes.
+Synthesized TLB refill handler (20 instructions).
+Synthesized TLB load handler fastpath (32 instructions).
+Synthesized TLB store handler fastpath (32 instructions).
+Synthesized TLB modify handler fastpath (31 instructions).
+PID hash table entries: 64 (order: 6, 256 bytes)
+start_kernel(): bug: interrupts were enabled early
+Dentry cache hash table entries: 2048 (order: 1, 8192 bytes)
+Inode-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Memory: 12708k/12856k available (1969k kernel code, 148k reserved, 294k data, 1156k init, 0k highmem)
+Mount-cache hash table entries: 512
+Checking for 'wait' instruction...  available.
+NET: Registered protocol family 16
+adm5120: system has PCI BIOS
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+NET: Registered protocol family 2
+IP route cache hash table entries: 128 (order: -3, 512 bytes)
+TCP established hash table entries: 512 (order: -1, 2048 bytes)
+TCP bind hash table entries: 256 (order: -2, 1024 bytes)
+TCP: Hash tables configured (established 512 bind 256)
+TCP reno registered
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+Registering mini_fo version $Id$
+io scheduler noop registered
+io scheduler deadline registered (default)
+ADM5120 LED & GPIO driver
+ttyS0 at I/O 0x12600000 (irq = 1) is a ADM5120
+ttyS1 at I/O 0x12800000 (irq = 2) is a ADM5120
+eth0: ADM5120 switch port0
+eth1: ADM5120 switch port1
+ip_conntrack version 2.4 (100 buckets, 800 max) - 240 bytes per conntrack
+ip_tables: (C) 2000-2006 Netfilter Core Team
+TCP vegas registered
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+NET: Registered protocol family 15
+Bridge firewalling registered
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+Freeing unused kernel memory: 1156k freed
+Warning: unable to open an initial console.
+Algorithmics/MIPS FPU Emulator v1.5
+PPP generic driver version 2.4.2
+acx: this driver is still EXPERIMENTAL
+acx: reading README file and/or Craig's HOWTO is recommended, visit http://acx100.sf.net in case of further questions/discussion
+acx: compiled to use 32bit I/O access. I/O timing issues might occur, such as non-working firmware upload. Report them
+running on a BIG-ENDIAN CPU
+PCI module v0.3.36 initialized, waiting for cards to probe...
+acx: found ACX111-based wireless network card at 0000:00:02.0, irq:6, phymem1:0x11420000, phymem2:0x11400000, mem1:0xb1420000, mem1_size:81922
+initial debug setting is 0x000A
+using IRQ 6
+acx: eCPU is already running. reset_dev() FAILED
+acx_pci: probe of 0000:00:02.0 failed with error -5
+init started:  BusyBox v1.4.1 (2007-04-22 16:26:22 CEST) multi-call binary
+
+Please press Enter to activate this console. 
+
+
+BusyBox v1.4.1 (2007-04-22 16:26:22 CEST) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r7004) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@(none):/# ifconfig 
+}}}
+
+
+----
+
+CategoryModel ["CategoryADM5120Device"]

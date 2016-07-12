@@ -1,0 +1,51 @@
+1149128182000000	00000001	SAVENEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	212.202.23.48	port-212-202-23-48.dynamic.qsc.de	1149018005.72.63574		moved to namespace
+1149290100677118	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	213.83.233.254	213083233254.sonofon.dk	1145057424.11.10070	debrick-wiggler.patch.gz	
+1149379852767797	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	80.99.180.157	catv-5063b49d.catv.broadband.hu	1104145113.36.19942	JTAGunbuffered.png	
+1149379886374293	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	80.99.180.157	catv-5063b49d.catv.broadband.hu	1104145113.36.19942	wiggler.png	
+1149403574000000	00000002	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	212.176.3.105	rusp-pix.borland.com	1120300957.95.18564		K9SPUD
+1150057439000000	00000003	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	212.176.3.105	rusp-pix.borland.com	1120300957.95.18564		software upd
+1150851871000000	00000004	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	70.34.169.215	eacb02-00-cmmgga-70-34-169-215.atlaga.adelphia.net	1129251634.22.4296		
+1150852116000000	00000005	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	70.34.169.215	eacb02-00-cmmgga-70-34-169-215.atlaga.adelphia.net	1129251634.22.4296		
+1151067087000000	00000006	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	194.84.254.250	ip250.intra.global-one.ru	1120300957.95.18564		
+1152007857000000	00000007	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	62.165.165.242	dsl-62-165-165-242.phnet.fi	1151957298.97.8500		
+1152303455000000	00000008	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	212.176.3.105	rusp-pix.borland.com	1120300957.95.18564		
+1153315739000000	00000009	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		
+1153315762000000	00000010	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		fixed minor typo
+1153315933000000	00000011	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		
+1153375233000000	00000012	SAVE/REVERT	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	194.84.254.250	ip250.intra.global-one.ru	1120300957.95.18564	00000008	
+1153375309000000	00000013	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	194.84.254.250	ip250.intra.global-one.ru	1120300957.95.18564		typo
+1165055961000000	00000014	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	89.110.8.134	pppoe-134.8.110.89-adsl.spbnit.ru	1120300957.95.18564		
+1165179850000000	00000015	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	91.122.20.29	ppp91-122-20-29.pppoe.avangard-dsl.ru	1120300957.95.18564		
+1168083868000000	00000016	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	82.232.88.10	tibal.ath.cx	1168082119.35.59412		
+1169634364000000	00000017	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	83.98.248.135	fti.speedxs.nl	1130665583.79.62668		typos
+1177874986000000	00000018	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	201.29.163.63	20129163063.user.veloxzone.com.br	1177874833.02.24560		Update HairyDairyMaid_WRT54G_Debrick_Utility link to v48
+1177875094000000	00000019	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	201.29.163.63	20129163063.user.veloxzone.com.br	1177874833.02.24560		
+1184710145000000	00000020	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	84.59.125.132	dslb-084-059-125-132.pools.arcor-ip.net	1174486441.74.33748		
+1186091289000000	00000021	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	204.11.45.188	188-45-11-204.rar.beartech.net	1186090483.22.20783		
+1186091599000000	00000022	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	204.11.45.188	188-45-11-204.rar.beartech.net	1186090483.22.20783		
+1186091677000000	00000023	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	204.11.45.188	188-45-11-204.rar.beartech.net	1186090483.22.20783		
+1186091839000000	00000024	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	204.11.45.188	188-45-11-204.rar.beartech.net	1186091791.84.10962		
+1193552333000000	00000025	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		wiggler patch for v48
+1193552576000000	00000026	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		
+1194402044511616	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	70.66.42.149	S0106000f669178e5.no.shawcable.net	1194401336.92.34395	JTAG_unbuffered_2.png	
+1194402175499373	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	70.66.42.149	S0106000f669178e5.no.shawcable.net	1194401336.92.34395	JTAG_unbuffered_2a.png	
+1195456631000000	00000027	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	84.143.101.103	p548F6567.dip.t-dialin.net	1195456399.42.5097		
+1196177798661188	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	213.193.162.190	siproxy.imatix.net	1107891452.26.46210	jtag-wiggler.jpg	
+1196177842000000	00000028	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	213.193.162.190	siproxy.imatix.net	1107891452.26.46210		
+1196178047132650	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	213.193.162.190	siproxy.imatix.net	1107891452.26.46210	jtag-wiggler-600x.jpg	
+1196178079000000	00000029	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	213.193.162.190	siproxy.imatix.net	1107891452.26.46210		
+1213881676000000	00000030	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	18.238.2.136	JABUN.MIT.EDU	1213881306.9.26570		Fix some spelling.
+1214323078000000	00000031	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	213.220.234.121	r3aq121.net.upc.cz	1182602499.21.51642		
+1214853831000000	00000032	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	80.250.190.11	nat.nwpi.ru	1120300957.95.18564		
+1224058297000000	00000033	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	88.117.114.225	88-117-114-225.adsl.highway.telekom.at	1223994379.78.35654		notice for HairiDairy
+1224058462000000	00000034	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	88.117.114.225	88-117-114-225.adsl.highway.telekom.at	1223994379.78.35654		
+1224058607000000	00000035	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	88.117.114.225	88-117-114-225.adsl.highway.telekom.at	1223994379.78.35654		
+1224059939000000	00000036	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	88.117.114.225	88-117-114-225.adsl.highway.telekom.at	1223994379.78.35654		
+1227109819000000	00000037	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	151.21.192.192	ppp-192-192.21-151.libero.it	1207342628.07.26827		
+1227117347000000	00000038	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	151.21.192.192	ppp-192-192.21-151.libero.it	1207342628.07.26827		
+1227117456000000	00000039	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	151.21.192.192	ppp-192-192.21-151.libero.it	1207342628.07.26827		
+1234039818531516	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	209.240.116.68	sms4-pool116-0068.bmts.com	1232282941.49.17942	HairyDairyMaid_WRT54G_Debrick_Utility_v48%7Ecshore1.zip	
+1234041077000000	00000040	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	209.240.116.68	sms4-pool116-0068.bmts.com	1232282941.49.17942		
+1235251453000000	00000041	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	209.240.122.57	pool122-0057.bmts.com	1232282941.49.17942		
+1236041026000000	00000042	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		
+1236041175000000	00000043	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)JTAG_Cable	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		fix the layout of the links i just added

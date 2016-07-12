@@ -1,0 +1,230 @@
+= Linksys AG310 =
+
+The AG310 has the same specifications as the ["AG300"], but very different construction.  It is primarily marketed in Australia and Canada and averages AU$120.  Its distinguishing features are the AR7 and a Sipura SIP316FF providing VoIP functionality.  Although not yet fully analyzed, the factory firmware seems to communicate with the Sipura as a discrete system over the 6th switch port.
+
+== Specifications AG310 ==
+
+Switch 4-Port ADSL/VoIP Router with Firewall/QoS Control (ADSL 2/2+ Compliant)
+
+ * - CPU: Texas Instruments AR7 MIPS-based, [http://focus.ti.com/lit/ml/spat013a/spat013a.pdf TNETD7200ZDW]
+ * - Flash chip: 8Mbytes, Hynix HY57V641620ETP-H
+ * - SDRAM: 32Mbytes Mira P2V56S40BTP [http://www.deutron.com.tw/data_sheets/sdram/p2v56s_0btp11_07024.pdf (4-BANK x 4,194,304-WORD x 16-BIT)]
+ * - Switch: Infineon, [http://www.infineon.com/dgdl/Samurai_Product_Introduction_Presentation_2May05.pdf?folderId=db3a304412b407950112b412e2791a7a&fileId=db3a304412b407950112b412e2a31a7b ADM6996I]  pin compatible ADM6996LC: extra functions IGMP, QOS.
+ * - Wireless NIC: NONE
+ * - Annex M ADSL2+:  Yes.
+ * - 4x-ethernet-port transformer: LANKom LF-H4002X-1
+ * - Bootloader: ["PSPBoot"]
+ * - VoIP: Sipura SIP316FF (FXO + FXS)
+
+== Picture ==
+attachment:ag310.jpg
+
+== Hardware ==
+
+=== CPU ===
+{{{
+# cat /proc/cpuinfo                                                             
+system type             : TI AR7 (TNETD7200)
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 211.35
+wait instruction        : yes
+microsecond timers      : yes
+tlb_entries             : 16
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+ASEs implemented        :
+shadow register sets    : 1
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+=== RAM ===
+
+{{{
+# cat /proc/meminfo                                                             
+MemTotal:        28828 kB
+MemFree:         17576 kB
+Buffers:          1380 kB
+Cached:           4680 kB
+SwapCached:          0 kB
+Active:           3172 kB
+Inactive:         3544 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+Dirty:               0 kB
+Writeback:           0 kB
+AnonPages:         676 kB
+Mapped:            976 kB
+Slab:             1836 kB
+SReclaimable:      568 kB
+SUnreclaim:       1268 kB
+PageTables:        132 kB
+NFS_Unstable:        0 kB
+Bounce:              0 kB
+CommitLimit:     14412 kB
+Committed_AS:     2776 kB
+VmallocTotal:  1048404 kB
+VmallocUsed:      1440 kB
+VmallocChunk:  1046736 kB
+}}}
+
+=== dmesg ===
+
+{{{
+Linux version 2.6.24.2 (build@dev) (gcc version 4.1.2) #1 Wed Apr 23 22:45:23 MDT 2008
+console [early0] enabled
+CPU revision is: 00018448 (MIPS 4KEc)
+Clocks: Async mode
+Clocks: Setting DSP clock
+Clocks: prediv: 1, postdiv: 1, mul: 5
+Clocks: base = 25000000, frequency = 125000000, prediv = 1, postdiv = 2, postdiv2 = 1, mul = 10
+Clocks: Setting CPU clock
+Adjusted requested frequency 211000000 to 211968000
+Clocks: prediv: 1, postdiv: 1, mul: 6
+Clocks: base = 35328000, frequency = 211968000, prediv = 1, postdiv = 1, postdiv2 = -1, mul = 6
+Clocks: Setting USB clock
+Adjusted requested frequency 48000000 to 48076920
+Clocks: prediv: 13, postdiv: 1, mul: 5
+Clocks: base = 125000000, frequency = 48000000, prediv = 13, postdiv = 1, postdiv2 = -1, mul = 5
+TI AR7 (TNETD7200), ID: 0x002b, Revision: 0x10
+Determined physical RAM map:
+ memory: 02000000 @ 14000000 (usable)
+Entering add_active_range(0, 81920, 90112) 0 entries of 256 used
+Initrd not found or empty - disabling initrd
+Zone PFN ranges:
+  Normal      81920 ->    90112
+Movable zone start PFN for each node
+early_node_map[1] active PFN ranges
+    0:    81920 ->    90112
+On node 0 totalpages: 8192
+  Normal zone: 64 pages used for memmap
+  Normal zone: 0 pages reserved
+  Normal zone: 8128 pages, LIFO batch:0
+  Movable zone: 0 pages used for memmap
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 8128
+Kernel command line: init=/etc/preinit rootfstype=squashfs,jffs2, console=ttyS0,38400n8
+Primary instruction cache 16kB, VIPT, 4-way, linesize 16 bytes.
+Primary data cache 8kB, 4-way, VIPT, no aliases, linesize 16 bytes
+Synthesized clear page handler (26 instructions).
+Synthesized copy page handler (46 instructions).
+Synthesized TLB refill handler (20 instructions).
+Synthesized TLB load handler fastpath (32 instructions).
+Synthesized TLB store handler fastpath (32 instructions).
+Synthesized TLB modify handler fastpath (31 instructions).
+PID hash table entries: 128 (order: 7, 512 bytes)
+Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Memory: 28700k/32768k available (2083k kernel code, 4068k reserved, 433k data, 128k init, 0k highmem)
+SLUB: Genslabs=6, HWalign=32, Order=0-1, MinObjects=4, CPUs=1, Nodes=1
+Calibrating delay loop... 211.35 BogoMIPS (lpj=1056768)
+Mount-cache hash table entries: 512
+net_namespace: 64 bytes
+NET: Registered protocol family 16
+Time: MIPS clocksource has been installed.
+Switched to high resolution mode on CPU 0
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 1024 (order: 1, 8192 bytes)
+TCP bind hash table entries: 1024 (order: 0, 4096 bytes)
+TCP: Hash tables configured (established 1024 bind 1024)
+TCP reno registered
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+Registering mini_fo version $Id$
+JFFS2 version 2.2. (NAND) (SUMMARY)  © 2001-2006 Red Hat, Inc.
+io scheduler noop registered
+io scheduler deadline registered (default)
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+serial8250: ttyS0 at MMIO 0x8610e00 (irq = 15) is a TI-AR7
+console handover: boot [early0] -> real [ttyS0]
+Fixed MDIO Bus: probed
+cpmac-mii: probed
+cpmac: device eth0 (regs: 08610000, irq: 27, phy: , mac: 00:1a:70:7f:94:7e)
+physmap platform flash device: 00800000 at 10000000
+physmap-flash.0: Found 1 x16 devices at 0x0 in 16-bit bank
+ Intel/Sharp Extended Query Table at 0x0031
+Using buffer write method
+cfi_cmdset_0001: Erase suspend on write enabled
+erase region 0: offset=0x0,size=0x20000,blocks=64
+cmdlinepart partition parsing not available
+RedBoot partition parsing not available
+4 ar7part partitions found on MTD device physmap-flash.0
+Creating 4 MTD partitions on "physmap-flash.0":
+0x00000000-0x00020000 : "loader"
+0x007e0000-0x00800000 : "config"
+0x00020000-0x007e0000 : "linux"
+0x000ea733-0x007e0000 : "rootfs"
+mtd: partition "rootfs" doesn't start on an erase block boundary -- force read-only
+mtd: partition "rootfs" set to be root filesystem
+mtd: partition "rootfs_data" created automatically, ofs=2A0000, len=540000 
+0x002a0000-0x007e0000 : "rootfs_data"
+ar7_wdt: disabling watchdog timer
+ar7_wdt: timer margin 59 seconds (prescale 65535, change 57180, freq 62500000)
+Registered led device: status
+vlynq0: regs 0x08611800, irq 29, mem 0x04000000
+nf_conntrack version 0.5.0 (1024 buckets, 4096 max)
+ip_tables: (C) 2000-2006 Netfilter Core Team
+TCP vegas registered
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (squashfs filesystem) readonly.
+Freeing unused kernel memory: 128k freed
+Please be patient, while OpenWrt loads ...
+Algorithmics/MIPS FPU Emulator v1.5
+mini_fo: using base directory: /
+mini_fo: using storage directory: /jffs
+PHY: 0:1f - Link is Down
+NET: Registered protocol family 8
+NET: Registered protocol family 20
+PPP generic driver version 2.4.2
+arp_tables: (C) 2002 David S. Miller
+Ethernet Channel Bonding Driver: v3.2.3 (December 6, 2007)
+bonding: Warning: either miimon or arp_interval and arp_ip_target module parameters must be specified, otherwise bonding will not detect link failures! see bonding.txt for details.
+IPP2P v0.8.1_rc1 loading
+IMQ starting with 2 devices...
+IMQ driver loaded successfully.
+        Hooking IMQ before NAT on PREROUTING.
+        Hooking IMQ after NAT on POSTROUTING.
+ipt_time loading
+nf_nat_amanda: Unknown symbol nf_nat_amanda_hook
+nf_conntrack_h323: Unknown symbol ip6_route_output
+nf_nat_h323: Unknown symbol nat_callforwarding_hook
+nf_nat_h323: Unknown symbol nat_t120_hook
+nf_nat_h323: Unknown symbol set_h225_addr_hook
+nf_nat_h323: Unknown symbol set_ras_addr_hook
+nf_nat_h323: Unknown symbol nat_q931_hook
+nf_nat_h323: Unknown symbol nat_rtp_rtcp_hook
+nf_nat_h323: Unknown symbol set_sig_addr_hook
+nf_nat_h323: Unknown symbol get_h225_addr
+nf_nat_h323: Unknown symbol nat_h245_hook
+nf_nat_h323: Unknown symbol set_h245_addr_hook
+nf_conntrack_rtsp v0.6.21 loading
+nf_nat_rtsp v0.6.21 loading
+registered device TI Avalanche SAR
+Ohio250(7200/7100A2) detected
+requesting firmware image "ar0700xx.bin"
+avsar firmware released
+tn7dsl_set_modulation : Setting mode to 0x1
+Creating new root folder avalanche in the proc for the driver stats 
+Texas Instruments ATM driver: version:[7.03.01.00]
+ar7_wdt: enabling watchdog timer
+}}}
+
+== Serial console ==
+
+See [AG300] for pictures.  Settings are 38400/8/n/1, software and hardware flow control off.
+
+
+== Telnet/SSH ==
+This router inherently supports both telnet and ssh, but the 'admin' user's shell is /bin/configurator, a custom shell reminiscent of Cisco CLIs.  It is reasonably featureful, but does not offer any way to control the VoIP functionality.  The version in firmware 1.00.4 is much better than previous iterations.
+
+
+== Power Switch ==
+There is a momentary action SPST switch at the bottom left hand corner. Pressing it performs an immediate power-down of the system.
+
+Different from the AG300, the AG310 defaults to a powered state, and the power switch only serves to turn it off
+
+----
+["CategoryAR7Device"]

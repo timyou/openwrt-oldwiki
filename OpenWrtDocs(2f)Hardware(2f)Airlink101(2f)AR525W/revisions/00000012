@@ -1,0 +1,344 @@
+Rename from ["OpenWrtDocs/Hardware/Airlink/AR525W"]
+
+'''Airlink101 AR525W'''
+
+GPL tarball : http://www.airlink101.com/gpl/ar525w/
+
+=== JTAG Port ===
+This model has an unpopulated 6-pin header that exposes a JTAG port. The pins are listed below:
+||Pin 1||Vddh||
+||Pin 2||Vss ||
+||Pin 3||TDO ||
+||Pin 4||TMS ||
+||Pin 5||TDI ||
+||Pin 6||TCK ||
+
+
+Board view, component side:
+
+{{{
+[TCK] [TDI] [TMS] [TDO] [Vss] [3.3]
+}}}
+=== Serial Ports ===
+This model has an unpopulated 9-pin header that exposes a 3.3V serial port. Some pins are listed below:
+||Pin 1||Tx||Pin 2||3.3V||
+||Pin 3|| ||Pin 4||3.3V||
+||Pin 5|| ||Pin 6||GND||
+||Pin 7||Rx||Pin 8||GND||
+||Pin 9|| || || ||
+
+
+Board view, component side:
+
+{{{
+      [   ] [RX ] [   ] [   ] [TX ] <
+            [GND] [GND] [Vcc] [Vcc]
+}}}
+Serial connection parameters are : 38400,8N1
+
+The bootloader is RedBoot, and is a highly modified version by Dante Su. No sources are provided yet for RedBoot, only an incorrect binary image in the GPL tarball. Equivalent source is on the LinkSys FTP site.
+
+THIS UNIT REQUIRES A CONVERTER TO COMMUNICATE WITH THE SERIAL PORT.  See this thread for details: http://forum.x-wrt.org/index.php/topic,641.0.html
+GPL Tarball located here: http://www.airlink101.com/gpl/
+
+Boot log :
+
+{{{
++Ethernet eth0: MAC address 00:00:01:02:03:04
+IP: 192.168.1.1/255.255.255.0, Gateway: 192.168.1.254
+Default server: 0.0.0.0
+RedBoot(tm) bootstrap and debug environment [ROM]
+Non-certified release, version v2_0 - built 18:31:11, Aug  4 2005
+Platform: PC (I386)
+Copyright (C) 2000, 2001, 2002, Red Hat, Inc.
+RAM: 0x00000000-0x000f0000, 0x00072ed0-0x000a0000 available
+ver 00:0003  05-24-05
+<press Ctrl+C to enter prompt mode>
+# Activate RDC-Keilven's RS232 Patch V2
+RedBoot>
+# Kernel size = 721702 bytes
+# FW size = 2823008 bytes
+# fwcheck: base = 0x00400000, size = 0x00000400
+# Firmware Checksum O.K
+# Kernel copying......BEGIN
+# Kernel copying......FINISH
+mem_size: 1000000
+Linux version 2.4.29 (terence@cvs2) (gcc version 3.4.1) #123 Tue Aug 2 11:54:21 CST 2005
+BIOS-provided physical RAM map:
+ BIOS-e801: 0000000000000000 - 000000000009f000 (usable)
+ BIOS-e801: 0000000000100000 - 0000000001000000 (usable)
+16MB LOWMEM available.
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+DMI not present.
+Kernel command line: console=ttyS0,38400 root=/dev/mtdblock1 noinitrd
+Initializing CPU#0
+#sysinit: [sysinit]
+BusyBox v1.00 (2005.08.02-03:56+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+# Using /etc/resetDefault.o
+This is the parent process, pid = 28
+# update nvram with default list!
+# interfaces_init......
+Using /etc/rt61ap.o
+This is the child process, pid = 31
+Setting ra0 configuration....
+CountryRegion=5
+BssidNum=1
+SSID=airlink
+WirelessMode=0
+TxRate=0
+Channel=6
+BeaconPeriod=100
+DtimPeriod=1
+TxPower=100
+BGProtection=0
+RTSThreshold=2346
+FragThreshold=2346
+TxBurst=1
+ShortSlot=1
+PktAggregate=1
+NoForwarding=0
+NoForwardingBTNBSSID=0
+HideSSID=0
+Key1Type=0
+Key1Str=
+Key2Type=0
+Key2Str=
+Key3Type=0
+Key3Str=
+Key4Type=0
+Key4Str=
+WdsEnable=0
+AutoChannelSelect=0
+RekeyInterval=3600
+WPAPSK=
+AccessPolicy0=0
+RADIUS_Server=0.0.0.0
+RADIUS_Port=1812
+RADIUS_Key=
+own_ip_addr=192.168.1.1
+session_timeout_interval=0
+DisableOLBC=1
+AuthMode=WEPAUTO
+EncrypType=NONE
+DefaultKeyID=1
+BasicRate=15
+IEEE8021X=0
+# lan services init......
+Start UPnP
+# wan_init......
+ Configuration file: /var/RT61AP/RT61AP.dat
+ conf->SsidNum=1
+ IP address: '0.0.0.0'
+ RADIUS_Port: '1812'
+ Line 36: empty shared secret is not allowed.
+ RADIUS_Key: '', Key_len: 0
+ session_timeout policy = not use
+ Read Session Timeout Interval  0 seconds.
+ Set Session Timeout Interval  3600 seconds.
+ 1 errors found in configuration file '/var/RT61AP/RT61AP.dat'
+ Could not allocate memory for rtapd->conf
+httpd : This is httpd...ssl_enabled is 0
+}}}
+
+== Flashing OpenWrt ==
+
+The RDC-321x SoC support is not included in the kamikaze 7.0x releases, but is in trunk. So you have to checkout the latest trunk.
+
+Run make menuconfig, then in Target, choose "RDC321x x86 [2.6]" and Target Profile "Airlink101 AR525W". Run the build process with "make".
+
+You should flash this image using TFTP : bin/openwrt-rdc-jffs2-64k-ar525w.img
+and this one using the web interface : bin/openwrt-rdc-jffs2-64k-ar525w-web.img
+
+Myself and others have not had much luck with these images and have rendered the network interfaces disabled on the 525W after flashing.  Please see http://forum.x-wrt.org/index.php/topic,641.0.html for details of our experiences and instructions on returning your 525W to the original firmware.  BTW, the 525W is picky about the browser you use for the GUI flash, stick with IE for this unit.
+
+Update 05/28/2008 , from Bruce :
+
+I got the ethernet ports working tweaking the driver for r6040. I'll post all the procedure on the following thread :
+http://forum.x-wrt.org/index.php?topic=865.0
+I have one airlink 525 running with openwrt, and the other one being use for development. 
+
+
+Bootlog :
+
+{{{
+root@OpenWrt:/# dmesg
+Linux version 2.6.24.2 (fainelli@anaconda.int-evry.fr) (gcc version 4.1.2) #1 Wed Mar 26 12:37:41 CET 2008
+BIOS-provided physical RAM map:
+ BIOS-e801: 0000000000000000 - 000000000009f000 (usable)
+ BIOS-e801: 0000000000100000 - 0000000001000000 (usable)
+16MB LOWMEM available.
+Entering add_active_range(0, 0, 4096) 0 entries of 256 used
+Zone PFN ranges:
+  DMA             0 ->     4096
+  Normal       4096 ->     4096
+Movable zone start PFN for each node
+early_node_map[1] active PFN ranges
+    0:        0 ->     4096
+On node 0 totalpages: 4096
+  DMA zone: 32 pages used for memmap
+  DMA zone: 0 pages reserved
+  DMA zone: 4064 pages, LIFO batch:0
+  Normal zone: 0 pages used for memmap
+  Movable zone: 0 pages used for memmap
+DMI not present or invalid.
+Allocating PCI resources starting at 10000000 (gap: 01000000:ff000000)
+Built 1 zonelists in Zone order, mobility grouping off.  Total pages: 4064
+Kernel command line: console=ttyS0,38400 root=/dev/mtdblock1 noinitrd
+Initializing CPU#0
+PID hash table entries: 64 (order: 6, 256 bytes)
+console [ttyS0] enabled
+Dentry cache hash table entries: 2048 (order: 1, 8192 bytes)
+Inode-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Memory: 13972k/16384k available (1254k kernel code, 2024k reserved, 340k data, 124k init, 0k highmem)
+virtual kernel memory layout:
+    fixmap  : 0xffffa000 - 0xfffff000   (  20 kB)
+    vmalloc : 0xc1800000 - 0xffff8000   ( 999 MB)
+    lowmem  : 0xc0000000 - 0xc1000000   (  16 MB)
+      .init : 0xc0292000 - 0xc02b1000   ( 124 kB)
+      .data : 0xc0239be9 - 0xc028ed1c   ( 340 kB)
+      .text : 0xc0100000 - 0xc0239be9   (1254 kB)
+Checking if this processor honours the WP bit even in supervisor mode... Ok.
+Calibrating delay loop... 49.53 BogoMIPS (lpj=99072)
+Mount-cache hash table entries: 512
+CPU: After generic identify, caps: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+CPU: After all inits, caps: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+Compat vDSO mapped to ffffe000.
+CPU: 486
+Checking 'hlt' instruction... OK.
+Freeing SMP alternatives: 0k freed
+net_namespace: 64 bytes
+NET: Registered protocol family 16
+PCI: Using configuration type 1
+Setting up standard PCI resources
+PCI: Probing PCI hardware
+PCI: Probing PCI hardware (bus 00)
+Time: pit clocksource has been installed.
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 512 (order: 0, 4096 bytes)
+TCP bind hash table entries: 512 (order: -1, 2048 bytes)
+TCP: Hash tables configured (established 512 bind 512)
+TCP reno registered
+rdc321x: init success
+Total HugeTLB memory allocated, 0
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+Registering mini_fo version $Id$
+JFFS2 version 2.2. (NAND) (SUMMARY)  Â© 2001-2006 Red Hat, Inc.
+io scheduler noop registered
+io scheduler cfq registered (default)
+Non-volatile memory driver v1.2
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+serial8250: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
+flash device: 400000 at ffc00000
+RDC3210 Flash: Found 1 x16 devices at 0x0 in 16-bit bank
+ Amd/Fujitsu Extended Query Table at 0x0040
+RDC3210 Flash: Swapping erase regions for broken CFI table.
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+Creating 4 MTD partitions on "RDC3210 Flash":
+0x00000000-0x003e0000 : "linux"
+0x000b60e0-0x00180000 : "romfs"
+mtd: partition "romfs" doesn't start on an erase block boundary -- force read-only
+0x00180000-0x003e0000 : "rootfs_data"
+0x003e0000-0x00400000 : "bootldr"
+Registered led device: rdc321x:dmz
+nf_conntrack version 0.5.0 (1024 buckets, 4096 max)
+ip_tables: (C) 2000-2006 Netfilter Core Team
+TCP vegas registered
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+Using IPI Shortcut mode
+VFS: Mounted root (squashfs filesystem) readonly.
+Freeing unused kernel memory: 124k freed
+Please be patient, while OpenWrt loads ...
+mini_fo: using base directory: /
+mini_fo: using storage directory: /jffs
+rt2x00lib: Unknown symbol rt2x00lib_config_bssid
+rt2x00lib: Unknown symbol ieee80211_register_hw
+rt2x00lib: Unknown symbol ieee80211_tx_status_irqsafe
+rt2x00lib: Unknown symbol rt2x00lib_config_mac_addr
+rt2x00lib: Unknown symbol ieee80211_ctstoself_get
+rt2x00lib: Unknown symbol rt2x00lib_config
+rt2x00lib: Unknown symbol ieee80211_start_queues
+rt2x00lib: Unknown symbol rt2x00lib_config_type
+rt2x00lib: Unknown symbol ieee80211_stop_queues
+rt2x00lib: Unknown symbol ieee80211_unregister_hw
+rt2x00lib: Unknown symbol ieee80211_rts_get
+rt2x00lib: Unknown symbol ieee80211_beacon_get
+rt2x00lib: Unknown symbol ieee80211_register_hwmode
+rt2x00lib: Unknown symbol ieee80211_rx_irqsafe
+rt2x00pci: Unknown symbol rt2x00lib_probe_dev
+rt2x00pci: Unknown symbol ieee80211_free_hw
+rt2x00pci: Unknown symbol ieee80211_alloc_hw
+rt2x00pci: Unknown symbol rt2x00lib_get_ring
+rt2x00pci: Unknown symbol rt2x00lib_rxdone
+rt2x00pci: Unknown symbol rt2x00lib_remove_dev
+rt2x00pci: Unknown symbol rt2x00lib_write_tx_desc
+rt2x00pci: Unknown symbol ieee80211_stop_queue
+rt2x00pci: Unknown symbol ieee80211_get_hdrlen
+rt61pci: Unknown symbol rt2x00mac_add_interface
+rt61pci: Unknown symbol rt2x00mac_get_stats
+rt61pci: Unknown symbol rt2x00pci_initialize
+rt61pci: Unknown symbol rt2x00lib_get_ring
+rt61pci: Unknown symbol ieee80211_wake_queue
+rt61pci: Unknown symbol rt2x00pci_uninitialize
+rt61pci: Unknown symbol rt2x00mac_config_interface
+rt61pci: Unknown symbol rt2x00pci_remove
+rt61pci: Unknown symbol rt2x00mac_remove_interface
+rt61pci: Unknown symbol rt2x00lib_txdone
+rt61pci: Unknown symbol rt2x00mac_config
+rt61pci: Unknown symbol rt2x00lib_write_tx_desc
+rt61pci: Unknown symbol rt2x00mac_conf_tx
+rt61pci: Unknown symbol rt2x00mac_start
+rt61pci: Unknown symbol rt2x00mac_stop
+rt61pci: Unknown symbol rt2x00mac_tx
+rt61pci: Unknown symbol rt2x00mac_erp_ie_changed
+rt61pci: Unknown symbol rt2x00pci_probe
+rt61pci: Unknown symbol rt2x00mac_get_tx_stats
+rt61pci: Unknown symbol rt2x00pci_rxdone
+rt61pci: Unknown symbol rt2x00pci_write_tx_data
+PPP generic driver version 2.4.2
+r6040: Unknown parameter `parent'
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 0 pos 0 00000021.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 0 pos 0 00000021.
+iptables: loop hook 0 pos 0 00000021.
+iptables: loop hook 0 pos 0 00000021.
+iptables: loop hook 0 pos 0 00000021.
+iptables: loop hook 1 pos 0 00000022.
+ip_tables:  target: invalid size 4 != 8
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+iptables: loop hook 1 pos 0 00000022.
+r6040: RDC R6040 NAPI net driver,version 0.16 (10Nov2007)
+
+PCI: Setting latency timer of device 0000:00:08.0 to 64
+r6040: RDC R6040 NAPI net driver,version 0.16 (10Nov2007)
+
+PCI: Setting latency timer of device 0000:00:09.0 to 64
+br-lan: Dropping NETIF_F_UFO since no NETIF_F_HW_CSUM feature.
+Link Change 9002
+}}}
+
+=== More Information ===
+
+[http://www.macsat.com/macsat/component/option,com_openwiki/Itemid,66/ RDC321x-Wiki]
+
+----
+
+CategoryModel

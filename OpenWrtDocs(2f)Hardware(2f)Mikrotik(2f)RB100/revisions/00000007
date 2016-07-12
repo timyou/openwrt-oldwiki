@@ -1,0 +1,160 @@
+=== Hardware ===
+http://www.routerboard.com/img/rb100_comp.jpg
+
+These boards come with a MIPS32 4Kc based 175MHz embedded processor, Infineon ADM5120.
+
+There are currently 5 boards in this range:-
+
+ 1. 112 The original 1xx board, two mini-pci, 16MB RAM, 64MB NAND Flash, one ethernet, no CF
+ 1. 133 Three mini-pci, 32/16MB RAM, 128/64MB NAND Flash, three ethernet, no CF
+ 1. 133c One mini-pci, 32/16MB RAM, 128/64MB NAND Flash, one ethernet, no CF
+ 1. 150 No mini-pci, 32MB RAM, 64MB NAND Flash, five ethernet, no CF
+ 1. 153 Three mini-pci, 32MB RAM, 64MB NAND Flash, give ethernet, one CF
+
+=== Installation ===
+Installing OpenWrt on these boards (apart from the 153) is only possible by using the NetBoot facility.  For this you will need a serial connection as console, and an ethernet connection to load the kernel and then download the flash image.  You will also need to have BOOTP and TFTPD servers on your machine.  This can be done either using independent packages or using DnsMasq.  You will also need a Web server.
+
+The minicom settings for a connection using a USB serial port would be:-
+
+{{{
+# Machine-generated file - use setup menu in minicom to change parameters.
+pu port             /dev/ttyUSB0
+pu backspace        BS
+pu baudrate         115200
+pu bits             8
+pu parity           N
+pu stopbits         1
+pu scriptprog       /usr/bin/runscript
+pu minit
+pu mreset
+pu mdialpre
+pu mdialsuf
+pu mdialpre2
+pu mdialsuf2
+pu mdialpre3
+pu mdialsuf3
+}}}
+
+=== Setting up DHCP/TFTP server ===
+
+You will need a DHCP and TFTP server to be able to Netboot the RB1xx. For ISC dhcpd implementation, such configuration file will be ok :
+
+{{{
+#
+# Sample configuration file for ISC dhcpd for Debian
+#
+# $Id: dhcpd.conf,v 1.4.2.2 2002/07/10 03:50:33 peloy Exp $
+#
+
+# option definitions common to all supported networks...
+option domain-name "int.alphacore.net";
+#option domain-name-servers toccata.fugue.com;
+
+#option subnet-mask 255.255.255.224;
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style none;
+#
+subnet 192.168.1.0 netmask 255.255.255.0 {
+        range 192.168.1.100 192.168.1.200;
+        option domain-name-servers 192.168.2.1;
+        option domain-name "int.alphacore.net";
+        option routers 192.168.1.1;
+        default-lease-time 600;
+        max-lease-time 7200;
+
+        host rb {
+                hardware ethernet 00:xx:xx:xx:xx:xx;
+                fixed-address 192.168.1.50;
+                next-server 192.168.1.1;
+                filename "/tftproot/openwrt-adm5120-2.6-vmlinux.elf";
+        }
+}
+}}}
+
+Where "next-server" is the IP address of the TFTP server, which is here, the same IP address as the DHCP server as well.
+
+=== Building OpenWrt for RB1xx ===
+
+Unfortunately you need to build two kernels in order to install this system.  The first has a RAMDISK built into it so that you can download it using the Netboot facility and have a working system without a disk, and the second is the one that is going to be installed on the flash and will be your running kernel.
+
+All the building happens under the ADM5120-2.6 target, so the first thing you need to do is to download an SVN copy of OpenWrt Kamikaze, and then run make menuconfig.
+
+Now select the "ADM5120-2.6 (Little Endian)" target.  Then in the Target Images section select RAMDISK.  This will disable all the other image options.
+
+There is no need to make package selections at this stage as all the packages you will need to install the system are there by default.
+
+Save the configuration and run make (this will take a while).
+
+You should now have a file in the bin directory called openwrt-adm5120-2.6-vmlinux.elf, and this should be copied to your TFTPD root directory, the same as mentionned in "dhcpd.conf".
+
+=== Starting the RAMDISK image ===
+
+Now power on your RB1xx board. Press "Enter" within 2 seconds to make it stop the autoboot process. You can now see the following menu :
+
+{{{
+RouterBOOT booter 2.1
+
+RouterBoard 112
+
+CPU frequency: 175 MHz
+  Memory size:  16 MB
+
+Press any key within 2 seconds to enter setup.
+
+RouterBOOT-2.1
+What do you want to configure?
+   d - boot delay
+   k - boot key
+   s - serial console
+   o - boot device
+   u - cpu mode
+   r - reset configuration
+   e - format nand
+   g - upgrade firmware
+   i - board info
+   p - boot protocol
+   t - do memory testing
+   x - exit setup
+your choice:
+}}}
+
+Press "o" to select your boot device. Then you will see this menu :
+
+{{{
+Select boot device:
+ * e - boot over Ethernet
+   n - boot from NAND, if fail then Ethernet
+   1 - boot Ethernet once, then NAND
+   o - boot from NAND only
+   b - boot chosen device
+your choice:
+}}}
+
+Choose "e" to boot over Ethernet.
+
+Now, you get back to he main menu. Press "o", then "b" to effectively boot from Ethernet now.
+
+Now you need to build the running image, and for this you will need to run make clean (to get rid of the old settings) and then run make menuconfig again.  This time select TAR as the Image type.  Once you have completed the configuration you can run make (and once again wait a while).
+
+You can at this stage go through and select the packages that you are actually going to want (although you can always add them later with ipkg).
+
+This time you will find a file in the bin directory called openwrt-adm5120-2.6-rootfs.tgz, and the kernel will be in build_mipsel/linux-2.6.19-adm5120 (or whatever the current kernel is) and will be called vmlinux.elf.  Copy these two files into a directory which can be reached by your web server as openwrt-adm5120-2.6-rootfs.tgz and openwrt-adm5120-2.6-vmlinux.
+
+Now you can power up your RB1xx and download the kernel.  At this stage you are using the first kernel you produced above.
+
+When you boot the RB1xx, go into the BIOS settings and say that you want to use Netboot rather than using the NAND as the boot source.
+
+When the kernel is booted hardly any of the normal OpenWrt initialisation occurs - you will not find that modules have been loaded or the network configured.
+
+In /sbin however you will find a script called wget2nand which will do the installation for you, using the second kernel and the flash image.
+
+wget2nand takes a single parameter, the URL of the directory into which the tgx and vmlinux files were stored.  wget2nand assumes you are still running DnsMasq (or whatever was your Bootp server) and that it will also serve addresses using DHCP.
+
+When you reboot you need to change the BIOS settings back to booting from the NAND.
+
+Once the installation is complete then you can reboot your RouterBoard 1xx card and you should have a running system.
+
+----
+ CategoryModel ["CategoryADM5120Device"]

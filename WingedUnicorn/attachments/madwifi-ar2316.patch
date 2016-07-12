@@ -1,0 +1,143 @@
+diff -ru ../xx/madwifi-0.9.3.3/ath/if_ath_ahb.c ./ath/if_ath_ahb.c
+--- ../xx/madwifi-0.9.3.3/ath/if_ath_ahb.c	2007-02-23 20:33:54.000000000 -0500
++++ ./ath/if_ath_ahb.c	2007-11-19 07:08:47.000000000 -0500
+@@ -45,6 +45,7 @@
+ static u_int8_t num_activesc = 0;
+ 
+ #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,19)
++#if 0
+ static struct ar531x_boarddata *ar5312_boardConfig = NULL;
+ static char *radioConfig = NULL;
+ 
+@@ -143,6 +144,7 @@
+ }
+ 
+ #endif
++#endif
+ 
+ /* set bus cachesize in 4B word units */
+ void
+@@ -414,54 +416,67 @@
+ 
+ #else
+ 
++
++struct ar531x_boarddata bdconfig;
++struct ar531x_config halconfig;
++
+ static int
+ init_ahb(void)
+ {
+-	int ret;
+-	u_int16_t devid, radioMask;
++	u_int16_t devid;
+ 	const char *sysType;
+-	struct ar531x_config config;
+ 
+ 	sysType = get_system_type();
++        printk(">>> %s\n", sysType);
++        sysType="Atheros AR5315";
+ 	
++        // ar2316 flash lacks boardconfig
+ 	/* Probe to find out the silicon revision and enable the
+ 	   correct number of macs */
+-	if (!ar5312SetupFlash())
+-		return -ENODEV;
++	//if (!ar5312SetupFlash())
++	//	return -ENODEV;
+ 
+-	config.board = ar5312_boardConfig;
+-	config.radio = radioConfig;
+-	config.unit = wlanNum;
+-	config.tag = NULL;
++        // values reverse engeneered from original FW:
++        bdconfig.magic = AR531X_BD_MAGIC;
++        bdconfig.cksum = 0;
++        bdconfig.rev = 5;
++        strcpy(bdconfig.boardName, "Atheros AR5315 default");
++        bdconfig.major = 1;
++        bdconfig.minor = 0;
++        bdconfig.config = 0x39;
++        bdconfig.resetConfigGpio = 6;
++        bdconfig.sysLedGpio = 7;
++
++        bdconfig.cpuFreq = 184000000;
++        bdconfig.sysFreq = 92000000;
++        bdconfig.cntFreq = bdconfig.cpuFreq/2;
++        
++        bdconfig.wlan0Mac[0] = 0;
++        bdconfig.wlan0Mac[1] = 0;
++        bdconfig.wlan0Mac[2] = 0x11;
++        bdconfig.wlan0Mac[3] = 0x11;
++        bdconfig.wlan0Mac[4] = 0x11;
++        bdconfig.wlan0Mac[5] = 0x11;
++
++        bdconfig.pciId = 0x13;
++        bdconfig.memCap = 8;
++
++
++	//config.board = ar5312_boardconfig;
++	halconfig.board = &bdconfig;
++	halconfig.radio = (char *)0xbfc00000+0x01f0000;//radioConfig;
++	halconfig.unit = 0;//wlannum;
++	halconfig.tag = NULL;
+ 
+ 	if (!strcmp(sysType,"Atheros AR5315")) {
+ 		devid = (u_int16_t) (sysRegRead(AR5315_SREV) &
+ 			(AR5315_REV_MAJ_M | AR5315_REV_MIN_M));
++                printk("devid = %08x\n", devid);
+ 		if (((devid & AR5315_REV_MAJ_M) == AR5315_REV_MAJ) ||
+ 			((devid & AR5315_REV_MAJ_M) == AR5317_REV_MAJ))
+-			return init_ath_wmac(devid, 0, &config);
++			return init_ath_wmac(devid, 0, &halconfig);
+ 	}
+ 
+-	devid = (u_int16_t) ((sysRegRead(AR531X_REV) >>8) &
+-		(AR531X_REV_MAJ | AR531X_REV_MIN));
+-	switch (devid) {
+-	case AR5212_AR5312_REV2:
+-	case AR5212_AR5312_REV7:
+-		/* Need to determine if we have a 5312 or a 2312 since they
+-		 * have the same Silicon Rev ID */
+-		ar5312BspEepromRead(2 * AR531X_RADIO_MASK_OFF, 2,
+-			(char *) &radioMask);
+-		if ((radioMask & AR531X_RADIO0_MASK) != 0)
+-			if ((ret = init_ath_wmac(devid, 0, &config)) !=0 )
+-				return ret;
+-		/* XXX: Fall through?! */
+-	case AR5212_AR2313_REV8:
+-		if ((ret = init_ath_wmac(devid, 1, &config)) != 0)
+-			return ret;
+-		break;
+-	default:
+-		return -ENODEV;
+-	}
+ 	return 0;
+ }
+ 
+diff -ru ../xx/madwifi-0.9.3.3/hal/public/ap51.inc ./hal/public/ap51.inc
+--- ../xx/madwifi-0.9.3.3/hal/public/ap51.inc	2006-05-26 22:48:16.000000000 -0400
++++ ./hal/public/ap51.inc	2007-11-03 18:04:32.000000000 -0400
+@@ -65,5 +65,7 @@
+ 
+ LDOPTS=	-EB
+ COPTS+=	-DAH_BYTE_ORDER=AH_BIG_ENDIAN
+-COPTS+=	-G 0 -EB -mno-abicalls -fno-pic -mips32 -Wa,--trap \
++#COPTS+=	-G 0 -EB -mno-abicalls -fno-pic -mips32 -Wa,--trap \
++#	-fno-strict-aliasing -fno-common -fomit-frame-pointer -mlong-calls
++COPTS+=	-G 0 -mno-abicalls -fno-pic -Wa,--trap \
+ 	-fno-strict-aliasing -fno-common -fomit-frame-pointer -mlong-calls
+diff -ru ../xx/madwifi-0.9.3.3/hal/public/mips-be-elf.inc ./hal/public/mips-be-elf.inc
+--- ../xx/madwifi-0.9.3.3/hal/public/mips-be-elf.inc	2006-05-26 22:48:16.000000000 -0400
++++ ./hal/public/mips-be-elf.inc	2007-11-03 03:20:41.000000000 -0400
+@@ -69,7 +69,7 @@
+ #
+ AH_REGOPS_FUNC=1
+ 
+-LDOPTS=	-EB
++#LDOPTS=	-EB
+ COPTS+=	-DAH_BYTE_ORDER=AH_BIG_ENDIAN
+-COPTS+=	-G 0 -EB -mno-abicalls -fno-pic -mips2 -Wa,--trap \
+-	-fno-strict-aliasing -fno-common -fomit-frame-pointer -mlong-calls
++#COPTS+=	-G 0 -EB -mno-abicalls -fno-pic -mips2 -Wa,--trap \
++#	-fno-strict-aliasing -fno-common -fomit-frame-pointer -mlong-calls

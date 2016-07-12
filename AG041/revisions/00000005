@@ -1,0 +1,18 @@
+Crappy but cheap (as in free) linksys DSL router I happen to have. It's the same motherboard
+as the WAG54Gv1 except without the PCMCIA header fitted. As such, it get's hot & the default
+firmware is dodgy.
+
+
+= h/w documents =
+[http://www.samsung.com/Products/Semiconductor/SystemLSI/Networks/PersonalNTASSP/CommunicationProcessor/S3C2510A/um_s3c2510a_rev1.pdf  s3c2510a] userguide from Samsung
+
+= Tools =
+Reverse-engineered Linksys [http://redsand.net/projects/linksys-tftp/linksys-tftp.php "tftp client"]
+
+= Console stuff =
+["WAG54G"] shows the serial console output, except we use 115200 baud
+
+with a working console, press a key to get available commands
+
+"mread 0 10" displays reset, abort & SWI exception handler locations.
+SWI is hooked to reset switch. use "mwrite 8 <location>" to hook this handler.

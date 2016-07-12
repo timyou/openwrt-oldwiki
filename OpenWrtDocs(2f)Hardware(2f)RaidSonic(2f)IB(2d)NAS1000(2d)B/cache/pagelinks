@@ -1,0 +1,10 @@
+rxtx2
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/dmesg
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/cpu
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/interupts
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/devices
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/enable telnet
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/allow nfs-export from
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/save your firmware
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/debootstrap on your nas
+OpenWrtDocs/Hardware/RaidSonic/IB-NAS1000-B/fix the debootstraped debian

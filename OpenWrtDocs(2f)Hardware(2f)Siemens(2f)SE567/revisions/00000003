@@ -1,0 +1,226 @@
+#pragma section-numbers off
+
+||<tablebgcolor="#f1f1ed" tablewidth="40%" tablestyle="FONT-SIZE: 0.9em; FLOAT: right; MARGIN: 0pt 0pt 1em 1em"style="PADDING-RIGHT: 0.5em; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; PADDING-TOP: 0.5em">[[TableOfContents]]||
+
+= Siemens Gigaset SE567 =
+This device seems to be sold to telecommunication companies to brand and distribute.
+[http://gigaset.com/shc/0,1935,hq_en_0_125794_rArNrNrNrN,00.html Link on Siemens Website]
+
+== (Telus Branded) ==
+=== Summary ===
+So far no one has booted openwrt on this device.
+
+||<tablestyle="FLOAT: right; margin: -15px 0 0 0; padding: 0;">attachment:Gigaset_SE567_CPU.jpg||
+
+||'''Architecture''' ||ARM ||
+||'''Vendor''' ||TI||
+||'''Bootloader''' ||? ||
+||'''Flash size''' ||4 MiB ||
+||'''RAM''' ||16 MiB ||
+||'''Wireless''' ||TNETW1350A ||
+||'''Ethernet''' ||88E6060-RCJ1 ||
+||'''USB''' ||No ||
+||'''Serial'''||Yes ||
+
+=== Chips on the PCB ===
+
+ * CPU - TNETD7200ZDW - Texas Instraments AR7
+
+ * Ethernet Switch Marvell 88E6060-RCJ1
+
+ * Flashchip - MX29LV320CTTC [http://pdf1.alldatasheet.com/datasheet-pdf/view/143118/MCNIX/MX29LV320CTTC-70.html]
+
+ * RAM Samsung K4S281632I-UC75
+
+ * Wireless (under shield) 66ZYC27 TNETW3422
+
+ * wireless TNETW1350A
+
+=== Pads on PCB ===
+
+J8 is a serial port and it works if you use a 3.3v TTL to RS-232.
+
+'''J8'''
+
+3.3v TTL Serial
+|| Square Solder Pad -> ||'''Pad 1''' || Ground ||'''Pad 2''' || TX ||'''Pad 3''' || RX ||'''Pad 4''' || Not Connected ||'''Pad 5''' || 3.3v ||
+
+=== JTAG Port ===
+
+Not yet documented.
+
+=== Serial Ports ===
+
+J8 is a 3.3v serial port.  Boot messages can be seen if you connect a 3.3v level shifter here and monitor with a serial port. 
+
+DO NOT CONNECT DIRECTLY TO A PC SERIAL PORT. Use a 3.3v TTL level shifter. 
+Details at this page:
+ * http://wiki.openwrt.org/OpenWrtDocs/Customizing/Hardware/Serial_Console
+
+=== Original Bootloader ===
+When a serial console is installed you can press enter as soon as the device boots to get a command prompt in the boot loader. pressing 'h' gives you this menu.
+{{{
+External watchdog disabled
+
+
+Starting BOST:
+  SDRAM ok
+BOST OK
+
+Reset Status Register (RSR) value: 0x0
+
+
+
+RAM size is 16777216 (0x1000000).
+Interrupt Stack Control @ 0x0.
+Userland stack @ 0x94ffffd8.
+
+CPU clock rate is 212 MHz.
+System clock rate is 106 MHz.
+
+Bootloader compiled Apr  6 2007 at 19:59:13.
+
+Loader starting...
+FLASH: Macronix Mx29LV320 (Top Boot)
+boot> gotta 68 h
+help:
+a       set application argument
+c       commit download to FLASH
+d       dump X-Modem test results
+h       print this help
+l       load application
+r       run application
+v       verify application
+x       X-modem image download
+boot>
+}}}
+
+=== Original Firmware Boot Messages ===
+
+{{{
+External watchdog disabled
+
+
+Starting BOST:
+  SDRAM ok
+BOST OK
+
+Reset Status Register (RSR) value: 0x0
+
+
+
+RAM size is 16777216 (0x1000000).
+Interrupt Stack Control @ 0x0.
+Userland stack @ 0x94ffffd8.
+
+CPU clock rate is 212 MHz.
+System clock rate is 106 MHz.
+
+Bootloader compiled Apr  6 2007 at 19:59:13.
+
+Loader starting...
+FLASH: Macronix Mx29LV320 (Top Boot)
+autoboot v2.0
+LDR: Image @ 0xb0020000 - Valid
+LDR: Image @ 0xb0200000 - Valid
+LDR: Beginning Uncompress
+LDR: Compressed length = 1733812
+LDR: Uncompressed to = 4385948
+
+
+
+
+
+
+
+
+
+
+     P R O J E C T
+
+     XXX       XXX
+      XXX     XXX
+       XXX   XXX
+        XXX XXX
+         XXXXX
+          XXX
+         XXXXX
+        XXX XXX
+       XXX   XXX
+      XXX     XXX
+     XXX       XXX - MIPS
+
+Copyright (c) 2001-2006, Siemens Subscriber Networks, Inc.
+Speedstream E652 is powered by Project X
+Version 004-E652-A3D, Build 115-36-13, May 14 2007 15:16:31
+
+Expat - XML Parser Toolkit v1.2
+        Copyright (c) 1998-2000, Thai Open Source Software Center Ltd
+
+---System Starting---
+XSH:                                                   [  OK  ]
+FLASH: Macronix Mx29LV320 (Top Boot)
+NVRAM: 003-6184-G12, Telus Router/Bridging configuration. NV'G':149680
+NVRAM:                                                 [  OK  ]
+INT:                                                   [  OK  ]
+TMR:                                                   [  OK  ]
+WDT: Internal timeout set to 10s
+WDT:                                                   [  OK  ]
+LED:                                                   [  OK  ]
+BUTTON:                                                [  OK  ]
+SYSTASK:                                               [  OK  ]
+SNTPC:                                                 [  OK  ]
+SYSLOG:                                                [  OFF ]
+XLOG:                                                  [  OK  ]
+DNSRELAY:                                              [  OK  ]
+IPFW:                                                  [  OK  ]
+ADSL:                                                  [  OK  ]
+BRG:                                                   [  OK  ]
+L2XP                                                   [  OK  ]
+ETH_SWITCH:   DevId = 0x60   RevId = 0x2
+ETH1:                                                  [  OK  ]
+ETH2:                                                  [  OK  ]
+ETH3:                                                  [  OK  ]
+ETH4: Configured as WAN
+ETH4:                                                  [  OK  ]
+USB:                                                   [  OK  ]
+WLAN1:                                                 [  OK  ]
+WLAN2:                                                 [  OK  ]
+2684:                                                  [  OK  ]
+2364:                                                  [  OK  ]
+ATM:                                                   [  OK  ]
+IGD:                                                   [  OK  ]
+UPNP:                                                  [  OK  ]
+LANCLIENT:                                             [  OK  ]
+DDNSD:                                                 [  OFF ]
+FWUPDATE:                                              [  OK  ]
+TFTPD:                                                 [  OFF ]
+QOS:                                                   [  OK  ]
+ARDD:                                                  [  OFF ]
+CWMP:                                                  [  OK  ]
+---System Ready---
+
+ADSL: Boost DSP
+ADSL: DataPump Version - 07.00.02.00
+ADSL: DOWN
+ADSL: WAITING
+ETH3: 100MB (100Base-TX Full Duplex)
+UPNP: Added IF: br0 to UPnP multi-cast group
+WLANSA:                                                [  OK  ]
+WLAN: Scanning channels...
+WLAN: Selecting channel 3
+WLAN: Initialization Successful
+}}}
+
+=== TODO ===
+
+ * Find the data sheets for the chips used in this device.
+ * Figure out what J7 is and the pinout for it.(Jtag?)
+
+== Other Categories this device is in ==
+
+ . CategoryNotSupported
+----
+["CategoryAR7Device"]
+----
+CategoryDslModems

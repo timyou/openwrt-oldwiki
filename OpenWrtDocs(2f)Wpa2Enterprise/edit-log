@@ -1,0 +1,23 @@
+1142408529000000	00000001	SAVENEW	OpenWrtDocs(2f)Wpa2Enterprise	216.27.184.29	bitstream.explosive.net	1142406285.51.63354		
+1142408796000000	00000002	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	216.27.184.29	bitstream.explosive.net	1142406285.51.63354		
+1143379117000000	00000003	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	81.182.58.127	dsl51B63A7F.pool.t-online.hu	1143378747.98.31708		mission curly bracket
+1143724127000000	00000004	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	193.216.18.211	193.216.18.211	1139779893.71.10985		
+1143724159000000	00000005	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	193.216.18.211	193.216.18.211	1139779893.71.10985		
+1143724177000000	00000006	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	193.216.18.211	193.216.18.211	1139779893.71.10985		
+1143724353000000	00000007	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	193.216.18.211	193.216.18.211	1139779893.71.10985		
+1143724378000000	00000008	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	193.216.18.211	193.216.18.211	1139779893.71.10985		
+1146445394000000	00000009	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.170	proxy8-14.adl2.internode.on.net	1146444343.03.19156		
+1146464190000000	00000010	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.168	proxy6-14.adl2.internode.on.net	1146444343.03.19156		Add needed parts of radiusd.conf so it's read to go. Mention a few other traps.
+1146661581000000	00000011	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.136	proxy6-10.adl2.internode.on.net	1146444343.03.19156		Change default EAP type to TTLS, add FreeBSD example. Remove useless EAP methods
+1146661742000000	00000012	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.137	proxy7-10.adl2.internode.on.net	1146444343.03.19156		
+1146661859000000	00000013	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.138	proxy8-10.adl2.internode.on.net	1146444343.03.19156		
+1146662647000000	00000014	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.152	proxy6-11.adl2.internode.on.net	1146444343.03.19156		Oops turns out MD5 as MSChapV2 *are* needed :)
+1146662720000000	00000015	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.169	proxy7-14.adl2.internode.on.net	1146444343.03.19156		
+1146890725000000	00000016	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.167	proxy5-14.adl2.internode.on.net	1146444343.03.19156		Update to get the config working in Windows. Add Windows client instructions.
+1147314236000000	00000017	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	203.28.159.168	proxy6-14.adl2.internode.on.net	1146444343.03.19156		Add LDAP example.
+1176616337000000	00000018	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	216.114.246.241	mn-10k-dhcp2-1777.dsl.hickorytech.net	1176615160.66.12855		
+1176616642000000	00000019	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	216.114.246.241	mn-10k-dhcp2-1777.dsl.hickorytech.net	1176615160.66.12855		
+1176616740000000	00000020	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	216.114.246.241	mn-10k-dhcp2-1777.dsl.hickorytech.net	1176615160.66.12855		
+1176616820000000	00000021	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	216.114.246.241	mn-10k-dhcp2-1777.dsl.hickorytech.net	1176615160.66.12855		
+1176617037000000	00000022	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	216.114.246.241	mn-10k-dhcp2-1777.dsl.hickorytech.net	1176615160.66.12855		More tweeks.
+1179315469000000	00000023	SAVE	OpenWrtDocs(2f)Wpa2Enterprise	213.115.134.196	static-213-115-134-196.sme.bredbandsbolaget.se	1170145473.01.39801		make eap conf work with default demo certs

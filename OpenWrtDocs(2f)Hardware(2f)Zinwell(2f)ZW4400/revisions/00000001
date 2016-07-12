@@ -1,0 +1,335 @@
+#pragma section-numbers off
+
+||<tablebgcolor="#f1f1ed" tablewidth="40%" tablestyle="margin: 0pt 0pt 1em 1em; float: right; font-size: 0.9em;"style="padding: 0.5em;">[[TableOfContents]]||
+
+= Zinwell ZW-4400 =
+
+I obtained the bare PCB from Titan Wireless (http://www.titanwirelessonline.com/ProductDetails.asp?ProductCode=TW-266-2).
+
+The MAC addresses have a Zinwell OUI (00059E = Zinwell Corporation).
+
+= Hardware =
+
+== Info ==
+
+||<tablewidth="460px" tableheight="345px">'''Architecture''' ||XScale IXP42x ||
+||'''Vendor''' ||!Zinwell ||
+||'''Bootloader''' ||!RedBoot ||
+||'''System-On-Chip''' ||Intel IXP425 ||
+||'''CPU Speed''' ||533 MHz ||
+||'''Flash size''' ||16 MiB ||
+||'''RAM''' ||64 MiB ||
+||'''Wireless''' ||4x miniPCI ||
+||'''Ethernet''' ||2x RJ45 10/100 ||
+||'''USB''' ||No ||
+||'''Serial''' ||Yes (3.3V) ||
+||'''JTAG''' ||Yes (20pin ARM) ||
+||'''Power''' ||48V POE ||
+
+== Serial Port ==
+
+J2 (the unique header socket to the right of J4)
+
+
+
+The terminal settings for the connection:
+
+115200 / 8 data bits / no parity / 1 stop bit / no flow control
+
+== Photos ==
+
+http://www.titanwirelessonline.com/v/vspfiles/photos/TW-533-4-2T.jpg
+
+== JTAG ==
+
+There seems to be a 20 pin JTAG, but it is not that important as the !RedBoot boatloader does not seem to be crippled.
+
+= Original software =
+{{{
+PCI GPIO 0.1.2.6 CF-IDE GPIO 12 configured.
++
+PHY 100/Full/Auto configured.
+Ethernet eth0: MAC address 00:05:9e:44:00:a1
+IP: 0.0.0.0/255.255.255.0, Gateway: 0.0.0.0
+Default server: 0.0.0.0, DNS server IP: 0.0.0.0
+
+RedBoot(tm) bootstrap and debug environment [ROM]
+ZinWell Release Version 1.0.0 - built 14:02:56, Mar 19 2007
+
+Platform: Intel Generic Residential Gateway (XScale)
+RAM: 0x00000000-0x04000000, 0x0001f860-0x03fd1000 available
+FLASH: 0x50000000 - 0x51000000, 128 blocks of 0x00020000 bytes each.
+== Executing boot script in 1.000 seconds - enter ^C to abort
+RedBoot> fis load initrd.bin
+RedBoot> fis load zImage
+RedBoot> exec -c
+Using base address 0x00100000 and length 0x00100000
+Uncompressing Linux................................................... done, booting the kernel.
+Linux version 2.4.18_mvl30-ixdp425 (choise@RD3Linux.zintech.com.tw) (gcc version 3.2.1 20020930 (MontaVista)) #50 Thu Jun 28 15:33:33 CST 2007
+CPU: Intel XScale-IXP4xx/IXC1100 revision 2
+Machine: Intel IXP425 Residential Gateway Demo Platform
+Warning: bad configuration page, trying to continue
+On node 0 totalpages: 16384
+zone(0): 16384 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: console=ttyS0,115200 root=/dev/ram ramdisk_size=32768 initrd=0x00200000,9M mem=64M
+Calibrating delay loop... 527.56 BogoMIPS
+Memory: 64MB = 64MB total
+Memory: 53640KB available (1350K code, 241K data, 84K init)
+XScale Cache/TLB Locking Copyright(c) 2001 MontaVista Software, Inc.
+XScale cache_lock_init called
+   Calling consistent alloc
+   low_level_page initialized
+   low_level_page @ 0xc4800000
+      icache_lock_fn @ 0xc4800080
+      dcache_lock_fn @ 0xc48000a0
+      icache_unlock_fn @ 0xc4800098
+      dcache_unlock_fn @ 0xc48000f0
+Initializing TLB locking
+TLB locking initialized
+Dentry-cache hash table entries: 8192 (order: 4, 65536 bytes)
+Inode-cache hash table entries: 4096 (order: 3, 32768 bytes)
+Mount-cache hash table entries: 1024 (order: 1, 8192 bytes)
+Buffer-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Page-cache hash table entries: 16384 (order: 4, 65536 bytes)
+POSIX conformance testing by UNIFIX
+coyote_pci_init
+setup BARs in controller
+PCI Autoconfig: Found Bus 0, Device 14, Function 0
+PCI Autoconfig: BAR 0, Mem, size=0x10000, address=0x4bff0000
+PCI Autoconfig: Found Bus 0, Device 15, Function 0
+PCI Autoconfig: BAR 0, Mem, size=0x10000, address=0x4bfe0000
+PCI: bus0: Fast back to back transfers enabled
+vendor:8086 device:8500 slot:0 pin:1vendor:8086 device:8500 slot:0 pin:1 ==>IRQ:-1
+vendor:168c device:1b slot:14 pin:1vendor:168c device:1b slot:2 pin:1 ==>IRQ:7
+vendor:168c device:13 slot:15 pin:1vendor:168c device:13 slot:3 pin:1 ==>IRQ:6
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+Disabling the Out Of Memory Killer
+devfs: v1.10 (20020120) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+JFFS2 version 2.1. (C) 2001, 2002 Red Hat, Inc., designed by Axis Communications AB.
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xff001003 (irq = 13) is a XScale UART
+HDLC line discipline: version $Revision: 3.3 $, maxframe=4096
+N_HDLC line discipline registered.
+block: 128 slots per queue, batch=32
+RAMDISK driver initialized: 16 RAM disks of 32768K size 1024 blocksize
+loop: loaded (max 8 devices)
+Creating 6 MTD partitions on "IXP425 Residential Gateway Demo Platform Flash":
+0x00000000-0x00040000 : "RedBoot"
+0x00040000-0x00140000 : "zImage"
+0x00140000-0x00a40000 : "initrd.bin"
+0x00a40000-0x00fc0000 : "unallocated space"
+0x00fc0000-0x00fc1000 : "RedBoot config"
+mtd: partition "RedBoot config" doesn't end on an erase block -- force read-only
+0x00fe0000-0x01000000 : "FIS directory"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 4096 bind 8192)
+IP-Config: No network devices available.
+ip_conntrack (512 buckets, 4096 max)
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+NetWinder Floating Point Emulator V0.95 (c) 1998-1999 Rebel.com
+RAMDISK: Compressed image found at block 0
+Freeing initrd memory: 9216K
+VFS: Mounted root (ext2 filesystem).
+Mounted devfs on /dev
+Freeing init memory: 84K
+Using /lib/modules/2.4.18_mvl30-ixdp425/kernel/drivers/ixp400.o
+Using /lib/modules/2.4.18_mvl30-ixdp425/kernel/drivers/ixp425_eth.o
+ixp425_eth: Initializing IXP425 NPE Ethernet driver software v. 1.2
+ixp425_eth: CPU clock speed (approx) = 527 MHz
+
+num_phys_to_set: 3
+ixp425_eth: ixp0 is using NPEB and the PHY at address 2
+ixp425_eth: ixp1 is using NPEC and the PHY at address 1
+ixp425_eth: Use default MAC address 00:02:b3:01:01:01 for port 0
+ixp425_eth: Use default MAC address 00:02:b3:02:02:02 for port 1
+Using /lib/modules/2.4.18_mvl30-ixdp425/kernel/drivers/net/rt61sta01.o
+insmod: init_module: rt61sta01: No such device
+Using /lib/modules/2.4.18_mvl30-ixdp425/kernel/drivers/net/rt61sta03.o
+insmod: init_module: rt61sta03: No such device
+Using /lib/modules/2.4.18_mvl30-ixdp425/kernel/drivers/net/rt61sta05.o
+insmod: init_module: rt61sta05: No such device
+Using /lib/modules/2.4.18_mvl30-ixdp425/kernel/drivers/net/rt61sta07.o
+insmod: init_module: rt61sta07: No such device
+SIOCSIFHWADDR: No such device
+SIOCSIFADDR: No such device
+device ixp1 entered promiscuous mode
+interface wlan0 does not exist!
+br0: port 1(ixp1) entering listening state
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan1     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+wlan0     no private ioctls.
+
+
+Please press Enter to activate this console. br0: port 1(ixp1) entering learning state
+br0: port 1(ixp1) entering forwarding state
+br0: topology change detected, propagating
+
+
+
+BusyBox v1.00-rc2 (2006.08.08-09:59+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+$
+}}}
+== Flash layout ==
+{{{
+RedBoot> fis list
+Name              FLASH addr  Mem addr    Length      Entry point
+RedBoot           0x50000000  0x50000000  0x00040000  0x00000000
+RedBoot config    0x50FC0000  0x50FC0000  0x00001000  0x00000000
+FIS directory     0x50FE0000  0x50FE0000  0x00020000  0x00000000
+zImage            0x50040000  0x00100000  0x00100000  0x00100000
+initrd.bin        0x50140000  0x00200000  0x00900000  0x00200000
+RedBoot>
+}}}
+
+= Telnet into RedBoot =
+You can change the !RedBoot configuration, so you can later telnet into this bootloader in order to reflash this device from there, without having serial access.
+
+The default form of the fconfig command will force you to enter the data, change and confirm every initialized variable. To avoid reentering the '''Boot script''' data and harming unnecessary variables, run the "fconfig list" command first to look at variable names and values:
+
+{{{
+RedBoot> fconfig -l -n
+boot_script: true
+boot_script_data:
+.. fis load initrd.bin
+.. fis load zImage
+.. exec -c
+
+boot_script_timeout: 1
+bootp: false
+bootp_my_gateway_ip: 0.0.0.0
+bootp_my_ip: 0.0.0.0
+bootp_my_ip_mask: 0.0.0.0
+bootp_server_ip: 0.0.0.0
+console_baud_rate: 115200
+dns_ip: 0.0.0.0
+gdb_port: 9000
+info_console_force: false
+net_debug: false
+net_device: i82559_eth0
+npe_eth0_esa: 0x00:0x05:0x9E:0x44:0x00:0xA1
+npe_eth1_esa: 0x00:0x05:0x9E:0x44:0x00:0xA2
+RedBoot>
+}}}
+Next change only necessary variables (using their names from the previous listing) and update the !RedBoot non-volatile configuration after the last change:
+
+{{{
+RedBoot> fconfig boot_script_timeout 10
+boot_script_timeout: Setting to 10
+Update RedBoot non-volatile configuration - continue (y/n)? n
+RedBoot> fconfig bootp_my_gateway_ip 192.168.1.254
+bootp_my_gateway_ip: Setting to 192.168.1.254
+Update RedBoot non-volatile configuration - continue (y/n)? n
+RedBoot> fconfig bootp_my_ip 192.168.1.11
+bootp_my_ip: Setting to 192.168.1.11
+Update RedBoot non-volatile configuration - continue (y/n)? n
+RedBoot> fconfig bootp_server_ip 192.168.1.254
+bootp_server_ip: Setting to 192.168.1.254
+Update RedBoot non-volatile configuration - continue (y/n)? n
+RedBoot> fconfig dns_ip 192.168.1.254
+dns_ip: Setting to 192.168.1.254
+Update RedBoot non-volatile configuration - continue (y/n)? n
+RedBoot> fconfig bootp_my_ip_mask 255.255.255.0
+bootp_my_ip_mask: Setting to 255.255.255.0
+Update RedBoot non-volatile configuration - continue (y/n)? y
+... Unlock from 0x50fc0000-0x50fc1000: .
+... Erase from 0x50fc0000-0x50fc1000: .
+... Program from 0x03fd2000-0x03fd3000 at 0x50fc0000: .
+... Lock from 0x50fc0000-0x50fc1000: .
+RedBoot>
+}}}
+'''Note:''''' ''The configuration is only in the RAM until you update'' ''the !RedBoot non-volatile configuration. If you reset the device without updating, the configuration will not be changed. You can use changes without the update for temporary settings.
+
+Verify the configuration by listing the aliases this time:
+
+{{{
+RedBoot> fconfig -l
+Run script at boot: true
+Boot script:
+.. fis load initrd.bin
+.. fis load zImage
+.. exec -c
+
+Boot script timeout (1000ms resolution): 10
+Use BOOTP for network configuration: false
+Gateway IP address: 192.168.1.254
+Local IP address: 192.168.1.11
+Local IP address mask: 255.255.255.0
+Default server IP address: 192.168.1.254
+Console baud rate: 115200
+DNS server IP address: 192.168.1.254
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+Default network device: i82559_eth0
+Network hardware address [MAC] for NPE eth0: 0x00:0x05:0x9E:0x44:0x00:0xA1
+Network hardware address [MAC] for NPE eth1: 0x00:0x05:0x9E:0x44:0x00:0xA2
+RedBoot>
+}}}
+I specified a 10 second timeout here, so I have this 10 second time frame to telnet into !RedBoot. If you are not able to hit the enter-key within 10 seconds after powering up, go for a larger time frame.
+
+{{{
+$ arping -qf 192.168.1.11 ; telnet 192.168.1.11 9000
+WARNING: interface is ignored: Operation not permitted
+Trying 192.168.1.11...
+?Invalid command
+Connected to 192.168.1.11.
+Escape character is '^]'.
+== Executing boot script in 9.940 seconds - enter ^C to abort
+^C
+RedBoot>
+}}}
+
+= Resources =
+ * [http://www.zintech.com.tw/PDF_File/WLAN/ZW-4400.pdf Data Sheet]
+
+----
+["CategoryIXP4xxDevice"]

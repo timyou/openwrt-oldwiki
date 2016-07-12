@@ -1,0 +1,3 @@
+== Neuf ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''boot_wait''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Status''' ||
+||[http://offres.neuf.fr/adsl/adsl-neuf-box-decodeur-tv/adsl-modem-routeur-wifi-neuf-box.html Neuf Box 4] ||v1 ||[http://www.broadcom.com/products/DSL/xDSL-CPE-Solutions/BCM6358 Broadcom BCM6358] @ 300MHz ||8 MB ||32 MB ||[http://broadcom.com/products/Wireless-LAN/802.11-Wireless-LAN-Solutions/BCM94318 Broadcom BCM4318] ||[http://www.broadcom.com/products/Small-Medium-Business/Fast-Ethernet-Switching-Products/BCM5325E Broadcom BCM5325E] ||Yes ||Yes ||Yes ||2x 2.0 ||[:OpenWrtDocs/Hardware/Neuf/NeufBox4:WiP] ||

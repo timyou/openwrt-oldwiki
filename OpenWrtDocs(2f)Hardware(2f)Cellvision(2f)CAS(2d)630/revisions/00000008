@@ -1,0 +1,35 @@
+= Cellvision CAS-630/CAS-630W =
+
+The Cellvision CAS-630 IP camera is a Linux based IP camera. It comes in two flavours: wired and wired/wireless.
+
+== Technical specifications ==
+
+ADMtek 5120 CPU
+
+== Known models ==
+
+Cellvision does not directly sell to customers, but acts purely as an ODM company.
+Known models are:
+
+||'''Vendor''' ||'''CAS-630''' ||'''CAS-630W''' ||
+||BONA Computech|| [http://www.bona.com.tw:8080/product/IP-630.htm IP-630]||[http://www.bona.com.tw:8080/product/IP-630W.htm IP-630W]||
+||D-Link|| [http://www.dlink.com/products/?sec=0&pid=364 DCS-950]||[http://www.dlink.com/products/?sec=0&pid=365 DCS-950G]||
+||Digitus|| [http://www.digitus.info/scripts/digdetail.asp?artnr=DN%2D16021 DN-16021]|| [http://www.digitus.info/scripts/digdetail.asp?artnr=DN%2D16022 DN-16022]||
+||[http://www.neo-fusion.de NeuFusion]||NCS-630||NCS-630W||
+||REPOTEC ||[http://www.repotec.com.tw/default.asp?pagename=Surveillance_System/RP_WV630_VP630.htm RP-VP630]|| [http://www.repotec.com.tw/default.asp?pagename=Surveillance_System/RP_WV630_VP630.htm RP-WV630]||
+||SparkLAN||[http://www.sparklan.com/product_details.php?prod_id=141 CAS-630]||[http://www.sparklan.com/product_details.php?prod_id=142 CAS-630W]||
+||Surecom|| [http://www.surecom-net.com/pd-internet_camera-4001_4002-MM.htm EP-4001-MM]|| [http://www.surecom-net.com/pd-internet_camera-4001_4002-MM.htm EP-4002-MM]||
+
+== Picture ==
+
+On one side of the board there is the CPU, wireless card and audio connector (bottom left).
+
+attachment:cas-630-1.png
+
+The more interesting parts can be found on the other side of the board.
+
+attachment:cas-630-2.png
+
+As you can see there are UART and USB connectors. On this board (which was an engineering sample) there are headers. It could be that "normal" units don't have these headers and you need to solder them on yourself.
+
+CategoryModel ["CategoryADM5120Device"]

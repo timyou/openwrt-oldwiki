@@ -1,0 +1,29 @@
+= ZyXEL P-320W =
+The ZyXEL P-320W is a Firewall router with 4-port Switch with built-in 802.11g Access Point. One WAN Port and an external antenna.
+
+== Details ==
+||'''CPU'''||AMRISC 10100-G||
+||'''OS'''||Probably ZyNOS||
+||'''Flash'''||4MBit 1xEON EN29LV800||
+||'''RAM'''||16MBit 1xEtronTech EM636165TS-7G||
+||'''Switch'''||IC+ IP175C LF||
+|'''WLAN'''||On board no-name||
+||'''USB'''||no||
+||'''Serial'''||no||
+||'''JTAG'''||yes||
+
+CPU is most likely a custom version of the RDC R8610 CPU.
+
+The JTAG is a Xilinx 6 PIN port. 
+J7
+O
+O
+O
+O
+O - VCC (3.3V)
+O - GND
+
+The top 4 is TDO, TMS, TCK, TDI. But it's unclear in which order.
+
+
+

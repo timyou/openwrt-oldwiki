@@ -1,0 +1,30 @@
+'''Netgear WG602 v3'''
+
+The WG602 v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 2Mb flash and 8Mb RAM.
+The wireless NIC is integrated on the board. Does not appear to use boot wait. Instead the following procedure worked for recovering a dead unit and may be useful in putting new firmware on the unit:
+
+== Recovery procedure ==
+
+What to do if you brick it!
+
+ 1. Copy the latest firmware from Netgear to the file 'image.idts334'
+
+ 2. Power off the device and power  on while depressing the reset button for 2 seconds
+
+ 3. tftp to the box; set binary mode; and put the file image.idts334
+
+ 4. issue the 'get REBOOT' command
+
+Eg.
+
+ % tftp
+
+ tftp> connect 192.168.0.227
+
+ tftp> binary
+
+ tftp> put image.idts334
+
+ Sent 1585152 bytes in 5.2 seconds
+
+ tftp> get REBOOT

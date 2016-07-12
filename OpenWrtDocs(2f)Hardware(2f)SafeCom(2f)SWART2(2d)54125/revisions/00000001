@@ -1,0 +1,14 @@
+= Safe Com SWART2-54125 =
+
+This 4 ethernet port, 1 USB and 125Mbps modem/router box apears to have 'ASW802' on the pcb, which means it's a clone, not another device (http://www.dtnettech.com/store/comersus_viewItem.asp?idProduct=1877).
+There is a manufacturer name mash up, ["OpenWrtDocs/Hardware/Castlenet/ASW800"] appears to be sort of the same device.
+
+It has hardware slightly different from Castlenet ASW800, listed here, are only the chips which are different:
+
+* DSP: TNETD7200 ZDW
+* WLAN: TNETTW1350 GVF (advertised as 125Mbps 802.11g+)
+
+with 16MB SDRAM and 4MB flash.
+
+
+The number of features included in the web-config of the original firmware includes QoS and WLAN bridge. It runs MontaVista.

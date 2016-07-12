@@ -1,0 +1,67 @@
+'''Asus WL-500G'''
+
+The device is supported in OpenWrt 1.0 (White Russian) and later. You need to install the openwrt-brcm-2.4-<type>.trx firmware images.
+
+''Note'': beginning with SVN revision 10137 (and up to current rev10996), a new version 4.150.10.5 of the broadcom-wl driver and utils was integrated, which unfortunately does not seem to support the WLAN module in the WL-500g any longer. Unfortunately, the changes lie within binary code, so probably the only way is to get the old 4.80.53.0 version ported forward.
+
+{{{
+Bootloader: PMON
+System-On-Chip:  Broadcom 4710 
+CPU Speed: 125 Mhz
+Flash size: 4 MB
+RAM: 16 MB
+Wireless: Mini-PCI Broadcom WL-120G 
+Ethernet: two network interface, one for 4 LAN ports, one for WAN port, no VLAN tagging
+USB: 1xUSB 1.1  
+LPT: yes
+Serial: yes, with external UART  
+JTAG: no
+}}}
+
+The {{{boot_wait}}} NVRAM variable is '''on''' by default. Resetting to factory defaults via reset button or {{{mtd erase nvram}}} ''is'' safe on this unit (using {{{mtd erase nvram}}} and rebooting will revert to the settings in `/etc/nvram.overrides`).
+
+Note that the internal switch can not be configured through OpenWRT yet because its internally accessed using a GPIO interface instead of MII ([https://dev.openwrt.org/ticket/2064 Source]). As a workaround, if you don't actually need VLANs but just want to put LAN and WAN ports in the same "VLAN", just use Linux's bridge capability, eg. in Kamikaze put in `/etc/config/network` :
+
+{{{
+option ifname   "eth0 eth1"
+}}}
+
+'''TFTP Installation notes'''
+
+The [:OpenWrtDocs/Hardware/Asus/WL500GRecovery: WL-500G recovery] mechanism is somewhat complex. The most reliable method is to statically assign the ARP entry for the device, and use a known-to-work TFTP client (e.g. OS X's inbuilt tftp generally doesn't work; atftp on Linux does work).
+
+Note: Mac OS X 10.5 Leopard tftp client does work! Router was stuck to the IP address setting in the NVRAM. It was not necessary to manually fix the MAC ADDRESS. 
+
+Pull the plug, press and hold the reset button, plug the device and wait until the PWR LED starts flashing slowly (almost immediately). Now release the reset button and upload the firmware by TFTP using the following commands (`00:11:2f:6a:60:13` is the device's MAC address, `192.168.1.1` is a free IP address on your local network):
+
+{{{
+$ sudo arp -s 192.168.1.1 00:11:2f:6a:60:13
+$ tftp 192.168.1.1
+tftp> binary
+tftp> trace
+tftp> get ASUSSPACELINKaaaa /dev/null
+tftp> put openwrt-xxx-x.x-xxx.trx ASUSSPACELINK
+}}}
+
+Sidenote: the "magic string" on the end of the ASUSSPACELINK string (e.g. often quoted as "\x01\x01\xa8\xc0") is in fact meant to be the IP address to be assigned to the device, in little-endian order (0x01 0x01 0xa8 0xc0 = 1 1 168 192; or IP=192.168.1.1). However, most TFTP clients interpret the string "\x01\x01\xa8\xc0" literally and you'll end up with an IP address of 49.48.120.92 being used (convert the ASCII string "\ x 0 1" to decimal and reverse). The TFTP clients that work don't care about what the WL-500G thinks its IP address is, hence the "aaaa" in the example above.
+
+
+After this, wait until the PWR LED stops flashing and the device to reboot and you should be set. There's also nice shell script doing this work for you to be at http://openwrt.org/downloads/utils/flash.sh.
+
+As an alternative (or if this installation routine doesn't do the trick for you) you can always use the ASUS Recovery tool from your utilities CD to upload your !OpenWrt firmware.
+
+Another thing is that the Asus WL500g doesn't seem to revert to the 192.168.1.1 address when starting the bootloader, but seems to use the LAN IP address set in NVRAM, so try this address or use the recovery tool if you've got problems flashing your firmware.
+
+'''Splitting the bridge between LAN and WLAN'''
+
+The LAN device is eth0, the WAN interface is eth1 and the WLAN interface is eth2.
+To make the WL-500G distinguish between the LAN and WLAN device, do the following:
+
+{{{
+nvram set lan_ifname=eth0
+nvram commit
+reboot
+}}}
+
+----
+CategoryModel

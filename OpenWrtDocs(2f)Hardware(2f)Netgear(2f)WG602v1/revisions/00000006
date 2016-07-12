@@ -1,0 +1,28 @@
+'''Netgear WG602 v1'''
+
+The original version of the WG602 (sometimes known as the v1) is based on an IDT design running OpenRG. It has a 150MHz CPU, 4MB flash and 16MB RAM.
+The wireless NIC is a PrismGT miniPCI card. At this time, I cannot get OpenWRT to run on it. Does not appear to use boot wait. Instead the following procedure worked for recovering a dead unit and may be useful in putting new firmware on the unit:
+
+== Recovery procedure ==
+
+What to do if you brick it!
+
+ 1. Set up a computer with the ip address 192.168.1.98/24.
+ 2. Install and configure a tftp server.
+ 3. Copy the latest firmware from Netgear to the file 'image.idts334' in your tftp server's root.
+ 4. Remove power, hold in the reset button, and reapply power while still holding the reset button.
+ 5. The WG602 should, using an IP address of 192.168.1.69/24, retrieve the firmware image from your tftp server. You can watch this activity with tcpdump or Ethereal.
+{{{
+ip address add 192.168.1.98/24 eth0
+yum install tftp-server
+chkconfig tftp on
+wget ftp://downloads.netgear.com/files/wg602_v1715.zip
+unzip wg602_v1715.zip
+cp WG602_V1715.img /tftpboot/image.idts334
+tcpdump -i eth0 -v
+}}}
+Note that this procedure does not appear to work without some header information in the image.idts334 file
+
+More information can be found at [http://www.seattlewireless.net/NetgearWG602 Seattle Wireless] and [http://216.218.185.154/cgi-bin/board/UltraBoard.pl?Action=ShowPost&Board=general&Post=198 Embedded Linux forum]
+----
+CategoryModel

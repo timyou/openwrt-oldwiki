@@ -1,0 +1,12 @@
+1126014950000000	00000001	SAVENEW	OpenWrtDocs(2f)TroubleshootingAR7	85.94.32.222	nording.mcn.ru	1125995369.96.62732		
+1126015012000000	00000002	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	85.94.32.222	nording.mcn.ru	1125995369.96.62732		
+1133263289000000	00000003	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	85.94.32.222	nording.mcn.ru	1125995369.96.62732		removed note about absent /proc/ticfg/env, since it is present in latest SVN.
+1133275508000000	00000004	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	194.84.254.250	ip250.intra.global-one.ru	1120300957.95.18564		
+1133560207000000	00000005	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	84.173.148.238	p54AD94EE.dip0.t-ipconnect.de	1127066905.54.25327		
+1142031424000000	00000006	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	83.237.218.100	ppp83-237-218-100.pppoe.mtu-net.ru	1142030441.34.11874		
+1160716760000000	00000007	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	128.250.6.247	sleepy.its.unimelb.edu.au	1160715753.53.13906		Added ADAM2 info
+1167558907000000	00000008	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	90.19.238.160	AOrleans-252-1-208-160.w90-19.abo.wanadoo.fr	1167558160.59.46003		Add commands to set the ip address
+1174801828000000	00000009	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	131.181.251.67	proxy2-mercury.net.qut.edu.au	1174801423.83.3142		
+1174801937000000	00000010	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	131.181.251.67	proxy2-mercury.net.qut.edu.au	1174801423.83.3142		
+1208120238000000	00000011	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	87.217.161.80	80.161.217.87.dynamic.jazztel.es	1206325005.74.55037		
+1208133605000000	00000012	SAVE	OpenWrtDocs(2f)TroubleshootingAR7	87.217.160.110	110.160.217.87.dynamic.jazztel.es	1206325005.74.55037		

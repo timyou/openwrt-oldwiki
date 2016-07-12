@@ -1,0 +1,41 @@
+'''Motorola WR850G'''
+
+=== Hardware versions ===
+
+The WR850G has three different versions (v1, v2, v3).
+
+==== WR850G v1 ====
+The WR850G v1 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is a mini-PCI card.
+
+==== WR850G v2 ====
+The WR850G v2 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 32Mb SDRAM (but only 16Mb enabled). The wireless NIC is integrated to the board.
+
+Note: In at least one (feagle814's) WR850G v2, there is only 16mb of RAM onboard.  DO NOT try the 32mb enablement hack on the WR850G v2 without first verifying how much RAM you have!
+
+==== WR850G v3 ====
+The WR850G v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is integrated to the board.
+
+=== How to put OpenWRT Experimental edition on a Motorola WR850G ===
+
+ * Download the motorola bin from ["downloads/experimental"].
+ * If you want, you can enable boot_wait by going to /frameDebug.asp and typing the necessary commands.
+ * Upload the firmware to the router via the Upgrade Firmware page.
+ * Enjoy!
+
+=== How to put OpenWRT (non-experimental) on a Motorola WR850G ===
+
+ * Open the WR850G.  The plastic is hard and the clips are strong - use force!
+ * Attach a serial cable to the serial connector - it's a 9-pin connector with two rows, one with 5 pins and one with 4 pins.  I recommend using a cell phone data cable - they're cheap and do the voltage conversions with no assembly required. 
+  * Pin 1 (square hole): Data out of WR850G
+  * Pin 7 (three pins over from pin 1): Data into WR850G
+  * Pin 6 (two pins down, one across from pin 1): Ground
+  * Port setting is 115200, N, 8, 1, no flow control.
+
+ * Restart the router with your serial console hooked up and ready.
+ * Hold Control-C in your terminal while it boots.  You don't need boot_wait to be on for this (but it might take a couple tries!)
+ * You should get a CFE prompt.  Type flash -noheader : flash1.trx
+ * Begin a TFTP transfer of the OpenWRT firmware to the router.
+ * When this completes, it will reboot into OpenWRT.
+ * Enjoy!
+
+/!\ '''Until we can find out, how to calculate the Motorola CRC, you have to have a serial console to be able to flash OpenWrt.'''

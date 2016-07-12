@@ -1,0 +1,31 @@
+1152912761000000	00000001	SAVENEW	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152912800000000	00000002	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152912875863982	99999999	ATTNEW	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512	ASUS-Internals-default.png	
+1152913014286520	99999999	ATTNEW	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512	ASUS-Internals-default-sm.png	
+1152915727000000	00000003	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152915800555513	99999999	ATTNEW	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512	ASUS-Internals-dmz.png	
+1152915963000000	00000004	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152916035000000	00000005	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152917048000000	00000006	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152917234000000	00000007	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152917355000000	00000008	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152917414000000	00000009	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152917527000000	00000010	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152917723000000	00000011	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152917766000000	00000012	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152918151000000	00000013	SAVE	OpenWrtDocs(2f)NetworkInterfaces	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1153123811000000	00000014	SAVE	OpenWrtDocs(2f)NetworkInterfaces	134.60.116.166	d109.wh-wieland.uni-ulm.de	1153123615.46.21587		corrected mistake
+1153124534000000	00000015	SAVE	OpenWrtDocs(2f)NetworkInterfaces	134.60.116.166	d109.wh-wieland.uni-ulm.de	1153123615.46.21587		For multiple values you must add quotes. Otherwise nvram only sets first value
+1153316121000000	00000016	SAVE	OpenWrtDocs(2f)NetworkInterfaces	195.121.14.2	amfis01.wxs.nl	1153314827.36.55260		
+1159758963000000	00000017	SAVE	OpenWrtDocs(2f)NetworkInterfaces	69.157.20.214	bas2-hamilton14-1167922390.dsl.bell.ca	1159571521.05.9292		
+1160080180000000	00000018	SAVE	OpenWrtDocs(2f)NetworkInterfaces	75.32.19.206	adsl-75-32-19-206.dsl.pltn13.sbcglobal.net	1096303201.7.12400		do not insert questions into the middle of the documentation
+1161067933000000	00000019	SAVE	OpenWrtDocs(2f)NetworkInterfaces	206.102.11.115	dsl-206-102-11-115.dsl.easystreet.com	1161067751.63.26469		
+1161089255000000	00000020	SAVE	OpenWrtDocs(2f)NetworkInterfaces	72.231.144.128	cpe-72-231-144-128.nycap.res.rr.com	1161089064.76.61677		
+1164443362000000	00000021	SAVE	OpenWrtDocs(2f)NetworkInterfaces	63.201.8.194	adsl-63-201-8-194.dsl.snlo01.pacbell.net	1164437833.69.16867		clarified that number of VLANS without limit is for smalle r(like openWRT) devices.  whole sentence should probably go.  but at least clarify that devices can have more ports than they can have VLANs 
+1164446183000000	00000022	SAVE	OpenWrtDocs(2f)NetworkInterfaces	63.201.8.194	adsl-63-201-8-194.dsl.snlo01.pacbell.net	1164437833.69.16867		minor spelling/grammar
+1166026878000000	00000023	SAVE	OpenWrtDocs(2f)NetworkInterfaces	194.153.219.9	proxy.dimdi.de	1162407513.18.47472		ipaddress has to be an ip, not a netaddress
+1172778378000000	00000024	SAVE	OpenWrtDocs(2f)NetworkInterfaces	87.160.228.167	p57A0E4A7.dip.t-dialin.net	1172525580.68.33789		"to two" -> "the two"
+1172780737000000	00000025	SAVE	OpenWrtDocs(2f)NetworkInterfaces	69.107.52.245	adsl-69-107-52-245.dsl.pltn13.pacbell.net	1150779081.4.62318		
+1222920948000000	00000026	SAVE	OpenWrtDocs(2f)NetworkInterfaces	203.59.141.93	terra.iinet.net.au	1206672477.6.35512		Information on VLan trunking on  a single NIC by Trent W Buck
+1222921170000000	00000027	SAVE	OpenWrtDocs(2f)NetworkInterfaces	203.59.141.93	terra.iinet.net.au	1206672477.6.35512		Don't self-reference page
+1229748836000000	00000028	SAVE	OpenWrtDocs(2f)NetworkInterfaces	69.17.73.250	meme-net.meme.com	1229559609.04.10861		Address is assigned to vlan, not to a port.  LAN side the bridge gets addressed.

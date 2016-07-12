@@ -1,0 +1,217 @@
+= Preface =
+This howto describes how to setup a 6to4 tunnel over a ppp(oe) connection with a dynamic IP address.
+
+= Install necessary software =
+First our kernel needs IPv6 support. To configure the interfaces and the routing tables we need the new iputils. Additionally we need the route advertising daemon to propagate the IPv6 route to our local subnet.
+{{{
+ipkg install http://www.linuxops.net/ipkg/kmod-ipv6_2.4.20_mipsel.ipk
+ipkg install http://www.linuxops.net/ipkg/ip_1.0_mipsel.ipk
+ipkg install http://openwrt.ksilebo.net/ipkg/radvd_0.7.2_mipsel.ipk
+}}}
+
+= Setup software =
+== Kernel ==
+Load the ipv6 module into the kernel:
+{{{
+insmod ipv6
+}}}
+
+== PPPD ==
+When the ppp interface comes up, the ppp daemon calls the ip-up script, when it goes down the ip-down script. To place these scripts in /etc/ppp/ you must create a symbolic link from /tmp/ppp to /etc/ppp:
+{{{
+mkdir /etc/ppp
+ln -s /etc/ppp /tmp/ppp
+}}}
+
+The content of the /etc/ppp/ip-up script:
+{{{
+#!/bin/sh
+
+# set default route
+/sbin/route add default ppp0
+
+# set time
+/bin/sleep 2
+/usr/sbin/rdate rtime.urz.tu-dresden.de
+
+# 6to4 tunnel
+ipv4=$4
+ipv6prefix=`echo $ipv4 | awk -F. '{ printf "2002:%x%x:%x%x", $1, $2, $3, $4 }'`
+
+ip tunnel add tun6to4 mode sit ttl 64 remote any local $ipv4
+ip link set dev tun6to4 up
+ip -6 addr add ${ipv6prefix}::1/16 dev tun6to4
+ip -6 route add 2000::/3 via ::192.88.99.1 dev tun6to4 metric 1
+
+ip -6 addr add ${ipv6prefix}:5678::1/64 dev vlan2
+}}}
+
+When the link goes down, the tunnel should be removed via /etc/ppp/ip-down
+{{{
+#!/bin/sh
+
+# 6to4 tunnel
+ipv4=$4
+ipv6prefix=`echo $ipv4 | awk -F. '{ printf "2002:%x%x:%x%x", $1, $2, $3, $4 }'`
+
+ip -6 addr del ${ipv6prefix}:5678::1/64 dev vlan2
+
+ip -6 route flush dev tun6to4
+ip link set dev tun6to4 down
+ip tunnel del tun6to4
+}}}
+
+== IPTables ==
+In my firewall scrip I had to add the following rule to let the encapsulated packets pass:
+{{{
+$IPT -A INPUT -p 41 -i ppp0 -j ACCEPT
+}}}
+You need to place it into the right position of your firewall script.
+
+== route advertising daemon ==
+This is the configuration file /etc/radvd.conf:
+{{{
+# For more examples, see the radvd documentation.
+
+interface vlan2
+{
+        AdvSendAdvert on;
+
+#
+# These settings cause advertisements to be sent every 3-10 seconds.  This
+# range is good for 6to4 with a dynamic IPv4 address, but can be greatly
+# increased when not using 6to4 prefixes.
+#
+
+        MaxRtrAdvInterval 30;
+
+        prefix 0:0:0:5678::/64
+        {
+                AdvOnLink on;
+                AdvAutonomous on;
+        #       AdvRouterAddr off;
+                Base6to4Interface ppp0;
+
+                AdvValidLifetime 300;
+                AdvPreferredLifetime 120;
+        };
+
+};
+}}}
+After wrting the configfile you need to start the daemon:
+{{{
+radvd
+}}}
+You can listen to its advertisments via the ''radvdump'' program.
+
+= Example for debugging purposes =
+Interface configuration:
+{{{
+root@openwrt:~# ip addr show
+1: lo: <LOOPBACK,UP> mtu 16436 qdisc noqueue
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+2: eth0: <BROADCAST,MULTICAST,PROMISC,UP> mtu 1500 qdisc pfifo_fast qlen 100
+    link/ether 00:0c:41:9d:22:33 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::20c:41ff:fe9d:2233/10 scope link
+3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop qlen 100
+    link/ether 00:0c:41:9d:22:34 brd ff:ff:ff:ff:ff:ff
+4: eth2: <BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast qlen 100
+    link/ether 00:0c:41:9d:22:35 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.1/24 brd 192.168.1.255 scope global eth2
+    inet6 fe80::20c:41ff:fe9d:2235/10 scope link
+5: vlan2: <BROADCAST,MULTICAST,PROMISC,UP> mtu 1500 qdisc noqueue
+    link/ether 00:0c:41:9d:22:33 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.1/24 brd 192.168.0.255 scope global vlan2
+    inet6 fe80::20c:41ff:fe9d:2233/10 scope link
+    inet6 2002:d536:c887:5678::1/64 scope global
+6: vlan1: <BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
+    link/ether 00:0c:41:9d:22:34 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::20c:41ff:fe9d:2234/10 scope link
+22: sit0@NONE: <NOARP> mtu 1480 qdisc noqueue
+    link/sit 0.0.0.0 brd 0.0.0.0
+48: ppp0: <POINTOPOINT,MULTICAST,NOARP,UP> mtu 1492 qdisc pfifo_fast qlen 3
+    link/ppp
+    inet 213.54.200.135 peer 62.26.136.17/32 scope global ppp0
+49: tun6to4@NONE: <NOARP,UP> mtu 1480 qdisc noqueue
+    link/sit 213.54.200.135 brd 0.0.0.0
+    inet6 ::213.54.200.135/128 scope global
+    inet6 2002:d536:c887::1/16 scope global
+}}}
+
+Routing table:
+{{{
+root@openwrt:~# ip route show
+62.26.136.17 dev ppp0  proto kernel  scope link  src 213.54.200.135
+192.168.1.0/24 dev eth2  proto kernel  scope link  src 192.168.1.1
+192.168.0.0/24 dev vlan2  proto kernel  scope link  src 192.168.0.1
+default dev ppp0  scope link
+
+root@openwrt:~# ip -6 route show
+::/96 via :: dev tun6to4  metric 256  mtu 1480 advmss 1420
+2002:d536:c887:5678::/64 dev vlan2  proto kernel  metric 256  mtu 1500 advmss 1440
+2002::/16 dev tun6to4  proto kernel  metric 256  mtu 1480 advmss 1420
+2000::/3 via ::192.88.99.1 dev tun6to4  metric 1  mtu 1480 advmss 1420
+fe80::/10 dev eth0  proto kernel  metric 256  mtu 1500 advmss 1440
+fe80::/10 dev eth2  proto kernel  metric 256  mtu 1500 advmss 1440
+fe80::/10 dev vlan2  proto kernel  metric 256  mtu 1500 advmss 1440
+fe80::/10 dev vlan1  proto kernel  metric 256  mtu 1500 advmss 1440
+fe80::/10 dev tun6to4  proto kernel  metric 256  mtu 1480 advmss 1420
+ff00::/8 dev eth0  proto kernel  metric 256  mtu 1500 advmss 1440
+ff00::/8 dev eth2  proto kernel  metric 256  mtu 1500 advmss 1440
+ff00::/8 dev vlan2  proto kernel  metric 256  mtu 1500 advmss 1440
+ff00::/8 dev vlan1  proto kernel  metric 256  mtu 1500 advmss 1440
+ff00::/8 dev tun6to4  proto kernel  metric 256  mtu 1480 advmss 1420
+unreachable default dev lo  metric -1  error -128
+}}}
+
+Radvd advertisment:
+{{{
+root@openwrt:~# radvdump
+Router advertisement from fe80::20c:41ff:fe9d:2233 (hoplimit 255)
+Received by interface vlan2
+        # Note: {Min,Max}RtrAdvInterval cannot be obtained with radvdump
+        AdvCurHopLimit: 64
+        AdvManagedFlag: off
+        AdvOtherConfigFlag: off
+        AdvHomeAgentFlag: off
+        AdvReachableTime: 0
+        AdvRetransTimer: 0
+        Prefix 2002:d536:c887:5678::/64
+                AdvValidLifetime: 300
+                AdvPreferredLifetime: 120
+                AdvOnLink: on
+                AdvAutonomous: on
+                AdvRouterAddr: off
+        AdvSourceLLAddress: 00 0C 41 9D 22 33
+}}}
+
+Interface configuration of a client machine:
+{{{
+gjasny@Rincewind:~$ ip addr show
+1: lo: <LOOPBACK,UP> mtu 16436 qdisc noqueue
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast qlen 1000
+    link/ether 00:0c:6e:44:72:68 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.6/24 brd 192.168.0.255 scope global eth0
+    inet6 2002:d536:c887:5678:20c:6eff:fe44:7268/64 scope global dynamic
+       valid_lft 276sec preferred_lft 96sec
+    inet6 fe80::20c:6eff:fe44:7268/64 scope link
+       valid_lft forever preferred_lft forever
+3: sit0: <NOARP> mtu 1480 qdisc noop
+    link/sit 0.0.0.0 brd 0.0.0.0
+}}}
+
+= Links =
+ * [http://www.bieringer.de/linux/IPv6/index.html Peter Bieringer's IPv6 HOWTO]
+ * [http://www.join.uni-muenster.de/TestTools/IPv6_Verbindungstests.php JOIN IPv6 Test Page (ping, traceroute, tracepath)]
+ * [http://www.litech.org/radvd/ Route Advertising Daemon Homepage]
+
+= ToDo =
+ * load modules on every restart
+ * start/stop radvd when connection goes up/down
+ * ip6tables

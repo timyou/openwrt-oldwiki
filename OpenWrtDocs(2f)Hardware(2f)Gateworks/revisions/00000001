@@ -1,0 +1,1 @@
+Gatework hardware notes

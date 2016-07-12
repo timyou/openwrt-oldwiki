@@ -1,0 +1,113 @@
+= General Information =
+Belkin's N+ Wireless Router (F5D8235-4) features a USB Storage port on the back of the router for connecting USB storage devices such as an external hard drive or thumb drive to the network. This router also features gigabit Ethernet ports for a wired connection. The N+ router is based on the draft 802.11n 2.0.
+
+= Hardware =
+http://imageflux.net/uploads/090222/EqB7kcOLRkQMu6ENabjeDd_we3Q/belkin_nplus_board.jpg
+
+= System Information =
+'''1) cat /proc/version'''
+{{{
+Linux version 2.4.30 (root@localhost.localdomain) (gcc version 3.3.6) #297 Wed Jan 21 01:42:19 CST 2009
+}}}
+
+'''2) cat /proc/cpuinfo'''
+{{{
+system type             : Palmchip Surfboard
+processor               : 0
+cpu model               : unknown V6.12
+BogoMIPS                : 266.24
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 16
+extra interrupt vector  : yes
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+'''3) cat /proc/meminfo'''
+{{{
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  28803072 26460160  2342912        0  2109440  8671232
+Swap:        0        0        0
+MemTotal:        28128 kB
+MemFree:          2288 kB
+MemShared:           0 kB
+Buffers:          2060 kB
+Cached:           8468 kB
+SwapCached:          0 kB
+Active:           5008 kB
+Inactive:         5584 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        28128 kB
+LowFree:          2288 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+}}}
+
+'''4) cat /proc/mtd'''
+{{{
+dev:    size   erasesize  name
+mtd0: 00050000 00010000 "uboot"
+mtd1: 00790000 00010000 "Kernel and Rootfs"
+mtd2: 00660000 00010000 "Rootfs"
+mtd3: 00010000 00010000 "Nvram"
+mtd4: 00010000 00010000 "Factory"
+}}}
+
+'''5) cat /proc/interrupts'''
+{{{
+           CPU0
+  2:          0       Surfboard  ehci_hcd, usb-ohci
+  3:     103797       Surfboard  eth2
+  4:     145937       Surfboard  ra0
+  6:      97185       Surfboard  timer
+  7:          0       Surfboard  rt2880_gpio
+  8:        175       Surfboard  serial
+
+ERR:          0
+}}}
+
+'''5) ps'''
+{{{
+  PID  Uid     VmSize Stat Command
+    1 root        236 S   /bin/init
+    2 root            SW  [keventd]
+    3 root            SWN [ksoftirqd_CPU0]
+    4 root            SW  [kswapd]
+    5 root            SW  [bdflush]
+    6 root            SW  [kupdated]
+   10 root            SW  [mtdblockd]
+   11 root            SW  [khubd]
+   20 root        384 S   /bin/sh
+   39 root        480 S   resetC
+   42 root        776 S < gpio_ctrl
+   44 root        384 S   psmon
+   93 root            SW  [rtmpWscHandle]
+  137 root        340 S   syslogd
+  140 root       1072 S < httpd
+  148 root        220 S   easyconf
+  150 root        296 S   easystorage
+  170 root        300 S   telnetd
+  180 root        948 S   ledctrl
+  190 root        272 S   if_traffic
+  192 root        908 S   wan_connect
+  222 root        340 S   lld2d br0
+  243 root        776 S   pppd vlan2
+  400 root       1036 S   dnsmasq -z br0 -n -o -u root -r /var/resolv.conf -H /
+  414 root        896 S   /usr/sbin/udhcpd /tmp/udhcpd.conf
+  464 root        392 S   /bin/radvd -C /var/radvd.conf -d 1
+  940 root       1440 S   /usr/local/samba/sbin/nmbd
+ 1093 root       1500 S   /usr/local/samba/sbin/smbd
+ 1250 root        516 S   /usr/sbin/conn_log
+ 5759 guest       496 S   -sh
+ 8901 guest       488 S   -sh
+ 9652 guest       344 R   ps
+}}}
+
+= Hacks =
+== Enable telnet ==
+Go to http://belkin/ver.htm and set "Start telnetd for debug" parameter to 1. You will also need to add telnetd binary to firmware image or recompile busybox with telnetd applet.
+
+I will upload my modified firmware image as soon as I have find some clean way to get root user access.

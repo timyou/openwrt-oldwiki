@@ -1,0 +1,326 @@
+'''Airlink101 AR670W'''
+= Hardware =
+== Serial Port ==
+This model has a populated 5-pin header that exposes a serial port. The pins are listed below:
+||Pin1||Rx||
+||Pin2||ABSENT||
+||Pin3||3.3V||
+||Pin4||GND||
+||Pin5||Tx||
+
+If this doesn't work try to swap Tx and Rx.
+Serial port settings are: 
+57600 8N1 
+Hardware Flow Control : No    
+Software Flow Control : No
+The bootloader is u-boot.
+
+= Firmware =
+== Boot Log ==
+{{{
+U-Boot 1.1.3 (Oct  3 2007 - 16:02:26) Build 001
+
+Board: RT2880 DRAM:  32 MB
+	twe0 set to <NULL>
+	toe0 set to <NULL>
+	Set up sector start address BC400000
+*** Warning - bad CRC, using default environment
+
+============================================ 
+ASIC -VerB/C (MAC to Phy Mode)
+DRAM COMPONENT=128Mbits 
+DRAM BUS=32BIT 
+Total memory = 32Mbytes
+Date:Oct  3 2007  Time:16:02:26
+============================================ 
+
+Eth0 (10/100-M)
+
+
+
+Hit any key to stop autoboot:  0 
+## Booting image at bc440000 ...
+   Image Name:   7zip Linux Kernel
+   Created:      1970-01-01   0:00:00 UTC
+   Image Type:   MIPS Linux Kernel Image (lzma compressed)
+   Data Size:    -1 Bytes = 4096 MB
+   Load Address: 8a000000
+   Entry Point:  8a000000
+   Uncompressing Kernel Image with LZMA ... OK
+
+Starting kernel ...
+
+
+THIS IS ASIC - VERSION B
+ramsize = 32 MBytes
+rambase not set, set to default (0x08000000)
+MEMORY DESCRIPTOR dump:
+[0,8a21d2a0]: base<0a000000> size<02000000> type<Free RAM memory>
+
+ The CPU feqenuce set to 266 MHz
+CPU revision is: 0001906c
+icache: sets:256, ways:4, linesz:16 ,total:16384, waybit:12, flags:0x0
+dcache: sets:256, ways:4, linesz:16 ,total:16384, waybit:12, flags:0x0
+i waysize = 4096, d waysize = 4096, i sets= 256, d sets=256
+Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 16kB, 4-way, linesize 16 bytes.
+[setup_scache]:1032
+Linux version 2.4.30 (joanw@enzo) (gcc version 3.3.5) #1 Fri Jan 25 18:25:27 CST 2008
+Determined physical RAM map:
+ memory: 02000000 @ 0a000000 (usable)
+On node 0 totalpages: 49152
+zone(0): 49152 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: console=ttyS1,57600n8 root=/dev/mtdblock1 noinitrd
+cause = f080822c, status = 1000be00
+calculating r4koff... 002896a0(2660000)
+CPU frequency 266.00 MHz
+Using 133.000 MHz high precision timer.
+Calibrating delay loop... 265.42 BogoMIPS
+Memory: 28472k/32768k available (1678k kernel code, 4296k reserved, 100k data, 76k init, 0k highmem)
+Dentry cache hash table entries: 32768 (order: 6, 262144 bytes)
+Inode cache hash table entries: 16384 (order: 5, 131072 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 16384 (order: 4, 65536 bytes)
+Page-cache hash table entries: 65536 (order: 6, 262144 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+squashfs: version 3.1 (2006/08/19) Phillip Lougher
+pty: 256 Unix98 ptys configured
+Ralink RT2880 gpio driver initialized
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0x300500 (irq = 9) is a 16550A
+ttyS01 at 0x300c00 (irq = 8) is a 16550A
+HDLC line discipline: version $Revision: 1.1.1.1 $, maxframe=4096
+N_HDLC line discipline registered.
+RA2880 Ethernet Driver Initilization. v1.01  128 rx/tx descriptors allocated!
+PPP generic driver version 2.4.2
+FLASH_API: MAN_ID=1 DEV_ID=22F9 SIZE=4MB
+ Amd/Fujitsu Extended Query Table v1.1 at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling fast programming due to code brokenness.
+Flash device: 0x400000 at 0xbc400000
+ELBOX Physically mapped flash: squashfs filesystem found at block 896
+Creating 8 MTD partitions on "ELBOX Physically mapped flash":
+0x000e0020-0x002cc020 : "rootfs"
+0x00040000-0x003e0000 : "upgrade"
+0x003f0000-0x00400000 : "rgdb"
+0x00030000-0x00040000 : "bdcfg"
+0x003e0000-0x003f0000 : "langpack"
+0x00000000-0x00400000 : "flash"
+0x00000000-0x00030000 : "Boot"
+0x00030000-0x00032000 : "Boot Config"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+Register ARP FLOOD sysctl entry successes!
+IP: routing cache hash table of 2048 buckets, 16Kbytes
+TCP: Hash tables configured (established 16384 bind 32768)
+Linux IP multicast router 0.06 plus PIM-SM
+ip_conntrack version 2.1 (1536 buckets, 12288 max) - 308 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+ipt_time loading
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+Register Bridge port access successes!
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+Load RT2880 Timer Module(Wdg/Soft)
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing prom memory: 0kb freed
+Freeing unused kernel memory: 76k freed
+console started
+trying to start /sbin/init
+init started:  BusyBox v1.00 (2008.01.25-10:28+0000) multi-call binary
+Starting pid 10, console /dev/tts/1: '/etc/init.d/rcS'
+Algorithmics/MIPS FPU Emulator v1.5
+[/etc/init.d/S03config.sh]
+Mounting proc and var ...
+Start xmldb ...
+[/etc/scripts/misc/profile.sh] get ...
+[/etc/scripts/misc/defnodes.sh] ...
+[/etc/defnodes/S10setext.sh] ...
+PHP [/etc/defnodes/S11setnodes.php] ...
+PHP [/etc/defnodes/S12features.php] ...
+PHP [/etc/defnodes/S13flashspeed.php] ...
+PHP [/etc/defnodes/S20setnodes.php] ...
+cat: /etc/config/langpack: No such file or directory
+mount: 
+Cannot read /etc/fstab: No such file or directory
+PHP [/etc/defnodes/S40brand.php] ...
+[/etc/scripts/misc/defnodes.sh] Done !!
+[/etc/templates/timezone.sh] ...
+[/etc/templates/logs.sh] ...
+[/var/run/logs_run.sh] ...
+IC-Plus PHY Init...ok
+GDMA1_FWD_CFG = 10000
+rt2880_eth_setup: DSP_EN OFF version driver
+Set name-type for VLAN subsystem. Should be visible in /proc/net/vlan/config
+[/etc/templates/webs.sh] start ...
+[/var/run/webs_start.sh] ...
+Starting HTTPD ...
+[/etc/init.d/S03config.sh] done!
+[/etc/init.d/S10system.sh]
+start fresetd ...
+Factory reset time : 5 secs
+System reset time  : 3 secs
+WPS command : [/etc/templates/wps.sh pbc &]
+start scheduled ...
+[/etc/templates/scheduled.sh] start ...
+setup layout ...
+[/etc/scripts/layout.sh] start ...
+[/var/run/layout_start.sh] ...
+Start router layout ...
+eth0.0: Setting MAC address to  00 1d 6a ca 60 63.
+device eth0 entered promiscuous mode
+VLAN (eth0.0):  Setting underlying device (eth0) to promiscious mode.
+eth0.2: Setting MAC address to  00 1d 6a ca 60 64.
+VLAN (eth0.2):  Underlying device (eth0) has same MAC, not checking promiscious mode.
+eth0.0: dev_set_promiscuity(master, 1)
+device eth0.0 entered promiscuous mode
+br0: port 1(eth0.0) entering learning state
+br0: port 1(eth0.0) entering forwarding state
+br0: topology change detected, propagating
+start LAN ...
+[/etc/templates/lan.sh] ...
+[/var/run/lan_start.sh] ...
+Start LAN (br0/192.168.0.202/255.255.255.0)...
+Start DHCP server (br0) ...
+DHCP server is disabled!
+Start igmp ...
+[/etc/templates/igmpproxy.sh] start ...
+[/var/run/igmpproxy_start.sh] ...
+IGMP proxy is not enabled!
+enable LAN ports ...
+start WLAN ...
+[/etc/templates/wlan.sh] start ...
+Hello from hostapd.conf
+[/var/run/wlan_start.sh] ...
+Start WLAN interface ra0 ...
+restart WLAN driver ...
+interface ra0 does not exist!
+Using /lib/modules/rt2860v2_ap.o
+2860 version : v1.6.0.0_1109 (Alpha) (2007/12/25)
+device ra0 entered promiscuous mode
+ra0: attempt to add interface with same source address.
+br0: port 2(ra0) entering learning state
+br0: port 2(ra0) entering forwarding state
+br0: topology change detected, propagating
+br0: port 2(ra0) multicast bandwidth 900kbps
+Configuration file: /var/run/hostapd.ra0.conf
+Using interface ra0 with hwaddr 00:1d:6a:ca:60:63 and ssid 'D- Link a'
+hostapd_setup_interface: return 0
+usock_handler: recv return 9, got message[RADIO_ON]
+usock_handler: unknown command [RADIO_ON]
+[/etc/templates/wps.sh] setie ...
+Start WLAN interface ra0 Done !!!
+start Guest Zone
+[/etc/templates/gzone.sh] ...
+[/etc/templates/enable_gzone.sh] ...
+start RG ...
+[/etc/templates/rg.sh] start ...
+[/var/run/rg_start.sh] ...
+Using /lib/modules/sw_tcpip.o
+REDSonic turbo net initialized
+Using /lib/modules/ifresetcnt.o
+Network interface reset count v1.0
+Using /lib/modules/ipt_string.o
+Using /lib/modules/ip_stun_func.o
+Register STUN module successes!
+sendto_unsock(/var/run/portt.unixsocket, flush)
+start DNRD ...
+[/etc/templates/dnrd.sh] ...
+[/var/run/dnrd_start.sh] ...
+Start DNRD ...
+Notice: caching turned off
+Start telnetd ...
+start UPNPD ...
+[/etc/templates/upnpd.sh] ...
+[/var/run/upnpd_start.sh] ...
+Starting UPnP ...
+[/var/run/upnp_alive.sh] ...
+start WAN ...
+Set WAN port media type 0
+[/etc/templates/wan.sh] start ...
+[/var/run/wan_start.sh] ...
+DHCP client on WAN(eth0.2) CloneMAC() ...
+start LLD2D ...
+[/etc/templates/lld2d.sh] ...
+[/var/run/lld2d_start.sh] ...
+Start LLD2 daemon ...
+start igmpproxy ...
+[/etc/templates/igmpproxy.sh] start ...
+[/var/run/igmpproxy_stop.sh] ...
+IGMP proxy is not started !
+[/var/run/igmpproxy_start.sh] ...
+IGMP proxy is not enabled!
+[/etc/init.d/S10system.sh] done!
+rcS done!
+Starting pid 592, console /dev/tts/1: '/bin/sh'
+
+
+BusyBox v1.00 (2008.01.25-10:28+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+#
+}}}
+
+
+== U-Boot configuration ==
+The U-Boot configuration, as extracted from mtdblock05:
+{{{
+dunno how to get this yet :S
+}}}
+
+== /proc/interrupts: ==
+{{{
+           CPU0       
+  3:        185       Surfboard  eth0
+  4:       5356       Surfboard  ra0
+  6:       9957       Surfboard  timer
+  7:          0       Surfboard  rt2880_gpio
+  8:        415       Surfboard  serial
+ 10:          0       Surfboard  rt2880_timer0
+
+ERR:          0
+}}}
+
+== /proc/cpuinfo: ==
+{{{
+system type		: Palmchip Surfboard
+processor		: 0
+cpu model		: unknown V6.12
+BogoMIPS		: 265.42
+wait instruction	: no
+microsecond timers	: yes
+tlb_entries		: 16
+extra interrupt vector	: yes
+hardware watchpoint	: no
+VCED exceptions		: not available
+VCEI exceptions		: not available
+}}}
+
+== /proc/mtd: ==
+{{{
+mtd0: 00400000 00010000 "ELBOX Physically mapped flash"
+mtd1: 001ec000 00010000 "rootfs"
+mtd2: 003a0000 00010000 "upgrade"
+mtd3: 00010000 00010000 "rgdb"
+mtd4: 00010000 00010000 "bdcfg"
+mtd5: 00010000 00010000 "langpack"
+mtd6: 00400000 00010000 "flash"
+mtd7: 00030000 00010000 "Boot"
+mtd8: 00002000 00010000 "Boot Config"
+
+}}}
+
+----
+
+CategoryModel

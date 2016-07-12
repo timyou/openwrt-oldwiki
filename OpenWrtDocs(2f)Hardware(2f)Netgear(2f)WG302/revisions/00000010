@@ -1,0 +1,188 @@
+= Installation =
+ *Prepare TFTP Server with zImage and root filesystem (sqashfs or jffs2)
+ *Connect PC to wg302 with serial cable
+ *Start termianl emulator (Hyperterm, cu, etc..) with 9600 8n1
+ *Wait for message 
+{{{
+ Executing boot script in 10.000 seconds - enter ^C to abort
+}}}
+ *Interrupt boot with Control-C
+ *Clear flash with 
+{{{
+ RedBoot> fis init -f
+}}}
+ *configure own IP and IP of tftp server
+{{{
+ RedBoot> ip_address -l <local_ip_address> -h <server_address>
+}}}
+ *load kernel from tftp server
+{{{
+ RedBoot> load -r -b %{FREEMEMLO} openwrt-ixp4xx-2.6-zImage 
+}}}
+ *write kernel to flash
+{{{
+ RedBoot> fis create rootfs
+}}}
+ *load root filesystem  from tftp server
+{{{
+ RedBoot> load -r -b %{FREEMEMLO} openwrt-ixp4xx-2.6-squashfs.img 
+}}}
+ *write root filesystem to flash
+{{{
+ RedBoot> fis create -r  0x0001fc00 -l 0x620000 rootfs
+}}}
+ 0x620000 is chosen to fill up the whole remaining space on flash - this can be determined with  "fis free" before writing rootfs to flash:
+{{{
+RedBoot> fis free
+  0x50220000 .. 0x507C0000
+}}}
+ *change boot script with fconfig (list fconfig setting with "fconfig -l")
+{{{
+ Boot script:
+ .. fis load -b 0x01600000 kernel
+ .. exec 0x01600000
+}}}
+ *Reboot
+{{{
+ RedBoot> reset
+}}}
+= Boot Loader Messages =
+{{{
++Ethernet eth0: MAC address 00:09:5b:b7:05:13
+IP: 192.168.0.35/255.255.255.0, Gateway: 0.0.0.0
+Default server: 192.168.0.36, DNS server IP: 0.0.0.0
+
+RedBoot(tm) bootstrap and debug environment [ROM]
+Red Hat certified release, version 1.92 - built 10:44:29, Apr  9 2004
+
+Platform: IXDP425 Development Platform (XScale)
+Copyright (C) 2000, 2001, 2002, Red Hat, Inc.
+
+RAM: 0x00000000-0x10000000, 0x0001f9b8-0x0ffd1000 available
+FLASH: 0x50000000 - 0x50800000, 64 blocks of 0x00020000 bytes each.
+
+Bootcode Version 1.9 2004/04/08
+== Executing boot script in 10.000 seconds - enter ^C to abort
+RedBoot> fis load -b 0x01600000 kernel
+RedBoot> exec 0x01600000
+Using base address 0x01600000 and length 0x000e3f9c
+Uncompressing Linux............................................................... done, booting the kernel.
+}}}
+= Linux Boot Messages =
+Attention - the Linux kernel boots at 115200 bps. You have to adjust your terminal
+{{{
+Linux version 2.6.19.2 (nbd@ds10) (gcc version 4.1.2) #12 Fri Jun 1 16:03:20 CEST 2007
+CPU: XScale-IXP42x Family [690541f1] revision 1 (ARMv5TE), cr=000039ff
+Machine: Intel IXDP425 Development Platform
+Warning: bad configuration page, trying to continue
+Memory policy: ECC disabled, Data cache writeback
+CPU0: D VIVT undefined 5 cache
+CPU0: I cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+CPU0: D cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+Built 1 zonelists.  Total pages: 4064
+Kernel command line: root=/dev/mtdblock2 rootfstype=squashfs,jffs2 noinitrd console=ttyS0,115200 init=/etc/preinit
+PID hash table entries: 64 (order: 6, 256 bytes)
+Dentry cache hash table entries: 2048 (order: 1, 8192 bytes)
+Inode-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Memory: 16MB = 16MB total
+Memory: 14212KB available (1740K code, 166K data, 80K init)
+Mount-cache hash table entries: 512
+CPU: Testing write buffer coherency: ok
+NET: Registered protocol family 16
+IXP4xx: Using 16MiB expansion bus window size
+PCI: IXP4xx is host
+PCI: IXP4xx Using direct access for memory space
+PCI: bus0: Fast back to back transfers enabled
+dmabounce: registered device 0000:00:02.0 on pci bus
+NET: Registered protocol family 2
+IP route cache hash table entries: 128 (order: -3, 512 bytes)
+TCP established hash table entries: 512 (order: -1, 2048 bytes)
+TCP bind hash table entries: 256 (order: -2, 1024 bytes)
+TCP: Hash tables configured (established 512 bind 256)
+TCP reno registered
+NetWinder Floating Point Emulator V0.97 (double precision)
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+Registering mini_fo version $Id$
+JFFS2 version 2.2. (NAND) (C) 2001-2006 Red Hat, Inc.
+io scheduler noop registered
+io scheduler deadline registered (default)
+IXP4xx Watchdog Timer: heartbeat 60 sec
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+serial8250.0: ttyS0 at MMIO 0xc8000000 (irq = 15) is a XScale
+serial8250.0: ttyS1 at MMIO 0xc8001000 (irq = 13) is a XScale
+IXP4XX Q Manager 0.2.1 initialized.
+IXP4XX NPE driver Version 0.3.0 initialized
+ixp4xx_mac driver 0.3.1: eth0 on NPE-B with PHY[0] initialized
+ixp4xx_mac driver 0.3.1: eth1 on NPE-C with PHY[1] initialized
+ixp4xx_crypto 0.0.1 registered successfully
+IXP4XX-Flash.0: Found 1 x16 devices at 0x0 in 16-bit bank
+ Intel/Sharp Extended Query Table at 0x0031
+Using buffer write method
+cfi_cmdset_0001: Erase suspend on write enabled
+Searching for RedBoot partition table in IXP4XX-Flash.0 at offset 0x7e0000
+7 RedBoot partitions found on MTD device IXP4XX-Flash.0
+Creating 7 MTD partitions on "IXP4XX-Flash.0":
+0x00000000-0x00060000 : "RedBoot"
+0x00060000-0x00160000 : "kernel"
+0x00160000-0x00240000 : "rootfs"
+0x00220000-0x00240000 : "rootfs_data"
+0x00240000-0x007c0000 : "unallocated"
+0x007c0000-0x007c1000 : "RedBoot config"
+0x007c1000-0x007c2000 : "Config backup"
+mtd: partition "Config backup" doesn't start on an erase block boundary -- force read-only
+0x007e0000-0x00800000 : "FIS directory"
+i2c /dev entries driver
+ip_conntrack version 2.4 (128 buckets, 1024 max) - 248 bytes per conntrack
+ip_tables: (C) 2000-2006 Netfilter Core Team
+TCP westwood registered
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+Bridge firewalling registered
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+drivers/rtc/hctosys.c: unable to open rtc device (rtc0)
+Time: OSTS clocksource has been installed.
+VFS: Mounted root (squashfs filesystem) readonly.
+Freeing init memory: 80K
+Warning: unable to open an initial console.
+- preinit -
+switching to jffs2
+jffs2: Too few erase blocks (1)
+jffs2 not ready yet; using ramdisk
+mini_fo: using base directory: /
+mini_fo: using storage directory: /tmp/root
+- init -
+init started:  BusyBox v1.4.2 (2007-06-01 16:02:06 CEST) multi-call binary
+
+Please press Enter to activate this console. eth0: NPE-B not running
+eth0: NPE-B not running
+eth0: NPE-B not running
+jffs2: Too few erase blocks (1)
+
+
+
+BusyBox v1.4.2 (2007-06-01 16:02:06 CEST) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (7.06) -----------------------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:/#     
+}}}
+= Open Issues =
+*Error Messages about NPE-B on boot:
+{{{
+eth0: NPE-B not running
+eth0: NPE-B not running
+eth0: NPE-B not running
+}}}
+ Reason: unclear. Maybe some firmware missing?
+= Caveats =
+ *When opening the case, be very careful when sperating the upper from the lower half. The internal antenna pigtails are quite short and can be ripped out of the plug in the rear of the case.

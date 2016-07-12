@@ -1,0 +1,11 @@
+Hardware identification :
+
+{{{
+boardtype=bcm94710r4
+boardnum=100
+}}}
+----
+ CategoryModel
+
+----------
+ This device uses AMD flash chip. For the desperate ones that want to try PIN short trick (trying to burn device completely) , try shorting pins 9-10 . It did trick for me ..

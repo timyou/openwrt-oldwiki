@@ -1,0 +1,83 @@
+=== Hardware ===
+
+RB433 and RB433AH are rather similar boards, except for the microSD slot (RB433AH only), CPU frequency (300 vs. 680 MHz) and RAM size (64 vs. 128 MB).
+
+==== RB433 ====
+http://routerboard.com/img/rb433s.jpg
+[http://www.routerboard.com/pdf/rb433.pdf Datasheet]
+
+==== RB433AH ====
+http://routerboard.com/img/rb433AHm.jpg
+[http://routerboard.com/pdf/rb433ah.pdf Datasheet]
+
+=== Netboot ===
+
+The bootloader of RB433 is able to load an image in elf format via BOOTP into RAM and execute it.
+
+==== Build the Target ====
+You need to get svn trunk. Choose "Target System" == "Atheros AR71xx", "Target Images" == "ramdisk". Build it.
+Copy '''bin/openwrt-ar71xx-vmlinux-initramfs.elf''' into the tftpd directory, e.g. into '''/tftpboot/rb433.netboot'''.
+
+==== Setup the Host ====
+You need BOOTP and TFTP server on your host machine, e.g. '''dnsmasq''' and '''tftpd-hpa'''.
+
+===== dnsmasq Configuration =====
+
+Changes in /etc/dnsmasq.conf:
+
+ * allow a DHCP range, e.g. {{{ dhcp-range=192.168.6.100,192.168.6.119 }}}
+ * allocate an IP address to the board, e.g. {{{ dhcp-host=00:0c:42:XX:XX:XX,192.168.6.101 }}} (replace the XX with the MAC address of your board!)
+ * set filename (produced above) and tftpd server for BOOTP, e.g. {{{ dhcp-boot=/tftpboot/rb433.netboot,boothost,192.168.6.1 }}}
+
+===== Start tftpd server =====
+May be already done by (x)inetd, for '''tftpd-hpa''' I had to execute:
+{{{ in.tftpd -l }}}
+
+==== Setup the Target ====
+
+ * Connect to the serial port with a null modem cable (115200, 8N1).
+ * Press a key shortly after powering the board.
+ * Press '''o''' to change the boot device 
+ * Press '''e''' to boot from ethernet in the future.
+ * Press '''x''' to leave setup (o-e-x is needed only once, the boot method is saved in non-volatile memory)
+
+If everything is setup correctly it should look like:
+{{{
+RouterBOOT booter 2.16
+
+RouterBoard 433AH
+
+CPU frequency: 680 MHz
+  Memory size: 128 MB
+
+Press any key within 2 seconds to enter setup..
+trying bootp protocol.......... OK
+Got IP address: 192.168.6.101
+resolved mac address 4E:80:00:00:00:00
+Gateway: 192.168.6.1
+transfer started ................................... transfer ok, time=7.16s
+setting up elf image... OK
+jumping to kernel code
+Linux version 2.6.26.7 (joerga@thinkpad) (gcc version 4.1.2) #2 Mon Nov 10 11:23:37 CET 2008
+console [early0] enabled
+...
+}}}
+
+=== Switch setup ===
+
+==== Ethernet Jacks ====
+The ethernet jacks are mapped to port numbers of the IP175C switch (looking at the front of the board):
+{{{
+[ port 4 (PoE)] ( serial ) [port 1] [port 2]
+}}}
+Currently (svn trunk r13124) eth0 is mapped onto port4, while eth1 uses port1 and port2. Port1 and Port2 are not switched in the default config.
+If you want this behaviour, you need kmod-switch with phorn's patches and
+{{{
+uci set network.0.vlan1="1 2 5*u"
+/etc/init.d/network restart
+}}}
+
+=== Useful Links ===
+ * [http://rb1xx.ozo.com/doku.php#netboot_howto Netboot for RB1xx]
+ * [http://inst.eecs.berkeley.edu/~pathorn/ip175c/ phorn's patches for IP175C support with kmod-switch and swconfig]
+ * [http://forum.openwrt.org/viewtopic.php?pid=76183 a thread about RB433, IP175C and kmod-switch]

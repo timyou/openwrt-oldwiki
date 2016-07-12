@@ -1,0 +1,23 @@
+=== Hardware ===
+http://www.usr.com/products/networking/router-product.asp?sku=USR8200
+
+The USR8200 is a non-wireless router, advertised as a Firewall/VPN. This single board network processor consists of an Intel® IXP422 XScale®  processor operating at 266MHz, 64Mbytes of SDRAM, and 16Mbytes of Flash. Peripherals include one 10/100 Base-TX Ethernet "WAN" port with crypto acceleration, and 4 10/100 Base-Tx Ethernet ports on a Marvell switch. The router also has a FireWire port, 2 USB2.0 ports and internally, an RS-232 serial ports (at 5V) and a JTAG port.
+
+== Features ==
+ 1. Intel® XScale® IXP422 266MHz Processor
+ 1. 64Mbytes SDRAM
+ 1. 16Mbytes Flash
+ 1. 10/100 Base-TX Ethernet "WAN" Port
+ 1. 10/100 Base-TX 4-port switch
+ 1. IEEE1394 FireWire port
+ 1. 1 RS-232 Serial Port (internal)
+ 1. Battery Powered Real Time Clock
+ 1. Dual Type A USB 2.0 Host Ports
+== Installing OpenWRT ==
+TBC
+== Hardware Hacking ==
+Although this router has no wireless support, there is tracking and pads on the circuit board for a mini-PCI card, which may allow a wireless card to be added. Work is in progress to determine if this is feasible.
+----
+ . CategoryModel ["CategoryIXP4xxDevice"]
+----
+["CategoryIXP4xxDevice"]

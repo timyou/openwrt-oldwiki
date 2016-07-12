@@ -1,0 +1,5 @@
+== Actiontec ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''boot_wait''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Status''' ||
+||GT701-WG || ||[http://focus.ti.com/general/docs/bcg/bcggencontent.tsp?templateId=6116&navigationId=11917&path=templatedata/cm/general/data/bcgmiddl/ar7_cpe Texas Instruments AR7] @150MHz ||4MB ||16MB ||TI ACX111 (["VLYNQ"]) || ||["ADAM2"] ||Yes || || ||[:OpenWrtDocs/Hardware/Actiontec/GT701-WG:WiP] ||
+||GT704-WG || ||[http://focus.ti.com/general/docs/bcg/bcggencontent.tsp?templateId=6116&navigationId=11917&path=templatedata/cm/general/data/bcgmiddl/ar7_cpe Texas Instruments AR7] @150MHz ||4MB ||16MB ||TI ACX111 (["VLYNQ"]) || ||["ADAM2"] ||Yes || || ||[:OpenWrtDocs/Hardware/Actiontec/GT704-WG:WiP] ||
+||MI424-WR || ||[http://www.intel.com/design/network/products/npfamily/ixp425.htm Intel IXP425] @533MHz ||8MB ||32MB ||Ralink RT2560 (mini-PCI) ||KS8995M || || ||Some ||No ||[:OpenWrtDocs/Hardware/Actiontec/MI424-WR:WiP] ||

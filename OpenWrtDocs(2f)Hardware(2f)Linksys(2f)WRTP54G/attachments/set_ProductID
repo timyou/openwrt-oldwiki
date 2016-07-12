@@ -1,0 +1,25 @@
+#! /usr/bin/perl -w
+use Fcntl qw(SEEK_SET);
+
+my $tftp = ($ARGV[0] eq "--tftp");
+shift @ARGV if($tftp);
+
+my $file = shift @ARGV;
+my $ProductID = shift @ARGV;
+print "Setting ProductID of $file to $ProductID...\n";
+
+open(F, "+<", $file) || die $!;
+
+seek(F, 0x14, SEEK_SET) || die $!;
+print F $ProductID;
+
+if($tftp)
+	{
+	print "Also setting TFTP flag.\n";
+	seek(F, 0x0b, SEEK_SET) || die $!;
+	print F "\27";
+	}
+
+close(F) || die $!;
+
+exit 0;

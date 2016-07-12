@@ -1,0 +1,117 @@
+'''Siemens SE505'''
+
+SE505 product page is now located at [http://gigaset.siemens.com/shc/0,1935,hq_en_0_15702_rArNrNrNrN_variation:-5_pageType:downloads_imagePos:0,00.html#content http://gigaset.siemens.com/shc/0,1935,hq_en_0_15702_rArNrNrNrN_variation%253A-5_pageType%253Adownloads_imagePos%253A0,00.html#content]
+
+There are currently three versions of the SE505. Only the version SE505 v1 and  SE 505 v2 are currently known to be supported by OpenWRT. The third version, SE505 v3, has not yet been reported to work.
+
+/!\ '''boot_wait is on by default on both supported versions.'''
+
+/!\ '''These routers sit via NVRAM on 192.168.2.1 during boot_wait, so You have to TFTP to that address.'''
+
+Another description (in German) and link to images of both versions can be found here: http://wiki.opennet-initiative.de/index.php/Siemens_SE505
+
+= Siemens SE505 v1 =
+The inital version (v1) is based on the Broadcom 4710 board. It has a 125MHz CPU, 4MB flash and 16MB RAM. The wireless NIC is a mini-PCI card.
+
+After several bugfixes releases from WHITE RUSSIAN (RC2) works well on this router.
+
+/!\ '''The reset button is hardwired on the Se505 v1, so there is no failsafe mode. You can set back default nvram settings by pressing reset button while turning on the router.'''
+
+/!\ '''The IP of the machine uploading firmware has to be 192.168.x.100.''' [documented under FAQ on the Siemens site]
+
+= Siemens SE505 v2 =
+The current SE505 (v2) has a 200 MHz BCM4712KPB CPU, 4MB flash and 8 MB RAM on board.
+
+There are problems getting White Russian RC5 to work on the newer hardware (hardware detection, LEDs). Whiterussian RC4 micro will work. RAM limitations will result in poor stability when using PPPOE.
+
+The PCB of the SE505 v2 looks very like the Belkin F5D7230 v1440 (2MB flash) and you can compile the Broadcom reference firmware or get serial access using the tips in http://midnightcode.org/papers/ . Hacking telnet access to the original Linux-2.4.20 firmware from Siemens http://communications.siemens.com/repository/695/69584/Gigaset_SE505_3.01.05_English.exe using http://midnightcode.org/projects/pluto/code/belky-0.5.c and a second busybox is easy. Tips: SeattleWireless:Belkin_20F5D7230_2d4 (shell on the box).
+
+'''Siemens models '''
+
+On Siemens SE505 v2 models the JTAG connector is labeled J7.
+
+{{{
+JTAG connector J7
+   2   1
+    o o
+    o o-TDO
+GND-o o-TDI
+GND-o o-TCK
+GND-o o-TMS
+  10   9
+}}}
+The serial connector is labeled J2 and has the following pinout:
+
+{{{
+serial connector J2
+       |---|
+front  | o | Rx
+ of    | o   Tx
+ the   | o   GND
+board  | o | 3.3V
+       |---|
+}}}
+Refer to the["Serial Console"]page for details on the necessary 3.3V / RS232C level shifter.
+== Add more RAM to the SE505 v2 ==
+The SE505 v2 can be easily modded to 16 MB RAM by a some soldering work... The SE505 v2 uses one 4Mx16 SDRAM chip to get the 8 MB. It seems to be fixed to 4Mx16 by the CFE. It ignores the sdram_init value in the nvram. But it has a second RAM-place on the board.
+
+TODO to get from 8MB to 16MB on the SE505 v2: to connect the address lines for the second RAM
+
+{{{
+shorten:
+  R314
+  R315
+  R316
+  R317
+  R318
+}}}
+and solder a 4Mx16 sdram on the second RAM-spot. After booting the router you should have 16MB ! :)
+
+Now do:
+
+{{{
+nvram set sdram_ncdl=0
+nvram commit
+reboot
+}}}
+to let the CFE reconfigure the timing value. This is all you have to do! It makes no sense to change in sdram_init, since it is ignored by the CFE of this router.
+
+Hint: don't solder a capacitor to C319! I soldered one and it didn't boot anymore... unsoldered it, and it worked.
+
+I do also have an SE505 v2 with one 4Mx16 and one 8Mx16-chip running stable since 40 days... but only 16MB recognized (which is already MUCH better than the original 8 MB...).
+
+TODO: If you solder 32 MB into the router (two 8Mx16 SDRAM), only 16MB are used. Boot messages of the CFE on serial also only see 16MB. Setting another sdram_init doesn't help. If anyone knows compiling the broadcom CFE, please let me know. It would be cool to boost this router to 32 MB. Since it has JTAG it is no problem to play a bit...
+
+== Add USB to your Siemens SE505 v2 ==
+On the side with the power plug you will find some 'C's
+
+- add C906 with 100µF 16Volt
+
+- add C986 with 10µF 16Volt
+
+- add U981 with an LM7805
+
+This will support the +5 Volt to your USB-Port.
+
+Go to the other side of the PCB where the antenna is placed.
+
+- add wire to F51 as Fuse
+
+- add to 'R' about 15kOhm to R723 and R724
+
+- shorten R733 R734
+
+- put an USB-Plug to J51
+
+That's all.
+
+On the software side: the SE505V2 has a OHCI controller.
+= Siemens SE505 v3 =
+SE505 v3) has a BCM4712KFB CPU, 2 x 2MB flash (AT45DB161B) and 8 MB SDRAM (M12L64164A-7T). The PCB is prepared for USB and JTAG, but doesn't have a pads for a second RAM chip.
+
+Retrofitting the JTAG and the USB interface is most likely possible. Replacing the RAM chip by a chip with 16MB or  32MB has not yet been reported to work, and it might require a new CFE. It is not known if the flash chips are supported by the current JTAG tools.
+
+Most reports suggest that there is are compatibility problems with OpenWRT in SE 505 v3.
+
+----
+ . CategoryModel

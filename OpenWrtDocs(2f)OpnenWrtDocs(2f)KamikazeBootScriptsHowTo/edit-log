@@ -1,0 +1,8 @@
+1219368091000000	00000001	SAVENEW	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		Initial page
+1219427698000000	00000002	SAVE	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		Added boot script naming convention. Added /etc/functions.sh description.
+1219429001000000	00000003	SAVE	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		Added /lib/conf/uci.sh description
+1219430074000000	00000004	SAVE	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		
+1219430262000000	00000005	SAVE	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		Added /etc/rc.common Description (last post), minor cleanup in /etc/rc.common
+1219430354000000	00000006	SAVE	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		
+1219430958000000	00000007	SAVE	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		
+1219434247000000	00000008	SAVE	OpenWrtDocs(2f)OpnenWrtDocs(2f)KamikazeBootScriptsHowTo	38.99.247.88	38.99.247.88	1217548918.49.31647		Expanded /etc/rc.common description

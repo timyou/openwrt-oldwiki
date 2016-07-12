@@ -1,0 +1,31 @@
+. /lib/config/uci.sh
+. /etc/functions.sh
+
+config_load "wifitoggle"
+local section="cfg1"
+config_get "BUTTON_NAME" "$section" "button"
+
+toggle_radio() {
+	local section="$1"
+	config_get "WIFI_RADIOSTATUS" "$section" "disabled"
+
+	case "$WIFI_RADIOSTATUS" in
+		0|"")
+			uci_set "wireless" "$section" "disabled" "1"
+			uci_commit "wireless"
+			wifi
+		;;
+		1)
+			uci_set "wireless" "$section" "disabled" "0"
+			uci_commit "wireless"
+			wifi
+		;;
+	esac
+}
+
+if [ "$BUTTON" = "$BUTTON_NAME" ] && [ $SEEN != "0" ] ; then
+	if [ "$ACTION" = "pressed" ] ; then
+		config_load "wireless"
+		config_foreach toggle_radio wifi-device
+	fi
+fi

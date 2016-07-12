@@ -1,0 +1,14 @@
+= Siemens Gigaset SX541 =
+
+The device is based on Texas Instrument AR7, so you need the AR7 port
+in OpenWrt trunk.
+
+In addition, patches which support the BRN bootloader are needed.
+Currently, the kernel starts booting and crashs, so this is definitely
+work in progress...
+
+== Serial Console ==
+
+tbd.
+----
+CategoryModel ["CategoryAR7Device"]

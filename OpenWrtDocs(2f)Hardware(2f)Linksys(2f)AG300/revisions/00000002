@@ -1,0 +1,15 @@
+= Linksys AG300 =
+Bootloader: ["ADAM2"]
+
+== Picture ==
+attachment:ag%33%30%30brd.jpg
+
+== Serial console ==
+attachment:ag%33%30%30port.jpg
+
+Configure teminal with 38400 bauds, 8 bits, no parity, 1 stop bit (38400 8N1), hardware and software flow control both disabled.
+
+== Telnet/SSH ==
+This router inherently supports both telnet and ssh, however does not bring you to a shell, but a poorly coded proprietary CLI (only half the commands work) I suspect there is a way to get to a shell from this, but I am yet to find it.
+----
+["CategoryAR7Device"]

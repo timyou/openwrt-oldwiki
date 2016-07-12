@@ -1,0 +1,377 @@
+== D-Link DIR-320 ==
+
+=== Hardware ===
+
+{{{
+CPU : Broadcom BCM5354KFBG
+Flash : Spansion S29AL032D (4Mbytes)
+RAM : 32Mbytes SAMSUNG 
+Switch : ?
+Wi-Fi : BCM4318
+Serial : yes
+USB : yes
+JTAG : yes
+}}}
+
+=== Serial pinout ===
+
+{{{
+[x] : TX
+[x] : GND
+[x] : VCC 3.3V
+[ ]
+[x] : RX
+}}}
+
+=== BootLog ===
+Decompressing...........done
+
+
+CFE version 1.0.37 for BCM947XX (32bit,SP,LE)
+Build Date: Thu Jul 19 10:53:24 CST 2007 (root@redhat9)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena
+Initializing Devices.
+Boot partition size = 262144(0x40000)
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 4.150.3.0
+CPU type 0x29029: 240MHz
+Total memory: 32768 KBytes
+
+Total memory used by CFE:  0x80300000 - 0x803C0720 (788256)
+Initialized Data:          0x80337730 - 0x8033AE50 (14112)
+BSS Area:                  0x8033AE50 - 0x8033C720 (6352)
+Local Heap:                0x8033C720 - 0x803A0720 (409600)
+Stack Area:                0x803A0720 - 0x803C0720 (131072)
+Text (code) segment:       0x80300000 - 0x80337730 (227120)
+Boot area (physical):      0x003C1000 - 0x00401000
+Relocation Factor:         I:00000000 - D:00000000
+
+alpha bootcode ver 0.1.2
+cmd = ifconfig eth0 -addr=192.168.0.1 -mask=255.255.255.0
+We disable the arp for self.
+We disable the arp for self.
+Device eth0:  hwaddr 00-1B-11-34-0B-24, ipaddr 192.168.0.1, mask 255.255.255.0
+        gateway not set, nameserver not set
+cmd = go;
+cmd = load -raw -addr=0x803c0720 -max=0x3a0000 :
+Loader:raw Filesys:tftp Dev:eth0 File:: Options:(null)
+Loading: Failed.
+Could not load :: Timeout occured
+Dest=80001000, source =803c0720, filename=flash1.trx
+image_head_Check OK
+magic = 20040220
+image size = 3563552
+devname = /dev/mtdblock/2
+digest check OK!!
+insize = 1048576, out size =8388608
+uncompressed size = 2232320
+lzma decompress success !
+Closing network.
+Starting program at 0x80001000
+CPU revision is: 00029029
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 16kb, linesize 16 bytes (2 ways)
+Linux version 2.4.20 (tommy@enzo) (gcc version 3.2.3 with Broadcom modifications) #1 Wed Sep 10 13:25:05 CST 2008
+no need to call nvram_init()
+Setting the PFC to its default value
+Determined physical RAM map:
+ memory: 02000000 @ 00000000 (usable)
+On node 0 totalpages: 8192
+zone(0): 8192 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock1 noinitrd console=ttyS0,115200
+CPU: BCM5354 rev 3 at 240 MHz
+Calibrating delay loop... 237.56 BogoMIPS
+Memory: 30004k/32768k available (1957k kernel code, 2764k reserved, 132k data, 68k init, 0k highmem)
+Dentry cache hash table entries: 4096 (order: 3, 32768 bytes)
+Inode cache hash table entries: 2048 (order: 2, 16384 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+PCI: no core
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xb8000300 (irq = 3) is a 16550A
+ttyS01 at 0xb8000400 (irq = 0) is a 16550A
+HDLC line discipline: version $Revision$, maxframe=4096
+N_HDLC line discipline registered.
+PPP generic driver version 2.4.2
+PPP MPPE Compression module registered
+SCSI subsystem driver Revision: 1.00
+kmod: failed to exec /sbin/modprobe -s -k scsi_hostadapter, errno = 2
+kmod: failed to exec /sbin/modprobe -s -k scsi_hostadapter, errno = 2
+ Amd/Fujitsu Extended Query Table v1.1 at 0x0040
+ELBOX Physically mapped flash: Swapping erase regions for broken CFI table.
+number of CFI chips: 1
+Flash device: 0x400000 at 0x1fc00000
+ELBOX Physically mapped flash: squashfs filesystem found at block 960
+Creating 8 MTD partitions on "ELBOX Physically mapped flash":
+0x000f0080-0x003a6080 : "rootfs"
+0x00040000-0x003e0000 : "upgrade"
+0x00030000-0x00040000 : "rgdb"
+0x003f6000-0x003f8000 : "bdcfg"
+0x003e0000-0x003f0000 : "langpack"
+0x00000000-0x00400000 : "flash"
+0x00000000-0x00030000 : "Boot"
+0x003f8000-0x00400000 : "nvram"
+usb.c: registered new driver usbdevfs
+usb.c: registered new driver hub
+ehci_hcd 00:03.1: PCI device 14e4:471a
+ehci_hcd 00:03.1: irq 6, pci mem b8003800
+usb.c: new USB bus registered, assigned bus number 1
+ehci_hcd 00:03.1: illegal capability!
+PCI: 00:03.1 PCI cache line size set incorrectly (0 bytes) by BIOS/FW, correcting to 32
+ehci_hcd 00:03.1: USB 0.0 enabled, EHCI 1.00, driver 2003-Dec-29/2.4
+hub.c: USB hub found
+hub.c: 2 ports detected
+host/usb-ohci.c: USB OHCI at membase 0xb8003000, IRQ 6
+host/usb-ohci.c: usb-00:03.0, PCI device 14e4:471a
+usb.c: new USB bus registered, assigned bus number 2
+hub.c: USB hub found
+hub.c: 2 ports detected
+usb.c: registered new driver acm
+acm.c: v0.21:USB Abstract Control Model driver for USB modems and ISDN adapters
+usb.c: registered new driver usblp
+printer.c: v0.13: USB Printer Device Class driver
+usb.c: registered new driver serial
+usbserial.c: USB Serial support registered for Generic
+usbserial.c: USB Serial Driver core v1.4
+Initializing USB Mass Storage driver...
+usb.c: registered new driver usb-storage
+USB Mass Storage support registered.
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+Register ARP FLOOD sysctl entry successes!
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 4096)
+Linux IP multicast router 0.06 plus PIM-SM
+ip_conntrack version 2.1 (256 buckets, 2048 max) - 344 bytes per conntrack
+ip_conntrack_pptp version 1.9 loaded
+ip_nat_pptp version 1.5 loaded
+ip_tables: (C) 2000-2002 Netfilter core team
+ipt_time loading
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.7 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+FAT: bogus logical sector size 51456
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 68k freed
+init started:  BusyBox v1.00 (2008.09.10-05:29+0000) multi-call binary
+Starting pid 15, console /dev/tts/0: '/etc/init.d/rcS'
+Algorithmics/MIPS FPU Emulator v1.5
+[/etc/init.d/S03config.sh]
+Mounting proc and var ...
+Start xmldb ...
+[/etc/scripts/misc/profile.sh] get ...
+[/etc/scripts/misc/defnodes.sh] ...
+[/etc/defnodes/S10setext.sh] ...
+PHP [/etc/defnodes/S11setnodes.php] ...
+PHP [/etc/defnodes/S12features.php] ...
+PHP [/etc/defnodes/S13flashspeed.php] ...
+PHP [/etc/defnodes/S20setnodes.php] ...
+FAT: bogus logical sector size 17990
+VFS: Can't find a valid FAT filesystem on dev 1f:05.
+SQUASHFS error: Can't find a SQUASHFS superblock on mtdblock(31,5)
+mount: Mounting /dev/mtdblock/5 on /www/locale/alt failed: Invalid argument
+PHP [/etc/defnodes/S40brand.php] ...
+[/etc/scripts/misc/defnodes.sh] Done !!
+[/etc/templates/timezone.sh] ...
+zone : 5
+gen : PST+08:00
+[/etc/templates/logs.sh] ...
+[/var/run/logs_run.sh] ...
+Using /lib/modules/wl_apsta.o
+no need to call nvram_init()
+eth0: Broadcom BCM4318 802.11 Wireless Controller 4.150.10.5
+Set name-type for VLAN subsystem. Should be visible in /proc/net/vlan/config
+[/etc/templates/webs.sh] start ...
+[/var/run/webs_start.sh] ...
+Starting HTTPD ...
+/proc/sys/net/ipv4/netfilter/ip_conntrack_tcp_timeout_established: cannot create
+[/etc/init.d/S03config.sh] done!
+[/etc/init.d/S10system.sh]
+start fresetd ...
+Factory reset time : 5 secs
+WPS command : [/etc/templates/wps.sh pbc &]
+et interface not found
+start scheduled ...
+[/etc/templates/scheduled.sh] start ...
+[/var/run/scheduled_start.sh] ...
+Start scheduled ...
+setup layout ...
+[/etc/scripts/layout.sh] start ...
+[/var/run/layout_start.sh] ...
+et interface not found
+Start router layout ...
+Using /lib/modules/et.o
+no need to call nvram_init()
+eth1: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 4.150.10.5
+eth1.6: Setting MAC address to  00 1b 11 34 0b 23.
+device eth1 entered promiscuous mode
+VLAN (eth1.6):  Setting underlying device (eth1) to promiscious mode.
+eth1.0: Setting MAC address to  00 1b 11 34 0b 22.
+eth1.8: Setting MAC address to  00 1b 11 34 0b 24.
+VLAN (eth1.8):  Underlying device (eth1) has same MAC, not checking promiscious mode.
+device eth0 entered promiscuous mode
+eth1.0: dev_set_promiscuity(master, 1)
+device eth1.0 entered promiscuous mode
+br0: port 2(eth1.0) entering learning state
+br0: port 2(eth1.0) entering forwarding state
+br0: topology change detected, propagating
+br0: port 1(eth0) multicast bandwidth 900kbps
+start LAN ...
+[/etc/templates/lan.sh] ...
+[/var/run/lan_start.sh] ...
+Start LAN (br0/192.168.0.1/255.255.255.0)...
+Start DHCP server (br0) ...
+Start igmp ...
+[/etc/templates/igmpproxy.sh] start ...
+[/var/run/igmpproxy_start.sh] ...
+Start IGMP proxy ...
+enable LAN ports ...
+Nothing to enable LAN ports!
+start WLAN ...
+[/etc/templates/wlan.sh] start ...
+[/var/run/wlan_start.sh] ...
+Start WLAN interface eth0 ...
+WPS: not found
+eth0: Numerical result out of range
+eth0: Invalid argument
+eth0: Invalid argument
+br0: port 1(eth0) entering learning state
+br0: port 1(eth0) entering forwarding state
+br0: topology change detected, propagating
+[/etc/templates/upnpd.sh] ...
+[/var/run/upnpd_start.sh] ...
+Starting UPnP ...
+[/var/run/upnp_alive.sh] ...
+Start WLAN interface eth0 Done !!!
+Configuration file: /var/run/hostapd.eth0.conf
+start Guest Zone
+[/etc/templates/gzone.sh] ...
+br0: port 1(eth0) entering disabled state
+Using interface eth0 with hwaddr 00:1b:11:34:0b:22 and ssid 'dlink'
+[/var/run/gzone_start.sh] ...
+br0: port 1(eth0) entering learning state
+br0: port 1(eth0) entering forwarding state
+br0: topology change detected, propagating
+hostapd_setup_interface: return 0
+[/etc/templates/enable_gzone.sh] ...
+[/var/run/enable_gzone_start.sh] ...
+start RG ...
+[/etc/templates/rg.sh] start ...
+[/var/run/rg_start.sh] ...
+Using /lib/modules/sw_tcpip.o
+REDSonic turbo net initialized
+imq driver loaded.
+Using /lib/modules/ifresetcnt.o
+Network interface reset count v1.0
+Using /lib/modules/ipt_string.o
+Using /lib/modules/ip_stun_func.o
+Register STUN module successes!
+sendto_unsock(/var/run/portt.unixsocket, flush)
+start DNRD ...
+[/etc/templates/dnrd.sh] ...
+[/var/run/dnrd_start.sh] ...
+Start DNRD ...
+Notice: caching turned off
+Start telnetd ...
+start UPNPD ...
+[/etc/templates/upnpd.sh] ...
+[/var/run/upnpd_stop.sh] ...
+Stopping UPNPD ...
+[/var/run/upnpd_start.sh] ...
+Starting UPnP ...
+[/var/run/upnp_alive.sh] ...
+start WAN ...
+Set WAN port media type 0
+[/etc/templates/wan.sh] start ...
+[/var/run/wan_start.sh] ...
+It is the DHCP mod start!!
+DHCP client on WAN(eth1.8) CloneMAC() ...
+802.1x authentication is disabled !
+Stop 802.1x Authentication on eth1.8...
+killall: xsupplicant: no process killed
+start LLD2D ...
+[/etc/templates/lld2d.sh] ...
+[/var/run/lld2d_start.sh] ...
+Start LLD2 daemon ...
+start Neaps ...
+[/etc/templates/neaps.sh] start ...
+[/var/run/neaps_start.sh] ...
+Start Neap Server ...
+start lpd ...
+[/etc/templates/lpd.sh] ...
+killall: lpd: no process killed
+killall: rawlpd: no process killed
+shiang(1038): Set_lpd_pid(5)
+shiang_lpd:s=515, Lpd_listen_port_DYN=(null), Lpd_port_DYN=515
+shiang_Ipp:s=off, Ipp_listen_port_DYN=off
+shiang_Unix:s=/var/run/lprng, Unix_socket_path_DYN=/var/run/lprng
+start igmpproxy ...
+[/etc/templates/igmpproxy.sh] start ...
+1039: the pid_str=1039 pofd 17 17!
+1039: jobQueue_Init success!
+1039: Into printer_Hotplug_Action()!
+1039: After reset pDev_Queue, we check each entries!
+[/var/run/igmpproxy_stop.sh] ...
+Stop IGMP proxy ...
+[/etc/templates/igmpproxy_helper.sh] flush ...
+[/var/run/igmpproxy_helper.sh] ...
+[/etc/templates/rg.sh] misc ...
+[/var/run/rg_misc.sh] ...
+1039: pclose!
+1039: create socket success!
+1039:The unix socket file path=/var/run/pof.d
+p9100d daemon
+server in ..
+after fork ..
+[/var/run/igmpproxy_start.sh] ...
+Start IGMP proxy ...
+start usb plugplay ...
+[/etc/init.d/S10system.sh] done!
+rcS done!
+Starting pid 1118, console /dev/tts/0: '/bin/sh'
+
+
+BusyBox v1.00 (2008.09.10-05:29+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+=== Compile image ===
+{{{
+run make menuconfig
+select target system "Broadcom BCM947xx/953xx [2.4]"
+select you need packages
+select <Exit> and "Yes"
+
+run make kernel_menuconfig
+select Memory Technology Devices (MTD) -->
+    Ram/Rom/Flash chip drivers -->>>
+        
+check all "Support X-bit buswidth"
+check all "Support X-chip flash interleave"
+
+run make
+
+}}}
+
+=== Flashing ===
+==== Serial ====
+{{{
+flash -noheader <ip address of the TFTP server>: openwrt-brcm-2.4-squashfs.trx flash1.trx
+}}}
+==== Windows ====
+[http://www.shadowandy.net/2008/06/flashing-guide-for-dir-320.htm]

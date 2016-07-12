@@ -1,0 +1,46 @@
+The Motorola '''SB4200''' is cable modem based on Broadcom BCM3345 chip. Ethernet and USB ports are provided. The modem is compatible with DOCSIS and EuroDOCSIS standards(?).
+
+See ["BroadcomBCM3345Port"] for general progress on porting to this SoC.
+
+= Hardware =
+
+ * Main Chip: Broadcom QAMLink® BCM3345KPB
+ * Ram: ?? MB SDRAM (hynix KOREA HY57V641620HG 0229A T-7)
+ * Flash: 2 MB (Intel TE28F160)
+
+== Connectors ==
+
+On back-side, in top-down order:
+
+ * RJ45
+ * USB
+ * Cable Coax
+ * Power
+
+== Leds ==
+
+In front panel. Green, unless otherwise stated. In top-down order:
+
+ * Power
+ * Receive
+ * Send
+ * Online
+ * Activity
+ * Standby
+
+= Software =
+By default, the SB4200 comes with a variant of VxWorks.
+
+= Accessing SB4200 =
+
+== Opening the Case ==
+
+Three annoying screws (not flatblade or phillips). In addition, the labeling of the LEDs is adhesively attached. You may either cut the adhesive or remove them (I used the latter alternative). There is also a label on the bottom that must be removed or cut.
+
+== Ethernet Access ==
+
+Standard firmware provides configuration interface using HTTP.
+
+----
+
+CategoryModel CategoryCableModem CategoryBCM33xx

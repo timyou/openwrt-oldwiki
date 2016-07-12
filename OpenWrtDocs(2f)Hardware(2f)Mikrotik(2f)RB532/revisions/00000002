@@ -1,0 +1,122 @@
+=== Hardware ===
+The RB532 is a router with three Fast Ethernetports, one supporting PoE, two MiniPci slots and a Compact Flash slot.
+The board comes with a MIPS32 4Kc based 400MHz embedded processor.
+For further information use this [http://www.routerboard.com/pdf/rb500r5ugP.pdf link].
+=== Initial Installation ===
+The following instructions are thought for use with CF cards!
+
+For the Routerboard it is necessary to build your own images. Therefor you need to get the
+development branch of OpenWRT Kamikaze and the related packages.
+The next Steps describe how to get the Buildroot and how to build an image for the Routerboard.
+
+* get the source
+The source for the buildroot is in a svn repository.
+See also [https://dev.openwrt.org/] and 
+[http://forum.openwrt.org/viewtopic.php?pid=31794#p31794].
+ {{{
+ # svn co https://svn.openwrt.org/openwrt/trunk/
+ # svn co https://svn.openwrt.org/openwrt/packages
+}}}
+After that you have 2 new directories, trunk and packages.
+
+*make an image
+{{{
+ # cd <your path to the buildroot>/trunk
+ # make menuconfig
+}}}
+Change target to rb5xx and all options you need or like to change. 
+Include all needed drivers for example Kernel drivers -> kmod-madwifi built-in for the use of Atheros wifi-cards.
+
+HINT: always try only one change in the config every time. That makes all debugging
+steps more easy. 
+
+Menuconfig is too much to explain here. To learn more about you should go through an maybe google for some of the options.
+
+For the following steps stay in the trunk directory.
+{{{
+ # make V=99
+}}}
+...wait. The option V=99 gives all debugging output. Always use this.
+
+If this step fails try svn up and do it again. If it still fails write a bug report or into the [http://forum.openwrt.org/index.php Forum].
+
+* copy the image to a CF Card
+If it worked you find your new image in trunk/bin. On default you get two jffs-images openwrt-rb532-2.6-jffs2-128k.bin and openwrt-rb532-2.6-jffs2-64k.bin.
+This file-system is useful if you ever want to bring your image to the routerboard built-in nand flash and you have the advantage that filesystem survives if you pull the plug while the board is running.
+128k is the default block-size of CF Cards so i would suggest the openwrt-rb532-2.6-jffs2-128k.bin image.
+{{{
+ # dd if=bin/openwrt-rb532-2.6-jffs2-128k.bin of=/dev/<cardreader>
+}}}
+and put the card to the board
+
+* test it
+Put the CF to the board.
+Use the serial terminal of your choice with 38400 8N1.
+If you use screen the line is:
+{{{
+ # screen /dev/<serial> 38400 8N1
+}}}
+Power it. First you get a little boot delay, so the first time
+using a board you will have to be fast to interrupt the boot process
+by pressing enter. 
+This is what you see then:
+
+{{{
+ RouterBOOT-1.5
+ What do you want to configure?
+    d - boot delay
+    k - boot key
+    s - serial console
+    o - boot device
+    u - cpu mode
+    f - try cpu frequency
+    c - keep cpu frequency
+    r - reset configuration
+    g - upgrade firmware
+    i - board info
+    p - boot protocol
+    t - do memory testing
+    x - exit setup
+ your choice:
+}}}
+
+Set the delay to about 5 seconds 
+{{{
+  your choice: d
+
+Select boot delay:
+ * 1 - 1s
+   2 - 2s
+   3 - 3s
+   4 - 4s
+   5 - 5s
+   6 - 6s
+   7 - 7s
+   8 - 8s
+   9 - 9s
+your choice: 5
+}}}
+then set the boot device by choosing 'o' then 'c'.
+{{{
+your choice: c - boot from CF
+
+RouterBOOT-1.5
+What do you want to configure?
+   d - boot delay
+   k - boot key
+   s - serial console
+   o - boot device
+   u - cpu mode
+   f - try cpu frequency
+   c - keep cpu frequency
+   r - reset configuration
+   g - upgrade firmware
+   i - board info
+   p - boot protocol
+   t - do memory testing
+   x - exit setup
+your choice:
+}}}
+then press 'x' to continue booting.
+
+If it boots correctly you can continue with configuring your OpenWRT as usual.

@@ -1,0 +1,344 @@
+= Chipset =
+The Sitecom WL-153 is based on the RDC 3211 x86 compatible chip.
+
+== Hardware Parts used ==
+Devices on bottom of board are:
+
+attachment:WL153BOT.JPG
+||<tablewidth="410px" tableheight="92px">Amount ||Type ||
+||2 ||ESMT M12L64164A-7T ||
+||1 ||RDC-R3211-G ||
+
+
+Devices on top of the board are:
+
+attachment:WL153TOP.JPG
+||<tablewidth="410px" tableheight="129px">Amount ||Type ||
+||1 ||MX29LV160BBTC-70 ||
+||1 ||RT2661T ||
+||1 ||RTL8305SC ||
+
+
+= Serial =
+Connector T1, close to the LED.
+
+ . LEDS
+RX GND TX VCC
+
+Speed is 38400.
+
+= JTAG =
+
+connector JP1
+
+The JTAG header layout is (component side, LED up, Pin1 right):
+{{{
+[TMS] [TDI] [TDO] [TCK] [GND] [Vcc]
+}}}
+
+Each JTAG pin may be redefined as a GPIO:
+||Pin JP1 || JTAG || GPIO no ||
+|| 6 || TMS || 11 ||
+|| 5 || TDI || 13 ||
+|| 4 || TDO ||  9 ||
+|| 3 || TCK || 12 ||
+|| 2 || GND || - ||
+|| 1 || Vcc || - ||
+
+(Found this by checking the PCB traces. Could someone please confirm this info?)
+
+= GPIO =
+
+The JTAG pins may be redefined as GPIO (see above). Furthermore the reset button is connected to GPIO 6.
+
+= Boot Loader =
+The bootload used is a modified and restricted Redboot:
+
+----
+{{{
+RedBoot> help
+Display/switch console channel
+   channel [<channel number>]
+Help about help?
+   help [<topic>]
+Set/change IP addresses
+   ip_address [-l <local_ip_address>] [-h <server_address>]
+Execute a Linux image
+   linux [-w timeout] [-b <base address> [-l <image length>]]
+        [-r <ramdisk addr> [-s <ramdisk length>]]
+        [-c "kernel command line"]
+Load a file
+   load [-r] [-v] [-h <host>] [-m <varies>] [-c <channel_number>]
+        [-b <base_address>] <file_name>
+cat switch value
+   switch no
+set watchdog
+   wdog no
+flash upgrade
+   flash [-s <source>][-d <destination>][-l <image length>]}}}
+----
+= Sitecom Bootlog =
+The only thing changed in the bootlog is the mac address. Other parts are as is from the original Sitecom Firmware:
+
+----
+{{{
++Ethernet eth0: MAC address XX:XX:XX:XX:XX:XX
+IP: 192.168.12.142/255.255.240.0, Gateway: 192.168.12.14
+Default server: 0.0.0.0
+RedBoot(tm) bootstrap and debug environment [ROM]
+Non-certified release, version v2_0 - built 21:05:24, Oct 17 2005
+Platform: PC (I386)
+Copyright (C) 2000, 2001, 2002, Red Hat, Inc.R1
+RAM: 0x00000000-0x000f0000, 0x00070470-0x000a0000 available
+linux -b 0x400000 -l 0x000a8f08 -s 0x0013df5e -c "console=ttyS0,38400"
+== Executing boot script in 1.000 seconds - enter ^C to abort
+RedBoot> IP: 192.168.12.142/255.255.240.0, Gateway: 192.168.12.14
+Default server: 192.168.12.148
+RedBoot>
+mem_size: 1000000
+initrd ea2000 len 13df5e
+Linux version 2.4.25-386 (root@localhost) (gcc version 3.3.1) #854 ¥| 11¤ë 24 12:10:46 CST 2005
+BIOS-provided physical RAM map:
+ BIOS-e801: 0000000000000000 - 000000000009f000 (usable)
+ BIOS-e801: 0000000000100000 - 0000000001000000 (usable)
+16MB LOWMEM available.
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+DMI not present.
+Kernel command line: console=ttyS0,38400
+No local APIC present or hardware disabled
+Initializing CPU#0
+Calibrating delay loop... 50.79 BogoMIPS
+Memory: 13012k/16384k available (1016k kernel code, 2984k reserved, 221k data, 88k init, 0k highmem)
+Checking if this processor honours the WP bit even in supervisor mode... Ok.
+Dentry cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+CPU: Cyrix Cx486SLC
+Checking 'hlt' instruction... OK.
+Checking for popad bug... OK.
+POSIX conformance testing by UNIFIX
+mtrr: v1.40 (20010327) Richard Gooch (rgooch@atnf.csiro.au)
+mtrr: detected mtrr type: none
+PCI: Using configuration type 1
+PCI: Probing PCI hardware
+PCI: Probing PCI hardware (bus 00)
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+LED & GPIO & LAN Status Driver LED_VERSION
+IA-32 Microcode Update Driver: v1.13 <tigran@veritas.com>
+Starting kswapd
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0x03f8 (irq = 4) is a 16550A
+HDLC line discipline: version $Revision: 3.7 $, maxframe=4096
+N_HDLC line discipline registered.
+RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
+loop: loaded (max 8 devices)
+r6040: RDC R6040 net driver, version 0.8 (28March2005)
+r6040: RDC R6040 net driver, version 0.8 (28March2005)
+r6040: RDC R6040 net driver, version 0.8 (28March2005)
+PPP generic driver version 2.4.2
+PPP Deflate Compression module registered
+PPP BSD Compression module registered
+MX29LV320B flash device: 200000 at ffe00000
+ Amd/Fujitsu Extended Query Table v1.0 at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling fast programming due to code brokenness.
+Creating 1 MTD partitions on "MX29LV320B flash device":
+0x00000000-0x001f0000 : "Flash Disk 1"
+MX29LV320B flash device initialized
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 1024 bind 2048)
+ip_conntrack version 2.1 (128 buckets, 1024 max) - 336 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+ipt_recent v0.2.3: Stephen Frost <sfrost@snowman.net>.  http://snowman.net/projects/ipt_recent/
+ipt_time loading
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+aaaaaaaaaaa
+bbbbbbbbbbb
+RAMDISK: Compressed image found at block 0
+Uncompressing....... <5>done
+Freeing initrd memory: 1271k freed
+VFS: Mounted root (ext2 filesystem).
+dddddddddd
+Freeing unused kernel memory: 88k freed
+run_init_process:/sbin/init, env PATH=/bin:/usr/bin:/sbin
+insmod: islp
+Please press Enter to activate this console. Sat Jan  1 00:00:00 UTC 2000
+killall: pptp.sh: no process killed
+killall: pppoe.sh: no process killed
+Initialize WLAN interface
+Using /bin/rt61ap.o
+*RT61*<7>===> RT61_init_one
+*RT61*<7>Driver version-1.0.4.0
+*RT61*<7>ra0: at 0xd5000000, VA 0xc1a55000, IRQ 12.
+*RT61*<7><=== RT61_init_one
+*RT61*<7>===> NICLoadFirmware
+*RT61*<7>NICLoadFirmware: CRC ok, ver=1.0
+*RT61*<7><=== NICLoadFirmware (src=/etc/Wireless/RT61AP/RT2661.bin, status=0)
+*RT61*<7>--> RTMPAllocAdapterBlock
+*RT61*<7><-- RTMPAllocAdapterBlock
+*RT61*<7>--> RTMPAllocDMAMemory
+*RT61*<7>TxRing[0]: total 32 entry allocated
+*RT61*<7>TxRing[1]: total 32 entry allocated
+*RT61*<7>TxRing[2]: total 32 entry allocated
+*RT61*<7>TxRing[3]: total 32 entry allocated
+*RT61*<7>TxRing[4]: total 32 entry allocated
+*RT61*<7>MGMT Ring: total 32 entry allocated
+*RT61*<7>Rx Ring: total 64 entry allocated
+*RT61*<7><-- RTMPAllocDMAMemory
+*RT61*<7><--> NICInitTxRxRingAndBacklogQueue
+*RT61*<7>--> MLME Initialize
+*RT61*<7><-- MLME Initialize
+*RT61*<7>--> PortCfgInit
+*RT61*<7><-- PortCfgInit
+*RT61*<7>--> NICInitializeAdapter
+*RT61*<7>--> NICInitializeAsic
+*RT61*<7>BBP version = 48
+*RT61*<7><-- NICInitializeAsic
+*RT61*<7><-- NICInitializeAdapter
+*RT61*<7>CountryRegion=5
+*RT61*<7>SSID[0]=Sitecom
+*RT61*<7>PhyMode=0
+*RT61*<7>I/F(ra0) TxRate=(6c,60,48,30,16,0b,04,02,00,00,00,00)
+*RT61*<7>Channel=11
+*RT61*<7>BasicRate=15
+*RT61*<7>BeaconPeriod=100
+*RT61*<7>DtimPeriod=3
+*RT61*<7>TxPower=100
+*RT61*<7>BGProtection=2
+*RT61*<7>OLBCDetection=0
+*RT61*<7>TxAntenna=0
+*RT61*<7>RxAntenna=
+*RT61*<7>TxPreamble=0
+*RT61*<7>RTSThreshold=2347
+*RT61*<7>FragThreshold=2346
+*RT61*<7>TxBurst=1
+*RT61*<7>PktAggregate=1
+*RT61*<7>TurboRate=1
+*RT61*<7>I/F(ra0) WmmCapable=0
+*RT61*<7>I/F(ra0) NoForwarding=0
+*RT61*<7>NoForwardingBTNBSSID=0
+*RT61*<7>I/F(ra0) HideSSID=0
+*RT61*<7>ShortSlot=1
+*RT61*<7>AutoChannelAtBootup=0
+*RT61*<7>IEEE8021X=0
+*RT61*<7>IEEE80211H=0
+*RT61*<7>CSPeriod=10
+*RT61*<7>I/F(ra0) AuthMode=0
+*RT61*<7>ReKeyMethod=2
+*RT61*<7>PMKCachePeriod=60000
+*RT61*<7>HSCounter=0
+*RT61*<7>AccessPolicy0=0
+*RT61*<7>WDS-Enable mode=0
+*RT61*<7>WDS-AP(00) (0)-00:00:00:00:00:00
+*RT61*<7>WDS-AP(01) (0)-00:00:00:00:00:00
+*RT61*<7>WDS-AP(02) (0)-00:00:00:00:00:00
+*RT61*<7>WDS-AP(03) (0)-00:00:00:00:00:00
+*RT61*<7>--> NICReadEEPROMParameters
+*RT61*<7>MBSSID[0] MAC=00:0c:f6:1b:06:9e
+*RT61*<7>E2PROM: Version = 1, FAE release #0
+*RT61*<7>E2PROM: G Tssi[-4 .. +4] = 255 255 255 255 - 255 -255 255 255 255, step=255, tuning=0
+*RT61*<7>E2PROM: A Tssi[-4 .. +4] = 255 255 255 255 - 255 -255 255 255 255, step=255, tuning=0
+*RT61*<7>E2PROM: RF freq offset=0x26, RF programming seq=0
+*RT61*<7><-- NICReadEEPROMParameters
+*RT61*<7>country code=128/129, RFIC=1, PHY mode=0, support 11 channels
+*RT61*<7>channel #1
+*RT61*<7>channel #2
+*RT61*<7>channel #3
+*RT61*<7>channel #4
+*RT61*<7>channel #5
+*RT61*<7>channel #6
+*RT61*<7>channel #7
+*RT61*<7>channel #8
+*RT61*<7>channel #9
+*RT61*<7>channel #10
+*RT61*<7>channel #11
+*RT61*<7>IF(ra0) RTMPSetPhyMode(=0)
+*RT61*<7>I/F(ra0) TxRate=(6c,60,48,30,16,0b,04,02,00,00,00,00)
+*RT61*<7>--> NICInitAsicFromEEPROM
+*RT61*<7>RFIC=4, LED mode=0
+*RT61*<7><-- NICInitAsicFromEEPROM
+*RT61*<7>Register WDS(virtual) interface(ra1)-00:00:00:00:00:00
+*RT61*<7>Register WDS(virtual) interface(ra2)-00:00:00:00:00:00
+*RT61*<7>Register WDS(virtual) interface(ra3)-00:00:00:00:00:00
+*RT61*<7>Register WDS(virtual) interface(ra4)-00:00:00:00:00:00
+*RT61*<7>---> ApInitialize
+*RT61*<7><--- ApInitialize
+*RT61*<7>---> ApStartUp
+*RT61*<7>IF(ra0) CapabilityInfo=401, WepStatus=1
+*RT61*<7>IF(ra0)-AP AuthMode=0, disable Pairwise Key Table
+*RT61*<7>AsicRemoveSharedKeyEntry: #0
+*RT61*<7>AsicRemoveSharedKeyEntry: #1
+*RT61*<7>AsicRemoveSharedKeyEntry: #2
+*RT61*<7>AsicRemoveSharedKeyEntry: #3
+*RT61*<7>AsicSwitchChannel(RF=4, Pwr=11) to #11, R1=0x95002ccc, R2=0x9500479a, R3=0x95069655, R4=0x950e6a0b
+*RT61*<7>UpdateBasicRateBitmap::(BasicRateBitMap=f)(82,84,8b,96,0c,12,18,24,30,48,60,6c)
+*RT61*<7>IF(ra0) MlmeUpdateTxRates (MaxDesire=54 Mbps, MaxSupport=54 Mbps, MaxTxRate=54 Mbps, Rate Switching =1)
+*RT61*<7> MlmeUpdateTxRates (RtsRate=11 Mbps, MlmeRate=1 Mbps, BasicRateBitmap=0x015f)
+*RT61*<7>MakeBssBeacon(ra0)(FrameLen=54,TimIELocateInBeacon=54,CapInfoLocateInBeacon=34)
+*RT61*<7>SW interrupt MCU (cmd=0x60, token=0xff, arg1,arg0=0x00,0x00)
+*RT61*<7>RSSI=-121, CCA=1, keep R17 at 0x30, R62=4
+*RT61*<7>--->AsicEnableBssSync(INFRA mode)
+*RT61*<7>--->Disable TSF synchronization
+*RT61*<7>LOG#0 00:0c:f6:1b:06:9e restart access point
+*RT61*<7><--- ApStartUp (sec_csr4=0x0)
+*RT61*<7>==> Set_Debug_Proc *******************
+Setup BRIDGE interface
+SIOCGIFFLAGS: No such device
+bridge br0 doesn't exist; can't delete it
+Setup bridge...
+device eth0 entered promiscuous mode
+SIOCDELRT: No such process
+device ra0 entered promiscuous mode
+ra0: attempt to add interface with same source address.
+SIOCDELRT: No such process
+br0: port 2(ra0) entering learning state
+br0: port 1(eth0) entering learning state
+br0: port 2(ra0) entering forwarding state
+br0: topology change detected, propagating
+br0: port 1(eth0) entering forwarding state
+br0: topology change detected, propagating
+SIOCDELRT: No such process
+SIOCDELRT: No such process
+SIOCDELRT: No such process
+udhcp server (v0.9.9-pre) started
+Setup WAN interface
+********** run Diagd **********
+setting: port: 31727
+running in daemon mode
+********** run GaTest **********
+/bin/init.sh: 326: /bin/agent: not found
+udhcp client (v0.9.9-pre) started
+into eth1.deconfig
+}}}
+----
+= How-To unbrick device =
+By connection serial console and network wire. Use the following steps to recover your original firmware:
+
+1.) Assign IP Address by typing (-l is address of device -h is address of tftp server)
+
+ip -l 192.168.1.105 -h 192.168.1.100
+
+2.) Load the firmware from tftp host
+
+load -r -v -b 0x100000 wl153145.bin
+
+3.) Flash the firmware (-l is the filesize in hex of file loaded with command used before)
+
+flash -s 0x100000 -d 0xffe08000 -l 0x19EDFB
+
+If you flash an OpenWRT image, check that the '''image size doesn't exceed 1998847 (0x1e7fff) byte'''!
+Otherwise you will brick your device by overwriting the bootloader.
+
+----
+ . CategoryModel ["RDCPort"] ["CategoryRDC"]

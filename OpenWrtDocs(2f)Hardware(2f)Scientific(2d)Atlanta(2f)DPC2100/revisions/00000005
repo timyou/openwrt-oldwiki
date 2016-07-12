@@ -1,0 +1,128 @@
+The Scientific-Atlanta WebStar '''DPC2100''' is cable modem based on Broadcom BCM3349 chip. Ethernet and USB ports are provided. The modem is compatible with DOCSIS and EuroDOCSIS standards(?).
+
+See ["BroadcomBCM33xxPort"] for general progress on porting to this SoC.
+
+= Hardware =
+
+ * Main Chip: Broadcom QAMLink® BCM3349KPB
+ * Ram: 8 MB SDRAM (ISSI IS42S16400B-7T A0146600E 0445)
+ * Flash: 2 MB (SPANSION S29AL016M)
+
+== Connectors ==
+
+On back-side, in left-to-right order:
+
+ * Power
+ * RJ45
+ * USB
+ * Cable Coax
+
+== Leds ==
+
+In front panel. Green, unless otherwise stated. In left-to-right order:
+
+ * PC
+ * Cable
+ * Send
+ * Receive
+ * Power
+
+= Software =
+By default, the DPC2100 comes with eCos, which is GPL
+
+Luke's DPC2100 had a sticker on the flash chip labelled: SA-DPC2100 V2.0.2R1242
+
+= Accessing DPC2100 =
+
+== Opening the Case ==
+
+Two annoying screws (not flatblade or phillips) under the front rubber feet (adhesively attached). Then you need to pull it apart a certain way...
+
+== Serial Header ==
+
+There is a 4-pin TTL-level serial header inside. However, the standard 4-pin CD-ROM cable does NOT fit it. Removing the header itself is a pain, so avoid it if possible.
+
+== Ethernet Access ==
+
+Standard firmware provides configuration interface using HTTP.
+
+= Luke's DPC2100 =
+== Boot log ==
+{{{
+BCM3349A0
+100000010346890
+MemSize: ......................... 8M
+Flash detected @0xbe000000
+
+Signature: 2100
+
+
+Broadcom BootLoader Version: 2.1.6d release Gnu
+Build Date: Apr 27 2004
+Build Time: 22:22:16
+
+Image 1 Program Header:
+   Signature: 2100
+     Control: 0005
+   Major Rev: 0003
+   Minor Rev: 0000
+  Build Time: 2004/5/11 10:19:10 Z
+ File Length: 753689 bytes
+Load Address: 80010000
+    Filename: ecram_sto.bin
+         HCS: 0740
+         CRC: 7b761252
+
+
+Image 2 Program Header:
+   Signature: 2100
+     Control: 0005
+   Major Rev: 0003
+   Minor Rev: 0000
+  Build Time: 2004/5/11 10:19:10 Z
+ File Length: 753689 bytes
+Load Address: 80010000
+    Filename: ecram_sto.bin
+         HCS: 0740
+         CRC: 7b761252
+
+
+
+Enter '1', '2', or 'p' within 2 seconds or take default...
+. .
+
+Performing CRC on Image 2...
+Detected LZMA compressed image... decompressing...
+Target Address: 0x80010000
+...........
+Decompressed length: 2883782
+
+Executing Image 2...
+
+
+ eCos - hal_diag_init
+Init device '/dev/ttydiag'
+Init tty channel: 802c50c8
+Init device '/dev/tty0'
+Init tty channel: 802c50e8
+Init device '/dev/haldiag'
+HAL/diag SERIAL init
+Init device '/dev/ser0'
+BCM 33XX SERIAL init - dev: fffe0300.2
+Set output buffer - buf: 802f7248 len: 2048
+Set input buffer - buf: 802f7a48 len: 2048
+BCM 33XX SERIAL config
+
+Reading Permanent settings from non-vol...
+Checksum for permanent settings:  0xbd9d53a4
+Settings were read and verified.
+
+
+Reading Dynamic settings from non-vol...
+Checksum for dynamic settings:  0x8e829f2e
+}}}
+At this point, the serial port goes silent.
+
+----
+
+CategoryModel CategoryCableModem CategoryBCM33xx

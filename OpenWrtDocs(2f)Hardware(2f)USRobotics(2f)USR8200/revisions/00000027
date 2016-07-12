@@ -1,0 +1,144 @@
+#pragma section-numbers off
+[[TableOfContents]]
+== Hardware ==
+http://www.usr.com/products/networking/router-product.asp?sku=USR8200
+
+The USR8200 is a non-wireless router, advertised as a Firewall/VPN. This single board network processor consists of an Intel® IXP422 XScale®  processor operating at 266MHz, 64Mbytes of SDRAM, and 16Mbytes of Flash. Peripherals include one 10/100 Base-TX Ethernet "WAN" port with crypto acceleration, and 4 10/100 Base-Tx Ethernet ports on a Marvell switch. The router also has a FireWire port, 2 USB2.0 ports and internally, an RS-232 serial port (full voltage) and a JTAG port.
+
+=== Features ===
+ 1. Intel® XScale® IXP422 266MHz Processor
+ 1. 64Mbytes SDRAM
+ 1. 16Mbytes Flash
+ 1. 10/100 Base-TX Ethernet "WAN" Port
+ 1. 10/100 Base-TX 4-port switch
+ 1. IEEE1394 FireWire port
+ 1. 1 RS-232 Serial Port (internal)
+ 1. Battery Powered Real Time Clock
+ 1. Dual Type A USB 2.0 Host Ports
+
+== Machine ID ==
+Machine ID 1762 has been registed for this board. 
+== Software ==
+The installed bootloader is "OpenRG", written by Jungo.
+=== RedBoot ===
+A custom version of !RedBoot has been built and can be loaded with the instructions on the [http://wiki.openwrt.org/OpenWrtDocs/Hardware/Actiontec/MI424-WR MI424-WR] page. The custom version for the USR8200 is attachment:redboot.bin. Once !RedBoot is installed as the bootloader, and configured, you can then install the linux kernel and rootfs image from !OpenWrt.
+
+This version detects PHYs on both Ethernet ports, but !RedBoot only uses one, eth0, which maps onto the WAN port of the USR8200.
+=== Installing OpenWRT ===
+This is a skeleton of the procedure... where 192.168.10.2 is the address of the machine which has a tftp server, and the necessary files in the right location.
+From the Jungo prompt:
+ 1. USR8200> load -u tftp://192.168.10.2/redboot.bin -r 0 
+[[BR]]''Once that finishes, you can type reboot or press reset.'' 
+[[BR]]''Connect ethernet to the WAN port.''
+[[BR]]From within RedBoot:
+ 1. RedBoot> fconfig -i
+ 1. RedBoot> fis init
+ 1. RedBoot> load -r -b %{FREEMEMLO} -h 192.168.10.2 /openwrt-ixp4xx-zImage 
+ 1. RedBoot> fis create linux 
+ 1. RedBoot> load -r -b %{FREEMEMLO} -h 192.168.10.2 /openwrt-ixp4xx-squashfs.img 
+ 1. RedBoot> fis create rootfs 
+ 1. RedBoot> reset 
+
+Plug a pc into LAN port '''4''' otherwise the Marvel 88E6060 switch will not detect any machines connected on the lan side. This is a quirk of the switch at present. There is full support for this switch coming. Should start making appearances in the 2.6.28.x kernels. See [http://forum.openwrt.org/viewtopic.php?pid=74209#74209 Lennert Buytenh's patch announcement] for details. Open a browser to http://192.168.1.1 and enjoy.
+
+=== Restoring Factory Firmware ===
+Restoring factory firmware has been done with this unit.
+
+1. You will need a either one of these types of server already setup - tftp, http, ftp.
+For this example, I have setup my tftp server on ip address 192.168.10.2 The tftp serverthat came with my distro,
+Knoppix 5.3.1, left a lot to be desired. I could not get it to work. [https://sourceforge.net/projects/tftp-server/ This one did.] If you wish to use http instead, add -m HTTP to the command. It must be capitalized. Same goes for FTP. Generally speaking, it helps to have a few ip addresses on the server machine, it will answer to requests for. On my server, I plugged in a second network card. Makes accessing the internet and serving files to a temporary subnet easier. This command makes the second card respond on either 192.168.10.x and 192.168.11.x subnets. It comes in handy when testing Lan and Wan connections. 
+
+ 1. ip addr add 192.168.10.2/24 dev eth1 
+ 1. ip addr add 192.168.11.2/24 dev eth1 
+
+2. You will need to get a special redboot, one that has been built to run from RAM.
+That can be downloaded at { to be decided }. It is named redboot-RAM.img to distinguish it from the ROM version.
+
+3. The backup image, here, will be named jungo-image.bin I used 
+[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Actiontec/MI424-WR MI424-WR]  Jose Vasconcellos' jungo-image.py to create my backup. It can do quite a bit more than just make the backup... but at the time, my tftp server was not responding to anything. I have modified it to fit the properties of the USR8200, and named it jungo-usr8200-image.py. You can get that here attachment:jungo-usr8200-image.py
+[[BR]]Here is the top portion of his code. It does have the tftp server's address hardcoded... which you'll likely need to change. I suggest doing this on a linux if you can. You can either edit the file directly, or use his cmdline parsing.
+
+This is what cmdline I used to make a backup of the firmware.[[BR]]
+./jungo-usr8200-image.py -f jungo-image.bin -u admin  -p admin -s 192.168.10.2
+
+This would be how to use it to install the redboot.bin from your server's root directory to the USR8200.[[BR]]
+./jungo-usr8200-image.py -d -w -P tftp -u admin  -p admin -s 192.168.10.2[[BR]]
+You can leave off the -w to go through dry runs, as without -w it will not attempt to write anything.
+{{{
+"""Usage: %s [options] <IP_address> [redboot.bin]
+Valid options:
+\t-h | --help: usage statement
+\t-d | --no-dump: don't create a flash dump
+\t-f | --file: use <filename> to store dump contents
+\t-u | --user: provide username (default admin)
+\t-p | --pass: provide password (default password1)
+\t-P | --proto: set transfer protocol (default tftp)
+\t-s | --server: IP address of tftp server
+\t-w | --write: initiate loading of redboot (default no modification to flash)
+\t-v | --verbose: display additional information
+\t-V | --version: display version information
+"""
+
+{...}
+
+server = ""
+HOST = "192.168.10.1"
+PORT = 8080
+user = "admin"
+#password = getpass.getpass()
+password = "admin"
+proto = "http"
+imagefile = "redboot.bin"
+dumpfile = ""
+verbose = 0
+no_dump = 0
+dumplen = 0x10000
+write_image = 0
+}}}
+
+4. There are 2 steps to restoring the factory firmware. 
+ 1. First, install the redboot that runs from RAM. 
+ 1. Once running from ram, it becomes safe to program at any address on the flash chip. 
+
+==== Load redboot-RAM.img ====
+ 1. load -h 192.168.10.2 /redboot-RAM.img 
+ 1. go                          ''Once it loads you should check for '''RAM''' in the version command.'' 
+ 1. version 
+ 1. ping -h 192.168.10.2        ''Make sure this instance also has network access with a ping command.'' 
+
+==== Restore Factory Firmware ====
+load -h 192.168.10.2 -r -b %{FREEMEMLO} /jungo-image.bin 
+ 
+fis unlock -f 0x50000000 -l 0x1000000 
+ 
+fis write -b %{FREEMEMLO} -l 0x1000000 -f 0x50000000 
+
+Some output. 
+ 
+* CAUTION * about to program FLASH 
+            at 0x50000000..0x50ffffff from 0x00161400 - continue (y/n)? y 
+... Erase from 0x50000000-0x51000000: 
+... Program from 0x00161400-0x01161400 at 0x50000000: 
+
+== Hardware Hacking ==
+Although this router has no wireless support, there is tracking and pads on the circuit board for a mini-PCI card, which may allow a wireless card to be added. Work is in progress to determine if this is feasible.
+=== USR8200 GPIO assignments ===
+|| GPIO[0] || USB-1 LED || OUTPUT ||
+|| GPIO[1] || USB-2 LED  ||  OUTPUT ||
+|| GPIO[2] || IEEE1394 LED || OUTPUT ||
+|| GPIO[3] || LAN PORT 1 LED || OUTPUT ||
+|| GPIO[4] || Yet Unknown || Yet Unknown ||
+|| GPIO[5] || Yet Unknown || Yet Unknown ||
+|| GPIO[6] || Yet Unknown || Yet Unknown ||
+|| GPIO[7] || Possibly the mini-pci || Yet Unknown ||
+|| GPIO[8] || to VIA VT6307 IEEE1394 Chip || Yet Unknown ||
+|| GPIO[9] || to VIA VT6202 USB Chip || Yet Unknown ||
+|| GPIO[10] || to VIA VT6202 USB Chip || Yet Unknown ||
+|| GPIO[11] || to VIA VT6202 USB Chip || Yet Unknown ||
+|| GPIO[12] || Reset button  || Yet Unknown ||
+== More Info / Pictures ==
+There are extensive pictures of this device at [http://home.comcast.net/~johnrw/], along with a [http://home.comcast.net/~johnrw/image/USR8200_notes.txt set of notes] on some of the investigations that the photographer did.
+----
+ . CategoryModel ["CategoryIXP4xxDevice"]
+----
+["CategoryIXP4xxDevice"]

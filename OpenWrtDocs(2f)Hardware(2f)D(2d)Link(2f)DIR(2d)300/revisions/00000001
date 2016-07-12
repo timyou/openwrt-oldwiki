@@ -1,0 +1,142 @@
+This device is identical with the http://wiki.openwrt.org/OpenWrtDocs/Hardware/Airlink/ARxxxW
+
+First you have to flash a new bootloader:
+{{{ 
+load ap61.ram
+go
+
+�+**Warning** FLASH configuration checksum error or invalid key
+Use 'fconfig -i' to [re]initialize database
+... waiting for BOOTP information
+Ethernet eth0: MAC address 00:1e:58:84:85:e2
+IP: 192.168.1.187/255.255.255.0, Gateway: 192.168.1.1
+Default server: 192.168.1.1
+
+RedBoot(tm) bootstrap and debug environment [RAM]
+production release, version "2.1.3" - built 18:43:37, Sep 20 2007
+
+Platform: ap61 (Atheros WiSOC)
+Copyright (C) 2000, 2001, 2002, 2003, 2004 Red Hat, Inc.
+Copyright (C) 2007, NewMedia-NET GmbH.
+
+Board: DLINK DIR-300
+RAM: 0x80000000-0x81000000, [0x8007ff00-0x80fe1000] available
+FLASH: 0xbfc00000 - 0xbfff0000, 64 blocks of 0x00010000 bytes each.
+DD-WRT> fconfig -i
+Initialize non-volatile configuration - continue (y/n)? y
+Run script at boot: false
+Use BOOTP for network configuration: false
+Gateway IP address: 192.168.1.1
+Local IP address: 192.168.1.10
+Local IP address mask: 255.255.255.0
+Default server IP address: 192.168.1.228
+Console baud rate: 9600
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+Update RedBoot non-volatile configuration - continue (y/n)? y
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> fis init
+About to initialize [format] FLASH image system - continue (y/n)? y
+*** Initialize FLASH Image System
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> ip_address -l 192.168.1.10 -h 192.168.1.228
+IP: 192.168.1.10/255.255.255.0, Gateway: 192.168.1.1
+Default server: 192.168.1.228
+DD-WRT> load -r -b %{FREEMEMLO} ap61.rom
+Using default protocol (TFTP)
+Raw file loaded 0x80080000-0x800a8717, assumed entry at 0x80080000
+DD-WRT> fis create -l 0x30000 -e 0xbfc00000 RedBoot
+An image named 'RedBoot' exists - continue (y/n)? y
+... Erase from 0xbfc00000-0xbfc30000: ...
+... Program from 0x80080000-0x800a8718 at 0xbfc00000: ...
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> reset
++Ethernet eth0: MAC address 00:1e:58:84:85:e2
+IP: 192.168.1.10/255.255.255.0, Gateway: 192.168.1.1
+Default server: 192.168.1.228
+        
+RedBoot(tm) bootstrap and debug environment [ROMRAM]
+production release, version "2.1.3" - built 18:43:19, Sep 20 2007
+        
+Platform: ap61 (Atheros WiSOC)
+Copyright (C) 2000, 2001, 2002, 2003, 2004 Red Hat, Inc.
+Copyright (C) 2007, NewMedia-NET GmbH.
+        
+Board: DLINK DIR-300
+RAM: 0x80000000-0x81000000, [0x80040580-0x80fe1000] available
+FLASH: 0xbfc00000 - 0xbfff0000, 64 blocks of 0x00010000 bytes each.
+DD-WRT> ^C
+DD-WRT> load -r -b %{FREEMEMLO} openwrt-atheros-vmlinux.lzma
+Using default protocol (TFTP)
+Raw file loaded 0x80040800-0x801007ff, assumed entry at 0x80040800
+DD-WRT> fis init
+About to initialize [format] FLASH image system - continue (y/n)? y
+*** Initialize FLASH Image System
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> fis create -e 0x80041000 -r 0x80041000 vmlinux.bin.l7
+... Erase from 0xbfc30000-0xbfcf0000: ............
+... Program from 0x80040800-0x80100800 at 0xbfc30000: ............
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> fis free
+  0xBFCF0000 .. 0xBFFE0000
+}}}
+{{{
+`--> bc
+obase=16
+ibase=16
+BFFE0000 - BFCF0000
+2F0000
+quit
+}}}
+{{{
+DD-WRT> load -r -b %{FREEMEMLO} openwrt-atheros-root.squashfs
+Using default protocol (TFTP)
+Raw file loaded 0x80040800-0x802207ff, assumed entry at 0x80040800
+DD-WRT> fis create -l 0x002F0000 rootfs
+... Erase from 0xbfcf0000-0xbffe0000: ...............................................
+... Program from 0x80040800-0x80220800 at 0xbfcf0000: ..............................
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> fconfig
+Run script at boot: true
+Boot script:
+Enter script, terminate with empty line
+>> fis load -l vmlinux.bin.l7
+>> exec 
+>>      
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: false
+Gateway IP address: 192.168.1.1
+Local IP address: 192.168.1.10
+Local IP address mask: 255.255.255.0
+Default server IP address: 192.168.1.228
+Console baud rate: 9600
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+Update RedBoot non-volatile configuration - continue (y/n)? y
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> reset
+[...]
+DD-WRT> fis load -l vmlinux.bin.l7
+Image loaded from 0x80041000-0x80281086
+DD-WRT> exec
+Now booting linux kernel:
+ Base address 0x80030000 Entry 0x80041000
+ Cmdline : 
+Linux version 2.6.26.2 (jan@jan) (gcc version 4.1.2) #1 Tue Aug 12 10:14:23 CEST 2008
+[...]
+}}}
+
+deselect PCI support in the kernel otherwise your image won't boot:
+{{{ 
+make kernel_menuconfig
+Machine selection  ---> [ ]   PCI support
+}}}

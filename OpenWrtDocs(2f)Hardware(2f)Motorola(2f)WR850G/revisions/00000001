@@ -1,0 +1,19 @@
+== To put OpenWRT on a Motorola WR850G: ==
+
+ * Open the WR850G.  The plastic is hard and the clips are strong - use force!
+ * Attach a serial cable to the serial connector - it's a 9-pin connector with two rows, one with 5 pins and one with 4 pins.  I recommend using a cell phone data cable - they're cheap and do the voltage conversions with no assembly required. 
+  * Pin 1 (square hole): Data out of WR850G
+  * Pin 7 (three pins over from pin 1): Data into WR850G
+  * Pin 6 (two pins down, one across from pin 1): Ground
+  * Port setting is 115200, N, 8, 1, no flow control.
+
+ * Restart the router with your serial console hooked up and ready.
+ * Hold Control-C in your terminal while it boots.  You don't need boot_wait to be on for this (but it might take a couple tries!)
+ * You should get a CFE prompt.  Type flash -noheader : flash1.trx
+ * Begin a TFTP transfer of the OpenWRT firmware to the router.
+ * When this completes, it will reboot into OpenWRT.
+ * Enjoy!
+
+(cleaned formatting; does this actually ''require'' a serial connection? - mbm)
+
+(as far as I know, it is required - unless we can calculate Motorola's CRC to make a "valid" firmware image. - nate)

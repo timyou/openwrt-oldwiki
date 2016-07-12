@@ -1,0 +1,46 @@
+#pragma section-numbers off
+[[TableOfContents]]
+= Acddon-Tech ARM8100 =
+The [http://www.addon-tech.com AddonTech] [http://www.addon-tech.com/arm8100.html ARM8100]
+is a TI AR7-based device. Thus ["AR7Port"] is compatible with these devices.
+
+== Flash Map ==
+
+||'''partition'''||'''start'''||'''end'''||'''description'''||
+||mtd0||`0x????????`||`0x????????`||unknown||
+
+Details to follow
+
+== Installing OpenWrt ==
+
+In progress
+
+== Restoring Original Firmware ==
+
+To follow
+
+== Serial Port ==
+
+There appears to be what looks like a serial port pin header, not sure about pinout yet
+
+{{{
+FLASH  RAM SoC           |
+                         |
+             1 2 3 4     |
+               JP900     |
+_________________________|
+
+       V ? ? G
+       C     N
+       C     D
+}}}
+
+It is unknown if the serial port needs a level converter chip to be used with a RS232 port.  It probably does.
+The parameters are `unknown`.
+
+=== Photos ===
+http://www.hydraservices.com/files/addontecharm8100/pcb.jpg
+http://www.hydraservices.com/files/addontecharm8100/case.jpg
+
+----
+CategoryModel ["CategoryAR7Device"]

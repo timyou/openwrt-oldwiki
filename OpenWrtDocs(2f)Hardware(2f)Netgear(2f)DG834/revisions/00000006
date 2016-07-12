@@ -1,0 +1,46 @@
+= Netgear DG834 v1 =
+== Hardware ==
+|| CPU || TI AR7 (TNETD7301GDU) ||
+|| Flash || 4 MByte (MX 29LV320ABTC-90, [http://www.mxic.com.tw/QuickPlace/hq/PageLibrary4825740B00298A3B.nsf/h_Index/BD6966A6FBA6FB8E48257428001E7D9F/?OpenDocument datasheet] ||
+|| SDRAM || 16 MByte (ISSI IS42S16800A-7T, [http://www.issi.com/pdf/42S16800A.pdf datasheet]) ||
+|| LAN MAC/PHY Switch || Marvell 88E6060-RCJ ||
+== Serial Console ==
+The serial port is JP603, it is on the LEFT side of the PCB
+
+|| Pin 1 || GND || [] ||
+|| Pin 2 || TX || () ||
+|| Pin 3 || VCC(3.3V) || () ||
+|| Pin 4 || RX || () ||
+
+== Bootloader and Installing Openwrt ==
+For more information on ADAM2 (bootloader) and how to perform an installation of openwrt see ["../DG834G"]
+== Flash Partition ==
+
+|| mtd0 || 0x900d0000,0x903e0000 || RootFS ||
+|| mtd1 || 0x90020000,0x900d0000 || Kernel ||
+|| mtd2 || 0x90000000,0x90020000 || ADAM2 ||
+|| mtd3 || 0x903e0000,0x903f0000 || Netgear firmware config ||
+|| mtd4 || 0x903f0000,0x90400000 || ADAM2 config ||
+
+In "flash memory order" so you can use mtd1+mtd0+mtd3, from 0x90020000 to  0x903f0000 to store openwrt. Remember when creating mtd5.
+
+Just remember to made backup if you want to came back to the original behaviour.
+
+|| mtd2 || 0x90000000,0x90020000 || ADAM2 ||
+|| mtd1 || 0x90020000,0x900d0000 || Kernel ||
+|| mtd0 || 0x900d0000,0x903e0000 || RootFS ||
+|| mtd3 || 0x903e0000,0x903f0000 || Netgear firmware config ||
+|| mtd4 || 0x903f0000,0x90400000 || ADAM2 config ||
+
+== And as a last resort JTAG ==
+The jtag interface is on JP102 and follow the MIPS - EJTAG 2.6 14 pin connector standard. (TESTED)
+
+||1|| TRST_N || GND ||2||
+||3|| TDI || GND ||4||
+||5|| TDO || GND ||6||
+||7|| TMS || GND ||8||
+||9|| TCK || GND ||10||
+||11|| SRST_N || KEY ||12||
+||13|| DINT || VREF ||14||
+
+I've used the buffered cable schema (wiggler) from the JTAG_Cable page but i had to add a 100pF capacitor between clk and ground just after the buffer (between the buffer and the jtag interface) to avoid problem with the clock that casued DeBrick to made a wrong address read and hang.

@@ -1,0 +1,5 @@
+== Gateworks ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''boot_wait''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Other''' ||'''Status''' ||
+||[http://www.gateworks.com/avila_gw2348_4.htm GW2348-4] ||? ||[http://www.intel.com/design/network/products/npfamily/ixp425.htm Intel IXP425] @ 533MHz ||16MB ||64MB ||N/A (4 empty mini-PCI) ||None ||N/A ||Yes ||Yes ||Optional ||CF slot ||[:OpenWrtDocs/Hardware/Gateworks/Avila GW2348 4:Kamikaze] ||
+||[http://www.gateworks.com/avila_gw2348_2.htm GW2348-2] ||? ||[http://www.intel.com/design/network/products/npfamily/ixp425.htm Intel IXP425] @ 266MHz ||8MB ||32MB ||N/A (2 empty mini-PCI) ||None ||N/A ||Yes ||Yes ||Optional || ||Kamikaze ||
+||[http://www.gateworks.com/avila_gw2347htm GW2347] ||? ||[http://www.intel.com/design/network/products/npfamily/ixp425.htm Intel IXP425] @ 266MHz ||8MB ||32MB ||N/A (1 empty mini-PCI) ||None ||N/A ||Yes ||Yes ||None || ||Kamikaze ||

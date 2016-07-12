@@ -1,0 +1,115 @@
+'''Motorola WR850G'''
+
+[[TableOfContents]]
+
+=== Hardware versions ===
+
+The WR850G has three different versions (v1, v2, v3).
+
+==== WR850G v1 ====
+The WR850G v1 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is a mini-PCI card.
+
+==== WR850G v2 ====
+The WR850G v2 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM (memory addressing wraps address to ram, so when it boots, the simple memory size routine doesn't check for address wrapping, so it reports 32Mb). The wireless NIC is integrated to the board.
+
+Note: In at least three (feagle814's, rgh12's, tl's) WR850G v2, there is 16MB of RAM onboard.  DO NOT try the 32mb enablement hack on the WR850G v2 without first verifying how much RAM you really have (see earlier paragraph on the address wrap problem)!
+
+ISSI IS42S16400B1-7T is a 8MB chip (1Mbx16x4, 64Mb total [divided by 8 = 8megabytes]).  G-Link GLT5640L16-6TC is also an 8MB chip.  If you have the ISSI IS42S16800xx-7t it is a 16MB chip (2Mbx16x4 128Mb total [divided by 8 = 16megabytes]). There are two RAM chips installed on the v2 router, the other one is on the back side of the circuitboard.  Since the Linksys wrt54gs has 32megabytes of ram (2 chips also) installed in it, and if you wanted to use the same packages as it does, then you must either change the 8MB chips to 16MB chips, or live with the fact that you will be somewhat restricted in what you can do with the smaller amount of memory available (possibly limiting what packages you can safely run). If you are really lucky, you may not have to do anything at all (if you have the 16MB chips installed already).
+
+The WR850G v2 is housed in gray plastic and sports a reverse SMA antenna connector. 
+
+/!\ Warning: Do not erase the NVRAM, at least on this version.  It doesn't seem to be rewritten by the bootloader upon reboot, as with the WRT54G. 
+
+==== WR850G v3 ====
+The WR850G v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is integrated to the board.
+
+G-Link GLT5640L16-6TC is a 8MB chip.  Your router should have two of these.  Check the bottom of the PCB for the second one.
+
+The WR850G v3 version is housed in black pastic and has a hard wired non removable (without desoldering) antenna.
+
+=== How To Enable Boot Wait ===
+
+ * Reset router to default with  [http://broadband.motorola.com/consumers/products/WR850g/downloads/Motorola_WR850G_4.03.exe firmware 4.03]
+ * Login to the router's web page and go to /frame_debug.asp
+ * Type in: nvram set boot_wait=on
+ * Type in: nvram commit
+ * Reboot and do tftp. 
+
+/!\ Some users report that boot_wait only functions for one reboot after setting it from the web interface.
+
+The WR850G boot utility always comes up as 192.168.10.1. To test this, try, set a static IP on your router and plug in to a wired port with your PC in the IP range 192.168.10.x, then in a Windows command prompt, get "ping -t 192.168.10.1" going and power cycle the router, you should get about 4 pings on 192.168.10.1 from the bootloader '''if boot_wait is set'''.
+
+=== Finding the serial ports on the WR850G ===
+First serial port:
+
+ * Open the WR850G. The plastic is hard and the clips are strong - use force! Serial is labelled RJP1, pinout as follows:
+
+{{{
+        o
+      o o - RX
+GND - o o
+      o o
+VCC - o o - TX
+}}}
+
+
+Second serial port:
+
+While the first serial port is easy to find (and described in the "non-experimental" installation section above), the second serial port is quite well hidden.  On the bottom of the board near the serial connector you'll notice there are two small black components labeled "0".  Next to them there are solder pads where you'd expect two more "0" components to go - but they're missing!  On the set of pads away from the serial connector, the second serial port signals are exposed.  Get out your fine-tipped soldering iron and solder some fine wires to the pads opposite the serial connector.  RR93 is data out of the WR, and RR94 is data in.
+
+
+
+=== Reverting an RC1 or RC2 WR850G to the original Motorola firmware ===
+ '' Note: These instructions are Windows-centered ''
+ 1. Open up a hex editor and load in the Motorola firmware (I use HHD).
+ 1. Delete the first eight bytes (everything before "HDR0") and save.
+ 1. Make sure your "boot_wait" NVRAM value is set to "on" and saved (I use "Putty" for telneting/ssh).
+ 1. Set your local machine's IP address to 192.168.10.5 (or anything between 192.168.10.2 and 192.168.10.254) and mask to 255.255.255.0.
+ 1. Open up a console window and change to the directory the Motorola firmware is in.
+ 1. Type in: "TFTP -i 192.168.10.1 PUT filename.bin" where "filename.bin" is your Motorola firmware.  '''DON'T HIT ENTER JUST YET!'''
+ 1. Unplug your WR850G, plug it back in and wait a second.
+ 1. Now hit Enter in your console window.
+ 1. Your TFTP transfer should finish in a few seconds.  '''WAIT AT LEAST 60 SECONDS FOR THE FLASH TO PROGRAM!'''
+ 1. Unplug your WR850G and plug it back in.  You now will have the old firmware.
+ 1. Reset your local machine's IP address and mask back to where it was (DHCP on my machine, for example).
+
+ '' (Originally posted by [http://forum.openwrt.org/viewtopic.php?pid=10048#p10048 killerbobjr] ) ''
+
+=== Debricking a WR850G that has "boot_wait" set to "on" ===
+
+ 1. Follow either the intructions above to revert to original firmware or  ["OpenWrtDocs/Installing"] install a new openwrt firmware.
+
+
+=== Debricking a WR850G that did _NOT_ have "boot_wait" set to "on" ===
+ '' Note: These instructions are Windows-centered ''
+ 1. Unplug the Wr850G and open it up -- unscrew the one torx screw in the back (you can use a hex key driver if that's handy), then pop open the cover.  You will have to CAREFULLY pry the top off with quite a bit of force.  Use your fingers.  If it feels like you're about to break it, don't worry, it's pretty tough -- just try to not bend the top, which will stress crack the plastic.
+ 1. Locate the flash chip (right next to the internal antenna).  On mine it's an Intel !TE28F320.  All the V3 WR850G's have this.  If it's an older V2 or V1, it might have an AMD chip.
+ 1. Set your local machine's IP address to 192.168.10.5 (or anything between 192.168.10.2 and 192.168.10.254) and mask to 255.255.255.0.
+ 1. Open up a console window and change to the directory the firmware is in.
+ 1. Type in: "TFTP -i 192.168.10.1 PUT filename.bin" where "filename.bin" is the firmware.  '''DON'T HIT ENTER JUST YET!'''
+ 1. Get a sewing needle or pin.  Count down on the LEFT side (lettering on the chip should be upright) to lead 15.  CAREFULLY insert the sewing needle between leads 15 and 16* -- it should NOT require any force.
+ 1. Now plug in your WR850G while holding the needle in place.
+ 1. Wait two to three seconds, then remove the needle.
+ 1. Now hit Enter in your console window.
+ 1. Your TFTP transfer should finish in a few seconds.  '''WAIT AT LEAST 60 SECONDS FOR THE FLASH TO PROGRAM!'''
+ 1. Unplug your WR850G and plug it back in.  You now will have debricked the WR850G.
+ 1. Reset your local machine's IP address and mask back to where it was (DHCP on my machine).
+ 1. If you have loaded the OpenWrt firmware, telnet in and change the "lan_ipaddr" NVRAM value to 192.168.1.1 and reboot your router.
+
+ * The reason we use leads 15-16 is because those address lines are right at the beginning of the kernel firmware area in the flash chip, and if the CFE/bootloader detects a corrupted kernel, it will automatically go into a TFTP receiving mode.
+
+ '' (Originally posted by [http://forum.openwrt.org/viewtopic.php?pid=10048#p10048 killerbobjr] ) ''
+
+=== Opening the WR850G case ===
+
+This is a very hard-to-open case, really.
+
+ * Take that 1 screw off, preferably with a torx screwdriver.
+
+ * Then you could pry the rest of it open with a screw driver while breaking the plastic hooks.
+
+'''OR'''
+
+ * Use a strong thin narrow blade (for ex. a sparkplug gapper) to press the plastic hook in while you pry it open with a screw driver. Make the sparkplug gapper look like a 2 prong fork at the end separated by about 2mm. Each prong should be about 1.5mm.
+
+''Note: you must apply a lot of force, you will feel like it's going to break but it will finally pop open, ideally. YMMV.''

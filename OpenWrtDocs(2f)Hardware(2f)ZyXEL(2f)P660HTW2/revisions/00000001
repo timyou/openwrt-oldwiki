@@ -1,0 +1,22 @@
+= Zyxel P660HTW2 =
+ADSL2+ Annex A/B modem, Wi-Fi access point and 4-port switch
+
+== Basic information ==
+> sys atsh 
+{{{
+RAS version            : V3.40(AZC.2) | 07/29/2008
+Ram Size               : 16384 Kbytes
+Flash Type and Size    : AMD 16Mbits*1
+romRasSize             : 1872598
+bootbase version       : V1.04 | 6/28/2006
+Product Model          : P660HTW2
+Default Country Code   : E6
+Boot Module Debug Flag : 00
+RomFile Version        : 83
+RomFile Checksum       : e558
+RAS F/W Checksum       : 2141
+Main Feature Bits      : C0
+Other Feature Bits     :
+01 46 00 00 01 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 02 41 13 00 00 00
+}}}

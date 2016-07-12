@@ -1,0 +1,1215 @@
+Interesting CGI commands:
+
+http://192.168.15.1/SysInfo.htm
+
+http://192.168.15.1/CgiCommand.htm?command=Reboot
+
+http://192.168.15.1/CgiCommand.htm?command=TftpOn&user=admin&pass=admin
+
+http://192.168.15.1/CgiCommand.htm?command=TftpOff&user=admin&pass=admin
+
+http://192.168.15.1/CgiCommand.htm?command=FactoryReset
+
+When the TftpStatus is 'on', you can contact a tftpd server on the device.  It responds to Linksys-style authenticated 'put' commands, and starts the power led flashing as if it's erasing the flash, but responds with a 'Password Incorrect' error (where that string comes directly from the tftpd binary that we've extracted from the firmware image).  So the password it requires is not the default admin password, nor is it the admin password you can set in the management web pages.
+
+Boot Log:
+
+{{{
+Booting...
+
+  _____        _               _______         _   _
+ / ____|      | |             |__   __| /\    | \ | |
+| |     _   _ | |__    ___  _ __ | |   /  \   |  \| |
+| |    | | | || '_ \  / _ \| '__|| |  / /\ \  | .   |
+| |____| |_| || |_) ||  __/| |   | | / ____ \ | |\  |
+ \_____|\__, ||_.__/  \___||_|   |_|/_/    \_\|_| \_|
+         __/ |
+        |___/
+__      __    _____  _____    _______
+\ \    / /   |_   _||  __ \  |__   __|
+ \ \  / /___   | |  | |__) |    | |  ___   __ _  _ __ __ _
+  \ \/ // _ \  | |  |  ___/     | | / _ \ / _  ||  _   _  \
+   \  /| (_) |_| |_ | |         | ||  __/| (_| || | | | | |
+    \/  \___/|_____||_|         |_| \___| \__,_||_| |_| |_|
+
+
+MARVELL MV88W8518 AP32V.
+Based on Feroceon Core with ARM926 LE CPU(360 MHZ)
+
+
+U-Boot 1.1.1 (Sep 27 2007 - 14:42:26)
+Marvell version: 1.1.1.5 MTL
+
+U-Boot code: 00F00000 -> 00F1F734  BSS: -> 00F2D6F4
+RAM Configuration:
+Bank #0: 00000000 32 MB
+Flash:  8 MB
+Env Version[0.1]
+In:    serial
+Out:   serial
+Err:   serial
+nvram header magic[464c5348]
+Net:   Please wait, this takes a while ...
+eth0 [PRIME]
+--- << CONSOLE_STATE IS locked >> ---
+ Hit any key to stop autoboot......pass
+
+Checking Boot image at ff9c0000 ...
+## Booting image at ff9c0000 ...
+   Image Name:   cybertan_rom_bin
+   Image Type:   ARM Linux Multi-File Image (uncompressed)
+   Data Size:    3918104 Bytes =  3.7 MB
+   Load Address: 00008000
+   Entry Point:  00008000
+   Contents:
+   Image 0:  1005836 Bytes = 982.3 kB
+   Image 1:  2912256 Bytes =  2.8 MB
+OK
+
+Starting kernel ...
+
+Uncompressing Linux.............................................................
+
+}}}
+
+Note that after the "Uncompressing Linux ..." line, there is no other console output.
+
+Firmware image can be found at http://firmware.linksys-cisco.cz/WRP400/WRP400_v1.00.04.c_ETSI.zip
+
+Source code can be found at ftp://ftp.linksys.com/opensourcecode/wrp400/
+
+From examination of the source code, it seems that the WRP400 is just a rebranded version of the CyberTan WGV414 (http://www.cybertan.com.tw/Products/WGV414.htm).
+
+The source code does not build on Ubuntu, but does build on CentOS 5, and looks like it builds the "cybertan_rom_bin" image (which contains the second rootfs listed below).  It also builds the u-boot binary, including the secret console-locking code.  What seems to be missing is means to build the "cybertan_half_bin" image, and the tool to turn those images into a flashable binary (with the "WRP400  FiRmWaRe" header).
+
+The u-boot configuration in the source code is "cywgv414dls".
+
+Interesting offsets:
+
+{{{
+00000000: 5752 5034 3030 2020 4669 526d 5761 5265  WRP400  FiRmWaRe
+00000010: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+00000020: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+...
+00000210: 0000 8000 0000 8000 1356 508c 0502 0400  .........VP.....
+00000220: 5747 544c 6379 6265 7274 616e 5f68 616c  WGTLcybertan_hal
+00000230: 665f 6269 6e00 0000 0000 0000 0000 0000  f_bin...........
+00000240: 000d 54f0 000b d000 0000 0000 0000 a0e1  ..T.............
+00000250: 0000 a0e1 0000 a0e1 0000 a0e1 0000 a0e1  ................
+...
+00003040: 1700 0000 1a00 0000 2e00 0000 0a0a 0000  ................
+00003050: 0a0a 202d 2d20 5379 7374 656d 2068 616c  .. -- System hal
+00003060: 7465 6400 7261 6e20 6f75 7420 6f66 2069  ted.ran out of i
+00003070: 6e70 7574 2064 6174 6100 0000 4d61 6c6c  nput data...Mall
+...
+00191780: 0000 0000 0015 0000 00fd 2b05 0000 6b65  ..........+...ke
+00191790: 726e 656c 0600 0000 0016 0000 0019 2c10  rnel..........,.
+001917a0: 0000 322e 362e 3136 2e31 362d 3838 7738  ..2.6.16.16-88w8
+001917b0: 7878 3835 4c0a f400 6170 2d6c 696e 7578  xx85L...ap-linux
+...
+001927d0: 0000 8000 195c c8f4 0502 0400 5747 544c  .....\......WGTL
+001927e0: 6379 6265 7274 616e 5f72 6f6d 5f62 696e  cybertan_rom_bin
+001927f0: 0000 0000 0000 0000 0000 0000 000f 590c  ..............Y.
+00192800: 002c 7000 0000 0000 0000 a0e1 0000 a0e1  .,p.............
+...
+00195600: 1a00 0000 2e00 0000 0a0a 0000 0a0a 202d  .............. -
+00195610: 2d20 5379 7374 656d 2068 616c 7465 6400  - System halted.
+00195620: 7261 6e20 6f75 7420 6f66 2069 6e70 7574  ran out of input
+00195630: 2064 6174 6100 0000 4d61 6c6c 6f63 2065   data...Malloc e
+...
+0054c430: 00fe 0100 00dd 4e0f 0000 456e 7472 6965  ......N...Entrie
+0054c440: 732e 7376 6e2d 6261 7365 fd4e 1201 0052  s.svn-base.N...R
+0054c450: 6570 6f73 6974 6f72 792e 7376 6e2d 6261  epository.svn-ba
+0054c460: 7365 1d4f 0cff ff52 6f6f 742e 7376 6e2d  se.O...Root.svn-
+0054c470: 6261 7365 0300 0000 0030 0000 0059 2f08  base.....0...Y/.
+...
+}}}
+
+There is a squashfs 3.0 lzma filesystem at offset 874300 (0xd573c):
+{{{
+000d5730: 0000 0000 0000 0000 0000 0000 6873 7173  ............hsqs
+000d5740: 0f01 0000 0000 00f0 08a8 bfb5 d37e 0092  .............~..
+}}}
+
+The contents of this filesystem are:
+{{{
+.:
+total 40
+drwxr-xr-x 2 root root 4096 2007-11-16 12:44 bin
+drwxr-xr-x 9 root root 4096 2007-11-16 12:44 dev
+drwxr-xr-x 2 root root 4096 2007-11-16 12:44 etc
+drwxr-xr-x 3 root root 4096 2007-11-16 12:44 lib
+drwxr-xr-x 2 root root 4096 2007-11-16 12:44 mnt
+drwxr-xr-x 2 root root 4096 2007-11-16 12:44 proc
+drwxr-xr-x 2 root root 4096 2007-11-16 12:44 sbin
+drwxr-xr-x 2 root root 4096 2007-11-16 12:43 tmp
+drwxr-xr-x 5 root root 4096 2007-11-16 12:44 usr
+lrwxrwxrwx 1 root root    7 2008-05-07 13:52 var -> tmp/var
+drwxr-xr-x 2 root root 4096 2007-11-16 12:43 www
+
+./bin:
+total 224
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 addgroup -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 adduser -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 ash -> busybox
+-rwxr-xr-x 1 root root 224692 2007-11-16 12:44 busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 cat -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 chgrp -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 chmod -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 cp -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 date -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 delgroup -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 deluser -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 echo -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 egrep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 false -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 fgrep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 grep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 kill -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 ln -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 login -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 ls -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 mkdir -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 mknod -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 more -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 mv -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 ping -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 ps -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 pwd -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 rm -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 rmdir -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 sh -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 sleep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 su -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 sync -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 touch -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 13:52 true -> busybox
+
+./dev:
+total 28
+crw-r--r-- 1 root root   5,  1 2007-11-16 12:44 console
+crw-r--r-- 1 root root 182,  0 2007-11-16 12:44 env_dev
+crw-r--r-- 1 root root   1,  7 2007-11-16 12:44 full
+crwxr-xr-x 1 root root 158,  0 2007-11-16 12:44 GPIO_name
+drwxr-xr-x 2 root root    4096 2007-11-16 12:44 input
+crw-r----- 1 root root   1,  2 2007-11-16 12:44 kmem
+crw-r--r-- 1 root root   1, 11 2007-11-16 12:44 kmsg
+crw-r--r-- 1 root root 245,  0 2007-11-16 12:44 led_drv
+crw-r----- 1 root root   1,  1 2007-11-16 12:44 mem
+drwxr-xr-x 2 root root    4096 2007-11-16 12:44 mtd
+drwxr-xr-x 2 root root    4096 2007-11-16 12:44 mtdblock
+crw-r--r-- 1 root root   1,  3 2007-11-16 12:44 null
+crwxr-xr-x 1 root root 100,  0 2007-11-16 12:44 phone0
+crwxr-xr-x 1 root root 100,  1 2007-11-16 12:44 phone1
+crw-r----- 1 root root   1,  4 2007-11-16 12:44 port
+crw------- 1 root root 108,  0 2007-11-16 12:44 ppp
+crw-r--r-- 1 root root   5,  2 2007-11-16 12:44 ptmx
+drwxr-xr-x 2 root root    4096 2007-11-16 12:44 pts
+drwxr-xr-x 2 root root    4096 2007-11-16 12:44 pty
+crw-r--r-- 1 root root   1,  8 2007-11-16 12:44 random
+brw-r--r-- 1 root root   8,  0 2007-11-16 12:44 sda0
+brw-r--r-- 1 root root   8,  1 2007-11-16 12:44 sda1
+drwxr-xr-x 2 root root    4096 2007-11-16 12:44 shm
+crw-r--r-- 1 root root 243,  0 2007-11-16 12:44 spislic
+drwxr-xr-x 2 root root    4096 2007-11-16 12:44 tts
+crw-r--r-- 1 root root   1,  9 2007-11-16 12:44 urandom
+crw-r--r-- 1 root root 250,  0 2007-11-16 12:44 usb_drv
+crw-r--r-- 1 root root 100,  0 2007-11-16 12:44 vport0
+crw-rw-rw- 1 root root   1,  5 2007-11-16 12:44 zero
+
+./dev/input:
+total 0
+
+./dev/mtd:
+total 0
+crw-r--r-- 1 root root 90,  0 2007-11-16 12:44 0
+cr--r--r-- 1 root root 90,  1 2007-11-16 12:44 0ro
+crw-r--r-- 1 root root 90,  2 2007-11-16 12:44 1
+cr--r--r-- 1 root root 90,  3 2007-11-16 12:44 1ro
+crw-r--r-- 1 root root 90,  4 2007-11-16 12:44 2
+cr--r--r-- 1 root root 90,  5 2007-11-16 12:44 2ro
+crw-r--r-- 1 root root 90,  6 2007-11-16 12:44 3
+cr--r--r-- 1 root root 90,  7 2007-11-16 12:44 3ro
+crw-r--r-- 1 root root 90,  8 2007-11-16 12:44 4
+cr--r--r-- 1 root root 90,  9 2007-11-16 12:44 4ro
+crw-r--r-- 1 root root 90, 10 2007-11-16 12:44 5
+cr--r--r-- 1 root root 90, 11 2007-11-16 12:44 5ro
+crw-r--r-- 1 root root 90, 12 2007-11-16 12:44 6
+cr--r--r-- 1 root root 90, 13 2007-11-16 12:44 6ro
+crw-r--r-- 1 root root 90, 14 2007-11-16 12:44 7
+cr--r--r-- 1 root root 90, 15 2007-11-16 12:44 7ro
+
+./dev/mtdblock:
+total 0
+brw------- 1 root root 31, 0 2007-11-16 12:44 0
+brw------- 1 root root 31, 1 2007-11-16 12:44 1
+brw------- 1 root root 31, 2 2007-11-16 12:44 2
+brw------- 1 root root 31, 3 2007-11-16 12:44 3
+brw------- 1 root root 31, 4 2007-11-16 12:44 4
+brw------- 1 root root 31, 5 2007-11-16 12:44 5
+brw------- 1 root root 31, 6 2007-11-16 12:44 6
+brw------- 1 root root 31, 7 2007-11-16 12:44 7
+
+./dev/pts:
+total 0
+
+./dev/pty:
+total 0
+crw------- 1 root root 2, 0 2007-11-16 12:44 m0
+crw------- 1 root root 2, 1 2007-11-16 12:44 m1
+crw------- 1 root root 2, 2 2007-11-16 12:44 m2
+crw------- 1 root root 2, 3 2007-11-16 12:44 m3
+crw------- 1 root root 2, 4 2007-11-16 12:44 m4
+crw------- 1 root root 2, 5 2007-11-16 12:44 m5
+crw------- 1 root root 2, 6 2007-11-16 12:44 m6
+crw------- 1 root root 2, 7 2007-11-16 12:44 m7
+crw------- 1 root root 2, 8 2007-11-16 12:44 m8
+crw------- 1 root root 2, 9 2007-11-16 12:44 m9
+crw------- 1 root root 3, 0 2007-11-16 12:44 s0
+crw------- 1 root root 3, 1 2007-11-16 12:44 s1
+crw------- 1 root root 3, 2 2007-11-16 12:44 s2
+crw------- 1 root root 3, 3 2007-11-16 12:44 s3
+crw------- 1 root root 3, 4 2007-11-16 12:44 s4
+crw------- 1 root root 3, 5 2007-11-16 12:44 s5
+crw------- 1 root root 3, 6 2007-11-16 12:44 s6
+crw------- 1 root root 3, 7 2007-11-16 12:44 s7
+crw------- 1 root root 3, 8 2007-11-16 12:44 s8
+crw------- 1 root root 3, 9 2007-11-16 12:44 s9
+
+./dev/shm:
+total 0
+
+./dev/tts:
+total 0
+crw------- 1 root root 4, 64 2007-11-16 12:44 0
+crw------- 1 root root 4, 65 2007-11-16 12:44 1
+
+./etc:
+total 40
+lrwxrwxrwx 1 root root    11 2008-05-07 13:52 cron.d -> /tmp/cron.d
+lrwxrwxrwx 1 root root    10 2008-05-07 13:52 group -> /tmp/group
+lrwxrwxrwx 1 root root    10 2008-05-07 13:52 hosts -> /tmp/hosts
+-rw-r--r-- 1 root root   983 2007-11-16 12:44 ld.so.cache
+-rw-r--r-- 1 root root    14 2007-11-16 12:44 ld.so.conf
+lrwxrwxrwx 1 root root    11 2008-05-07 13:52 passwd -> /tmp/passwd
+-rwxr-xr-x 1 root root  5834 2007-11-16 12:43 protocols
+lrwxrwxrwx 1 root root    16 2008-05-07 13:52 resolv.conf -> /tmp/resolv.conf
+-rwxr-xr-x 1 root root 11955 2007-11-16 12:43 services
+lrwxrwxrwx 1 root root    11 2008-05-07 13:52 shadow -> /tmp/shadow
+-rwxr-xr-x 1 root root   142 2007-11-16 12:43 start_voice
+-rwxr-xr-x 1 root root    80 2007-11-16 12:43 stop_voice
+lrwxrwxrwx 1 root root    12 2008-05-07 13:52 version -> /tmp/version
+-rwxr-xr-x 1 root root    18 2007-11-16 12:43 voice_profile
+
+./lib:
+total 276
+-rwxr-xr-x 1 root root  18800 2007-11-16 12:44 ld-uClibc.so.0
+-rwxr-xr-x 1 root root  10692 2007-11-16 12:44 libcrypt.so.0
+-rwxr-xr-x 1 root root 163500 2007-11-16 12:44 libc.so.0
+-rwxr-xr-x 1 root root   6996 2007-11-16 12:44 libdl.so.0
+-rwxr-xr-x 1 root root  35912 2007-11-16 12:44 libgcc_s.so.1
+-rwxr-xr-x 1 root root   1392 2007-11-16 12:44 libnsl.so.0
+-rwxr-xr-x 1 root root  27764 2007-11-16 12:44 libsysfs.so.2
+drwxr-xr-x 3 root root   4096 2007-11-15 21:49 modules
+
+./lib/modules:
+total 812
+drwxr-xr-x 3 root root   4096 2007-11-16 12:43 2.6.16.16-88w8xx8
+-rwxr-xr-x 1 root root 745689 2007-11-15 21:49 ap-linux.ko
+-rwxr-xr-x 1 root root   6627 2007-11-15 21:49 cy_fifolog.ko
+-rwxr-xr-x 1 root root   6856 2007-11-15 21:49 cy_netfilter.ko
+-rwxr-xr-x 1 root root  13667 2007-11-15 21:49 cy_rtsp.ko
+-rwxr-xr-x 1 root root  15595 2007-11-15 21:49 env_driver.ko
+-rwxr-xr-x 1 root root  20543 2007-11-15 21:49 led_driver.ko
+
+./lib/modules/2.6.16.16-88w8xx8:
+total 4
+drwxr-xr-x 2 root root 4096 2007-11-16 12:43 kernel
+
+./lib/modules/2.6.16.16-88w8xx8/kernel:
+total 0
+
+./mnt:
+total 0
+
+./proc:
+total 0
+
+./sbin:
+total 212
+-rwxr-xr-x 1 root root  23188 2007-11-16 12:44 arp
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 check_ps -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 ddns_checkip -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 ddns_success -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 detectwan -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 disconnected_pppoe -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 erase -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 filter -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 filtersync -> rc
+-rwxr-xr-x 1 root root   5832 2007-11-16 12:44 fw_getenv
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 getty -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 gpio -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 ifconfig -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 init -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 insmod -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 ipupdated -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 klogd -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 listen -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 logread -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 lsmod -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 misc -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 modprobe -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 ntpd -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 pivot_root -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 ppp_event -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 process_monitor -> rc
+-rwxr-xr-x 1 root root 164340 2007-11-16 12:44 rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 reboot -> ../bin/busybox
+-rwxr-xr-x 1 root root   5812 2007-11-16 12:44 recovery
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 redial -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 resetbutton -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 restore -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 rmmod -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 route -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 rpp_router_provisioning -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 rpp_voice_config_reset -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 stats -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 sulogin -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 syslogd -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 13:52 vconfig -> ../bin/busybox
+-rwxr-xr-x 1 root root    229 2007-11-16 12:43 wan_lan_qos.sh
+lrwxrwxrwx 1 root root      2 2008-05-07 13:52 write -> rc
+
+./tmp:
+total 0
+
+./usr:
+total 12
+drwxr-xr-x 2 root root 4096 2007-11-16 12:44 bin
+drwxr-xr-x 3 root root 4096 2007-11-16 12:44 lib
+drwxr-xr-x 2 root root 4096 2007-11-16 12:44 sbin
+lrwxrwxrwx 1 root root    6 2008-05-07 13:52 tmp -> ../tmp
+
+./usr/bin:
+total 0
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 [ -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 arping -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 free -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 killall -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 passwd -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 strings -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 tail -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 test -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 tftp -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 traceroute -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 vlock -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 13:52 wget -> ../../bin/busybox
+
+./usr/lib:
+total 160
+drwxr-xr-x 2 root root  4096 2007-11-16 12:44 iptables
+-rwxr-xr-x 1 root root 16228 2007-11-16 12:44 libcyutils.so
+-rwxr-xr-x 1 root root 47080 2007-11-16 12:44 libiptables.so
+-rwxr-xr-x 1 root root 16596 2007-11-16 12:44 libnvram.so
+-rwxr-xr-x 1 root root 54136 2007-11-16 12:44 libshared.so
+-rwxr-xr-x 1 root root  6900 2007-11-16 12:44 libSysEvents.so
+-rwxr-xr-x 1 root root  3068 2007-11-16 12:44 libubootenv.so
+
+./usr/lib/iptables:
+total 156
+-rwxr-xr-x 1 root root 2824 2007-11-16 12:44 libipt_CLASSIFY.so
+-rwxr-xr-x 1 root root 5232 2007-11-16 12:44 libipt_CLUSTERIP.so
+-rwxr-xr-x 1 root root 6324 2007-11-16 12:44 libipt_dccp.so
+-rwxr-xr-x 1 root root 4440 2007-11-16 12:44 libipt_DNAT.so
+-rwxr-xr-x 1 root root 3940 2007-11-16 12:44 libipt_DSCP.so
+-rwxr-xr-x 1 root root 5532 2007-11-16 12:44 libipt_icmp.so
+-rwxr-xr-x 1 root root 7488 2007-11-16 12:44 libipt_layer7.so
+-rwxr-xr-x 1 root root 4096 2007-11-16 12:44 libipt_limit.so
+-rwxr-xr-x 1 root root 5308 2007-11-16 12:44 libipt_LOG.so
+-rwxr-xr-x 1 root root 3036 2007-11-16 12:44 libipt_mac.so
+-rwxr-xr-x 1 root root 2988 2007-11-16 12:44 libipt_mark.so
+-rwxr-xr-x 1 root root 3676 2007-11-16 12:44 libipt_MARK.so
+-rwxr-xr-x 1 root root 3252 2007-11-16 12:44 libipt_MASQUERADE.so
+-rwxr-xr-x 1 root root 3080 2007-11-16 12:44 libipt_mvpack.so
+-rwxr-xr-x 1 root root 6252 2007-11-16 12:44 libipt_recent.so
+-rwxr-xr-x 1 root root 3276 2007-11-16 12:44 libipt_REDIRECT.so
+-rwxr-xr-x 1 root root 4452 2007-11-16 12:44 libipt_REJECT.so
+-rwxr-xr-x 1 root root 1976 2007-11-16 12:44 libipt_standard.so
+-rwxr-xr-x 1 root root 3524 2007-11-16 12:44 libipt_state.so
+-rwxr-xr-x 1 root root 5652 2007-11-16 12:44 libipt_string.so
+-rwxr-xr-x 1 root root 6756 2007-11-16 12:44 libipt_tcp.so
+-rwxr-xr-x 1 root root 4364 2007-11-16 12:44 libipt_time.so
+-rwxr-xr-x 1 root root 3516 2007-11-16 12:44 libipt_TOS.so
+-rwxr-xr-x 1 root root 4372 2007-11-16 12:44 libipt_TRIGGER.so
+-rwxr-xr-x 1 root root 4636 2007-11-16 12:44 libipt_udp.so
+-rwxr-xr-x 1 root root 3768 2007-11-16 12:44 libipt_webstr.so
+
+./usr/sbin:
+total 376
+-rwxr-xr-x 1 root root  29524 2007-11-16 12:44 brctl
+-rwxr-xr-x 1 root root    794 2007-11-16 12:43 certfile.pem
+-rwxr-xr-x 1 root root  19760 2007-11-16 12:44 cy_tftpd
+-rwxr-xr-x 1 root root   5932 2007-11-16 12:44 dumpleases
+-rwxr-xr-x 1 root root 198304 2007-11-16 12:44 httpd
+-rwxr-xr-x 1 root root   6084 2007-11-16 12:44 iptables
+-rwxr-xr-x 1 root root  11128 2007-11-16 12:44 iptables-restore
+-rwxr-xr-x 1 root root    493 2007-11-16 12:43 keyfile.pem
+-rwxr-xr-x 1 root root  14056 2007-11-16 12:44 ledapp
+-rwxr-xr-x 1 root root   4520 2007-11-16 12:44 nvram
+-rwxr-xr-x 1 root root  23844 2007-11-16 12:44 traceroute
+lrwxrwxrwx 1 root root      6 2008-05-07 13:52 udhcpc -> udhcpd
+-rwxr-xr-x 1 root root  40924 2007-11-16 12:44 udhcpd
+
+./www:
+total 80
+-rw-r--r-- 1 root root    27 2007-04-07 13:16 ClearWpsInfo.htm
+-rw-r--r-- 1 root root 14958 2007-11-16 12:43 common.js
+-rw-r--r-- 1 root root    47 2006-07-24 12:13 Cysaja.asp
+-rw-r--r-- 1 root root  1083 2007-11-16 12:43 Fail_u_s.asp
+-rw-r--r-- 1 root root   270 2007-11-16 12:43 fortest.htm
+-rw-r--r-- 1 root root  5637 2007-11-16 12:43 index.asp
+-rwxr-xr-x 1 root root    32 2007-05-30 18:43 setupwizard.htm
+-rw-r--r-- 1 root root    23 2006-12-28 19:34 StartMfg.htm
+-rw-r--r-- 1 root root    23 2007-04-09 11:00 StartWps.htm
+-rw-r--r-- 1 root root  2904 2007-11-16 12:43 Success_u.asp
+-rw-r--r-- 1 root root   369 2007-11-16 12:43 Success_u_s.asp
+-rw-r--r-- 1 root root    29 2006-07-13 18:31 SysInfo1.htm
+-rw-r--r-- 1 root root    31 2006-07-13 18:31 SysInfo.htm
+-rw-r--r-- 1 root root  5371 2007-11-16 12:43 wata.css
+-rw-r--r-- 1 root root    28 2006-07-13 18:31 wlaninfo.htm
+}}}
+
+Running strings on the busybox binary reveals the following applets:
+
+[
+addgroup
+adduser
+arping
+busybox
+chgrp
+chmod
+date
+delgroup
+deluser
+echo
+egrep
+false
+fgrep
+free
+getty
+grep
+ifconfig
+insmod
+kill
+killall
+klogd
+login
+logread
+lsmod
+mkdir
+mknod
+modprobe
+more
+passwd
+ping
+pivot_root
+reboot
+rmdir
+rmmod
+route
+sleep
+strings
+sulogin
+sync
+syslogd
+tail
+test
+tftp
+touch
+traceroute
+true
+vconfig
+vlock
+wget
+
+There is a second squashfs 3.0 lzma filesystem at offset 2654484 (0x288114):
+{{{
+00288110: 0000 0000 6873 7173 b002 0000 0000 00d0  ....hsqs........
+00288120: 09c8 bfb5 d37e 0092 6381 000f 8b04 08dc  .....~..c.......
+}}}
+
+The contents of this filesystem are:
+{{{
+.:
+total 44
+drwxr-xr-x 2 root root 4096 2008-01-10 14:47 bin
+drwxr-xr-x 9 root root 4096 2008-01-10 14:47 dev
+drwxr-xr-x 3 root root 4096 2008-01-10 14:47 etc
+drwxr-xr-x 4 root root 4096 2008-01-10 14:46 home
+drwxr-xr-x 3 root root 4096 2008-01-10 14:47 lib
+drwxr-xr-x 2 root root 4096 2008-01-10 14:47 mnt
+drwxr-xr-x 2 root root 4096 2008-01-10 14:47 proc
+drwxr-xr-x 2 root root 4096 2008-01-10 14:47 sbin
+drwxr-xr-x 2 root root 4096 2008-01-10 14:46 tmp
+drwxr-xr-x 5 root root 4096 2008-01-10 14:47 usr
+lrwxrwxrwx 1 root root    7 2008-05-07 14:23 var -> tmp/var
+drwxr-xr-x 4 root root 4096 2008-01-10 14:46 www
+
+./bin:
+total 228
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 addgroup -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 adduser -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 ash -> busybox
+-rwxr-xr-x 1 root root 228816 2008-01-10 14:47 busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 cat -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 chgrp -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 chmod -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 cp -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 date -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 delgroup -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 deluser -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 echo -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 egrep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 false -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 fgrep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 grep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 kill -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 ln -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 login -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 ls -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 mkdir -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 mknod -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 more -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 mount -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 mv -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 ping -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 ps -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 pwd -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 rm -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 rmdir -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 sh -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 sleep -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 su -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 sync -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 touch -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 true -> busybox
+lrwxrwxrwx 1 root root      7 2008-05-07 14:23 umount -> busybox
+
+./dev:
+total 28
+crw-r--r-- 1 root root   5,  1 2008-01-10 14:47 console
+crw-r--r-- 1 root root 182,  0 2008-01-10 14:47 env_dev
+crw-r--r-- 1 root root   1,  7 2008-01-10 14:47 full
+crwxr-xr-x 1 root root 158,  0 2008-01-10 14:47 GPIO_name
+drwxr-xr-x 2 root root    4096 2008-01-10 14:47 input
+crw-r----- 1 root root   1,  2 2008-01-10 14:47 kmem
+crw-r--r-- 1 root root   1, 11 2008-01-10 14:47 kmsg
+crw-r--r-- 1 root root 245,  0 2008-01-10 14:47 led_drv
+crw-r----- 1 root root   1,  1 2008-01-10 14:47 mem
+drwxr-xr-x 2 root root    4096 2008-01-10 14:47 mtd
+drwxr-xr-x 2 root root    4096 2008-01-10 14:47 mtdblock
+crw-r--r-- 1 root root   1,  3 2008-01-10 14:47 null
+crwxr-xr-x 1 root root 100,  0 2008-01-10 14:47 phone0
+crwxr-xr-x 1 root root 100,  1 2008-01-10 14:47 phone1
+crw-r----- 1 root root   1,  4 2008-01-10 14:47 port
+crw------- 1 root root 108,  0 2008-01-10 14:47 ppp
+crw-r--r-- 1 root root   5,  2 2008-01-10 14:47 ptmx
+drwxr-xr-x 2 root root    4096 2008-01-10 14:47 pts
+drwxr-xr-x 2 root root    4096 2008-01-10 14:47 pty
+crw-r--r-- 1 root root   1,  8 2008-01-10 14:47 random
+brw-r--r-- 1 root root   8,  0 2008-01-10 14:47 sda0
+brw-r--r-- 1 root root   8,  1 2008-01-10 14:47 sda1
+drwxr-xr-x 2 root root    4096 2008-01-10 14:47 shm
+crw-r--r-- 1 root root 243,  0 2008-01-10 14:47 spislic
+drwxr-xr-x 2 root root    4096 2008-01-10 14:47 tts
+crw-r--r-- 1 root root   1,  9 2008-01-10 14:47 urandom
+crw-r--r-- 1 root root 250,  0 2008-01-10 14:47 usb_drv
+crw-r--r-- 1 root root 100,  0 2008-01-10 14:47 vport0
+crw-rw-rw- 1 root root   1,  5 2008-01-10 14:47 zero
+
+./dev/input:
+total 0
+
+./dev/mtd:
+total 0
+crw-r--r-- 1 root root 90,  0 2008-01-10 14:47 0
+cr--r--r-- 1 root root 90,  1 2008-01-10 14:47 0ro
+crw-r--r-- 1 root root 90,  2 2008-01-10 14:47 1
+cr--r--r-- 1 root root 90,  3 2008-01-10 14:47 1ro
+crw-r--r-- 1 root root 90,  4 2008-01-10 14:47 2
+cr--r--r-- 1 root root 90,  5 2008-01-10 14:47 2ro
+crw-r--r-- 1 root root 90,  6 2008-01-10 14:47 3
+cr--r--r-- 1 root root 90,  7 2008-01-10 14:47 3ro
+crw-r--r-- 1 root root 90,  8 2008-01-10 14:47 4
+cr--r--r-- 1 root root 90,  9 2008-01-10 14:47 4ro
+crw-r--r-- 1 root root 90, 10 2008-01-10 14:47 5
+cr--r--r-- 1 root root 90, 11 2008-01-10 14:47 5ro
+crw-r--r-- 1 root root 90, 12 2008-01-10 14:47 6
+cr--r--r-- 1 root root 90, 13 2008-01-10 14:47 6ro
+crw-r--r-- 1 root root 90, 14 2008-01-10 14:47 7
+cr--r--r-- 1 root root 90, 15 2008-01-10 14:47 7ro
+
+./dev/mtdblock:
+total 0
+brw------- 1 root root 31, 0 2008-01-10 14:47 0
+brw------- 1 root root 31, 1 2008-01-10 14:47 1
+brw------- 1 root root 31, 2 2008-01-10 14:47 2
+brw------- 1 root root 31, 3 2008-01-10 14:47 3
+brw------- 1 root root 31, 4 2008-01-10 14:47 4
+brw------- 1 root root 31, 5 2008-01-10 14:47 5
+brw------- 1 root root 31, 6 2008-01-10 14:47 6
+brw------- 1 root root 31, 7 2008-01-10 14:47 7
+
+./dev/pts:
+total 0
+
+./dev/pty:
+total 0
+crw------- 1 root root 2, 0 2008-01-10 14:47 m0
+crw------- 1 root root 2, 1 2008-01-10 14:47 m1
+crw------- 1 root root 2, 2 2008-01-10 14:47 m2
+crw------- 1 root root 2, 3 2008-01-10 14:47 m3
+crw------- 1 root root 2, 4 2008-01-10 14:47 m4
+crw------- 1 root root 2, 5 2008-01-10 14:47 m5
+crw------- 1 root root 2, 6 2008-01-10 14:47 m6
+crw------- 1 root root 2, 7 2008-01-10 14:47 m7
+crw------- 1 root root 2, 8 2008-01-10 14:47 m8
+crw------- 1 root root 2, 9 2008-01-10 14:47 m9
+crw------- 1 root root 3, 0 2008-01-10 14:47 s0
+crw------- 1 root root 3, 1 2008-01-10 14:47 s1
+crw------- 1 root root 3, 2 2008-01-10 14:47 s2
+crw------- 1 root root 3, 3 2008-01-10 14:47 s3
+crw------- 1 root root 3, 4 2008-01-10 14:47 s4
+crw------- 1 root root 3, 5 2008-01-10 14:47 s5
+crw------- 1 root root 3, 6 2008-01-10 14:47 s6
+crw------- 1 root root 3, 7 2008-01-10 14:47 s7
+crw------- 1 root root 3, 8 2008-01-10 14:47 s8
+crw------- 1 root root 3, 9 2008-01-10 14:47 s9
+
+./dev/shm:
+total 0
+
+./dev/tts:
+total 0
+crw------- 1 root root 4, 64 2008-01-10 14:47 0
+crw------- 1 root root 4, 65 2008-01-10 14:47 1
+
+./etc:
+total 296
+-rwxr-xr-x 1 root root   4897 2008-01-10 14:45 ca_crt.pem
+lrwxrwxrwx 1 root root     11 2008-05-07 14:23 cron.d -> /tmp/cron.d
+lrwxrwxrwx 1 root root     10 2008-05-07 14:23 group -> /tmp/group
+-rwxr-xr-x 1 root root  13362 2007-11-15 21:49 hostapd-1.conf
+-rwxr-xr-x 1 root root  14231 2007-11-15 21:49 hostapd.conf
+-rwxr-xr-x 1 root root   1725 2007-11-15 21:49 hostapd.eap_user
+lrwxrwxrwx 1 root root     10 2008-05-07 14:23 hosts -> /tmp/hosts
+drwxr-xr-x 4 root root   4096 2007-11-15 21:38 igd
+-rwxr-xr-x 1 root root    471 2007-11-15 21:49 insertap.sh
+-rwxr-xr-x 1 root root 193052 2008-01-10 14:45 language.dat
+-rw-r--r-- 1 root root   1576 2008-01-10 14:47 ld.so.cache
+-rw-r--r-- 1 root root     14 2008-01-10 14:47 ld.so.conf
+-rwxr-xr-x 1 root root    144 2007-11-15 21:49 mfg_data_p
+lrwxrwxrwx 1 root root     11 2008-05-07 14:23 passwd -> /tmp/passwd
+-rwxr-xr-x 1 root root   5834 2008-01-10 14:46 protocols
+-rwxr-xr-x 1 root root    480 2007-11-15 21:49 removeap.sh
+lrwxrwxrwx 1 root root     16 2008-05-07 14:23 resolv.conf -> /tmp/resolv.conf
+-rwxr-xr-x 1 root root  11955 2008-01-10 14:46 services
+lrwxrwxrwx 1 root root     11 2008-05-07 14:23 shadow -> /tmp/shadow
+-rwxr-xr-x 1 root root    185 2008-01-10 14:45 start_voice
+-rwxr-xr-x 1 root root     83 2008-01-10 14:46 stop_voice
+lrwxrwxrwx 1 root root     12 2008-05-07 14:23 version -> /tmp/version
+-rwxr-xr-x 1 root root     18 2008-01-10 14:45 voice_profile
+
+./etc/igd:
+total 36
+drwxr-xr-x 3 root root  4096 2007-11-15 21:38 CVS
+-rwxr-xr-x 1 root root 13419 2007-11-15 21:38 gateconnSCPD.xml
+-rwxr-xr-x 1 root root  2530 2007-11-15 21:38 gatedesc_bak.xml
+-rwxr-xr-x 1 root root  5849 2007-11-15 21:38 gateicfgSCPD.xml
+-rwxr-xr-x 1 root root   992 2007-11-15 21:38 gateinfoSCPD.xml
+
+./etc/igd/CVS:
+total 12
+-rwxr-xr-x 1 root root 222 2007-11-15 21:38 Entries
+-rwxr-xr-x 1 root root  28 2007-11-15 21:38 Repository
+-rwxr-xr-x 1 root root  45 2007-11-15 21:38 Root
+
+./home:
+total 8
+drwxr-xr-x 2 root root 4096 2008-01-10 14:46 usb_disk
+drwxr-xr-x 3 root root 4096 2008-01-10 14:45 voicemail
+
+./home/usb_disk:
+total 0
+
+./home/voicemail:
+total 4
+drwxr-xr-x 2 root root 4096 2008-01-10 14:45 prompts
+
+./home/voicemail/prompts:
+total 360
+-rwxr-xr-x 1 root root   880 2008-01-10 14:45 0
+-rwxr-xr-x 1 root root   500 2008-01-10 14:45 1
+-rwxr-xr-x 1 root root   560 2008-01-10 14:45 2
+-rwxr-xr-x 1 root root   540 2008-01-10 14:45 3
+-rwxr-xr-x 1 root root   600 2008-01-10 14:45 4
+-rwxr-xr-x 1 root root   540 2008-01-10 14:45 5
+-rwxr-xr-x 1 root root   620 2008-01-10 14:45 6
+-rwxr-xr-x 1 root root   620 2008-01-10 14:45 7
+-rwxr-xr-x 1 root root   520 2008-01-10 14:45 8
+-rwxr-xr-x 1 root root   660 2008-01-10 14:45 9
+-rwxr-xr-x 1 root root 11967 2008-01-10 14:45 aa.xml
+-rwxr-xr-x 1 root root 10880 2008-01-10 14:45 afterplaymsg
+-rwxr-xr-x 1 root root  7060 2008-01-10 14:45 afterrecgrt
+-rwxr-xr-x 1 root root   780 2008-01-10 14:45 again
+-rwxr-xr-x 1 root root   560 2008-01-10 14:45 and
+-rwxr-xr-x 1 root root   720 2008-01-10 14:45 another
+-rwxr-xr-x 1 root root   680 2008-01-10 14:45 available
+-rwxr-xr-x 1 root root   480 2008-01-10 14:45 beep
+-rwxr-xr-x 1 root root   260 2008-01-10 14:45 change
+-rwxr-xr-x 1 root root   900 2008-01-10 14:45 ding
+-rwxr-xr-x 1 root root  1440 2008-01-10 14:45 endofmailbox
+-rwxr-xr-x 1 root root   520 2008-01-10 14:45 enter
+-rwxr-xr-x 1 root root   760 2008-01-10 14:45 entered
+-rwxr-xr-x 1 root root   900 2008-01-10 14:45 extension
+-rwxr-xr-x 1 root root   520 2008-01-10 14:45 followedby
+-rwxr-xr-x 1 root root   240 2008-01-10 14:45 for
+-rwxr-xr-x 1 root root  1620 2008-01-10 14:45 forpremsg
+-rwxr-xr-x 1 root root   700 2008-01-10 14:45 goodbye
+-rwxr-xr-x 1 root root 11100 2008-01-10 14:45 grt0
+-rwxr-xr-x 1 root root  1080 2008-01-10 14:45 grt1
+-rwxr-xr-x 1 root root  1140 2008-01-10 14:45 grt2
+-rwxr-xr-x 1 root root  1120 2008-01-10 14:45 grt3
+-rwxr-xr-x 1 root root  1180 2008-01-10 14:45 grt4
+-rwxr-xr-x 1 root root   800 2008-01-10 14:45 invalid
+-rwxr-xr-x 1 root root  1080 2008-01-10 14:45 leavemsg
+-rwxr-xr-x 1 root root   580 2008-01-10 14:45 mailbox
+-rwxr-xr-x 1 root root   700 2008-01-10 14:45 menu
+-rwxr-xr-x 1 root root   800 2008-01-10 14:45 messages
+-rwxr-xr-x 1 root root   320 2008-01-10 14:45 more
+-rwxr-xr-x 1 root root  1400 2008-01-10 14:45 msgdel
+-rwxr-xr-x 1 root root   480 2008-01-10 14:45 new
+-rwxr-xr-x 1 root root  1280 2008-01-10 14:45 newmsg
+-rwxr-xr-x 1 root root   660 2008-01-10 14:45 no
+-rwxr-xr-x 1 root root  1600 2008-01-10 14:45 nomore
+-rwxr-xr-x 1 root root  1620 2008-01-10 14:45 nomoremsg
+-rwxr-xr-x 1 root root   720 2008-01-10 14:45 not
+-rwxr-xr-x 1 root root   560 2008-01-10 14:45 now
+-rwxr-xr-x 1 root root   740 2008-01-10 14:45 number
+-rwxr-xr-x 1 root root   480 2008-01-10 14:45 old
+-rwxr-xr-x 1 root root  1280 2008-01-10 14:45 oldmsg
+-rwxr-xr-x 1 root root   540 2008-01-10 14:45 option
+-rwxr-xr-x 1 root root   580 2008-01-10 14:45 or
+-rwxr-xr-x 1 root root   760 2008-01-10 14:45 password
+-rwxr-xr-x 1 root root   360 2008-01-10 14:45 play
+-rwxr-xr-x 1 root root   460 2008-01-10 14:45 please
+-rwxr-xr-x 1 root root  1660 2008-01-10 14:45 plsdialext
+-rwxr-xr-x 1 root root  5380 2008-01-10 14:45 plsleavemsg
+-rwxr-xr-x 1 root root  5380 2008-01-10 14:45 plsleavemsg
+-rwxr-xr-x 1 root root  3300 2008-01-10 14:45 plsreenterpass
+-rwxr-xr-x 1 root root   660 2008-01-10 14:45 pound
+-rwxr-xr-x 1 root root   280 2008-01-10 14:45 press
+-rwxr-xr-x 1 root root  2820 2008-01-10 14:45 press2recordgrt
+-rwxr-xr-x 1 root root  2160 2008-01-10 14:45 prs1plymsgs
+-rwxr-xr-x 1 root root  2760 2008-01-10 14:45 prs1recgrt
+-rwxr-xr-x 1 root root  2880 2008-01-10 14:45 prs3entermb
+-rwxr-xr-x 1 root root  1860 2008-01-10 14:45 prsmoreop
+-rwxr-xr-x 1 root root   760 2008-01-10 14:45 record
+-rwxr-xr-x 1 root root   580 2008-01-10 14:45 remote
+-rwxr-xr-x 1 root root  1840 2008-01-10 14:45 repeatcurmsg
+-rwxr-xr-x 1 root root   560 2008-01-10 14:45 saved
+-rwxr-xr-x 1 root root  4060 2008-01-10 14:45 saygrt
+-rwxr-xr-x 1 root root   420 2008-01-10 14:45 star
+-rwxr-xr-x 1 root root  2600 2008-01-10 14:45 startoreturn
+-rwxr-xr-x 1 root root  1000 2008-01-10 14:45 successful
+-rwxr-xr-x 1 root root   900 2008-01-10 14:45 thepoundkey
+-rwxr-xr-x 1 root root   160 2008-01-10 14:45 to
+-rwxr-xr-x 1 root root  1440 2008-01-10 14:45 todelmsg
+-rwxr-xr-x 1 root root  1820 2008-01-10 14:45 toplaynextmsg
+-rwxr-xr-x 1 root root   840 2008-01-10 14:45 transferred
+-rwxr-xr-x 1 root root  3180 2008-01-10 14:45 whendone
+-rwxr-xr-x 1 root root   640 2008-01-10 14:45 youhave
+-rwxr-xr-x 1 root root  1880 2008-01-10 14:45 yourcallfowarded
+-rwxr-xr-x 1 root root   980 2008-01-10 14:45 yourcallhasbeen
+
+./lib:
+total 440
+-rwxr-xr-x 1 root root  18800 2008-01-10 14:46 ld-uClibc.so.0
+-rwxr-xr-x 1 root root  10692 2008-01-10 14:46 libcrypt.so.0
+-rwxr-xr-x 1 root root 201216 2008-01-10 14:46 libc.so.0
+-rwxr-xr-x 1 root root   6996 2008-01-10 14:46 libdl.so.0
+-rwxr-xr-x 1 root root  35912 2008-01-10 14:46 libgcc_s.so.1
+-rwxr-xr-x 1 root root  31748 2008-01-10 14:47 libiw.so.28
+-rwxr-xr-x 1 root root  11272 2008-01-10 14:46 libm.so.0
+-rwxr-xr-x 1 root root   1392 2008-01-10 14:46 libnsl.so.0
+-rwxr-xr-x 1 root root  68804 2008-01-10 14:46 libpthread.so.0
+-rwxr-xr-x 1 root root   1396 2008-01-10 14:46 libresolv.so.0
+-rwxr-xr-x 1 root root   3212 2008-01-10 14:46 librt.so.0
+-rwxr-xr-x 1 root root  27764 2008-01-10 14:46 libsysfs.so.2
+drwxr-xr-x 3 root root   4096 2007-11-15 21:49 modules
+
+./lib/modules:
+total 812
+drwxr-xr-x 3 root root   4096 2008-01-10 14:45 2.6.16.16-88w8xx8
+-rwxr-xr-x 1 root root 745689 2007-11-15 21:49 ap-linux.ko
+-rwxr-xr-x 1 root root   6627 2007-11-15 21:49 cy_fifolog.ko
+-rwxr-xr-x 1 root root   6856 2007-11-15 21:49 cy_netfilter.ko
+-rwxr-xr-x 1 root root  13667 2007-11-15 21:49 cy_rtsp.ko
+-rwxr-xr-x 1 root root  15595 2007-11-15 21:49 env_driver.ko
+-rwxr-xr-x 1 root root  20543 2007-11-15 21:49 led_driver.ko
+
+./lib/modules/2.6.16.16-88w8xx8:
+total 4
+drwxr-xr-x 3 root root 4096 2008-01-10 14:45 kernel
+
+./lib/modules/2.6.16.16-88w8xx8/kernel:
+total 4
+drwxr-xr-x 4 root root 4096 2008-01-10 14:45 drivers
+
+./lib/modules/2.6.16.16-88w8xx8/kernel/drivers:
+total 8
+drwxr-xr-x 2 root root 4096 2008-01-10 14:45 scsi
+drwxr-xr-x 5 root root 4096 2008-01-10 14:45 usb
+
+./lib/modules/2.6.16.16-88w8xx8/kernel/drivers/scsi:
+total 140
+-rw-r--r-- 1 root root 117560 2008-01-10 14:45 scsi_mod.ko
+-rw-r--r-- 1 root root  17689 2008-01-10 14:45 sd_mod.ko
+
+./lib/modules/2.6.16.16-88w8xx8/kernel/drivers/usb:
+total 12
+drwxr-xr-x 2 root root 4096 2008-01-10 14:45 core
+drwxr-xr-x 2 root root 4096 2008-01-10 14:45 host
+drwxr-xr-x 2 root root 4096 2008-01-10 14:45 storage
+
+./lib/modules/2.6.16.16-88w8xx8/kernel/drivers/usb/core:
+total 144
+-rw-r--r-- 1 root root 142174 2008-01-10 14:45 usbcore.ko
+
+./lib/modules/2.6.16.16-88w8xx8/kernel/drivers/usb/host:
+total 36
+-rw-r--r-- 1 root root 36232 2008-01-10 14:45 ehci-hcd.ko
+
+./lib/modules/2.6.16.16-88w8xx8/kernel/drivers/usb/storage:
+total 112
+-rw-r--r-- 1 root root 24886 2008-01-10 14:45 libusual.ko
+-rw-r--r-- 1 root root 80459 2008-01-10 14:45 usb-storage.ko
+
+./mnt:
+total 0
+
+./proc:
+total 0
+
+./sbin:
+total 1116
+-rwxr-xr-x 1 root root  23188 2008-01-10 14:47 arp
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 check_ps -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 ddns_checkip -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 ddns_success -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 detectwan -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 disconnected_pppoe -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 erase -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 filter -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 filtersync -> rc
+-rwxr-xr-x 1 root root   5832 2008-01-10 14:47 fw_getenv
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 getty -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 gpio -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 hb_connect -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 hb_disconnect -> rc
+-rwxr-xr-x 1 root root    956 2008-01-10 14:46 hotplug
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 ifconfig -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 init -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 insmod -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 ipupdated -> rc
+-rwxr-xr-x 1 root root  21680 2008-01-10 14:47 iwconfig
+-rwxr-xr-x 1 root root  14004 2008-01-10 14:47 iwpriv
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 klogd -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 listen -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 logread -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 lsmod -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 misc -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 modprobe -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 ntpd -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 pivot_root -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 ppp_event -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 process_monitor -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 qos -> rc
+-rwxr-xr-x 1 root root 211064 2008-01-10 14:47 rc
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 reboot -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 redial -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 resetbutton -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 restore -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 rmmod -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 route -> ../bin/busybox
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 rpp_router_provisioning -> rc
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 rpp_voice_config_reset -> rc
+-rwxr-xr-x 1 root root 835888 2008-01-10 14:47 spr_voip
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 stats -> rc
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 sulogin -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 syslogd -> ../bin/busybox
+lrwxrwxrwx 1 root root     14 2008-05-07 14:23 vconfig -> ../bin/busybox
+-rwxr-xr-x 1 root root    229 2008-01-10 14:46 wan_lan_qos.sh
+lrwxrwxrwx 1 root root      2 2008-05-07 14:23 write -> rc
+
+./tmp:
+total 0
+
+./usr:
+total 12
+drwxr-xr-x 2 root root 4096 2008-01-10 14:47 bin
+drwxr-xr-x 4 root root 4096 2008-01-10 14:47 lib
+drwxr-xr-x 2 root root 4096 2008-01-10 14:47 sbin
+lrwxrwxrwx 1 root root    6 2008-05-07 14:23 tmp -> ../tmp
+
+./usr/bin:
+total 0
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 [ -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 arping -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 free -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 killall -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 passwd -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 strings -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 tail -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 test -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 tftp -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 traceroute -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 vlock -> ../../bin/busybox
+lrwxrwxrwx 1 root root 17 2008-05-07 14:23 wget -> ../../bin/busybox
+
+./usr/lib:
+total 1312
+drwxr-xr-x 2 root root   4096 2008-01-10 14:47 iptables
+drwxr-xr-x 2 root root   4096 2008-01-10 14:47 l2tp
+-rwxr-xr-x 1 root root 805036 2008-01-10 14:47 libcrypto.so
+-rwxr-xr-x 1 root root  16228 2008-01-10 14:47 libcyutils.so
+-rwxr-xr-x 1 root root  47080 2008-01-10 14:47 libiptables.so
+-rwxr-xr-x 1 root root  16596 2008-01-10 14:47 libnvram.so
+-rwxr-xr-x 1 root root  61460 2008-01-10 14:47 libshared.so
+-rwxr-xr-x 1 root root 178076 2008-01-10 14:47 libssl.so
+-rwxr-xr-x 1 root root   6900 2008-01-10 14:47 libSysEvents.so
+-rwxr-xr-x 1 root root   3068 2008-01-10 14:47 libubootenv.so
+-rwxr-xr-x 1 root root   7100 2008-01-10 14:47 libvram.so
+-rwxr-xr-x 1 root root 156616 2008-01-10 14:47 libxyssl.so
+
+./usr/lib/iptables:
+total 164
+-rwxr-xr-x 1 root root 2824 2008-01-10 14:47 libipt_CLASSIFY.so
+-rwxr-xr-x 1 root root 5232 2008-01-10 14:47 libipt_CLUSTERIP.so
+-rwxr-xr-x 1 root root 6324 2008-01-10 14:47 libipt_dccp.so
+-rwxr-xr-x 1 root root 4440 2008-01-10 14:47 libipt_DNAT.so
+-rwxr-xr-x 1 root root 3940 2008-01-10 14:47 libipt_DSCP.so
+-rwxr-xr-x 1 root root 5532 2008-01-10 14:47 libipt_icmp.so
+-rwxr-xr-x 1 root root 7488 2008-01-10 14:47 libipt_layer7.so
+-rwxr-xr-x 1 root root 4096 2008-01-10 14:47 libipt_limit.so
+-rwxr-xr-x 1 root root 5308 2008-01-10 14:47 libipt_LOG.so
+-rwxr-xr-x 1 root root 3036 2008-01-10 14:47 libipt_mac.so
+-rwxr-xr-x 1 root root 2988 2008-01-10 14:47 libipt_mark.so
+-rwxr-xr-x 1 root root 3676 2008-01-10 14:47 libipt_MARK.so
+-rwxr-xr-x 1 root root 3252 2008-01-10 14:47 libipt_MASQUERADE.so
+-rwxr-xr-x 1 root root 3080 2008-01-10 14:47 libipt_mvpack.so
+-rwxr-xr-x 1 root root 6252 2008-01-10 14:47 libipt_recent.so
+-rwxr-xr-x 1 root root 3276 2008-01-10 14:47 libipt_REDIRECT.so
+-rwxr-xr-x 1 root root 4452 2008-01-10 14:47 libipt_REJECT.so
+-rwxr-xr-x 1 root root 1976 2008-01-10 14:47 libipt_standard.so
+-rwxr-xr-x 1 root root 3524 2008-01-10 14:47 libipt_state.so
+-rwxr-xr-x 1 root root 5652 2008-01-10 14:47 libipt_string.so
+-rwxr-xr-x 1 root root 3340 2008-01-10 14:47 libipt_tcpmss.so
+-rwxr-xr-x 1 root root 2984 2008-01-10 14:47 libipt_TCPMSS.so
+-rwxr-xr-x 1 root root 6756 2008-01-10 14:47 libipt_tcp.so
+-rwxr-xr-x 1 root root 4364 2008-01-10 14:47 libipt_time.so
+-rwxr-xr-x 1 root root 3516 2008-01-10 14:47 libipt_TOS.so
+-rwxr-xr-x 1 root root 4372 2008-01-10 14:47 libipt_TRIGGER.so
+-rwxr-xr-x 1 root root 4636 2008-01-10 14:47 libipt_udp.so
+-rwxr-xr-x 1 root root 3768 2008-01-10 14:47 libipt_webstr.so
+
+./usr/lib/l2tp:
+total 24
+-rwxr-xr-x 1 root root 9992 2008-01-10 14:47 cmd.so
+-rwxr-xr-x 1 root root 8736 2008-01-10 14:47 sync-pppd.so
+
+./usr/sbin:
+total 2504
+-rwxr-xr-x 1 root root  13996 2008-01-10 14:47 606x_filter
+-rwxr-xr-x 1 root root  25112 2008-01-10 14:47 bpalogin
+-rwxr-xr-x 1 root root  29524 2008-01-10 14:47 brctl
+-rwxr-xr-x 1 root root    794 2008-01-10 14:46 certfile.pem
+-rwxr-xr-x 1 root root  22688 2008-01-10 14:47 cron
+-rwxr-xr-x 1 root root  34016 2008-01-10 14:47 dnsmasq
+-rwxr-xr-x 1 root root   5932 2008-01-10 14:47 dumpleases
+-rwxr-xr-x 1 root root  44692 2008-01-10 14:47 ez-ipupdate
+-rwxr-xr-x 1 root root 298076 2008-01-10 14:47 hostapd
+-rwxr-xr-x 1 root root 230956 2008-01-10 14:47 httpd
+-rwxr-xr-x 1 root root  31624 2008-01-10 14:47 igmprt
+-rwxr-xr-x 1 root root   6084 2008-01-10 14:47 iptables
+-rwxr-xr-x 1 root root  11128 2008-01-10 14:47 iptables-restore
+-rwxr-xr-x 1 root root    493 2008-01-10 14:46 keyfile.pem
+-rwxr-xr-x 1 root root   4552 2008-01-10 14:47 l2tp-control
+-rwxr-xr-x 1 root root  84792 2008-01-10 14:47 l2tpd
+-rwxr-xr-x 1 root root  14056 2008-01-10 14:47 ledapp
+lrwxrwxrwx 1 root root     13 2008-05-07 14:23 mv606x_filter -> ./606x_filter
+lrwxrwxrwx 1 root root     13 2008-05-07 14:23 mv606x_rx_rate -> ./606x_filter
+lrwxrwxrwx 1 root root     13 2008-05-07 14:23 mv606x_tx_rate -> ./606x_filter
+-rwxr-xr-x 1 root root  14756 2008-01-10 14:47 mvaptools
+lrwxrwxrwx 1 root root      9 2008-05-07 14:23 mvmfgd -> mvaptools
+-rwxr-xr-x 1 root root  18988 2008-01-10 14:47 ntpclient
+-rwxr-xr-x 1 root root   4520 2008-01-10 14:47 nvram
+-rwxr-xr-x 1 root root  60208 2008-01-10 14:47 openssl
+-rwxr-xr-x 1 root root 154284 2008-01-10 14:47 pppd
+-rwxr-xr-x 1 root root  97904 2008-01-10 14:47 pppoecd
+-rwxr-xr-x 1 root root  26388 2008-01-10 14:47 pppoe-relay
+-rwxr-xr-x 1 root root  37008 2008-01-10 14:47 pptp
+-rwxr-xr-x 1 root root 253300 2008-01-10 14:47 ripd
+lrwxrwxrwx 1 root root      9 2008-05-07 14:23 startmfg -> mvaptools
+-rwxr-xr-x 1 root root 264828 2008-01-10 14:47 tc
+-rwxr-xr-x 1 root root  32372 2008-01-10 14:47 tftpd
+-rwxr-xr-x 1 root root  23844 2008-01-10 14:47 traceroute
+lrwxrwxrwx 1 root root      6 2008-05-07 14:23 udhcpc -> udhcpd
+-rwxr-xr-x 1 root root  41108 2008-01-10 14:47 udhcpd
+lrwxrwxrwx 1 root root      3 2008-05-07 14:23 updatewpsclient -> wsc
+-rwxr-xr-x 1 root root  81528 2008-01-10 14:47 upnpd
+-rwxr-xr-x 1 root root   4332 2008-01-10 14:47 usb
+-rwxr-xr-x 1 root root   8668 2008-01-10 14:47 vconfig
+-rwxr-xr-x 1 root root 265340 2008-01-10 14:47 wsc
+-rwxr-xr-x 1 root root 199588 2008-01-10 14:47 zebra
+
+./www:
+total 1128
+-rw-r--r-- 1 root root 10709 2008-01-10 14:46 Backup_Restore.asp
+-rw-r--r-- 1 root root 10518 2008-01-10 14:46 Check_ID.asp
+-rw-r--r-- 1 root root    27 2007-04-07 13:16 ClearWpsInfo.htm
+-rw-r--r-- 1 root root 20029 2008-01-10 14:46 common.js
+-rw-r--r-- 1 root root    47 2006-07-24 12:13 Cysaja.asp
+-rw-r--r-- 1 root root 22016 2008-01-10 14:46 DDNS.asp
+-rw-r--r-- 1 root root 29750 2008-01-10 14:46 DHCP_Static.asp
+-rw-r--r-- 1 root root 12187 2008-01-10 14:46 DHCPTable.asp
+-rw-r--r-- 1 root root 11120 2008-01-10 14:46 DHCP_Table_Select.asp
+-rw-r--r-- 1 root root 13433 2008-01-10 14:46 Diagnostics.asp
+-rw-r--r-- 1 root root 17203 2008-01-10 14:46 DMZ.asp
+-rw-r--r-- 1 root root 10347 2008-01-10 14:46 Factory_Defaults.asp
+-rw-r--r-- 1 root root  1518 2008-01-10 14:46 Fail.asp
+-rw-r--r-- 1 root root   678 2008-01-10 14:46 Fail_r_s.asp
+-rw-r--r-- 1 root root  1083 2008-01-10 14:46 Fail_u_s.asp
+-rw-r--r-- 1 root root 20533 2008-01-10 14:46 FilterIPMAC.asp
+-rw-r--r-- 1 root root 41176 2008-01-10 14:46 Filters.asp
+-rw-r--r-- 1 root root 13184 2008-01-10 14:46 FilterSummary.asp
+-rw-r--r-- 1 root root 15899 2008-01-10 14:46 Firewall.asp
+-rw-r--r-- 1 root root    35 2008-01-10 14:46 fortest.htm
+-rw-r--r-- 1 root root 30557 2008-01-10 14:46 Forward.asp
+drwxr-xr-x 3 root root  4096 2008-01-10 14:46 help
+drwxr-xr-x 3 root root  4096 2008-01-10 14:46 image
+-rw-r--r-- 1 root root 51701 2008-01-10 14:46 index.asp
+-rw-r--r-- 1 root root  3627 2008-01-10 14:46 index_heartbeat.asp
+-rw-r--r-- 1 root root  3651 2008-01-10 14:46 index_l2tp.asp
+-rw-r--r-- 1 root root  3044 2008-01-10 14:46 index_pppoe.asp
+-rw-r--r-- 1 root root  5900 2008-01-10 14:46 index_pptp.asp
+-rw-r--r-- 1 root root  6304 2008-01-10 14:46 index_static.asp
+-rw-r--r-- 1 root root 11317 2008-01-10 14:46 Log.asp
+-rw-r--r-- 1 root root  1258 2008-01-10 14:46 Log_incoming.asp
+-rw-r--r-- 1 root root  1275 2008-01-10 14:46 Log_outgoing.asp
+-rw-r--r-- 1 root root 19799 2008-01-10 14:46 Log_View.asp
+-rw-r--r-- 1 root root 37775 2008-01-10 14:46 Management.asp
+-rw-r--r-- 1 root root  6929 2008-01-10 14:46 Ping.asp
+-rw-r--r-- 1 root root 11005 2008-01-10 14:46 Port_Services.asp
+-rw-r--r-- 1 root root 62426 2008-01-10 14:46 QoS.asp
+-rw-r--r-- 1 root root  2292 2008-01-10 14:46 Radius.asp
+-rw-r--r-- 1 root root  7409 2008-01-10 14:46 RouteTable.asp
+-rw-r--r-- 1 root root 23494 2008-01-10 14:46 Routing.asp
+-rw-r--r-- 1 root root   956 2008-01-10 14:46 SES_Status.asp
+-rwxr-xr-x 1 root root    32 2007-05-30 18:43 setupwizard.htm
+-rw-r--r-- 1 root root 47043 2008-01-10 14:46 SingleForward.asp
+-rw-r--r-- 1 root root    23 2006-12-28 19:34 StartMfg.htm
+-rw-r--r-- 1 root root    23 2007-04-09 11:00 StartWps.htm
+-rw-r--r-- 1 root root 15970 2008-01-10 14:46 status_adapter.asp
+-rw-r--r-- 1 root root 11649 2008-01-10 14:46 Status_Lan.asp
+-rw-r--r-- 1 root root  5421 2008-01-10 14:46 Status_Router1.asp
+-rw-r--r-- 1 root root 18182 2008-01-10 14:46 Status_Router.asp
+-rw-r--r-- 1 root root 10047 2008-01-10 14:46 status_voice.asp
+-rw-r--r-- 1 root root 14709 2008-01-10 14:46 status_wan.asp
+-rw-r--r-- 1 root root 17002 2008-01-10 14:46 status_wireless.asp
+-rw-r--r-- 1 root root  4022 2008-01-10 14:46 Success.asp
+-rw-r--r-- 1 root root   871 2008-01-10 14:46 Success_r_s.asp
+-rw-r--r-- 1 root root  2547 2008-01-10 14:46 Success_s.asp
+-rw-r--r-- 1 root root  2982 2008-01-10 14:46 Success_u.asp
+-rw-r--r-- 1 root root   369 2008-01-10 14:46 Success_u_s.asp
+-rw-r--r-- 1 root root    29 2006-07-13 18:31 SysInfo1.htm
+-rw-r--r-- 1 root root    31 2006-07-13 18:31 SysInfo.htm
+-rw-r--r-- 1 root root  6957 2008-01-10 14:46 Traceroute.asp
+-rw-r--r-- 1 root root 26268 2008-01-10 14:46 Triggering.asp
+-rw-r--r-- 1 root root  9906 2008-01-10 14:46 Upgrade.asp
+-rw-r--r-- 1 root root 16486 2008-01-10 14:46 Upgrade_run.asp
+-rwxr-xr-x 1 root root    97 2008-01-04 04:59 usb_cp.sh
+-rw-r--r-- 1 root root 10140 2008-01-10 14:46 voice.asp
+-rw-r--r-- 1 root root 10025 2008-01-10 14:46 VPN.asp
+-rw-r--r-- 1 root root 15376 2008-01-10 14:46 WanMAC.asp
+-rw-r--r-- 1 root root  5453 2008-01-10 14:46 wata.css
+-rw-r--r-- 1 root root  3792 2008-01-10 14:46 WEP.asp
+-rw-r--r-- 1 root root 20608 2008-01-10 14:46 Wireless_Advanced.asp
+-rw-r--r-- 1 root root   696 2008-01-10 14:46 Wireless_Basic.asp
+-rw-r--r-- 1 root root 15289 2008-01-10 14:46 Wireless_MAC.asp
+-rw-r--r-- 1 root root 24385 2008-01-10 14:46 Wireless_Manual.asp
+-rw-r--r-- 1 root root 40646 2008-01-10 14:46 Wireless_WSC.asp
+-rw-r--r-- 1 root root 19832 2008-01-10 14:46 WL_ActiveTable.asp
+-rw-r--r-- 1 root root    28 2006-07-13 18:31 wlaninfo.htm
+-rw-r--r-- 1 root root  2740 2008-01-10 14:46 WL_FilterTable.asp
+-rw-r--r-- 1 root root 17959 2008-01-10 14:46 WL_WPATable.asp
+-rw-r--r-- 1 root root  2253 2008-01-10 14:46 WPA_Preshared.asp
+-rw-r--r-- 1 root root  3837 2008-01-10 14:46 WPA_Radius.asp
+-rw-r--r-- 1 root root  9833 2008-01-10 14:46 Yellow.asp
+-rw-r--r-- 1 root root  5981 2008-01-10 14:46 Yellow_final.asp
+
+./www/help:
+total 576
+-rwxr-xr-x 1 root root 10960 2008-01-10 14:46 HBackup.asp
+-rwxr-xr-x 1 root root 33525 2008-01-10 14:46 HDDNS.asp
+-rwxr-xr-x 1 root root  9555 2008-01-10 14:46 HDefault.asp
+-rwxr-xr-x 1 root root 10430 2008-01-10 14:46 HDHCP.asp
+-rwxr-xr-x 1 root root 16379 2008-01-10 14:46 HDiag.asp
+-rwxr-xr-x 1 root root 11632 2008-01-10 14:46 HDMZ.asp
+-rwxr-xr-x 1 root root 18760 2008-01-10 14:46 HFilters.asp
+-rwxr-xr-x 1 root root 16316 2008-01-10 14:46 HFirewall.asp
+-rwxr-xr-x 1 root root 11787 2008-01-10 14:46 HForward.asp
+-rwxr-xr-x 1 root root 11878 2008-01-10 14:46 HForward_Single.asp
+-rwxr-xr-x 1 root root 13674 2008-01-10 14:46 HLog.asp
+-rwxr-xr-x 1 root root 13282 2008-01-10 14:46 HMAC.asp
+-rwxr-xr-x 1 root root 18943 2008-01-10 14:46 HManagement.asp
+-rwxr-xr-x 1 root root 29368 2008-01-10 14:46 HQoS.asp
+-rwxr-xr-x 1 root root 30614 2008-01-10 14:46 HRouting.asp
+-rwxr-xr-x 1 root root  9787 2008-01-10 14:46 HSecurity.asp
+-rwxr-xr-x 1 root root 58919 2008-01-10 14:46 HSetup.asp
+-rwxr-xr-x 1 root root 12416 2008-01-10 14:46 HStatus.asp
+-rwxr-xr-x 1 root root 10557 2008-01-10 14:46 HStatus_Lan.asp
+-rwxr-xr-x 1 root root  9667 2008-01-10 14:46 HStatus_Wireless.asp
+-rwxr-xr-x 1 root root 20676 2008-01-10 14:46 HSystem.asp
+-rwxr-xr-x 1 root root  9795 2008-01-10 14:46 HTrigger.asp
+-rwxr-xr-x 1 root root 10056 2008-01-10 14:46 HUpgrade.asp
+-rwxr-xr-x 1 root root 14150 2008-01-10 14:46 HVPN.asp
+-rwxr-xr-x 1 root root  7460 2008-01-10 14:46 HWEP.asp
+-rwxr-xr-x 1 root root 17836 2008-01-10 14:46 HWireless_advanced.asp
+-rwxr-xr-x 1 root root 19863 2008-01-10 14:46 HWireless.asp
+-rwxr-xr-x 1 root root 15445 2008-01-10 14:46 HWireless_basic.asp
+-rwxr-xr-x 1 root root 13933 2008-01-10 14:46 HWireless_mac.asp
+-rwxr-xr-x 1 root root 22846 2008-01-10 14:46 HWPA.asp
+-rwxr-xr-x 1 root root 12438 2008-01-10 14:46 HWSC.asp
+
+./www/image:
+total 84
+-rw-r--r-- 1 root root 1316 2008-01-10 14:46 Printer.gif
+-rw-r--r-- 1 root root  987 2008-01-10 14:46 SES-button-color.gif
+-rwxr-xr-x 1 root root  160 2008-01-10 14:46 test.gif
+-rw-r--r-- 1 root root  955 2008-01-10 14:46 UI_02.gif
+-rw-r--r-- 1 root root  481 2008-01-10 14:46 UI_03.gif
+-rw-r--r-- 1 root root   85 2008-01-10 14:46 UI_04.gif
+-rw-r--r-- 1 root root  160 2008-01-10 14:46 UI_05.gif
+-rw-r--r-- 1 root root  113 2008-01-10 14:46 UI_06.gif
+-rw-r--r-- 1 root root   82 2008-01-10 14:46 UI_07.gif
+-rw-r--r-- 1 root root  786 2008-01-10 14:46 UI_10.gif
+-rw-r--r-- 1 root root 1653 2008-01-10 14:46 UI_Cisco1.gif
+-rw-r--r-- 1 root root 2181 2008-01-10 14:46 UI_Cisco.gif
+-rw-r--r-- 1 root root  857 2008-01-10 14:46 UI_Linksys.gif
+-rwxr-xr-x 1 root root 2919 2008-01-10 14:46 WFA_WPS_fail.jpg
+-rw-r--r-- 1 root root 5113 2008-01-10 14:46 WFA_WPS_Mark_Solo1.gif
+-rwxr-xr-x 1 root root 5449 2008-01-10 14:46 WFA_WPS_Mark_Solo2.gif
+-rw-r--r-- 1 root root 5193 2008-01-10 14:46 WFA_WPS_Mark_Solo.gif
+-rwxr-xr-x 1 root root 2887 2008-01-10 14:46 WFA_WPS_success.jpg
+}}}

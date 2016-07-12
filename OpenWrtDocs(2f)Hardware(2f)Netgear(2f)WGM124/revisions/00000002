@@ -1,0 +1,9 @@
+NetGear WGM124
+
+{{{
+CPU   : IXP420 (266MHz)
+Flash : 4MB (1 X TE28F320 plus 1 extra empty position)
+SDRAM : 16MB (2 x 8MB K4S641632H-TC75)
+Wi-Fi : Airgo TrueMiMo Mini-PCI, Airgo Chip = AGN103BB-00
+Bootloader : RedBoot
+}}}

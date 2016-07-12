@@ -1,0 +1,310 @@
+[[TableOfContents]]
+
+= General =
+the Wistron CA8-4 is based on an Atheros System on a Chip (Soc). It got a ar2313 MIPS processor and ar5112 2.4/5GHz RoC. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+= Hardware =
+== Board spec ==
+ * Atheros product name: Atheros AR5002AP-X 802.11a/b/g WLAN Solution
+ * CPU: Atheros AR2313A
+ * RoC: Atheros AR5112A
+ * Flash: 32MBit / 4MB [http://www.spansion.com/products/S29JL032H.html SPANSION S29JL032H]
+ * RAM: 32MB [http://download.micron.com/pdf/datasheets/dram/sdram/256MbSDRAMx32.pdf Micron Chips (MT) 48LC8M32B2]
+ * Ethernet transceiver [http://www.icplus.com.tw/pp-IP101A.html IC+ IP101A]
+ * 1 x LAN RJ45
+ * Power supply: 5V DC
+== Serial ==
+Populated serial on JP1
+
+VCC = +3.3V
+
+{{{
+       1    JP1
+ VCC - []
+       ()
+  TX - ()
+       ()
+  RX - ()
+ GND - ()
+}}}
+ * baud: 115200
+ * 8 bit, 1 stop bit
+ * No parity
+= Software =
+== Standard Ovislink / Airlive firmware ==
+The AP ships with Linux 2.4.18-mips
+
+=== Boot loader ===
+{{{
+      ============================================
+        AR2313 Boot Loader Interface
+        V1.03e00 2006-1-02 (zImage)
+      ============================================
+Please choose the operation:
+   1: Load system code to SDRAM via TFTP.
+   2: Load system code then write to Flash via TFTP.
+   3: Boot system code via Flash.
+   4: Load calibration data then write to Flash via XModem.
+}}}
+3 seconds time out
+
+=== Linux boot ===
+{{{
+  ZImage -CRC = 0x1226dd06
+Copying image from flash to SDRAM ...
+flash start= 0xbfc50000; flash end= 0xbfe85000
+frequence_setup
+register_console
+min=0:CHIP:AR2313
+CPU revision is: 0001800a
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 16kb, linesize 16 bytes (4 ways)
+Linux version 2.4.18-mips (root@localhost.localdomain) (gcc version 2.95.4 20010
+319 (prerelease)) #2 €­ 4€ë 14 13:27:26 CST 2006
+Determined physical RAM map:
+ memory: 02000000 @ 00000000 (usable)
+Initial ramdisk at: 0x80343000 (1815109 bytes)
+On node 0 totalpages: 8192
+zone(0): 8192 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: ip=192.168.1.3:192.168.1.1::netmask::eth0
+calculating r4koff... 000dbba0(900000)
+Calibrating delay loop... 179.81 BogoMIPS
+Memory: 27044k/32768k available (1129k kernel code, 5724k reserved, 1912k data,
+4k init, 0k highmem)
+Dentry-cache hash table entries: 4096 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0xbc000000x (irq = 12) is a 16550A
+block: 64 slots per queue, batch=16
+RAMDISK driver initialized: 16 RAM disks of 6500K size 1024 blocksize
+loop: loaded (max 8 devices)
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 2048)
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+RAMDISK: Compressed image found at block 0
+Freeing initrd memory: 1772k freed
+VFS: Mounted root (ext2 filesystem).
+Freeing unused kernel memory: 4k freed
+Algorithmics/MIPS FPU Emulator v1.5
+Bummer, can't write to log on /dev/tty5!
+console=/dev/ttyS0
+init started:  BusyBox v0.60.5 (2006.04.14-05:26+0000) multi-call binary
+Bummer, can't write to log on /dev/tty5!
+Starting pid 8, console /dev/ttyS0: '/etc/rc.d/rcS'
+Using /lib/modules/2.4.18-mips/eth.o
+CE8-1 Eth ver: 3.17e00.2005
+Ethernet use flash address
+Ethernet For CA8-4
+ae531x ethMAC(0)= 00:4f:69:50:ffffffa7:ffffffcf
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: duplex 0, link 1
+full
+3.19.00 macCtl= 0x1010000c    macFlowCtl= 0x00000002
+100
+  sb = 00 4F 69 50 A7 CF
+ether_setup
+ae531x ethMAC(1)= 00:4f:69:50:ffffffa7:ffffffce
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth1: duplex 0, link 1
+full
+3.19.00 macCtl= 0x1010000c    macFlowCtl= 0x00000002
+100
+  sb = 00 4F 69 50 A7 CE
+ether_setup
+Using /lib/modules/2.4.18-mips/wlan.o
+wlan: 0.7.1.1 BETA (Sam Leffler <sam@errno.com>)
+Using /lib/modules/2.4.18-mips/ath_hal.o
+Warning: loading ath_hal will taint the kernel: non-GPL license - Proprietary
+  See http://www.tux.org/lkml/#export-tainted for information about tainted modu
+les
+ath_hal: 0.9.5.4 BETA (Sam Leffler <sam@errno.com>)
+Using /lib/modules/2.4.18-mips/ath_pci.o
+ath_pci: 0.8.3.2 BETA (Sam Leffler <sam@errno.com>)
+EEPROM version: 0x4008
+ar5212EnableRadarDetection() ... ar5212EnableRadarDetection
+wlan0: 11a rates: 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wlan0: 11b rates: 1Mbps 2Mbps 5.5Mbps 11Mbps
+wlan0: 11g rates: 1Mbps 2Mbps 5.5Mbps 11Mbps
+wlan0: turbo rates: 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wlan0: 802.11 address: 00:4f:69:50:a7:cd
+wlan0: Atheros 5212: irq=5
+Using /lib/modules/2.4.18-mips/flashapi.o
+Bummer, can't write to log on /dev/tty5!
+Starting pid 19, console /dev/ttyS0: '/bin/sh'
+BusyBox v0.60.5 (2006.04.14-05:26+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+#   syslogd: Execute for syslog/udp/514
+maxvalidrate=10 11
+Connect with ANY channel
+* set rd: 33594, cc: 826
+Connect with ANY channel
+#
+}}}
+== OpenWrt ==
+ * [http://atheros.openwrt.net/ OpenWrt pro AR531X]
+=== Boot loader ===
+{{{
++Ethernet eth1: MAC address 80:70:00:fc:9f:c3
+IP: 192.168.1.1/255.255.255.0, Gateway: 0.0.0.0
+Default server: 192.168.1.254, DNS server IP: 0.0.0.0
+
+RedBoot(tm) bootstrap and debug environment [ROM]
+Non-certified release, version v2_0 - built 14:47:37, Sep 30 2005
+
+Copyright (C) 2000, 2001, 2002, Red Hat, Inc.
+
+RAM: 0x80000400-0x80800000, 0x80000400-0x807e1000 available
+FLASH: 0xbe000000 - 0xbe3e0000, 62 blocks of 0x00010000 bytes each.
+== Executing boot script in 3.000 seconds - enter ^C to abort
+RedBoot> fis load -b 0x80041000 -d vmlinux.bin.gz
+Image loaded from 0x80041000-0x80289085
+RedBoot> go
+}}}
+=== Linux boot ===
+{{{
+Linux version 2.6.19.2 (swinnenb@laptop_bart) (gcc version 4.1.2) #1 Tue Apr 10 20:40:06 CEST 2007
+CPU revision is: 00018009
+Determined physical RAM map:
+ memory: 02000000 @ 00000000 (usable)
+Initrd not found or empty - disabling initrd
+Built 1 zonelists.  Total pages: 8128
+Kernel command line: console=ttyS0,115200 rootfstype=squashfs,jffs2 init=/etc/preinit
+Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 16kB, 4-way, linesize 16 bytes.
+Synthesized TLB refill handler (20 instructions).
+Synthesized TLB load handler fastpath (32 instructions).
+Synthesized TLB store handler fastpath (32 instructions).
+Synthesized TLB modify handler fastpath (31 instructions).
+PID hash table entries: 128 (order: 7, 512 bytes)
+Using 110.000 MHz high precision timer.
+Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Memory: 29780k/32768k available (1939k kernel code, 2988k reserved, 284k data, 112k init, 0k highmem)
+Mount-cache hash table entries: 512
+Checking for 'wait' instruction...  available.
+NET: Registered protocol family 16
+Radio config found at offset 0x1000(0x100)
+NET: Registered protocol family 2
+IP route cache hash table entries: 256 (order: -2, 1024 bytes)
+TCP established hash table entries: 1024 (order: 0, 4096 bytes)
+TCP bind hash table entries: 512 (order: -1, 2048 bytes)
+TCP: Hash tables configured (established 1024 bind 512)
+TCP reno registered
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+Registering mini_fo version $Id$
+JFFS2 version 2.2. (NAND) (C) 2001-2006 Red Hat, Inc.
+io scheduler noop registered
+io scheduler deadline registered (default)
+Serial: 8250/16550 driver $Revision: 1.90 $ 1 ports, IRQ sharing disabled
+serial8250: ttyS0 at MMIO 0xbc000003 (irq = 37) is a 16550A
+eth0: Dropping NETIF_F_SG since no checksum feature.
+eth0: Atheros AR231x: 00:4f:69:50:17:95, irq 4
+physmap platform flash device: 00400000 at 1e000000
+physmap-flash.0: Found 1 x16 devices at 0x0 in 8-bit bank
+ Amd/Fujitsu Extended Query Table at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+cmdlinepart partition parsing not available
+Searching for RedBoot partition table in physmap-flash.0 at offset 0x3d0000
+5 RedBoot partitions found on MTD device physmap-flash.0
+Creating 5 MTD partitions on "physmap-flash.0":
+0x00000000-0x00050000 : "RedBoot"
+0x00050000-0x00140000 : "vmlinux.bin.gz"
+0x00140000-0x003d0000 : "rootfs"
+0x002d0000-0x003d0000 : "rootfs_data"
+0x003d0000-0x003df000 : "FIS directory"
+0x003df000-0x003e0000 : "RedBoot config"
+ip_conntrack version 2.4 (256 buckets, 2048 max) - 240 bytes per conntrack
+ip_tables: (C) 2000-2006 Netfilter Core Team
+TCP vegas registered
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+Bridge firewalling registered
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+Time: MIPS clocksource has been installed.
+VFS: Mounted root (squashfs filesystem) readonly.
+Freeing unused kernel memory: 112k freed
+Warning: unable to open an initial console.
+eth0: Configuring MAC for full duplex
+Algorithmics/MIPS FPU Emulator v1.5
+mini_fo: using base directory: /
+[sighandler]: Nomini_fo: using storage directory: /jffs
+ more events to be processed, quitting.
+[cleanup]: Waiting for children.
+[cleanup]: All children terminated.
+Unlocking rootfs ...
+switching to jffs2
+init started:  BusyBox v1.4.1 (2007-04-10 20:14:07 CEST) multi-call binary
+wlan: 0.8.4.2 (0.9.2.1)
+
+Please press Enter to activate this console. ath_hal: module license 'Proprietary' taints kernel.
+ath_hal: 0.9.17.2 (AR5212, AR5312, RF5111, RF5112)
+ath_rate_sample: 1.2 (0.9.2.1)
+wlan: mac acl policy registered
+ath_ahb: 0.9.4.5 (0.9.2.1)
+ath_pci: switching rfkill capability off
+wifi0: 11a rates: 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wifi0: 11b rates: 1Mbps 2Mbps 5.5Mbps 11Mbps
+wifi0: 11g rates: 1Mbps 2Mbps 5.5Mbps 11Mbps 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wifi0: turboA rates: 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wifi0: turboG rates: 6Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wifi0: H/W encryption support: WEP AES AES_CCM TKIP
+wifi0: mac 5.7 phy 4.2 radio 3.6
+wifi0: Use hw queue 1 for WME_AC_BE traffic
+wifi0: Use hw queue 0 for WME_AC_BK traffic
+wifi0: Use hw queue 2 for WME_AC_VI traffic
+wifi0: Use hw queue 3 for WME_AC_VO traffic
+wifi0: Use hw queue 8 for CAB traffic
+wifi0: Use hw queue 9 for beacons
+wifi0: Atheros 5312 WiSoC: mem=0xb8500000, irq=5
+
+BusyBox v1.4.1 (2007-04-10 20:14:07 CEST) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r6925) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:/#
+}}}
+= Links =
+'''Manufacturer:'''
+
+ * [http://www.wneweb.com/wireless/wireless_AP.htm Wistron CA8-4 PCBA]
+'''Access points:'''
+
+ * [http://airlive.com Ovislink / Airlive]: [http://www.airlive.com/WLA5000AP.htm WLA-5000AP]
+'''GPL sources:'''
+
+ * [http://www.ovislinkcorp.com/GPL_WLA-5000AP.zip WLA-5000AP]
+ * [ftp://ftp.dlink.com/GPL/dwl2210ap/dwl2210ap-source_1.0.2.8.tar.gz DLink DWL-2210AP]

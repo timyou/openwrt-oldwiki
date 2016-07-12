@@ -1,0 +1,21 @@
+There are few infos on the Belkin F5D7231-4.
+
+It seems that the original Belkin firmware is binary compatible with the F5D7230-4.
+Maybe this means that this model might suffer from the same problems than the F5D7230
+
+hardware infos from seattle wireless: SeattleWireless:F5D7231
+
+
+belkin F5D7231-4 Rev (1000 or 1001): 2Mb Flash + 16Mb DRAM
+
+AMD AM29LV1600B 16 Megabit (2M x 8-Bit/1M x 16-Bit) CMOS 3.0 Volt-only Boot Sector Flash Memory I!C42S16800 SI 4(2)M x 8(16) Bits x 4 Banks (128-MBIT) (8 Mbyte) SYNCHRONOUS DYNAMIC RAM. (from Belkin tech support)
+
+CPU: Broadcom BCM4712, 802.11b/54g™ Integrated Wireless AP/Router
+
+Onboard minipci: None
+
+Onboard antenna connectors: U.FL (2)
+
+Antenna pigtail: None, U.FL connections direct to antenna leads. Must replace antennae. Typical solution is to replace antennae with U.FL-to-<favorite connector, e.g. RP-SMA> pigtail, then connect external antennae to pigtail.
+----
+CategoryModel

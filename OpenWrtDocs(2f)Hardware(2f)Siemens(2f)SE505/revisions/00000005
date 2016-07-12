@@ -1,0 +1,15 @@
+'''Siemens SE505'''
+
+The SE505 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb RAM.
+The wireless NIC is a mini-PCI card. boot_wait is on by default.
+
+
+/!\ '''This router sits on 192.168.2.1 during boot_wait, so You have to TFTP to that address.'''
+
+/!\ '''The reset button is hardwired on this unit, so there is no failsafe mode.'''
+
+/!\ '''The IP of the machine uploading firmware has to be 192.168.2.100.''' [documented under FAQ on the Siemens site]
+
+Appearantly, there at least 2 versions of this router. The newer one has more flash and ram, but there were some problems getting OpenWrt to work on it, see the forums.
+
+Also, the new experimental firmware (20050424) doesn't seem to work in the older model, the details are currently beeing worked out.

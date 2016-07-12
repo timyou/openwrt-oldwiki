@@ -1,0 +1,71 @@
+= Belkin F5D7130 =
+This device is supported by OpenWRT.
+
+It has a 4Mb flash and 8Mb RAM.
+
+The version that I have used OpenWRT on is a version 1010, but I expect most [:OpenWrtDocs/Hardware/Belkin/F5D7130:F5D7130] should work.
+
+- I have a version 1000 and it seems to upgrade to [:OpenWrtDocs/Hardware/Belkin/F5D7230:F5D7230] just fine, so i believe it will work.
+
+== How? ==
+I accidently uploaded the firmware for a [:OpenWrtDocs/Hardware/Belkin/F5D7230:F5D7230] to my [:OpenWrtDocs/Hardware/Belkin/F5D7130:F5D7130] and it worked just fine ;-) So I went ahead an uploaded OpenWRT RC5. It works a treat!
+
+=== Preparing the firmware ===
+I don't know what this is needed for.  I didn't do it, just tftp'd the openwrt trx file..(RobIrrelevant)
+
+The paper noted further down states the details about the belkin firmware and how to extract the necessary parts, but it's not very newbie-friendly. You need to extract the cramfs and the kernel from the [http://networking.belkin.com/update/files/uk/54g_router.html F5D7230 firmware]. For version 4.05.03 you can use the following command (4.05.03.bin being the firmware file):
+
+{{{
+dd if=4.05.03.bin of=cramfs.dump bs=627928 skip=1
+}}}
+You can check that you got the offset right by seeing if the following command returns a single line of hex codes:
+
+{{{
+hexdump cramfs.dump | grep "0000000 3d45 28cd"
+}}}
+Then extract the kernel (the offset is the former offset of 627928 minus the 56 bytes that the actual gz'ed kernel takes):
+
+{{{
+dd if=4.05.03.bin of=kernel.gz count=627872 bs=1 skip=56
+}}}
+Next step should be to mount the filesystem as documented [http://www.seattlewireless.net/Belkin_F5D7230-4#head-8b322907b7216a9d1dcb3ee952a58ee3e088832a here].
+
+I kinda gave up continuing my efforts, since i can't seem to figure out where the uploading of the OpenWRT firmware occurs. It seems it's possible to alter the belkin firmware to support a telnet or ssh of sorts to it and then the guides i have seen seems to stop and there's no word on how to actually get OpenWRT working. Then i headed over to DD-WRT to try my luck there and all i had to do was upload the generic firmware (i did it through TFTP, but i think it should be possible through the web interface). First i tried the mini version to see if it worked and then i upgraded to the voip version. I sure hope i can get OpenWRT on it soon, though. I like the packaging style of OpenWRT alot better.
+
+=== Installation method ===
+I'm not sure if you need to flash the router to be a [:OpenWrtDocs/Hardware/Belkin/F5D7230:F5D7230] first of all or not, but I did. I got the firmware for that from [http://networking.belkin.com/update/files/uk/54g_router.html here] (this links to the embeded firmware update page for the UK).
+
+Then I used the tftp method outlined in [http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4.pdf this paper] and that was smooth. I had to adjust some of the nvram params after install, but it works fine.
+
+The tftp method is basically to shutdown the router, then initate a tftp transfer using:
+
+In XP:
+
+{{{
+tftp -i <ipaddress> PUT <firmware image>
+}}}
+In Linux
+
+{{{
+tftp <ipaddress>
+tftp> binary
+tftp> rexmt 1
+tftp> trace
+Packet tracing on.
+tftp> put <firmware image>
+}}}
+where ''<ipaddress>'' is the ipaddress that your router currently has and ''<firmware image>'' is the file name of the firmware that you downloaded from OpenWRT
+
+as soon as you've started the transfer, boot up the router, as it boots the tftp will happen and OpenWRT will be installed!
+
+The lights will blink a bit, but once they're steady, you can reboot the router. This will then boot OpenWRT. The first boot takes a while as the SSH keys are generated so give it a couple of minutes before trying to telnet in on the IP address that it previously had. This should work fine.
+
+== A couple of points to note ==
+ * Connect the router and the machine that you'll be configuring it from via a hub/switch. I tried using a crossover cable at first, but as the interface comes up and down, Windows XP fails to do the tftp transfer in the time that the router is waiting for it.
+ * Whilst the router ''should'' keep the ip address that it had before you installed OpenWRT try the following to:
+  * 192.168.2.1 (this is the default in the manual)
+  * 192.168.1.1 (I re-installed the default firmware after installing OpenWRT becuase I noticed that the nvram settings had all my old settings and I wanted to use the "restore factory defaults" facility of the original Belkin firmware to remove all the nvram settings without having to do this manually. Using "restore factory defaults" resulting in the device using 192.168.1.1 which took ages to figure out. I thought I'd briked it until I connected the router via a cross over cable to my laptop. The reason i thought I'd bricked it - my fileserver uses 192.168.1.1 so only by connecting using the crossover could I get back into the router and see that it was still alive!)
+ * Once you've flashed the [:OpenWrtDocs/Hardware/Belkin/F5D7130:F5D7130] to be an [:OpenWrtDocs/Hardware/Belkin/F5D7230:F5D7230] you'll notice on the default status screen (index.html) that it says NAT disabled. If you click the word NAT it links to the admin password page which also has the NAT setting saying disabled. If you enable this you'll unlock all the firewall etc features of the [:OpenWrtDocs/Hardware/Belkin/F5D7230:F5D7230].  (Warning - doing this sets up the ethernet port as WAN, DHCP enabled, with no apparent access to the web interface.  If you are accessing via ethernet, you will lose access to the device until you connect via wireless access.)
+
+I've had success flashing the "micro" version of OpenWRT 0.9, but not the full version, on a V1010 box, despite there being apparently enough flash & RAM. Maybe the mtd sizes need altering?
+CategoryModel

@@ -1,0 +1,142 @@
+#pragma section-numbers off
+||<tablebgcolor="#f1f1ed" tablewidth="40%" tablestyle="margin: 0pt 0pt 1em 1em; float: right; font-size: 0.9em;"style="padding: 0.5em;">[[TableOfContents]]||
+= Linksys WRT54GL =
+The WRT54GL is basically a v4.0 [:OpenWrtDocs/Hardware/Linksys/WRT54G:WRTG54G] that still runs Linux. The 1.0 version of this model has serial numbers starting with {{{CL7A}}}; version 1.1 models have serial numbers starting with {{{CL7B}}} and {{{CL7C}}}.  As of August 2006, version 1.1 appears to be shipping worldwide.  See the [http://forum.openwrt.org/viewtopic.php?pid=15672 WRT54GL] thread in the forum. The model number shown on the package, the front panel, and the sticker on the underside of the unit is WRT54GL.  The FCC ID sticker says it is [https://gullfoss2.fcc.gov/prod/oet/cf/eas/reports/ViewExhibitReport.cfm?mode=Exhibits&RequestTimeout=500&calledFromFrame=N&application_id=615033&fcc_id='Q87-WT54GV40' WT54GV40], so it is substantially identical to a WRT54G v4.0/WRT54GS v3.0.  The WRT54GL has 16MB of RAM and 4MB of flash memory.
+
+= Hardware =
+== Info ==
+||'''Architecture''' ||MIPS ||
+||'''Vendor''' ||Broadcom ||
+||'''Bootloader''' ||CFE ||
+||'''System-On-Chip''' ||Broadcom 5352EKPB ||
+||'''CPU Speed''' ||200 Mhz ||
+||'''Flash size''' ||4 MiB ||
+||'''RAM''' ||16 MiB ||
+||'''Wireless''' ||Broadcom BCM43xx 802.11b/g Wireless LAN (integrated) ||
+||'''Ethernet''' ||Switch in CPU ||
+||'''USB''' ||No ||
+||'''Serial''' ||Yes ||
+||'''JTAG''' ||Yes ||
+== Serial port ==
+||<tablewidth="1084px" tableheight="65px">'''Pin 2''' ||3.3V ||'''Pin 4''' ||TX_0 ||'''Pin 6''' ||RX_0 ||'''Pin 8''' ||Not connected ||'''Pin 10''' ||GND ||
+||'''Pin 1''' ||3.3V ||'''Pin 3''' ||TX_1 ||'''Pin 5''' ||RX_1 ||'''Pin 7''' ||Not connected ||'''Pin 9''' ||GND ||
+== JTAG ==
+== Photos ==
+== Opening the case ==
+= Installation =
+Right after flashing at your first login set a few NVRAM parameters.
+
+{{{
+nvram set boot_wait=on
+nvram set boot_time=10
+nvram commit && reboot}}}
+NOTE: You do not have to touch any other NVRAM parameters. After this point NVRAM is no longer used.
+
+== Using the Linksys Web GUI ==
+== Using the TFTP method ==
+= Linksys WRT54GL specific configuration =
+== Interfaces ==
+== Failsafe mode ==
+If you forgot your password, broken one of the startup scripts, firewalled yourself or corrupted the JFFS2 partition, you can get back in by using !OpenWrt's failsafe mode.
+
+=== Boot into failsafe mode ===
+ * Unplug the router's power cord.
+ * Connect the router's LAN1 port directly to your PC.
+ * Configure your PC with a static IP address between 192.168.1.2 and 192.168.1.254. E. g. 192.168.1.2 (gateway and DNS is not required).
+ * Plug the power on and wait for the DMZ LED to light up.
+ * While the DMZ LED is on immediately press any button (Reset and Secure Easy Setup will work) a few times .
+ * If done right the DMZ LED will quickly flash 3 times every second.
+ * You should be able to telnet to the router at 192.168.1.1 now (no username and password)
+=== What to do in failsafe mode? ===
+'''NOTE:''' The root file system in failsafe mode is the SquashFS partition mounted in readonly mode. To switch to the normal writable root file system run mount_root and make any changes. Run mount_root now.
+
+ 1. Forgot/lost your password and you like to set a new one
+ passwd[[BR]]
+ 1. Forgot the routers IP address
+ uci get network.lan.ipaddr[[BR]]
+ 1. You accidentally run 'ipkg upgrade' or filled up the flash by installing to big packages (clean the JFFS2 partition and start over)
+ mtd -r erase rootfs_data[[BR]]
+If you are done with failsafe mode power cycle the router and boot in normal mode.[[BR]]
+
+== Buttons ==
+The Linksys WRT54GL has two buttons. They are Reset and Secure Easy Setup. The buttons can be used with hotplug events. E. g. [#wifitoggle WiFi toggle].
+||'''BUTTON''' ||'''Event''' ||
+||Reset ||reset ||
+||Secure Easy Setup ||ses ||
+
+
+= Basic configuration =
+== PPPoE ==
+== QoS ==
+== WiFi ==
+=== Enable WiFi ===
+{{{
+uci set wireless.wl0.disabled=0
+uci commit wireless && wifi}}}
+=== WiFi encryption ===
+Plese see OpenWrtDocs/KamikazeConfiguration/WiFiEncryption.
+
+=== WiFi toggle ===
+Turn !WiFi on/off with the Reset or Easy Secure Setup [#Buttons button]. Please see the [:OpenWrtDocs/Customizing/Software/WifiToggle:WiFi toggle] Wiki page.
+
+= Hardware mods =
+This section is under construction...
+
+== Adding an MMC/SD card ==
+Here we use the[http://forum.openwrt.org/viewtopic.php?id=9653 optimized version of mmc.c].
+||<style="text-align: center;" |7> http://wiki.openwrt.org/OpenWrtDocs/Hardware/Linksys/WRT54GL/mmc_gif?action=AttachFile&do=get&target=mmc.gif ||1. CS - Chip Select for the SD card ||GPIO 7 (0x80) ||
+||2. DI - Data in on the SD card. ||GPIO 2 (0x04) ||
+||3. VSS - Ground is a good thing ||GND ||
+||4. VDD - We need power of course. 3.3 V will do the job ||3.3 V ||
+||5. CLK - The clock we generate for the SD card ||GPIO 3 (0x08) ||
+||6. VSS2 - Another ground is also a good thing ||GND ||
+||7. DO - Data out from the SD card ||GPIO 4 (0x10) ||
+
+Photos for the soldering points:
+ * [http://cascade.dyndns.org/~datagarbage/linksys-wrt54gl-v1.1-3.3v+GND.jpg +3.3V and GND]
+ * [http://cascade.dyndns.org/~datagarbage/linksys-wrt54gl-v1.1-gpio-2+3.jpg GPIO 2 and 3]
+ * [http://cascade.dyndns.org/~datagarbage/linksys-wrt54gl-v1.1-gpio-4+7.jpg GPIO 4 and 7]
+
+=== /sbin/init script ===
+
+=== /etc/config/mmcmod ===
+
+= Other Info =
+== Supported Versions ==
+||||<style="text-align: center;"> (!) '''Please contribute to this list.''' (!) ||||<style="text-align: center;">'''!OpenWrt''' ||
+||'''Model''' || '''S/N''' ||  '''Development[[BR]]Kamikaze''' ||
+||WRT54GL v1 || CL7A || (./) ||
+||WRT54GL v1.1 || CL7B || (./) ||
+||WRT54GL v1.1 || CL7C || (./) ||
+Note that the wireless part is only supported on the 2.4-kernel version of Kamikaze. The 2.6-kernel runs fine on the box, but (because the wl.o driver from Broadcom is only available for 2.4 kernels) the wireless driver does not work.
+
+== Board info and CPU model ==
+||'''Model''' ||'''boardrev''' ||'''boardtype''' ||'''boardflags''' ||'''boardflags2''' ||'''boardnum''' ||'''wl0_corerev''' ||'''boot_ver''' ||'''pmon_ver''' ||'''cpu  model''' ||'''cpu (hw) ''' ||
+||WRT54GL v1 ||0x10 ||0x467 ||0x2558 ||0 ||42 ||9 || || || BCM3302 V0.8 || ||
+||WRT54GL v1.1 ||0x10 ||0x0467 ||0x2558 ||0 ||42 ||9 ||v3.7 ||CFE 3.91.37.0 || BCM3302 V0.8 ||BCM5352EK ||
+== V1.1 ==
+=== Switch Ports (for VLANs) ===
+Numbers 0-3 are Ports 1-4 as labeled on the unit, number 4 is the Internet (WAN) on the unit, 5 is the internal connection to the router itself. Don't be fooled: Port 1 on the unit is number 3 when configuring VLANs.
+||<tablewidth="369px" tableheight="243px">'''Port''' ||'''Switch port''' ||
+||Internet (WAN) ||4 ||
+||LAN 1 ||3 ||
+||LAN 2 ||2 ||
+||LAN 3 ||1 ||
+||LAN 4 ||0 ||
+
+
+== v1.2 ==
+I have seen revision v1.2 in the shop. The sales guy told me it would not run homebrew linux. So i ended up buying a [:OpenWrtDocs/Hardware/Linksys/WRT54GS:WRTG54GS] which i now sucks and works. :) Has anyone seen a v1.2 revision to work?
+
+just bought a WRT54GL (22 Nov 2007), and it'a v1.1 CL7B***  (manufactured 09/2007 ? date on the FCC/CE label) - NathaelPajani
+
+I bought a WRT54GL today and received a v1.1 so I would expect that this is still the latest version. OTOH LinkSys claimed that the GL version is specifically targeted at hackers that customize their WRT, so why would they sell one that can not be customized? Did anybody else already see a v1.2 at all?  -- TorstenLandschoff
+
+I tell you. I had the Package in my Hand. I backed of buying i because, as i sayed, had no confimation it will work. It was at Arlt in Freiburg im Breisgau, Germany. Possibly only a -DE Version?
+
+I bought a new WRT54GL in Germany at amazon.de (in May 07) The Revision is v1.1. The router was manufactored in 01/2007. I can see this date on a sticker on the bottom of the router. -- ThomasBrinkmann
+
+The WRT54GL is Linksys' response to angry customers.  For a long time, they had the original WRT54G, which was hackable, but when they joined with Cisco they made it so you were unable to hack the router.  Thus, the 54GL.  Version 1.1 is the current release, and as of yet there is no v1.2.  --CharlesEddy
+
+----
+ . CategoryModel

@@ -1,0 +1,3 @@
+== Sweex ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''boot_wait''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Status''' ||
+||[http://www.sweex.com/producten.php?sectie=7&subsectie=7&item=80&artikel=302 LB000021] ||? ||[http://www.infineon.com/cgi-bin/ifx/portal/ep/channelView.do?channelId=-65123&channelPage=/ep/channel/productOverview.jsp&pageTypeId=17099 Infineon ADM5120P] @ 175MHz ||2MB ||16MB ||None ||? ||? ||Yes ||Yes ||No ||[:Edimax:WiP], Clone of Edimax [http://www.edimax.com.tw/html/english/products/BR-6104KP.htm BR-6104KP] ||

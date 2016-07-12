@@ -1,0 +1,33 @@
+2.1 Divide wireless from wired network
+It's possible to make the roadwarrior connect to the bridge interface as well.
+
+2.5. Configure IPSec
+I've used vlan1 instead of eth1 in the interfaces= statement.
+I've had to add aes-md5,3des-md5 to the esp= statement (WinXP defaults to 3des-md5 when trying to connect)
+
+Regarding firewalling, I'm no netfilter guru so the following config may contain redundant statements :
+To ensure forwarding beetween l2tp & lan interface, /etc/firewall.user is populated with the following :
+#!/bin/sh
+. /etc/functions.sh
+
+WAN=$(nvram get wan_ifname)
+LAN=$(nvram get lan_ifname)
+
+L2TP0="ppp0"
+
+iptables -F input_rule
+iptables -F output_rule
+iptables -F forwarding_rule
+iptables -t nat -F prerouting_rule
+iptables -t nat -F postrouting_rule
+
+iptables -A FORWARD -i $LAN -o $L2TP0 -j ACCEPT
+iptables -A FORWARD -i $L2TP0 -o $LAN -j ACCEPT
+
+To ensure that ipsec will pass in on the external interface, /etc/config/firewall is populated with the following :
+accept:proto=udp dest=a.b.c.d dport=500
+accept:proto=udp dest=a.b.c.d dport=4500
+accept:proto=esp dest=a.b.c.d
+
+It may be possible to loosen the setup by removing dest=a.b.c.d statements.
+

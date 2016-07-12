@@ -1,0 +1,80 @@
+= Table of Contents =
+[[TableOfContents(2)]]
+
+= 3Com 3CRWDR100A-72 =
+The device is based on Texas Instrument AR7, so you need the ["AR7Port"] in OpenWrt trunk.
+
+= Basic hardware info =
+The device has the following connectors on the rear (left to right).
+
+ * Auxiliary antenna.
+ * ADSL input connector.
+ * Power connector (12V 1.2A).
+ * Reset button.
+ * Large On/Off button.
+ * 4 numbered RJ45 10/100 MBit connectors.
+ * Main antenna.
+= Extended hardware information =
+== Main processor ==
+The main processor is a [http://www.ti.com Texas Instruments] [http://focus.ti.com.cn/pdfs/bcg/ar7wi_fact_sheet.pdf TNETD7300AGDW] Processor, an AR7 that should work with the ["AR7Port"] of openWRT (yet untested).
+
+== Memory ==
+Onboard is a [http://www.psc.com.tw/english/index.jsp PSC] A2V28S40BTP SDRAM Memory chip.
+
+== Flash ==
+The flash chip is an [http://www.intel.com/ Intel] TE28F160C3-B 16Mbit (2MiB) 3.0V Flash memory.
+
+== Switch chip ==
+The internal switch is a [http://www.marvell.com/ Marvell] [http://www.marvell.com/products/switching/linkstreet/LinkStreet_88E6060.pdf 88E6060-RCJ] 6-port (4 external, 1 to the router itself, 1 unused) 10/100 switch with autosensing.
+
+== Wireless card ==
+The wireless chip in mini-pci card is a [http://www.ti.com Texas Instruments] [http://focus.ti.com/lit/ml/splt139a/splt139a.pdf TNETW1130GVF], also known as ACX111 chipset.
+
+= Serial console =
+A serial console can be connected to J4.
+
+The serial signals are at a 3.3V level, so you need to use a level convertor, see ["OpenWrtDocs/Customizing/Hardware/Serial Console"]
+
+The serial signal itself is 115200 baud, 8 databits, 1 stopbit, no parity (8N1).
+
+The pinout for the serial is
+||'''pin''' ||'''signal''' ||
+||1 ||Not Connected ||
+||2 ||Not Connected ||
+||3 ||RX ||
+||4 ||Not Connected ||
+||5 ||TX ||
+||6 ||Not Connected ||
+||7 ||Not Connected ||
+||8 ||Not Connected ||
+||9 ||GND ||
+||10 ||VCC +3.3V ||
+
+
+Disposition on the board:
+||9 ||7 ||5 ||3 ||1 ||
+||10 ||8 ||6 ||4 ||2 ||
+
+
+= JTAG =
+attachment:3CRWDR100A-72_jtag.jpg
+
+To enable JTAG functionality, you must short-circuit SHORT pins or put 100R resistor. (At your own risk)
+
+I couldn't write (nor read properly) my flash because I suspect it was broken. But not sure.
+
+But AR7 prom's was read properly.
+
+The AR7 chip has a small memory banks on the chip : 4Kb PROM (@0xBFC00000) and 4Kb RAM (@0x80000000)
+
+The FLASH is located at 0x90000000 (CS0) and RAM is located at 0x94000000 (CS1)
+
+These address extracted from [:http://www.linux-mips.org/wiki/AR7#Memory+map:http://www.linux-mips.org/wiki/AR7#Memory map]
+
+= OpenWRT status =
+Untested
+
+= Image =
+attachment:3CRWDR100A-72_front.jpg
+
+CategoryModel ["CategoryAR7Device"]

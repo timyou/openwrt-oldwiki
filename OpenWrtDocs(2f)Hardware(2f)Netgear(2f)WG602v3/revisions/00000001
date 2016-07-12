@@ -1,0 +1,4 @@
+'''Netgear WG602 v3'''
+
+The WG602 v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 2Mb flash and 8Mb RAM.
+The wireless NIC is integrated on the board. boot_wait is on by default (needs confirmation).

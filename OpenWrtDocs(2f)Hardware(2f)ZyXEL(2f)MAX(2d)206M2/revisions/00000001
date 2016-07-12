@@ -1,0 +1,220 @@
+= ZyXEL MAX-206M2 =
+
+{{{
+CPU:
+RAM: 32MB
+Flash: 8MB
+WiMAX : Sequans
+}}}
+
+
+== Serial pinout ==
+
+The serial pinout is the standard ZyXEL serial pinout :
+
+{{{
+Ethernet
+
+[x] GND
+[*]
+[x] RX
+[x] TX
+[x] VCC
+
+Front
+}}}
+
+Baudrate is 115200 8n1.
+
+== Bootbase ==
+
+To enter bootbase debug commands, just proceed as usual.
+
+{{{
+Bootbase Version: V2.0 | 07/30/2008 19:24:45
+RAM: Size = 32768 Kbytes
+DRAM POST: Testing: 32768K
+OK
+FLASH: AMD 32M *2
+
+ZyNOS Version: V3.60(AKL.0)b8_1.1.8_patch03plus1 | 09/16/2008 18:59:33
+
+Press any key to enter debug mode within 3 seconds.
+.....................
+Enter Debug Mode
+ATEN1,10F0A563
+OK
+ATMP
+ROMIO image start at bfc10000
+code version:
+code start: 80008000
+code length: 21EB94
+memMapTab: 20 entries, start = bfc48000, checksum = A623
+$RAM Section:
+  0: BootExt(RAMBOOT), start=80008000, len=18000
+  1: BootData(RAM), start=80020000, len=8000
+  2: HTPCode(RAMCODE), start=80020000, len=40000
+  3: HTPData(RAM), start=80060000, len=20000
+  4: RasCode(RAMCODE), start=80020000, len=8E0000
+  5: RasData(RAM), start=80900000, len=700000
+$ROM Section:
+  6: BootBas(ROMIMG), start=bfc00000, len=4000
+  7: DbgArea(ROMIMG), start=bfc04000, len=2000
+  8: RomDir2(ROMDIR), start=bfc06000, len=A000
+  9: BootExt(ROMIMG), start=bfc10030, len=17FD0
+ 10: HTPCode(ROMBIN), start=bfc28000, len=20000
+     (Compressed)
+     Version: HTP_MAX206M2 V1, start: bfc28030
+< Press any key to Continue >
+     Length: 3B484, Checksum: B8CF
+     Compressed Length: 12CA9, Checksum: 3890
+ 11: MemMapT(ROMMAP), start=bfc48000, len=C00
+ 12: termcap(ROMIMG), start=bfc48c00, len=400
+ 13: RomDefa(ROMIMG), start=bfc49000, len=A000
+ 14: ivrsys(ROMBIN), start=bfc53000, len=10000
+     signature error!
+ 15: RasCode(ROMBIN), start=bfc63000, len=35C800
+     (Compressed)
+     Version: RAS MAX206M2, start: bfc63030
+     Length: 7ACA60, Checksum: F168
+     Compressed Length: 1CBB93, Checksum: 44E7
+ 16: CwmpData(ROMIMG), start=bffbf800, len=800
+ 17: RomCA(ROMIMG), start=bffc0000, len=10000
+ 18: RomCert(ROMIMG), start=bffd0000, len=10000
+ 19: ivrusr(ROMBIN), start=bffe0000, len=20000
+     signature error!
+$USER Section:
+Msecs 96
+Heap0 16 1024 320
+Heap1 32 1024 320
+Heap2 64 1024 320
+Heap3 128 640 160
+< Press any key to Continue >
+Heap4   192  64 32
+Heap5   256  64 32
+Heap6   320  32 16
+Heap7   384  32 16
+Heap8   448  32 16
+Heap9 512 150 32
+Heap10 576 32 16
+Heap11 1200 128 16
+Heap12  2560 48 16
+Heap13 4096 48 16
+Heap14 5120 32 16
+Heap15 8192 32 16
+Heap16 12000 8 8
+Heap17 36000 16 8
+Heap18 42000 6 2
+Heap19 0 0
+Heap20 0 0
+MbufInt 20 20 20
+MbufIO  120 500 300 220 0
+Queue   192
+Cbuf    192
+< Press any key to Continue >
+FuncId  40
+Proc    50
+Timer   128
+DNS     128
+FilterSet 12
+IpRoute 8
+IpxRoute 4
+IpMaxRt 128
+IpxMaxRt 128
+IpxMaxSap 128
+FwTos 2048 16 16 16
+CommonTos 2048 16 16 16 16 16 16 16 16 16
+AclType0   2048  10  128
+AclType1   2048  10  100
+AclType2   2048  10  20
+AclType3   2048  10  128
+AclType4   2048  10  128
+AclType5   4096  8   128
+AppleTalkRoute 0
+Bridge 4
+RemoteNode 1
+< Press any key to Continue >
+Profile 32
+Endpoint 1
+NATServerSet 1
+DHCPEntry   254
+PoeSvrCnt 4
+ScheduleSet 12
+AclBuffer 1
+IPSecManualSA   2
+IPSecIkePeer    2
+IPSecIkeSA      2
+IPSecAclBuffer 1
+IPSecSPD        2
+NatAclBuffer 1
+CustomPort 10
+NatSessions 2048
+IpPolicySet 12
+MiscFirewallBuffer 1
+CyberPatrolBuffer 1
+CyberPatrolListBuffer 1
+TrustedIPNum 0
+Logs 1
+< Press any key to Continue >
+IPBUFixpart 1
+NatRulePerSet 36
+UPNPNum 1
+IPSecExtendNum 2
+HwVerRange 2 0 0
+BmCbqIfNum      3
+BmCbqClassNum   23
+BmCbqFilterNum  23
+DDNS 1
+Model 1 50945
+VPNPort 2
+DHCPMacNum 8
+ComTos 1
+WlanExt 1
+IEEE8021X 1
+BackupRadiusExtend 1
+AutoSec 1
+tm_enforcer      1
+VoiceSignal 2
+VoiceRTP 1
+VoiceFXS 2
+< Press any key to Continue >
+VoicePSTN 10
+VoicePHBOOK 10
+VoiceCommon 1
+VoiceAutoPro 1
+VoiceFXO  1
+VoiceCallFwd 2
+VoicePhoneConfig 2
+VoiceCallFilter 2
+VoiceAA 1
+TrunkAccount 1
+TrunkingTable 1
+VoiceFXSPhoneBook 8
+ZyDaylight 1
+sptFSCert 128 1024
+OMADM 1
+CWMP 1
+EAPNum 1
+QEInfo 1
+QEAclRule 20
+WiMAX 1
+BridgeIface 32
+< Press any key to Continue >
+ChannBridgeConfigEntry 32
+WiMAXVPNT 1
+WiMAXCIF 16
+WiMAXPW 16
+DMTREE 384
+DMTreeBuffer 1
+HNSP 1
+VNSP 1
+ChannelPlan 1
+CAPL 1
+CromAuthity 1
+CromFlags 1
+WiMAXFreq 1
+AES128 1
+MultiUser 1
+
+OK
+}}}

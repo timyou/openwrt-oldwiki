@@ -1,0 +1,393 @@
+#format wiki
+#language en
+
+
+= Castlenet ASW800 ADSL modem 4Port eth Usb and Wireless =
+
+== Major Chips: ==
+*TNETD7300AGDW         AR7 Chipset,Processor
+
+*88E6060-RJC               Marvell Link Street family  88E6060 - 6-Port Fast Ethernet Switch
+
+*40ST1041AX               Bothhand USA - 40 PIN SMD Ethernet 10/100 BaseT Quad Port Transformer       
+
+*TNETW1130GVF           Single-Chip MAC and Baseband Processor for IEE 802.11 a/b/g.
+
+*29LV320ABTC               4M X 8 FLASH
+
+*HY57V281620HCT- H    4banks of 2,097,152x16.lvttl, pc133/cl2 SDRAM  (16MB)
+
+
+== Similar Openwrt dev list devices ==
+
+NONE LISTED HAVE USB
+
+Allnet     ALL0277DSL  - only 2M Flash
+
+Netgear DG834G        - exact match 
+
+Siemens SX541          - only 2M Flash maybe more memory
+
+
+== Manufacturer Product link ==
+http://www.castlenet.com.tw/products/XDSL/ASW800%20Series.htm
+
+Firmware ver T360A.050217a1_04
+
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@LH.localdomain) (gcc version 2.95.3 20010315 (release/MontaVista)) #4 Thu Feb 17 11:53:57 CST 2005
+
+== cpuinfo ==
+
+processor               : 0
+
+cpu model               : MIPS 4KEc V4.8
+
+BogoMIPS                : 149.91
+
+wait instruction        : no
+
+microsecond timers      : yes
+
+extra interrupt vector  : yes
+
+hardware watchpoint     : yes
+
+VCED exceptions         : not available
+
+VCEI exceptions         : not available
+
+== iomem --
+
+00000000-13ffffff : reserved
+
+14000000-1401ffff : System RAM
+
+14020000-14ffffff : System RAM
+
+  14020000-14194b37 : Kernel code
+
+  141a5300-141befff : Kernel data
+
+a8612800-a8612fff : eth0
+
+
+== Special Libraries ==
+
+tiatm.o
+
+tiap.o
+
+avalanche_usb.o
+
+=== and utilities ===
+/usr/sbin/
+br2684ctl
+
+=== Startup script ===
+/etc/init.d/rcS
+
+# cat /etc/init.d/rcS
+
+#! /bin/sh
+
+#
+
+# rcS           Call all S??* scripts in /etc/rcS.d in
+
+#               numerical/alphabetical order.
+
+#
+
+# Version:      @(#)/etc/init.d/rcS  2.76  19-Apr-1999  miquels@cistron.nl
+
+#
+
+trap "" SIGHUP
+
+
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+runlevel=S
+
+prevlevel=N
+
+umask 022
+
+export PATH runlevel prevlevel
+
+
+
+#
+
+#       Trap CTRL-C &c only in this shell so we can interrupt subprocesses.
+
+#
+
+trap ":" INT QUIT TSTP
+
+
+
+mount -n /proc
+
+#mount -n -o remount,rw /
+
+mount /var
+
+
+
+# unreserve for unp systems
+
+echo "0 0" > /proc/sys/vm/pagetable_cache
+
+# router
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+# pppox
+
+echo 1 > /proc/sys/net/ipv4/ip_dynaddr
+
+# ignore_all not yet used: this should be satisfactory
+
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+
+# drop spoofed addr: turn this off on non-loop-free networks
+
+# echo 1 > /proc/sys/net/ipv4/conf/default/rp_filter
+
+# echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter
+
+# do not honor source route flags
+
+echo 0 > /proc/sys/net/ipv4/conf/default/accept_source_route
+
+echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route
+
+# protect against syn flood attacks
+
+echo 1 >/proc/sys/net/ipv4/tcp_syncookies
+
+# this needs proper sampling on av_blog to determine optimal value
+
+# for now just observe softnet_stats to see # time was throttled
+
+# historical value was 300
+
+echo 100 > /proc/sys/net/core/netdev_max_backlog
+
+
+(cd /; tar xf var.tar)
+
+/sbin/ledcfg
+
+sleep 1
+
+
+/sbin/insmod avalanche_usb
+
+sleep 1
+
+
+
+/sbin/insmod tiatm
+
+sleep 1
+
+
+
+# UPnP requires loopback
+
+ifconfig lo 127.0.0.1
+
+
+
+/usr/sbin/thttpd -d /usr/www -u root -p 80 -c '/cgi-bin/*' -l /dev/nul
+
+
+= Further info from software commands =
+
+== cat proc/tty/driver/serial ==
+
+serinfo:1.0 driver:5.05c revision:2001-07-08
+
+0: uart:16550A port:A8610E00 irq:15 baud:2258 tx:3758 rx:0 RTS|CTS|DTR
+
+1: uart:16550A port:A8610F00 irq:16 tx:0 rx:0 RTS|DTR
+
+== cat proc/ticfg/env ==
+
+bootloaderVersion       1.2.1.5
+
+ProductID       AR7WRD
+
+HWRevision      Unknown
+
+SerialNumber    none
+
+IPA     192.168.1.1
+
+MODETTY0        38400,n,8,1,hw
+
+MODETTY1        38400,n,8,1,hw
+
+BOOTCFG m:f:"mtd1"
+
+mtd2    0x90000000,0x90010000
+
+mtd3    0x90010000,0x90020000
+
+StaticBuffer    384
+
+MAC_PORT        1
+
+MEMSZ   0x01000000
+
+FLASHSZ 0x00400000
+
+CPUFREQ 150000000
+
+SYSFREQ 125000000
+
+PROMPT  (psbl)
+
+vcc_encaps0     0.0
+
+vcc_encaps1     0.0
+
+vcc_encaps2     0.0
+
+vcc_encaps3     0.0
+
+vcc_encaps4     0.0
+
+vcc_encaps5     0.0
+
+vcc_encaps6     0.0
+
+vcc_encaps7     0.0
+
+usb_vid 0x0451
+
+usb_pid 0x6060
+
+HWA_RNDIS       00:E0:A6:66:41:EB
+
+mtd4    0x90020000,0x90400000
+
+mtd1    0x90020000,0x900a0000
+
+mtd0    0x900a0000,0x90400000
+
+HWA_0   00:30:54:40:9a:e4
+
+HWA_3   00:30:54:40:9a:e5
+
+mac_ap  00:30:54:40:9a:e6
+
+HWA_HRNDIS      00:30:54:40:9a:e7
+
+
+
+== cat proc/mounts == 
+
+/dev/mtdblock/0 / squashfs ro 0 0
+
+none /dev devfs rw 0 0
+
+proc /proc proc rw 0 0
+
+ramfs /var ramfs rw 0 0
+
+
+== /proc/mtd ==
+
+dev:    size   erasesize  name
+
+mtd0: 00360000 00010000 "mtd0"
+
+mtd1: 00080000 00010000 "mtd1"
+
+mtd2: 00010000 00002000 "mtd2"
+
+mtd3: 00010000 00010000 "mtd3"
+
+mtd4: 003e0000 00010000 "mtd4"
+
+
+
+= ADAM2 log =
+
+530 Please login with USER and PASS.
+
+USER adam2
+
+331 Password required for adam2.
+
+
+
+PASS adam2
+
+230 User adam2 successfully logged in.
+
+
+
+GETENV mtd0
+
+mtd0                  0x900a0000,0x90400000
+
+
+
+200 GETENV command successful
+
+GETENV mtd1
+
+mtd1                  0x90020000,0x900a0000
+
+
+
+200 GETENV command successful
+
+GETENV mtd2
+
+mtd2                  0x90000000,0x90010000
+
+
+
+200 GETENV command successful
+
+GETENV mtd3
+
+mtd3                  0x90010000,0x90020000
+
+
+
+200 GETENV command successful
+
+GETENV mtd4
+
+mtd4                  0x90020000,0x90400000
+
+
+
+200 GETENV command successful
+
+                                                 
+
+
+= PARTITION INFO =
+
+mtd0                  0x900a0000,0x90400000  - CRAMFS image (for root filesystem)          4194304
+
+mtd1                  0x90020000,0x900a0000  - Linux kernel (in ADAM2 application format)   655360
+
+mtd2                  0x90000000,0x90010000  - ADAM2 Bootloader                              65536
+
+mtd3                  0x90010000,0x90020000  - ADAM2 Environment (env) and 
+
+                                               XML config.xml (/etc/config.xml) aka NVRAM   131072
+
+mtd4                  0x90020000,0x90400000
+
+----
+CategoryModel ["CategoryAR7Device"]

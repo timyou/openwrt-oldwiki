@@ -1,0 +1,222 @@
+diff -wur uuu/di624/kernels/ar231x/drivers/net/Config.in di624/kernels/ar231x/drivers/net/Config.in
+--- uuu/di624/kernels/ar231x/drivers/net/Config.in	2006-03-21 06:41:51.000000000 -0500
++++ di624/kernels/ar231x/drivers/net/Config.in	2007-11-05 17:47:12.000000000 -0500
+@@ -24,7 +24,7 @@
+ comment 'Ethernet (10 or 100Mbit)'
+ bool 'Ethernet (10 or 100Mbit)' CONFIG_NET_ETHERNET
+ if [ "$CONFIG_NET_ETHERNET" = "y" ]; then
+-   define_bool CONFIG_VENETDEV n
++   define_bool CONFIG_VENETDEV y
+    tristate ' BUILT-IN ATHEROS ENET DRIVER' CONFIG_NET_ATHEROS_ETHER
+    mainmenu_option next_comment
+    comment '   PHY Selection'
+diff -wur uuu/di624/kernels/ar231x/drivers/net/ath/ae531xlnx.c di624/kernels/ar231x/drivers/net/ath/ae531xlnx.c
+--- uuu/di624/kernels/ar231x/drivers/net/ath/ae531xlnx.c	2006-03-21 06:41:50.000000000 -0500
++++ di624/kernels/ar231x/drivers/net/ath/ae531xlnx.c	2007-11-19 08:35:30.000000000 -0500
+@@ -21,6 +21,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/init.h>
+ #include <linux/skbuff.h>
++#include <linux/if_vlan.h>
+ #include <asm/io.h>
+ 
+ #include "ar531xlnx.h"
+@@ -69,6 +70,7 @@
+ 	int                     enetUnit;        /* system unit number "eth%d" */
+ 	int                     unit_on_MAC;     /* MAC-relative unit number */
+ 	struct net_device       *dev;
++	struct vlan_group *	vlgrp;
+ 	ae531x_MAC_state_t      *MAC_state;      /* underlying MAC hw/sw state */
+ } ae531x_dev_sw_state_t;
+ 
+@@ -201,9 +203,14 @@
+                     retval = 1;
+                     goto rx_no_skbs;
+                 } else {
++                    int vid;
++                    
+                     /* Sync data cache w.r.t. DMA */
+                     A_DATA_CACHE_INVAL(skb->data, length);
+         
++                    length -= 4;
++                    vid = skb->data[length+1];
++                    
+                     rxdev = dev_sw_state->dev;
+ 
+                     if (rxdev == NULL) {
+@@ -236,6 +243,10 @@
+                               ("Send data up stack: skb=%p data=%p length=%d\n",
+                                (void *)skb, (void *)skb->data, length));
+ 
++
++                    if(dev_sw_state->vlgrp)
++                        vlan_hwaccel_receive_skb(skb, dev_sw_state->vlgrp, (vid < 4 ? 1 : 2));
++                    else
+                     netif_receive_skb(skb);
+ 
+                     MAC_state->stats.rx_packets++;
+@@ -470,14 +481,37 @@
+     ae531x_dev_sw_state_t *dev_sw_state = (ae531x_dev_sw_state_t *)data;
+     ae531x_MAC_t *MACInfo = &dev_sw_state->MAC_state->MACInfo;
+     int unit = dev_sw_state->enetUnit;
++    int timeout;
++
++    daemonize ();
++    reparent_to_init();
++    spin_lock_irq(&current->sigmask_lock);
++    sigemptyset(&current->blocked);
++    recalc_sigpending(current);
++    spin_unlock_irq(&current->sigmask_lock);
++
++    strncpy (current->comm, "ae531x_phy_poll", sizeof(current->comm) - 1);
++    current->comm[sizeof(current->comm) - 1] = '\0';
+ 
+     for(;;) {
++        timeout = AE531X_PHY_POLL_SECONDS*HZ;
++        
++        do {
++            timeout = interruptible_sleep_on_timeout (&MACInfo->poll_sleep, timeout);
++        } while (!signal_pending (current) && (timeout > 0));
++        
++        if (signal_pending (current)) {
++            spin_lock_irq(&current->sigmask_lock);
++            flush_signals(current);
++            spin_unlock_irq(&current->sigmask_lock);
++        }
++  
+         if (MACInfo->port_is_up) {
+             phyCheckStatusChange(unit);
+         }
+ 
+-        set_current_state(TASK_UNINTERRUPTIBLE);
+-        schedule_timeout(AE531X_PHY_POLL_SECONDS * HZ);
++//        set_current_state(TASK_UNINTERRUPTIBLE);
++//        schedule_timeout(AE531X_PHY_POLL_SECONDS * HZ);
+     }
+ 
+     return 0;
+@@ -609,8 +643,9 @@
+ 		phyPowerDown(MACInfo->phyBase, 4);
+ #endif
+ 
++		init_waitqueue_head(&MACInfo->poll_sleep);
+ 		/* Start thread to poll for phy link status changes */
+-		phy_poll_pid = kernel_thread(ae531x_phy_poll, dev_sw_state, 0);
++		phy_poll_pid = kernel_thread(ae531x_phy_poll, dev_sw_state, CLONE_FS|CLONE_FILES);
+ 		if (phy_poll_pid < 0)
+ 		{
+ 			AE531X_PRINT(AE531X_DEBUG_ERROR, ("ethmac%d unable to start Phy Poll thread\n", MACInfo->unit));
+@@ -881,7 +916,7 @@
+     u32 buf;
+     u32 ctrlen;
+     u32 length;
+-    int mtu;
++    int mtu, pad;
+     int max_buf_size;
+     VIRT_ADDR txDesc;
+ 
+@@ -891,6 +926,24 @@
+     MAC_state = dev_sw_state->MAC_state;
+     MACInfo = &MAC_state->MACInfo;
+ 
++
++    skb = skb_padto(skb, 60);
++    if(skb->len < 60)
++        skb_put(skb, 60 - skb->len);
++
++    if(vlan_tx_tag_present(skb)) {
++        int vid = vlan_tx_tag_get(skb);
++        unsigned char *p;
++        
++        skb = skb_pad(skb, 4);
++        p = skb_put(skb, 4);
++
++        if(vid == 2) {
++            p[0] = 0x80;
++            p[1] = 1 << 4;
++        }
++    }
++        
+     length = skb->len;
+ 
+     /* Check if this port is up, else toss packet */
+@@ -916,7 +969,7 @@
+     }
+ 
+     /* Check if we can transport this packet */
+-    length = max((u32)60, length);  /* total length */
++//    length = max((u32)60, length);  /* total length */
+     mtu = dev->mtu;
+     max_buf_size = mtu + ETH_HLEN;
+     if (length > max_buf_size) {
+@@ -1075,6 +1128,22 @@
+ 	return 0;
+ }
+ 
++static void
++ae531x_MAC_vlan_rx_register(struct net_device *dev, struct vlan_group *grp)
++{
++	ae531x_dev_sw_state_t *sw = (ae531x_dev_sw_state_t *) dev->priv;
++        sw->vlgrp = grp;
++}
++
++static void
++ae531x_MAC_vlan_rx_kill_vid(struct net_device *dev, unsigned short vid)
++{
++        ae531x_dev_sw_state_t *sw = (ae531x_dev_sw_state_t *)dev->priv;
++	if(sw->vlgrp)
++		sw->vlgrp->vlan_devices[vid] = NULL;
++}
++
++
+ static void ae531x_MAC_setup_fntable(struct net_device *dev)
+ {
+ 	ARRIVE();
+@@ -1086,6 +1155,8 @@
+ 	dev->do_ioctl		= ae531x_MAC_do_ioctl;
+ 	dev->poll			= ae531x_MAC_poll;
+ 	dev->weight			= 16;
++	dev->vlan_rx_register	= ae531x_MAC_vlan_rx_register;
++	dev->vlan_rx_kill_vid	= ae531x_MAC_vlan_rx_kill_vid;
+ #if 0 /* XXX: currently, ae531x_MAC_tx_timeout() will call functions
+ 	   *      that in turn call schedule(). this is BAD, since the
+ 	   *      timeout call runs at interrupt time. until ae531x_MAC_tx_timeout
+@@ -1095,6 +1166,7 @@
+ 	dev->tx_timeout		= NULL;
+ #endif
+ 	dev->features		= NETIF_F_HW_CSUM | NETIF_F_HIGHDMA;
++	dev->features |= NETIF_F_HW_VLAN_TX | NETIF_F_HW_VLAN_RX;
+ 	dev->change_mtu		= ae531x_change_mtu;
+ 
+ 	LEAVE();
+@@ -1296,6 +1368,7 @@
+ 		dev_sw_state->unit_on_MAC = 0;
+ 		MAC_state = &per_MAC_info[next_dev];
+ 		dev_sw_state->MAC_state = MAC_state;
++                dev_sw_state->vlgrp = NULL;
+ 		MAC_state->dev_sw_state[AE531X_LAN_PORT] = dev_sw_state;
+ 		MAC_state->primary_dev = -1;
+ 
+diff -wur uuu/di624/kernels/ar231x/drivers/net/ath/ae531xmac.h di624/kernels/ar231x/drivers/net/ath/ae531xmac.h
+--- uuu/di624/kernels/ar231x/drivers/net/ath/ae531xmac.h	2006-03-22 05:55:14.000000000 -0500
++++ di624/kernels/ar231x/drivers/net/ath/ae531xmac.h	2007-11-11 14:28:22.000000000 -0500
+@@ -186,6 +186,7 @@
+     BOOL            port_is_up;    /* flag to indicate port is up */
+     void            *OSinfo;       /* OS-dependent data */
+     unsigned char   dev_addr[6];
++    wait_queue_head_t poll_sleep;
+ } ae531x_MAC_t;
+ 
+ #define	AE531X_TX_DESC_COUNT_DEFAULT	128    /* Transmit descriptors */
+diff -wur uuu/di624/kernels/ar231x/drivers/net/ath/mvPhy.c di624/kernels/ar231x/drivers/net/ath/mvPhy.c
+--- uuu/di624/kernels/ar231x/drivers/net/ath/mvPhy.c	2006-03-21 06:41:50.000000000 -0500
++++ di624/kernels/ar231x/drivers/net/ath/mvPhy.c	2007-11-05 17:20:48.000000000 -0500
+@@ -36,7 +36,7 @@
+ #define MV_DEBUG_PHYSETUP  0x00000002
+ #define MV_DEBUG_PHYCHANGE 0x00000004
+ 
+-int mvPhyDebug = MV_DEBUG_ERROR;
++int mvPhyDebug = MV_DEBUG_ERROR | MV_DEBUG_PHYSETUP | MV_DEBUG_PHYCHANGE;
+ 
+ #define MV_PRINT(FLG, X)                            \
+ {                                                   \

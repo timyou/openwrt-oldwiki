@@ -1,0 +1,13 @@
+1228075769000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700		Added WNR834B v1 and v2 page
+1228076970000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700		
+1228082084000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700		
+1228082250174066	99999999	ATTNEW	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700	WNR834Bv2.JPEG	
+1228082865350114	99999999	ATTNEW	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700	WNR834Bv2_Internals.JPG	
+1228083462000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700		Added picture of internals, JTAG, console, minor wording revisions
+1228141682000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	68.216.143.162	68.216.143.162	1228044875.8.30700		
+1228175848000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700		Added FCC ID and hyperlinks for V1 router; V1 boot log and serial port info
+1228176419000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700		Added V1 NVRAM values, placeholder for V1 picture
+1228177799737584	99999999	ATTNEW	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700	WNR834Bv1_Internals.JPG	
+1228177883000000	00000008	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	74.245.45.54	adsl-074-245-045-054.sip.clt.bellsouth.net	1228044875.8.30700		Added WNR834B v1 picture, removed ToDo section
+1231445381432594	99999999	ATTNEW	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	68.216.143.165	68.216.143.165	1228044875.8.30700	wnr834bv2_tsop_jtag_180.jpg	
+1231445740000000	00000009	SAVE	OpenWrtDocs(2f)Hardware(2f)Netgear(2f)WNR834B	68.216.143.165	68.216.143.165	1228044875.8.30700		Sparkie's hi-resolution picture of JP1/J12 solder points for JTAG and Console

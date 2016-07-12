@@ -1,0 +1,797 @@
+== GO7007 devices support ==
+
+The idea here is to add support to OpenWRT for hardware accelerated encoding device like the Plextor ConvertX PX-TV402U that I have.
+
+http://oss.wischip.com/tv402u.jpg
+
+For more info on the Plextor:
+ http://www.plextor.com/english/products/TV402U.htm
+
+Fortunately the driver for the GO7007 chipset it is based on is Open Source Software. For more info on this driver:
+ http://oss.wischip.com/
+
+The GO7007 video part uses Video4Linux2 API and the audio part uses ALSA OSS emulation.
+
+In the next sections I assume that you know how to tweak kamikaze and that you have a working copy of the SVN trunk. For more info check the wiki documentation BuildingPackagesHowTo and the development documentation
+ https://dev.openwrt.org/browser/trunk/openwrt/docs/buildroot-documentation.html?format=raw
+
+=== Requirements ===
+
+From the README file distributed with the GO7007 driver archive, we can summarize the requirements as following:
+
+ * Linux kernel 2.6.10 or later
+ * USB 2.0 support
+ * Kernel options:
+  * CONFIG_HOTPLUG           - Support for hot-pluggable devices
+  * CONFIG_MODULES           - Enable loadable module support
+  * CONFIG_KMOD              - Automatic kernel module loading
+  * CONFIG_FW_LOADER         - Hotplug firmware loading support
+  * CONFIG_I2C               - I2C support
+  * CONFIG_VIDEO_DEV         - Video For Linux
+  * CONFIG_SOUND             - Sound card support
+  * CONFIG_SND               - Advanced Linux Sound Architecture
+  * CONFIG_USB               - Support for Host-side USB
+  * CONFIG_USB_DEVICEFS      - USB device filesystem
+  * CONFIG_USB_EHCI_HCD      - EHCI HCD (USB 2.0) support
+  * CONFIG_SND_MIXER_OSS     - OSS Mixer API
+  * CONFIG_SND_PCM_OSS       - OSS PCM (digital audio) API
+ * Hotplug scripts
+ * The FXload utility
+
+As of today kamikaze comes with Linux kernel 2.6.16 and with built-in USB 2.0 support, so the first two requirements are met. Kernel options setup is documented and we will configure them later. 
+
+OpenWRT also includes a minimalist Hotplug emulation that works just fine and that we will use for firmware auto-loading. The only unmet requirement is the FXload utility used to upload the firmware to the EZ-USB device.
+
+=== FXload utility ===
+
+FXload is available from the SourceForge website for Linux-hotplug:
+http://prdownloads.sourceforge.net/linux-hotplug/
+
+Below is the set of files to create under package/fxload/:
+
+{{{
+package/fxload/:
+total 12
+-rw-r--r--  1 user users  374 Jun 24 12:50 Config.in
+-rw-r--r--  1 user users 1030 Jun 24 12:50 Makefile
+drwxr-xr-x  2 user users 4096 Jun 24 12:50 ipkg
+
+package/fxload/ipkg:
+total 4
+-rw-r--r--  1 user users 117 Jun 24 12:50 fxload.control
+}}}
+
+And their content:
+
+ * Config.in
+
+{{{
+config BR2_PACKAGE_FXLOAD
+        prompt "fxload............................ firmware loader for EZ-USB devices"
+        tristate
+        default y
+        help
+          This program is conveniently able to download firmware into FX and FX2
+          EZ-USB devices, as well as the original AnchorChips EZ-USB.  It is
+          intended to be invoked by hotplug scripts when the unprogrammed device
+          appears on the bus.
+}}}
+
+ * Makefile
+
+{{{
+# $Id: Makefile 3112 2006-06-18 23:33:19Z rdeparis $
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=fxload
+PKG_VERSION:=2002_04_11
+PKG_RELEASE:=1
+PKG_MD5SUM:=cafd71a5bff0c57bcd248273b2541c05
+
+PKG_SOURCE_URL:=@SF/linux-hotplug
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_CAT:=zcat
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_INSTALL_DIR:=$(PKG_BUILD_DIR)/ipkg-install
+
+include $(TOPDIR)/package/rules.mk
+
+$(eval $(call PKG_template,FXLOAD,fxload,$(PKG_VERSION)-$(PKG_RELEASE),$(ARCH)))
+
+$(PKG_BUILD_DIR)/.configured: $(PKG_BUILD_DIR)/.prepared
+        (cd $(PKG_BUILD_DIR); \
+                \
+        );
+        touch $@
+
+$(PKG_BUILD_DIR)/.built: $(PKG_BUILD_DIR)/.configured
+        rm -rf $(PKG_INSTALL_DIR)
+        mkdir -p $(PKG_INSTALL_DIR)
+        $(MAKE) -C $(PKG_BUILD_DIR) \
+                CC="$(TARGET_CC)" \
+                CFLAGS="$(TARGET_CFLAGS)" \
+                DESTDIR="$(PKG_INSTALL_DIR)" \
+                all
+        touch $@
+
+$(IPKG_FXLOAD):
+        install -d -m0755 $(IDIR_FXLOAD)/usr/sbin
+        $(CP) $(PKG_BUILD_DIR)/fxload $(IDIR_FXLOAD)/usr/sbin/
+        $(RSTRIP) $(IDIR_FXLOAD)
+        $(IPKG_BUILD) $(IDIR_FXLOAD) $(PACKAGE_DIR)
+}}}
+
+ * fxload.control
+
+{{{
+Package: fxload
+Priority: optional
+Section: sys
+Maintainer: rdeparis
+Description: firmware loader for EZ-USB devices
+}}}
+
+Now all you have to do is to integrate this package to the kamikaze build system. Add the following lines to the corresponding files directly under package/:
+
+ * Config.in (somewhere under the menu "Utilities" for instance)
+
+{{{
+source "package/fxload/Config.in"
+}}}
+
+ * Makefile
+
+{{{
+package-$(BR2_PACKAGE_FXLOAD) += fxload
+}}}
+
+All this should produce the following package under bin/packages when you ''make'':
+{{{
+fxload_2002_04_11-1_mipsel.ipk
+}}}
+
+Copy it to your router (I make intense use of public key authentication and SCP) and install with ipkg. Try to launch FXload to make sure the compilation worked okay:
+
+{{{
+root@OpenWrt:~# fxload
+no device specified!
+usage: fxload [-vV] [-t type] [-D devpath]
+                [-I firmware_hexfile] [-s loader] [-c config_byte]
+                [-L link] [-m mode]
+... [-D devpath] overrides DEVICE= in env
+... device types:  one of an21, fx, fx2
+... at least one of -I, -L, -m is required
+}}}
+
+We now have FXload.
+
+=== Kernel and system setup ===
+
+Before we get to the actual driver compilation we need to enable a couple of kernel options. Almost all the required options are present in kamikaze except CONFIG_KMOD and CONFIG_I2C. Unfortunately I2C core support triggers some more options that needs to be disabled.
+
+Here is the diff against the stock bcrm-2.6 config:
+
+{{{
+diff -NurbB -x .svn kamikaze.orig/trunk/openwrt/target/linux/brcm-2.6/config kamikaze.devel/trunk/openwrt/target/linux/brcm-2.
+6/config
+--- kamikaze.orig/trunk/openwrt/target/linux/brcm-2.6/config    2006-06-17 14:13:12.000000000 -0400
++++ kamikaze.devel/trunk/openwrt/target/linux/brcm-2.6/config   2006-06-24 11:37:40.000000000 -0400
+@@ -183,7 +183,7 @@
+ CONFIG_OBSOLETE_MODPARM=y
+ # CONFIG_MODVERSIONS is not set
+ # CONFIG_MODULE_SRCVERSION_ALL is not set
+-# CONFIG_KMOD is not set
++CONFIG_KMOD=y
+
+ #
+ # Block layer
+@@ -1118,7 +1118,45 @@
+ #
+ # I2C support
+ #
+-# CONFIG_I2C is not set
++CONFIG_I2C=y
++CONFIG_I2C_CHARDEV=n
++CONFIG_I2C_ALGOBIT=n
++CONFIG_I2C_ALGOPCF=n
++CONFIG_I2C_ALGOPCA=n
++CONFIG_I2C_ALI1535=n
++CONFIG_I2C_ALI1563=n
++CONFIG_I2C_ALI15X3=n
++CONFIG_I2C_AMD756=n
++CONFIG_I2C_AMD8111=n
++CONFIG_I2C_I801=n
++CONFIG_I2C_I810=n
++CONFIG_I2C_PIIX4=n
++CONFIG_I2C_NFORCE2=n
++CONFIG_I2C_PARPORT_LIGHT=n
++CONFIG_I2C_PROSAVAGE=n
++CONFIG_I2C_SAVAGE4=n
++CONFIG_SCx200_ACB=n
++CONFIG_I2C_SIS5595=n
++CONFIG_I2C_SIS630=n
++CONFIG_I2C_SIS96X=n
++CONFIG_I2C_STUB=n
++CONFIG_I2C_VIA=n
++CONFIG_I2C_VIAPRO=n
++CONFIG_I2C_VOODOO3=n
++CONFIG_I2C_PCA_ISA=n
++CONFIG_SENSORS_DS1337=n
++CONFIG_SENSORS_DS1374=n
++CONFIG_SENSORS_EEPROM=n
++CONFIG_SENSORS_PCF8574=n
++CONFIG_SENSORS_PCA9539=n
++CONFIG_SENSORS_PCF8591=n
++CONFIG_SENSORS_RTC8564=n
++CONFIG_SENSORS_MAX6875=n
++CONFIG_RTC_X1205_I2C=n
++CONFIG_I2C_DEBUG_CORE=n
++CONFIG_I2C_DEBUG_ALGO=n
++CONFIG_I2C_DEBUG_BUS=n
++CONFIG_I2C_DEBUG_CHIP=n
+
+ #
+ # SPI support
+@@ -1153,6 +1191,16 @@
+ #
+ # Video For Linux
+ #
++CONFIG_VIDEO_BT848=n
++CONFIG_VIDEO_SAA5246A=n
++CONFIG_VIDEO_SAA5249=n
++CONFIG_TUNER_3036=n
++CONFIG_VIDEO_SAA7134=n
++CONFIG_VIDEO_CX88=n
++CONFIG_VIDEO_EM28XX=n
++CONFIG_VIDEO_OVCAMCHIP=n
++CONFIG_VIDEO_AUDIO_DECODER=n
++CONFIG_VIDEO_DECODER=n
+
+ #
+ # Video Adapters
+}}}
+
+You need to ''make menuconfig'' and enable at least modprobe under busybox configuration. This is necessary for modules and their dependencies to automagically load with CONFIG_KMOD. That is usually when I tweak the image to remove most of the packages I will not use and add others usefull (lspci, lsusb, lsmod...).
+
+Do not forget to ''make'' and upload the new firmware to your router.
+
+=== Kernel module ===
+
+Create the wis-go7007 package under target/linux/package:
+
+{{{
+target/linux/package/wis-go7007/:
+total 16
+-rw-r--r--  1 user users  599 Jun 24 12:49 Config.in
+-rw-r--r--  1 user users 1868 Jun 24 15:05 Makefile
+drwxr-xr-x  2 user users 4096 Jun 24 12:49 files
+drwxr-xr-x  2 user users 4096 Jun 24 12:49 ipkg
+
+target/linux/package/wis-go7007/files:
+total 8
+-rw-r--r--  1 user users   80 Jun 24 12:49 go7007.modules
+-rw-r--r--  1 user users 1286 Jun 24 12:49 modules.dep
+
+target/linux/package/wis-go7007/ipkg:
+total 4
+-rw-r--r--  1 user users 151 Jun 24 12:49 kmod-go7007.control
+}}}
+
+With the folowing files content:
+
+ * Config.in
+
+{{{
+config BR2_PACKAGE_KMOD_GO7007
+        prompt "kmod-go7007....................... GO7007 chipset support (Plextor ConvertX...)"
+        tristate
+        default y
+        depends BR2_LINUX_2_6_X86 || BR2_LINUX_2_6_BRCM
+        select BR2_PACKAGE_KMOD_USB2
+        select BR2_PACKAGE_KMOD_VIDEODEV
+        select BR2_PACKAGE_KMOD_ALSA
+        help
+          Linux kernel module for the GO7007 which delivers compressed video via
+          the Video4Linux2 API and uncompressed audio via the ALSA API.
+
+          http://oss.wischip.com/
+
+          DEPENDS: BR2_PACKAGE_KMOD_USB2
+                   BR2_PACKAGE_KMOD_VIDEODEV
+                   BR2_PACKAGE_KMOD_ALSA
+}}}
+
+ * Makefile
+
+{{{
+# $Id: Makefile 3526 2006-06-24 21:29:01 rdeparis $
+
+include $(TOPDIR)/rules.mk
+include ../../rules.mk
+
+PKG_NAME:=wis-go7007-linux
+PKG_VERSION:=0.9.8
+PKG_RELEASE:=1
+PKG_MD5SUM:=dbeaceae423972140d6a5107a1f586ec
+
+PKG_SOURCE_URL:=http://oss.wischip.com
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_CAT:=bzcat
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
+include $(TOPDIR)/package/rules.mk
+
+$(eval $(call PKG_template,KMOD_GO7007,kmod-go7007,\
+         $(LINUX_VERSION)+$(PKG_VERSION)-$(BOARD)-$(PKG_RELEASE),\
+         $(ARCH),kernel ($(LINUX_VERSION)-$(BOARD)-$(LINUX_RELEASE))))
+
+$(PKG_BUILD_DIR)/.configured:
+        (cd $(PKG_BUILD_DIR); \
+                touch kernel/.configured \
+        );
+        touch $@
+
+$(PKG_BUILD_DIR)/.built:
+        $(MAKE) -C $(LINUX_DIR)/ \
+                ARCH="$(LINUX_KARCH)" \
+                CROSS_COMPILE="$(TARGET_CROSS)" \
+                SUBDIRS="$(PKG_BUILD_DIR)/kernel" \
+                modules
+        sed -e s/@FIRMWARE_DIR@/\\/lib\\/firmware/ \
+                -e s/@FXLOAD@/\\/usr\\/sbin\\/fxload/ \
+                <$(PKG_BUILD_DIR)/hotplug/wis-ezusb.in \
+                >$(PKG_BUILD_DIR)/hotplug/wis-ezusb
+        touch $@
+
+$(IPKG_KMOD_GO7007):
+        install -m0644 $(PKG_BUILD_DIR)/include/*.h \
+                $(LINUX_DIR)/include/linux
+        install -d -m0755 $(IDIR_KMOD_GO7007)/lib/firmware/ezusb
+        install -m0644 $(PKG_BUILD_DIR)/firmware/*.bin \
+                $(IDIR_KMOD_GO7007)/lib/firmware
+        install -m0644 $(PKG_BUILD_DIR)/firmware/ezusb/*.hex \
+                $(IDIR_KMOD_GO7007)/lib/firmware/ezusb
+        install -d -m0755 $(IDIR_KMOD_GO7007)/etc/hotplug.d/usb
+        install -m0755 $(PKG_BUILD_DIR)/hotplug/wis-ezusb \
+                $(IDIR_KMOD_GO7007)/etc/hotplug.d/usb/90-ezusb
+        install -d -m0755 $(IDIR_KMOD_GO7007)/lib/modules/$(LINUX_VERSION)
+        install -m0644 ./files/modules.dep \
+                $(IDIR_KMOD_GO7007)/lib/modules/$(LINUX_VERSION)/
+        install -m0644 $(PKG_BUILD_DIR)/kernel/*.$(LINUX_KMOD_SUFFIX) \
+                $(IDIR_KMOD_GO7007)/lib/modules/$(LINUX_VERSION)/
+        $(IPKG_BUILD) $(IDIR_KMOD_GO7007) $(PACKAGE_DIR)
+}}}
+
+ * go7007.modules
+
+{{{
+v4l2-common
+snd-go7007
+go7007
+go7007-usb
+wis-saa7115
+wis-uda1342
+wis-sony-tuner
+}}}
+
+Note that this file was used before I start using modprobe so it is unused for now.
+
+ * modules.dep
+
+{{{
+/lib/modules/2.6.16.7/wis-sony-tuner.ko: /lib/modules/2.6.16.7/go7007.ko /lib/modules/2.6.16.7/v4l2-common.ko
+/lib/modules/2.6.16.7/wis-uda1342.ko: /lib/modules/2.6.16.7/go7007.ko
+/lib/modules/2.6.16.7/wis-saa7115.ko: /lib/modules/2.6.16.7/go7007.ko
+/lib/modules/2.6.16.7/go7007-usb.ko: /lib/modules/2.6.16.7/go7007.ko /lib/modules/2.6.16.7/usbcore.ko
+/lib/modules/2.6.16.7/go7007.ko: /lib/modules/2.6.16.7/snd-go7007.ko /lib/modules/2.6.16.7/v4l2-common.ko /lib/modules/2.6.16.7/videodev.ko
+/lib/modules/2.6.16.7/snd-go7007.ko:
+/lib/modules/2.6.16.7/v4l2-common.ko:
+/lib/modules/2.6.16.7/videodev.ko:
+/lib/modules/2.6.16.7/ehci-hcd.ko:
+/lib/modules/2.6.16.7/usbcore.ko:
+}}}
+
+Note that not all actual dependencies are listed as most modules are loaded at boot time and would only generate insmod "Success error". This is the module.dep file you want it you leave the /etc/modules.d/* files alone.
+
+ * kmod-go7007.control
+
+{{{
+Package: kmod-go7007
+Priority: optional
+Section: sys
+Maintener: rdeparis
+Depends: kmod-usb2, kmod-videodev, kmod-alsa
+Description: GO7007 Linux driver
+}}}
+
+As far as the integration to the kamikaze build system is concerned, there nothing to do for Config.in as all subdirectories under target/linux/packages are automatically scanned. You do need to edit the corresponding Makefile adding the following line:
+
+{{{
+package-$(BR2_PACKAGE_KMOD_GO7007) += wis-go7007
+}}}
+
+After you ''make'' you should have among other packages the followings under bin/packages:
+
+{{{
+kmod-alsa_2.6.16.7+1.0.11rc4-brcm-1_mipsel.ipk
+kmod-go7007_2.6.16.7+0.9.8-brcm-1_mipsel.ipk
+kmod-usb-core_2.6.16.7-brcm-1_mipsel.ipk
+kmod-usb2_2.6.16.7-brcm-1_mipsel.ipk 
+kmod-videodev_2.6.16.7-brcm-1_mipsel.ipk
+}}}
+
+Copy them to your router, install them with ipkg and reboot.
+
+/!\ Note on GO7007 modules loading: only ALSA, videodev and USB should load automatically at boot time, not GO7007. We could use the same principle with GO7007 but it is not that simple. The GO7007 device configuration is a two steps firmware loading process. First we load the EZ-USB firmware to the box, the box reboots, and then we have a limited time to upload the actual GO7007 code to the driver. With the way hotplug and the boot scripts are designed we end up having a race condition between the USB devices configuration and the modules loading. So you may either miss the second firmware upload or have the box reboot before the modules are loaded. This could be resolved with checks within the scripts but this could also introduce deadlocks at boot time. So in order to keep things easy and simple we use modprobe, which is a lot cleaner anyway.
+
+Now it is time to test the hardware:
+
+{{{
+root@OpenWrt:~# modprobe go7007-usb
+root@OpenWrt:~#
+}}}
+
+You should not have any error message :) Check dmesg:
+
+{{{
+go7007-usb: probing new GO7007 USB board
+go7007: registering new Plextor PX-TV402U-NA
+wis-saa7115: initializing SAA7115 at address 32 on WIS GO7007SB EZ-USB
+wis-uda1342: initializing UDA1342 at address 26 on WIS GO7007SB EZ-USB
+wis-sony-tuner: initializing tuner at address 96 on WIS GO7007SB EZ-USB
+wis-sony-tuner: type set to 202 (Sony NTSC (BTF-PB463Z))
+usbcore: registered new driver go7007
+}}}
+
+Here is the complete list of relevant modules now loaded:
+
+{{{
+wis_sony_tuner          5904  0
+wis_uda1342             1568  0
+wis_saa7115             3936  0
+go7007_usb             10288  0
+go7007                 53728  4 wis_sony_tuner,wis_uda1342,wis_saa7115,go7007_usb
+snd_go7007              2448  1 go7007
+v4l2_common             5312  2 wis_sony_tuner,go7007
+snd_pcm_oss            38880  0
+snd_mixer_oss          14496  1 snd_pcm_oss
+snd_usb_audio          54016  0
+snd_hwdep               5136  1 snd_usb_audio
+snd_usb_lib            11424  1 snd_usb_audio
+snd_rawmidi            16352  1 snd_usb_lib
+snd_pcm                65440  3 snd_go7007,snd_pcm_oss,snd_usb_audio
+snd_timer              16496  1 snd_pcm
+snd                    36352  9 snd_go7007,snd_pcm_oss,snd_mixer_oss,snd_usb_audio,snd_hwdep,snd_usb_lib,snd_rawmidi,snd_pcm,snd_timer
+snd_page_alloc          5136  1 snd_pcm
+videodev                5472  1 go7007
+ehci_hcd               25072  0
+usbcore               106448  5 go7007_usb,snd_usb_audio,snd_usb_lib,ehci_hcd
+soundcore               4816  1 snd
+}}}
+
+Check the USB bus:
+
+{{{
+root@OpenWrt:~# lsusb
+Bus 001 Device 004: ID 093b:a104 Plextor Corp.
+Bus 001 Device 002: ID 0457:0151 Silicon Integrated Systems Corp.
+Bus 001 Device 001: ID 0000:0000
+}}}
+
+Device 002 is still my USB2 1GB key. Device 004 is our Plextor ConvertX.
+
+Check the V4L2 and ALSA integration:
+
+{{{
+root@OpenWrt:~# cat /sys/class/video4linux/video0/name
+go7007
+root@OpenWrt:~# cat /proc/asound/oss/devices
+  0: [0- 0]: mixer
+  3: [0- 0]: digital audio
+  4: [0- 0]: digital audio
+}}}
+
+Finally check the device files automagically created by kamikaze udev:
+{{{
+root@OpenWrt:~# ls -la /dev/v4l/
+drwxr-xr-x    1 root     root            0 Jan  1  1970 .
+drwxr-xr-x    1 root     root            0 Jan  1  1970 ..
+crw-------    1 root     root      81,   0 Jan  1  1970 video0
+root@OpenWrt:~# ls -la /dev/sound/
+drwxr-xr-x    1 root     root            0 Jan  1  1970 .
+drwxr-xr-x    1 root     root            0 Jan  1  1970 ..
+crw-------    1 root     root      14,   4 Jan  1  1970 audio
+crw-------    1 root     root      14,   3 Jan  1  1970 dsp
+crw-------    1 root     root      14,   0 Jan  1  1970 mixer
+}}}
+
+All set!
+
+=== User applications ===
+
+Now that we have in-kernel support for the hardware, we need a user-space application to do something with it. As mentionned on the GO7007 website, not many applications support the compressed video. MythTV is huge (with the MySQL backend and the nice GUI) and I doubt we can fit it all on a WRT. We are left with spook and wis-streamer, which both compile fine.
+
+==== Spook ====
+
+I have a working build of spook but I need to clean-up the package files before I post them here. Also spook requires some simple tuning of uClibc (+CSRC+= fpmacros.c nan.c s_rint.c e_hypot.c w_hypot.c s_floorf.c s_ceilf.c).
+
+==== wis-streamer ====
+
+wis-streamer is part of the "LIVE555 Streaming Media" software and as such relies on the live555 library. Let us deal with this library first. More info is available here:
+ http://www.live555.com/wis-streamer/
+
+All the live555 software is written in C++ so you will need to ''make menuconfig'' and enable uClibc++ before you continue.
+
+Create the live555 directory under package/:
+
+{{{
+package/live555:
+total 8
+-rw-r--r--  1 user users  732 Jun 24 14:36 Makefile
+drwxr-xr-x  2 user users 4096 Jun 24 12:50 patches
+
+package/live555/patches:
+total 4
+-rw-r--r--  1 user users 376 Jun 24 12:50 100-live.patch
+}}}
+
+With the following files content:
+
+ * Makefile
+
+{{{
+# $Id: Makefile 3121 2006-02-03 08:31:25Z rdeparis $
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=live555
+PKG_VERSION:=latest
+PKG_RELEASE:=1
+PKG_MD5SUM:=c38d967bdf5396342a55925a4b7efd75
+
+PKG_SOURCE_URL:=http://www.live555.com/liveMedia/public
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_CAT:=zcat
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/live
+
+include $(TOPDIR)/package/rules.mk
+
+$(eval $(call PKG_template,LIVE555,live555,$(PKG_VERSION)-$(PKG_RELEASE),$(ARCH)))
+
+$(PKG_BUILD_DIR)/.configured:
+        (cd $(PKG_BUILD_DIR); \
+                ./genMakefiles uClinux \
+        )
+        touch $@
+
+$(PKG_BUILD_DIR)/.built: $(PKG_BUILD_DIR)/.configured
+        $(MAKE) -C $(PKG_BUILD_DIR) \
+                $(TARGET_CONFIGURE_OPTS) \
+                CC=$(TARGET_CC)
+        touch $@
+
+compile-targets: $(PKG_BUILD_DIR)/.built
+}}}
+
+ * 100-live.patch
+{{{
+diff -NurbB live.orig/Makefile.tail live/Makefile.tail
+--- live.orig/Makefile.tail     2006-06-22 20:11:46.000000000 -0400
++++ live/Makefile.tail  2006-06-22 20:16:35.000000000 -0400
+@@ -15,8 +15,7 @@
+ ALL =  $(LIVEMEDIA_LIB) \
+        $(GROUPSOCK_LIB) \
+        $(USAGE_ENVIRONMENT_LIB) \
+-       $(BASIC_USAGE_ENVIRONMENT_LIB) \
+-       $(TESTPROGS_APP)
++       $(BASIC_USAGE_ENVIRONMENT_LIB)
+ all:   $(ALL)
+}}}
+
+This patch only disables the test suite that comes with live555 as examples.
+
+Note that there is no Config.in nor ipkg control file as this package is only used to support wis-streamer. It is hidden from the package system but still uses the build system.
+
+Now create the wis-streamer package:
+
+{{{
+package/wis-streamer/:
+total 16
+-rw-r--r--  1 user users  286 Jun 24 12:50 Config.in
+-rw-r--r--  1 user users 1004 Jun 24 12:50 Makefile
+drwxr-xr-x  2 user users 4096 Jun 24 12:50 ipkg
+drwxr-xr-x  2 user users 4096 Jun 24 12:50 patches
+
+package/wis-streamer/ipkg:
+total 4
+-rw-r--r--  1 user users 175 Jun 24 12:50 wis-streamer.control
+
+package/wis-streamer/patches:
+total 4
+-rw-r--r--  1 user users 2362 Jun 24 12:50 100-wis-streamer.patch
+}}}
+
+With the following files content:
+
+ * Config.in
+
+{{{
+config BR2_PACKAGE_WIS_STREAMER
+        prompt "wis-streamer...................... Streaming Server for the WIS GO7007"
+        tristate
+        default y
+        select BR2_PACKAGE_KMOD_GO7007
+        help
+          An Open Source Streaming Server for the WIS GO7007 Encoder Driver
+
+          http://www.live555.com/wis-streamer/
+}}}
+
+ * Makefile
+
+{{{
+# $Id: Makefile 3121 2006-02-03 08:31:25Z rdeparis $
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=wis-streamer
+PKG_VERSION:=2006.06.14
+PKG_RELEASE:=1
+PKG_MD5SUM:=77fa57f6731bcaaa1a0358882fc8647d
+
+PKG_SOURCE_URL:=http://www.live555.com/wis-streamer/source
+PKG_SOURCE:=$(PKG_NAME).tar.gz
+PKG_CAT:=zcat
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
+
+include $(TOPDIR)/package/rules.mk
+
+$(eval $(call PKG_template,WIS_STREAMER,wis-streamer,$(PKG_VERSION)-$(PKG_RELEASE),$(ARCH)))
+
+$(PKG_BUILD_DIR)/.configured:
+        (cd $(PKG_BUILD_DIR); \
+                \
+        )
+        touch $@
+
+$(PKG_BUILD_DIR)/.built:
+        $(MAKE) -C $(PKG_BUILD_DIR) \
+                $(TARGET_CONFIGURE_OPTS) \
+                CPLUSPLUS="$(TARGET_CROSS)g++" \
+                LDFLAGS="-nodefaultlibs \
+                        -L$(STAGING_DIR)/usr/lib \
+                        -L$(STAGING_DIR)/lib \
+                        -luClibc++ -lc -lm -lgcc"
+        touch $@
+
+$(IPKG_WIS_STREAMER):
+        install -d -m0755 $(IDIR_WIS_STREAMER)/usr/bin
+        $(CP) $(PKG_BUILD_DIR)/wis-streamer $(IDIR_WIS_STREAMER)/usr/bin/
+        $(RSTRIP) $(IDIR_WIS_STREAMER)
+        $(IPKG_BUILD) $(IDIR_WIS_STREAMER) $(PACKAGE_DIR)
+}}}
+
+ * wis-streamer.control
+
+{{{
+Package: wis-streamer
+Priority: optional
+Section: sys
+Depends: kmod-go7007
+Maintainer: rdeparis
+Description: An Open Source Streaming Server for the WIS GO7007 Encoder Driver
+}}}
+
+ * 100-wis-streamer.patch
+
+{{{
+diff -NurbB wis-streamer.orig/AMREncoder/Makefile wis-streamer/AMREncoder/Makefile
+--- wis-streamer.orig/AMREncoder/Makefile       2006-06-22 20:49:20.000000000 -0400
++++ wis-streamer/AMREncoder/Makefile    2006-06-22 20:50:07.000000000 -0400
+@@ -4,7 +4,6 @@
+
+ CC = gcc
+ CPLUSPLUS = g++
+-LD = ld -r -Bstatic
+
+ INCLUDES = -I .
+
+@@ -13,7 +12,7 @@
+ OBJS = fixed.o interf_enc.o sp_enc.o table.o
+
+ libAMREncoder.a: $(OBJS)
+-       $(LD) -o libAMREncoder.a $(OBJS)
++       $(LD) -r -Bstatic -o libAMREncoder.a $(OBJS)
+
+ interf_enc.c:                          interf_enc.h interf_rom.h
+ interf_enc.h:                          sp_enc.h
+diff -NurbB wis-streamer.orig/Makefile wis-streamer/Makefile
+--- wis-streamer.orig/Makefile  2006-06-22 20:49:20.000000000 -0400
++++ wis-streamer/Makefile       2006-06-22 20:50:27.000000000 -0400
+@@ -30,7 +30,7 @@
+        MPEG2TransportStreamAccumulator.o WISMPEG2TransportStreamServerMediaSubsession.o
+
+ wis-streamer: $(OBJS) AMREncoder/libAMREncoder.a
+-       $(CPLUSPLUS) $(CFLAGS) -o wis-streamer $(OBJS) $(LIBS)
++       $(CPLUSPLUS) $(CFLAGS) -o wis-streamer $(OBJS) $(LIBS) $(LDFLAGS)
+
+ AMREncoder/libAMREncoder.a:
+        cd AMREncoder; $(MAKE)
+diff -NurbB wis-streamer.orig/WISInput.cpp wis-streamer/WISInput.cpp
+--- wis-streamer.orig/WISInput.cpp      2006-06-22 20:49:20.000000000 -0400
++++ wis-streamer/WISInput.cpp   2006-06-22 21:37:49.000000000 -0400
+@@ -173,7 +173,7 @@
+
+     // Open it:
+     char vDeviceName[PATH_MAX];
+-    snprintf(vDeviceName, sizeof vDeviceName, "/dev/video%d", i);
++    snprintf(vDeviceName, sizeof vDeviceName, "/dev/v4l/video%d", i);
+     fOurVideoFileNo = open(vDeviceName, O_RDWR);
+     if (fOurVideoFileNo < 0) {
+       err(env) << "Unable to open \"" << vDeviceName << "\""; printErr(env);
+@@ -205,6 +205,7 @@
+     char line[128];
+     while (fgets(line, sizeof line, file) != NULL) {
+       int m, n;
++      if (strstr(line, "digital audio") == NULL) continue;
+       if (sscanf(line, "%d: [%u-%*u]: digital audio\n", &m, &n) != 2) continue;
+       if (n == i) {
+        minor = m;
+@@ -246,7 +247,7 @@
+
+     // Open it:
+     char aDeviceName[PATH_MAX];
+-    snprintf(aDeviceName, sizeof aDeviceName, "/dev/%s", ent->d_name);
++    snprintf(aDeviceName, sizeof aDeviceName, "/dev/sound/%s", ent->d_name);
+     fOurAudioFileNo = open(aDeviceName, O_RDONLY);
+     if (fOurAudioFileNo < 0) {
+       err(env) << "Unable to open \"" << aDeviceName << "\""; printErr(env);
+}}}
+
+This patch corrects some compilation flags necessary for cross-compiling to MIPS and adapts the paths for device files which are not using /dev/video0 and /dev/dsp but /dev/v4l/video0 and /dev/sound/dsp respectively.
+
+Modify the package files for build system integration:
+
+ * Config.in (somewhere under menu "Multimedia" for instance)
+
+{{{
+source "package/wis-streamer/Config.in"
+}}}
+
+ * Makefile
+
+{{{
+package-$(BR2_PACKAGE_WIS_STREAMER) += live555 wis-streamer
+}}}
+
+Notice we include live555 as it directly supports wis-streamer only as mentionned above. I know mainteners are going to complain :)
+
+After the usual make you should have the following extra packages:
+
+{{{
+uclibc++_0.1.11-1_mipsel.ipk
+wis-streamer_2006.06.14-1_mipsel.ipk
+}}}
+
+Copy them to your router, and install them with ipkg.
+
+/!\ Now do not try it as is just yet as it will segfault :( I have a problem somewhere with the ALSA OSS emulation. After I disabled audio altogether in the source code, video actually works fine for me. I am working on it, please be patient and let me know if you find something before I do.
+
+=== How to use it ===
+
+The Plextor actually has 3 input ports.
+
+In the front we have S-Video and composite plugs:
+
+http://www.plextor.com/english/products/images/PX-TV402.back.gif
+
+In the back we have the antenna / cable plug:
+
+http://www.plextor.com/english/products/images/PX-TV402.back2s.gif
+
+/!\ To be completed

@@ -1,0 +1,482 @@
+=== Hardware ===
+The RB532 is a router with three Fast Ethernet ports, one supporting PoE, two MiniPci slots and a Compact Flash slot. The board comes with a MIPS32 4Kc based 400MHz embedded processor. For further information use this [http://www.routerboard.com/pdf/rb500r5ugP.pdf link].
+
+=== Initial Installation ===
+The following instructions are thought for use with CF cards! With the release of Kamikaze it is now possible to use OpenWrt on the RB532 without having to compile your own images.
+
+==== Installing image onto CompactFlash Card ====
+Download links to Kamikaze are provided on [http://www.openwrt.org the main page].  Several images are available for the rb532 with varying filesystem block-sizes. 128k is the default block-size of CF Cards, the openwrt-rb532-2.6-jffs2-128k.bin image is suggested.
+
+{{{
+ # dd if=openwrt-rb532-2.6-jffs2-128k.bin of=/dev/<cardreader>
+}}}
+and put the card to the board
+
+==== Bootloader Configuration ====
+Put the CF to the board. Use the serial terminal of your choice with 38400 8N1. If you use screen the line is:
+{{{
+RouterBOOT booter 2.8
+
+RouterBoard 532A
+
+CPU frequency: 399 MHz
+  Memory size:  64 MB
+
+Press any key within 2 seconds to enter setup
+
+RouterBOOT-2.8
+What do you want to configure?
+   d - boot delay
+   k - boot key
+   s - serial console
+   o - boot device
+   u - cpu mode
+   f - try cpu frequency
+   c - keep cpu frequency
+   r - reset configuration
+   e - format nand
+   g - upgrade firmware
+   i - board info
+   p - boot protocol
+   t - do memory testing
+   x - exit setup
+your choice: e - format nand
+
+
+Do you realy want to format your nand?
+that would result in losing all your data
+type "yes" to confirm: yes
+formating nand... done!
+}}}
+{{{
+ # screen /dev/<serial> 38400 8N1
+}}}
+Power it. The default boot delay is short, so the first time using a board you will have to be fast to interrupt the boot process by pressing enter.  This is what you see then:
+
+{{{
+ RouterBOOT-1.5
+ What do you want to configure?
+    d - boot delay
+    k - boot key
+    s - serial console
+    o - boot device
+    u - cpu mode
+    f - try cpu frequency
+    c - keep cpu frequency
+    r - reset configuration
+    g - upgrade firmware
+    i - board info
+    p - boot protocol
+    t - do memory testing
+    x - exit setup
+ your choice:
+}}}
+Set the delay to about 5 seconds
+
+{{{
+  your choice: d
+Select boot delay:
+ * 1 - 1s
+   2 - 2s
+   3 - 3s
+   4 - 4s
+   5 - 5s
+   6 - 6s
+   7 - 7s
+   8 - 8s
+   9 - 9s
+your choice: 5
+}}}
+then set the boot device by choosing 'o' then 'c'.
+
+{{{
+your choice: c - boot from CF
+RouterBOOT-1.5
+What do you want to configure?
+   d - boot delay
+   k - boot key
+   s - serial console
+   o - boot device
+   u - cpu mode
+   f - try cpu frequency
+   c - keep cpu frequency
+   r - reset configuration
+   g - upgrade firmware
+   i - board info
+   p - boot protocol
+   t - do memory testing
+   x - exit setup
+your choice:
+}}}
+then press 'x' to continue booting.
+
+If it boots correctly you can continue with configuring !OpenWrt.
+
+==== Flashing the NAND ====
+First we have to start with a clean NAND. We need to format the NAND. You can say goodbye to the RouterOS. Open source is better.
+{{{
+RouterBOOT booter 2.8
+
+RouterBoard 532A
+
+CPU frequency: 399 MHz
+  Memory size:  64 MB
+
+Press any key within 2 seconds to enter setup
+
+RouterBOOT-2.8
+What do you want to configure?
+   d - boot delay
+   k - boot key
+   s - serial console
+   o - boot device
+   u - cpu mode
+   f - try cpu frequency
+   c - keep cpu frequency
+   r - reset configuration
+   e - format nand
+   g - upgrade firmware
+   i - board info
+   p - boot protocol
+   t - do memory testing
+   x - exit setup
+your choice: e - format nand
+
+
+Do you realy want to format your nand?
+that would result in losing all your data
+type "yes" to confirm: yes
+formating nand... done!
+}}}
+Now we need to choose a netboot method. I use dnsmasq for this.
+{{{
+your choice: p - boot protocol
+
+Choose which boot protocol to use:
+   1 - bootp protocol
+ * 2 - dhcp protocol
+your choice: 2 - dhcp protocol
+}}}
+Now that the NAND is empty it's a good practice to select the following boot method:
+{{{
+your choice: o - boot device
+
+Select boot device:
+   e - boot over Ethernet
+ * n - boot from NAND, if fail then Ethernet
+   c - boot from CompactFlash only
+   1 - boot Ethernet once, then NAND
+   2 - boot Ethernet once, then CompactFlash
+   o - boot from NAND only
+   b - boot chosen device
+your choice: n - boot from NAND, if fail then Ethernet
+}}}
+now we can netboot:
+{{{
+your choice: x - exit setup
+
+
+
+
+RouterBOOT booter 2.8
+
+RouterBoard 532A
+
+CPU frequency: 399 MHz
+  Memory size:  64 MB
+
+Press any key within 2 seconds to enter setup..
+kernel not found
+trying dhcp protocol............... OK
+resolved mac address 00:0C:76:A5:6E:45
+Gateway: 192.168.1.66
+transfer started ........... transfer ok, time=0.39s
+setting up elf image... OK
+jumping to kernel code
+Linux version 2.6.23.14 (alex@orama) (gcc version 4.2.2) #2 Tue Jan 29 09:07:23 EET 2008
+CPU revision is: 0001800a
+Determined physical RAM map:
+ memory: 03fffa00 @ 00000400 (usable)
+Wasting 32 bytes for tracking 1 unused pages
+Initrd not found or empty - disabling initrd
+Built 1 zonelists in Zone order.  Total pages: 16256
+Kernel command line: console=ttyS0,115200 gpio=16383 kmac=00:0C:42:0F:C3:54 board=500r5 boot=1
+korina mac = 00:0C:42:0F:C3:54
+Primary instruction cache 8kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 8kB, 4-way, linesize 16 bytes.
+Synthesized TLB refill handler (20 instructions).
+Synthesized TLB load handler fastpath (32 instructions).
+Synthesized TLB store handler fastpath (32 instructions).
+Synthesized TLB modify handler fastpath (31 instructions).
+Initializing IRQ's: 168 out of 256
+PID hash table entries: 256 (order: 8, 1024 bytes)
+calculating r4koff... 001e846c(1999980)
+CPU frequency 400.00 MHz
+Using 199.998 MHz high precision timer.
+console [ttyS0] enabled
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 60572k/65528k available (2060k kernel code, 4892k reserved, 319k data, 812k init, 0k highmem)
+Mount-cache hash table entries: 512
+NET: Registered protocol family 16
+PCI: Initializing PCI
+registering PCI controller with io_map_base unset
+NET: Registered protocol family 2
+Time: MIPS clocksource has been installed.
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
+TCP: Hash tables configured (established 2048 bind 2048)
+TCP reno registered
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+JFFS2 version 2.2. (NAND) (SUMMARY)  ώώ 2001-2006 Red Hat, Inc.
+yaffs Jan 29 2008 09:02:37 Installing.
+io scheduler noop registered
+io scheduler deadline registered (default)
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+serial8250: ttyS0 at MMIO 0x0 (irq = 104) is a 16550A
+Using NAPI with weight 64
+eth0: Rx IRQ 40, Tx IRQ 41, 00:0c:42:0f:c3:54
+via-rhine.c:v1.10-LK1.4.3 2007-03-06 Written by Donald Becker
+PCI: Enabling device 0000:00:02.0 (0080 -> 0083)
+io_map_base of root PCI bus 0000:00 unset.  Trying to continue but you better
+fix this issue or report it to linux-mips@linux-mips.org or your vendor.
+eth1: VIA Rhine III at 0xb8800000, 00:0c:42:0f:c3:55, IRQ 142.
+eth1: MII PHY found at address 1, status 0x7849 advertising 05e1 Link 0000.
+PCI: Enabling device 0000:00:03.0 (0080 -> 0083)
+eth2: VIA Rhine III at 0xb8800100, 00:0c:42:0f:c3:56, IRQ 143.
+eth2: MII PHY found at address 1, status 0x7849 advertising 05e1 Link 0000.
+block2mtd: version $Revision: 1.30 $
+NAND device: Manufacturer ID: 0xad, Chip ID: 0xf1 (Hynix NAND 128MiB 3,3V 8-bit)
+Scanning device for bad blocks
+Creating 2 MTD partitions on "NAND 128MiB 3,3V 8-bit":
+0x00000000-0x00400000 : "Routerboard NAND boot"
+0x00400000-0x08000000 : "rootfs"
+mtd: partition "rootfs" set to be root filesystem
+split_squashfs: no squashfs found in "NAND 128MiB 3,3V 8-bit"
+input: gpio-keys as /devices/platform/gpio-keys/input/input0
+Registered led device: rb500led:amber
+nf_conntrack version 0.5.0 (1024 buckets, 4096 max)
+ip_tables: (C) 2000-2006 Netfilter Core Team
+TCP vegas registered
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+Freeing unused kernel memory: 812k freed
+Algorithmics/MIPS FPU Emulator v1.5
+/bin/uci: line 189: cannot create /var/state/network: nonexistent directory
+/bin/uci: line 189: cannot create /var/state/network: nonexistent directory
+Can't open /var/lock/dhcp-eth0
+[sighandler]: No more events to be processed, quitting.
+[cleanup]: Waiting for children.
+[cleanup]: All children terminated.
+udhcpc (v1.8.2) started
+init started: BusyBox v1.8.2 (2008-01-29 08:57:18 EET)
+
+Please press Enter to activate this console. /bin/uci: line 189: cannot create /var/state/network: nonexistent directory
+/sbin/hotplug-call: .: line 1: can't open /var/state/network
+Sending discover...
+Sending select for 192.168.1.57...
+Lease of 192.168.1.57 obtained, lease time 43200
+adding router 192.168.1.66
+deleting old routes
+adding dns 192.168.1.79
+: udhcpc (v1.8.2) started
+
+: Sending discover...
+
+: Sending select for 192.168.1.57...
+
+: Lease of 192.168.1.57 obtained, lease time 43200
+
+: adding router 192.168.1.66
+
+: deleting old routes
+
+: adding dns 192.168.1.79
+
+: sysctl: error: 'net.ipv6.conf.all.forwarding' is an unknown key
+
+
+
+
+BusyBox v1.8.2 (2008-01-29 08:57:18 EET) built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r10304) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:/#
+}}}
+check the NAND partitions:
+{{{
+root@OpenWrt:/# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00400000 00020000 "Routerboard NAND boot"
+mtd1: 07c00000 00020000 "rootfs"
+}}}
+the first block is where the kernel resides and the second is where the root file system is.
+{{{
+root@OpenWrt:/# mount /dev/mtdblock0 /mnt
+yaffs: dev is 32505856 name is "mtdblock0"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 31.0, "mtdblock0"
+yaffs: auto selecting yaffs2
+yaffs: restored from checkpoint
+root@OpenWrt:/# cd /mnt
+root@OpenWrt:/tmp# wget http://wifi.ozo.com/airo/openwrt/firmware/kamikaze/2.6/rb5xx/10304/kernel
+Connecting to wifi.ozo.com (212.70.193.242:80)
+kernel               100% |*******************************|   765k 00:00:00 ETA
+root@OpenWrt:/mnt# cd /
+root@OpenWrt:/# umount /mnt
+root@OpenWrt:/# mount /dev/mtdblock1 /mnt
+yaffs: dev is 32505857 name is "mtdblock1"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 31.1, "mtdblock1"
+root@OpenWrt:/# cd /mnt
+root@OpenWrt:/tmp# wget http://wifi.ozo.com/airo/openwrt/firmware/kamikaze/2.6/rb5xx/10304/openwrt-rb532-2.6-rootfs.tgz
+Connecting to wifi.ozo.com (212.70.193.242:80)
+openwrt-rb532-2.6-ro 100% |*******************************|   701k 00:00:00 ETA
+root@OpenWrt:/mnt# gzip -d openwrt-rb532-2.6-rootfs.tgz
+root@OpenWrt:/mnt# tar xvf openwrt-rb532-2.6-rootfs.tar
+./
+./var
+./proc/
+./usr/
+./usr/share/
+ .
+ .
+ .
+./bin/nice
+./bin/login
+./bin/false
+./tmp/
+root@OpenWrt:/mnt# cd /
+root@OpenWrt:/# umount /mnt
+save exit: isCheckpointed 1
+root@OpenWrt:/# reboot
+The system is going down NOW!
+Sending SIGTERM to all processes
+Requesting system reboot
+Restarting system.
+}}}
+The unit will now boot from the NAND:
+{{{
+RouterBOOT booter 2.8
+
+RouterBoard 532A
+
+CPU frequency: 399 MHz
+  Memory size:  64 MB
+
+Press any key within 2 seconds to enter setup..
+loading kernel from nand... OK
+setting up elf image... OK
+jumping to kernel code
+Linux version 2.6.23.14 (alex@orama) (gcc version 4.2.2) #1 Tue Jan 29 09:03:53 EET 2008
+CPU revision is: 0001800a
+Determined physical RAM map:
+ memory: 03fffa00 @ 00000400 (usable)
+Wasting 32 bytes for tracking 1 unused pages
+Initrd not found or empty - disabling initrd
+Built 1 zonelists in Zone order.  Total pages: 16256
+Kernel command line: console=ttyS0,115200 gpio=16383 kmac=00:0C:42:0F:C3:54 board=500r5 boot=1 root=/dev/mtdblock1 rootfstype=yaffs2 init=/etc/preinit
+korina mac = 00:0C:42:0F:C3:54
+Primary instruction cache 8kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 8kB, 4-way, linesize 16 bytes.
+Synthesized TLB refill handler (20 instructions).
+Synthesized TLB load handler fastpath (32 instructions).
+Synthesized TLB store handler fastpath (32 instructions).
+Synthesized TLB modify handler fastpath (31 instructions).
+Initializing IRQ's: 168 out of 256
+PID hash table entries: 256 (order: 8, 1024 bytes)
+calculating r4koff... 001e846c(1999980)
+CPU frequency 400.00 MHz
+Using 199.998 MHz high precision timer.
+console [ttyS0] enabled
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 61272k/65528k available (2060k kernel code, 4196k reserved, 319k data, 116k init, 0k highmem)
+Mount-cache hash table entries: 512
+NET: Registered protocol family 16
+PCI: Initializing PCI
+registering PCI controller with io_map_base unset
+NET: Registered protocol family 2
+Time: MIPS clocksource has been installed.
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
+TCP: Hash tables configured (established 2048 bind 2048)
+TCP reno registered
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+JFFS2 version 2.2. (NAND) (SUMMARY)  ώώ 2001-2006 Red Hat, Inc.
+yaffs Jan 29 2008 09:02:37 Installing.
+io scheduler noop registered
+io scheduler deadline registered (default)
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+serial8250: ttyS0 at MMIO 0x0 (irq = 104) is a 16550A
+Using NAPI with weight 64
+eth0: Rx IRQ 40, Tx IRQ 41, 00:0c:42:0f:c3:54
+via-rhine.c:v1.10-LK1.4.3 2007-03-06 Written by Donald Becker
+PCI: Enabling device 0000:00:02.0 (0080 -> 0083)
+io_map_base of root PCI bus 0000:00 unset.  Trying to continue but you better
+fix this issue or report it to linux-mips@linux-mips.org or your vendor.
+eth1: VIA Rhine III at 0xb8800000, 00:0c:42:0f:c3:55, IRQ 142.
+eth1: MII PHY found at address 1, status 0x7849 advertising 05e1 Link 0000.
+PCI: Enabling device 0000:00:03.0 (0080 -> 0083)
+eth2: VIA Rhine III at 0xb8800100, 00:0c:42:0f:c3:56, IRQ 143.
+eth2: MII PHY found at address 1, status 0x7849 advertising 05e1 Link 0000.
+block2mtd: version $Revision: 1.30 $
+NAND device: Manufacturer ID: 0xad, Chip ID: 0xf1 (Hynix NAND 128MiB 3,3V 8-bit)
+Scanning device for bad blocks
+Creating 2 MTD partitions on "NAND 128MiB 3,3V 8-bit":
+0x00000000-0x00400000 : "Routerboard NAND boot"
+0x00400000-0x08000000 : "rootfs"
+mtd: partition "rootfs" set to be root filesystem
+split_squashfs: no squashfs found in "NAND 128MiB 3,3V 8-bit"
+input: gpio-keys as /devices/platform/gpio-keys/input/input0
+Registered led device: rb500led:amber
+nf_conntrack version 0.5.0 (1024 buckets, 4096 max)
+ip_tables: (C) 2000-2006 Netfilter Core Team
+TCP vegas registered
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+yaffs: dev is 32505857 name is "mtdblock1"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 31.1, "mtdblock1"
+yaffs: restored from checkpoint
+VFS: Mounted root (yaffs2 filesystem) readonly.
+Freeing unused kernel memory: 116k freed
+Please be patient, while OpenWrt loads ...
+Algorithmics/MIPS FPU Emulator v1.5
+- preinit -
+- init -
+
+Please press Enter to activate this console.
+
+
+BusyBox v1.8.2 (2008-01-29 08:57:18 EET) built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r10304) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:/#
+}}}

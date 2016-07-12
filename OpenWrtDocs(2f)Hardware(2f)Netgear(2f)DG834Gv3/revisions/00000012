@@ -1,0 +1,184 @@
+= Netgear DG834G v3 =
+
+The Netgear DG834G v3 is an AR7-based ADSL router with 802.11g wireless and ADSL2+ support. It has a 4-port switch, and the wireless antenna is connected to an RP-SMA connector at the rear.
+
+Its appearance is identical to the DG834 v2.
+
+== Specifications ==
+
+|| '''Part''' || '''Detail''' || '''Datasheet''' ||
+|| CPU || Texas Instruments AR7 MIPS-based, TNETD7200ZDW ||  ''unknown'' ||
+|| Flash || 4Mbytes, Macronix || [http://www.macronix.com/QuickPlace/hq/PageLibrary48256F5500439ED0.nsf/h_CE4C9490FDF4280B48256F550043C6D8/209CFCBBF4BCCB9148257031002F02E6/$File/MX29LV320CT-B-1.7.pdf 29LV320CBTC-70G] ||
+|| SDRAM || 16Mbytes, Etron Tech || [http://www.etron.com/manager/uploads/EM639165_rev1.pdf EM639165TS-6G] ||
+|| Switch || Marvell, 88E6060-RCJ1 (6-port switch controller) || ''unknown'' ||
+|| Wireless NIC || Texas Instruments, TNETW1350A (VLYNQ-attached) || ''unknown'' ||
+|| Boot loader || ADAM2 0.22.02 || ''unknown'' ||
+
+Here is a picture of under the hood:
+
+attachment:dg834g_internal_scaled.jpg
+
+A full-sized image can be viewed [attachment:dg834gv3_internal.jpg here].
+
+== Status ==
+
+'''svn r10180'''
+
+|| Ethernet || Broken || All four switch LEDs blink when packets are sent out, nothing visible in tcpdump ||
+|| Wireless || Broken || acx_mac80211 seems to initialise but no interface is visible in ifconfig/iwconfig ||
+|| ATM (ADSL) || '''Working''' || DSL interface initialises and handshakes successfully (only Annex A tested) ||
+
+dmesg for this is [http://pastebin.ca/854097 here]
+
+== Serial Console ==
+
+The wiring for the serial port on this device is identical to the DG834G v2. A photographic explanation of how to solder pin headers can be found [http://flickr.com/photos/justnine/sets/72157600331131903/ here].
+
+With the board in front of you, front-panel LEDs towards you, the layout is:
+
+{{{|
+|
+|   []()()()   <---- serial console
+\
+ \    ()()()()()()()   <---- JTAG
+  \   []()()()()()()     led    led
+   \________________________________}}}
+
+Pins are GND, TX, VCC (3.3v), RX.
+
+'''BE WARNED''' that you should not run the VCC line to the VCC line on your TTL to RS232/USB adapter. Only wire up RX, TX and GND. The DG834G will happily draw power from the VCC line when its own power is not connected - 3.3V is enough for the LEDs to light up, 5V is enough for ADAM2 to start running! If you use an FTDI USB to TTL serial adapter, the power it consumes is enough to force the serial board to disconnect from the USB due to excessive current draw, which is incredibly inconvenient when trying to capture the bootloader messages (minicom quits when ttyUSB0 disappears).
+
+== Bootloader ==
+
+ADAM2 on this hardware does not allow ftp or tftp access. ADAM2 refuses to escape the boot sequence when a serial console is attached (sending keypresses as well as a serial-break).
+
+The firmware supports the Netgear recovery mode, which is documented on Netgear's website. Hold down the reset pin and power on, continuing to hold the pin in until the power and tick LEDs blink alternately.
+
+== Installing OpenWrt ==
+
+'''STANDARD DISCLAIMER''': It is possible to kill your router ''or'' lose access to it without a serial port. You have been warned! Last tested trunk revision r8405 with the DG834Gv3 gave non-working ethernet, so make sure that before you start this whole operation that you are sure you want to try this out.
+
+'''Newer Netgear firmwares have no wget command. A safe version to downgrade to with wget is 4.01.06.'''
+
+Since you cannot install OpenWrt via the ftp or tftp methods, the simplest way is to gain access via the telnet interface. Build an AR7 image and install on a convenient webserver somewhere inside your network. It is a shrewd move to make sure you have serial access first, as you may need it to reflash a "safe" firmware if the one you flash doesn't work.
+
+Gain access to the telnet interface. To do this, visit http://router-ip-address/setup.cgi?todo=debug in a web browser and authenticate with the login and password you have setup for this router. You should see a message like "debug enable". Once this is done, telnet in. The router will not ask for a username and password when you telnet in.
+
+You will need to create an mtd5 partition before you can flash the firmware. To do this, enter these commands into your terminal:
+
+{{{cd /proc/sys/dev/adam2
+echo "mtd5 0x90020000,0x903e0000" > environment}}}
+
+Once you have done this, reboot the router so the firmware can see the new mtd5 partition. Then use the telnet enable hack again and log back into the router.
+
+Netgear have provided wget in the busybox build that is supplied with the standard firmware. Change directory to /tmp and use wget to fetch the firmware from where you have stashed it in your network. If you find DNS isn't working, try giving wget an ftp URL instead, in the form ftp://username:password@my-ftp-server-ip-address/openwrt-ar7-2.6-squashfs.bin.
+
+Once you have fetched the firmware, it's flashing time.
+
+Before you do this, take a deep breath. Put down any drinks you may be holding, wipe the sweat from your brow and type the following in:
+
+{{{dd if=openwrt-ar7-2.6-squashfs.bin of=/dev/mtdblock/5
+}}}
+
+The console will halt for a while. Once this is done, wait 5 seconds as a precaution and remove the power. Power the unit up again and OpenWrt will set itself up. If you don't have network access, try serial access.
+
+This method doesn't overwrite the ADAM2 in flash, so if you find the firmware is totally unbootable, you may be able to recover by downloading a firmware and Windows recovery tool from the Netgear website, attaching the router to your computer (I advise you attach it alone, nothing else). Hold down the reset pin, power on with reset pin still in and hold it in until the power and tick LEDs blink alternately. Unhold pin and start recovery.
+
+== NETGEAR firmware ==
+
+The Netgear firmware can be obtained from:
+
+Binary: ftp://downloads.netgear.com/files/dg834v3_dg834gv3_4_01_30.zip
+
+Source: ftp://downloads.netgear.com/files/GPL/DG834V3_V4.01.30_src.tar.bz2
+
+To enable telnet on the router, point your browser at: http://router-ip-address/setup.cgi?todo=debug then authenticate with your usual username and password.
+
+Here is hardware information from various files in /proc:
+
+{{{# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 211.35
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available}}}
+
+{{{# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  14696448 14110720   585728        0  1351680  4734976
+Swap:        0        0        0
+MemTotal:        14352 kB
+MemFree:           572 kB
+MemShared:           0 kB
+Buffers:          1320 kB
+Cached:           4624 kB
+SwapCached:          0 kB
+Active:           1488 kB
+Inactive:         5796 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        14352 kB
+LowFree:           572 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB}}}
+
+{{{# cat /proc/mounts
+/dev/mtdblock/0 / squashfs ro 0 0
+none /dev devfs rw 0 0
+/proc /proc proc rw 0 0
+ramfs /tmp ramfs rw 0 0}}}
+{{{
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00310000 00010000 "mtd0"
+mtd1: 000b0000 00010000 "mtd1"
+mtd2: 00020000 00010000 "mtd2"
+mtd3: 00010000 00010000 "mtd3"
+mtd4: 00010000 00010000 "mtd4"}}}
+
+{{{# cat /proc/version
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc version 2.95.3 20010315 (release/MontaVista)) #1 Mon Mar 12 15:51:06 CST 2007}}}
+
+{{{# cat /proc/tty/driver/serial
+serinfo:1.0 driver:5.05c revision:2001-07-08
+0: uart:16550A port:A8610E00 irq:15 baud:7944 tx:3158 rx:0 RTS|DTR
+1: uart:unknown port:A8610F00 irq:16}}}
+
+{{{# cat /proc/ticfg/env
+maca    00:11:22:33:44:55
+macb    00:11:22:33:44:55
+memsize 0x01000000
+flashsize       0x00400000
+modetty0        115200,n,8,1,hw
+modetty1        115200,n,8,1,hw
+bootserport     tty0
+cpufrequency    211968000
+sysfrequency    105984000
+bootloaderVersion       0.22.02
+ProductID       DG834
+HWRevision      Unknown
+SerialNumber    none
+my_ipaddress    169.254.87.1
+prompt  DG834
+firstfreeaddress        0x9401bd20
+req_fullrate_freq       125000000
+mtd0    0x900d0000,0x903e0000
+mtd1    0x90020000,0x900d0000
+mtd2    0x90000000,0x90020000
+mtd3    0x903e0000,0x903f0000
+mtd4    0x903f0000,0x90400000
+oam_lb_timeout  100}}}
+
+{{{# cat /proc/interrupts
+  7:   181056   R4000 timer/counter [MIPS interrupt]
+  8:        0   unified secondary [hw0 (Avalanche Primary)]
+ 15:      227   serial [hw0 (Avalanche Primary)]
+ 23:        0 + SAR  [hw0 (Avalanche Primary)]
+ 27:     3216 + Cpmac Driver [hw0 (Avalanche Primary)]
+ 29:    22699   vlynq0 [hw0 (Avalanche Primary)]
+ 31:        3 + DSL  [hw0 (Avalanche Primary)]
+ 80:    22699   TNETW1150 [hw0 (Low Vlynq)]}}}

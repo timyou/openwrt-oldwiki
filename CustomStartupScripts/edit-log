@@ -1,0 +1,6 @@
+1229884622000000	00000001	SAVENEW	CustomStartupScripts	69.17.73.250	meme-net.meme.com	1229559609.04.10861		From http://forum.openwrt.org/viewtopic.php?id=11301
+1229884779000000	00000002	SAVE	CustomStartupScripts	69.17.73.250	meme-net.meme.com	1229559609.04.10861		opkg also mucks with the boot process
+1229888874000000	00000003	SAVE	CustomStartupScripts	69.17.73.250	meme-net.meme.com	1229559609.04.10861		Undo last change
+1229891244000000	00000004	SAVE	CustomStartupScripts	69.17.73.250	meme-net.meme.com	1229559609.04.10861		Startup scripts are executable
+1231220661000000	00000005	SAVE	CustomStartupScripts	69.17.73.250	meme-net.meme.com	1229559609.04.10861		Basic script takes various commands.
+1231220876000000	00000006	SAVE	CustomStartupScripts	69.17.73.250	meme-net.meme.com	1229559609.04.10861		Enable links, not copies

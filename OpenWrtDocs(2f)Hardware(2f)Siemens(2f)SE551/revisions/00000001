@@ -1,0 +1,31 @@
+Describe OpenWrtDocs/Hardware/Siemens/SE551 here.
+
+Hardware found in device:
+
+VIA Vectro VT6212L
+USB 2.0 Controller
+
+ALTERA EPM3032ATC-44 7/144-10
+
+Butterfly Ant Type3
+
+LFE8623
+
+TXC 25.0MHz Xtal
+TXC 24.0MHz Xtal
+
+APL1117
+Voltage Regulator
+
+SI IC42S16800
+16MB RAM
+
+APW34063
+DC/DC Converter Controlling IC
+
+APM9435
+P-Channel Enhancement Mode MOSFET
+
+10Pin Pfostenleiste
+
+----

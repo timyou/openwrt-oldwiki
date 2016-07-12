@@ -1,0 +1,45 @@
+'''Asus WL-300G'''
+
+The device is supported in OpenWrt 1.0 (White Russian) and later. You need to install the openwrt-brcm-2.4-<type>.trx firmware images.
+
+{{{
+Bootloader: unknown 
+System-On-Chip:  Broadcom 4702
+CPU Speed: 125 Mhz
+Flash size: 4 MB
+RAM: 16 MB
+Wireless: integrated Broadcom BCM4306 802.11b/g Wireless LAN Controller
+Ethernet: 1x network controller, no switch
+USB: no   
+Serial: yes, UART required
+JTAG: no
+802.3af Power over Ethernet: yes
+}}}
+
+The boot_wait NVRAM variable is '''on''' by default. Resetting to factory defaults via reset button or mtd erase nvram is '''not safe''' on this unit.
+
+The unit is similar to [:OpenWrtDocs/Hardware/Asus/WL500G], but without WAN port, LPT, USB and DMZ LED.
+
+'''TFTP Installation notes'''
+
+At least in one case (KeesBakker has such a unit) the TFTP method did not work. Keeping the reset switch pressed during power-up did not make the PWR led to go flashing.
+
+'''Installation by means of the web-interface'''
+
+To install OpenWRT on a WL-300g that runs the standard ASUS firmware, one can use the normal webinterface. However the TRX files in the download area may need some tuning to have them accepted by the ASUS firmware upgrade procedure. The TRX files created and accepted by ASUS, need an extra 64 bytes at the end. Luckily there is a tool to do that. You can find this tool at BerliOS and it's called firmware_mod_tools. See https://developer.berlios.de/projects/firmwaremodkit/
+
+The following procedure describes how you can create a TRX for the first-time installation. First unpack the required TRX from the download area, for example White Russian openwrt-brcm-2.4-squashfs.trx
+
+{{{
+mkdir mytrx
+cd mytrx
+untrx /tmp/openwrt-brcm-2.4-squashfs.trx
+}}}
+
+What you get are the three files in the TRX. The tool simply calls them segment1, segment2, segment3. Next, you pack them up.
+{{{
+asustrx -p WL300g -v 1.8.1.9 -o my-1.8.1.9.trx segment?
+}}}
+So, now you have a TRX file that will be accepted for the firmware upgrade.
+----
+CategoryModel

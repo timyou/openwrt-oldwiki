@@ -1,0 +1,7 @@
+1156887976000000	00000001	SAVENEW	USR5461	155.246.104.5	host-ME-1.dhcp.stevens-tech.edu	1122096209.98.54999		Original page with some hardware and software boots.
+1156888188000000	00000002	SAVE	USR5461	155.246.104.5	host-ME-1.dhcp.stevens-tech.edu	1122096209.98.54999		Added some more stuff.. fixed bullets
+1156889135000000	00000003	SAVE	USR5461	155.246.104.5	host-ME-1.dhcp.stevens-tech.edu	1122096209.98.54999		
+1156950956000000	00000004	SAVE	USR5461	155.246.104.5	host-ME-1.dhcp.stevens-tech.edu	1122096209.98.54999		Added 3.3v for serial, changed CPU rev to 0
+1160683619000000	00000005	SAVE	USR5461	213.84.249.15	streefland.xs4all.nl	1160652369.44.59624		Added link to patch that fixes kernel oops. Added information about firmware upload.
+1190967940000000	00000006	SAVE	USR5461	131.159.10.195	wnavab2.informatik.tu-muenchen.de	1156445249.64.50588		
+1204551931000000	00000007	SAVE	USR5461	213.248.12.116	host-12-116.hq.di-net.ru	1200568707.71.56574		

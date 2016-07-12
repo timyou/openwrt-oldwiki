@@ -1,0 +1,16 @@
+=== Hardware ===
+
+==== RB433 ====
+http://routerboard.com/img/rb433s.jpg
+[http://www.routerboard.com/pdf/rb433.pdf Datasheet]
+
+==== RB433AH ====
+http://routerboard.com/img/rb433AHm.jpg
+[http://routerboard.com/pdf/rb433ah.pdf Datasheet]
+
+=== Building OpenWRT for RB433(AH) ===
+
+You need to get svn trunk. Choose 
+=== Installation ===
+
+==== Netboot ====

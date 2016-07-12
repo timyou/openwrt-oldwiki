@@ -1,0 +1,103 @@
+Serial port is JP1, pinout as follows:
+
+{{{
+      1
+      o o - VCC
+ RX - o o
+      o o
+      o o
+ TX - o o
+GND - o o
+      JP1
+}}}
+[http://www.dslreports.com/forum/remark,14001273 Description of serial port on WPN824]
+
+[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Netgear/TelnetConsole Telnet access on WPN824]
+
+== WPN824v2 ==
+
+=== Specs ===
+Hardware (opening enclosure):
+
+ * 2MB serial Flash by macronix, typ MX25L1605 or MX25L1605A ([http://www.macronix.com/QuickPlace/hq/PageLibrary48256F55002C90A5.nsf/h_Toc/B9F4CC53671F91C148256F55004206F9/?OpenDocument Marconix])
+ * Marvell Commercial Grade  88E6060 - 6-Port Fast Ethernet Switch ([http://www.marvell.com/products/switching/linkstreet/index.jsp Marvell])
+ * 16-BIT Transparent D-type Latch 74LVCH16373A ([http://www.digchip.com/datasheets/parts/datasheet/222/74LVCH16373A.php via Digichip])
+ * SAMSUNG K4S281632I-UC75 16Mo RAM
+ * cpu is covered
+
+=== Information from telnet session ===
+{{{
+OS: VxWorks (for Netgear WPN824v2) version VxWorks5.4.2.
+
+Kernel: WIND version 2.5. Made on Oct  2 2006, 19:10:19.
+
+wlan: Atheros Access Point Rev 4.0.0.167 AP software 4.0.0.167
+
+wlan0 -> get hardware
+
+wlan0 revisions: mac 11.0 phy 4.8 analog 7.0
+
+ * PCI Vendor ID: 0x168c, Device ID: 0x13
+ * Sub Vendor ID: 0x168c, Sub Device ID: 0x13
+chip is AR5315
+}}}
+
+== WPN824v3 ==
+
+=== Specs ===
+Probably the same as v2 but haven't looked.
+
+=== Information from telnet session ===
+{{{
+/ # cat /proc/cpuinfo 
+system type             : Atheros AR531X_COBRA
+processor               : 0
+cpu model               : unknown V6.4
+BogoMIPS                : 183.50
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 16
+extra interrupt vector  : yes
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+{{{
+/ # cat /proc/version 
+Linux version 2.4.27 (root@linux-server) (gcc version 3.3.3) #2 Thu Nov 1 17:33:11 CST 2007
+}}}
+
+{{{
+/ # cat proc/meminfo 
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  14753792 10797056  3956736        0  1110016  4182016
+Swap:        0        0        0
+MemTotal:        14408 kB
+MemFree:          3864 kB
+MemShared:           0 kB
+Buffers:          1084 kB
+Cached:           4084 kB
+SwapCached:          0 kB
+Active:           3696 kB
+Inactive:         2652 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        14408 kB
+LowFree:          3864 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+}}}
+
+{{{
+/ # cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 0001f800 00010000 "RedBoot"
+mtd1: 00000400 00010000 "FIS directory"
+mtd2: 00000400 00010000 "RedBoot config"
+mtd3: 00070000 00010000 "vmlinux.bin.gz"
+mtd4: 00150000 00010000 "rootfs"
+mtd5: 00010000 00010000 "user_config"
+}}}
+----
+CategoryModel

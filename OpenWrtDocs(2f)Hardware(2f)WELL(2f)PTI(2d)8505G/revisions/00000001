@@ -1,0 +1,52 @@
+#pragma section-numbers off
+[[TableOfContents]]
+
+= WELL PTI-8505G =
+
+Wireless ADSL2/2+ Router
+
+== Product info ==
+=+= Hardware ==+
+||'''CPU'''|| Texas Instruments TNETD7200ZDW - AR7 ||
+||'''RAM'''|| 16MB MIRA p2v28s40ctp ||
+||'''FLASH'''|| 4MB MX29lv320cb17c ||
+||'''SWITCH'''|| Realtek RTL8305SC ||
+||'''Wi-Fi'''|| Unknown Mini-pci 9WMTO371) ||
+
+=== Board ===
+=== Serial console ===
+
+
+== Original Firmware ==
+=== Bacup ===
+
+
+=== Restore === 
+Atached serial cable is probably good idea, you can see the progress of flashing and posible errors.
+
+{{{
+horinek@eddy:~/Downloads$ ftp 10.0.0.2
+Connected to 10.0.0.2.
+220 ADAM2 FTP Server ready.
+Name (10.0.0.2:horinek): adam2
+331 Password required for adam2.
+Password:
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+ftp> binary
+200 Type set to I.
+ftp> quote MEDIA FLSH
+200 Media set to FLSH.
+ftp> put mtd4.bin "a mtd4"
+local: mtd4.bin remote: a mtd4
+200 Port command successful.
+120 service ready in 32 seconds.
+150 Opening BINARY mode data connection for file transfer.
+4059136 bytes sent in 83.15 secs (47.7 kB/s)
+ftp> quote REBOOT
+226 Transfer complete.
+ftp> exit
+221-Thank you for using the FTP service on ADAM2.
+221 Goodbye.
+}}}
+

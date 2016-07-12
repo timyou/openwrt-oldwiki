@@ -1,0 +1,269 @@
+The Motorola '''SB4100''' is cable modem based on Broadcom BCM3350 chip. Ethernet and USB ports are provided. The modem is compatible with DOCSIS and EuroDOCSIS standards(?).
+
+See ["BroadcomBCM3350Port"] for general progress on porting to this SoC.
+
+= Hardware =
+
+ * Main Chip: Broadcom QAMLink® BCM3350KPB
+ * Ram: 8 MB SDRAM (HYUNDAI KOREA HY57V653220B A TC-7)
+ * Flash: 2 MB (Intel TE28F160)
+
+== Connectors ==
+
+On back-side, in top-down order:
+
+ * RJ45
+ * USB
+ * Cable Coax
+ * Power
+
+== Leds ==
+
+In front panel. Green, unless otherwise stated. In top-down order:
+
+ * Power
+ * Receive
+ * Send
+ * Online
+ * Activity
+
+= Software =
+By default, the SB4100 comes with a variant of VxWorks.
+
+= Accessing SB4100 =
+
+== Opening the Case ==
+
+Six annoying screws (not flatblade or phillips). Two clips in the bottom under an adhesive label. In addition, the labeling of the LEDS is adhesively attached. You may either cut the adhesive or remove them (I used the latter alternative). 
+
+== Ethernet Access ==
+
+Standard firmware provides configuration interface using HTTP.
+
+= Luke's SB4100 =
+== Picture ==
+
+http://imagebin.ca.tbcdn.com/img/y9K_u4Yi.jpg
+
+{{{
+*** Top center chip ***
+intel
+TE28F160
+C3TA90
+U1270613B
+FLASH
+
+*** Topmost Enclosure ***
+***** Large square chip *****
+BROADCOM
+QAMLink
+BCM3350KPB
+TN0109 P20
+55251
+
+***** To its right *****
+HYUNDAI KOREA
+HY57V653220B A
+0125A TC-7
+
+*** Coax enclosue ***
+***** Silver thing *****
+4.0AKSSOKT
+
+*** Silver thing between right two encosures ***
+TXC
+24.0y57F
+
+*** Bottom-right Enclosure on green ***
+***** Chip inside sub-enclosure *****
+LA7786
+1NN7
+
+***** Chip outside sub-enclosure *****
+ARA1400
+3108AA
+
+*** Board label (bottom-right of green board) ***
+MOTOROLA SB4100 469855-001-99 REV A 04-MAY-00
+}}}
+NOTE: My SB4100 was pre-modded by TCNiSO adding a serial cable
+
+== Partial Boot Log ==
+NOTE: This is via telnet, so the beginning is missing. Also, Sigma 1.7 is installed, so it's not vanilla.
+
+{{{
+HFC: UCD scanning timer expired.
+UCD List before prioritizing
+  HFC: UCD UpstreamChanId List ->[07] [08] [05] [06]
+HFC: Last known Upstream Channel Id [7] was available.
+Adding [7] to UsChanIdToList
+Adding [8] to UsChanIdToList
+Adding [5] to UsChanIdToList
+Adding [6] to UsChanIdToList
+list of already attempted upstreams
+ downstreamFrequency = 0
+ []
+HFC: UCD UpstreamChanId List ->[07] [08] [05] [06]
+
+HFC: Waiting for UCD with usChanId = 7
+ParseUcd: Settting prev symbol rate = 16
+*************************************************************
+                  UCD/BURST PROFILE  SHOW
+*************************************************************
+Upstream Id :  7
+ChangeCount :  5
+MiniSlotSize:  4
+DownstreamId:  2
+SymbolRate  :  16
+Us Freq     :  35100000
+PreambleLen :  48
+
+BURST DESCRIPTORS:
+--------------------------------------------------------------
+               REQ     REQD    INIT   PERIOD  SHORT   LONG
+--------------------------------------------------------------
+Modulation  :  001     000      001    001     002     002
+DiffEncoding:  002     000      002    002     002     002
+PreambleLen:   064     000      128    128     144     160
+PreValueOff:   140     000      006    006     216     216
+FEC T Bytes:   000     000      005    005     005     010
+FEC K Bytes:   016     000      034    034     078     235
+Scram Seed :   338     000      338    338     338     338
+Max Burst  :   002     000      000    000     008     000
+Guard Time :   008     000      048    048     008     008
+LastCodeword:  001     000      001    001     002     002
+Scrambler  :   001     000      001    001     001     001
+*************************************************************
+
+
+PROCESS UCD
+Enabling upstream channel 7
+BYTES_PER_MINISLOT_EXP is 04
+SHORT_DATA_GRANT min minislots = 2
+LONG_DATA_GRANT min minislots = 2
+New Mac::m_sMaxUsReqSize = [7496]
+HFC: Waiting for TRC LOCK ... Estimated Syncs per second = 99
+AcquireSync:Waiting for 170 timestamps to go by...
+AcquireSync:done
+AcquireSync:First sync check was valid..done.
+AcquireSync:Second sync check was valid
+AcquireSync:Sync valid bit says recovery loop locked
+OK.
+
+$$ ACQUIRED DOWNSTREAM SUCCESSFULLY $$
+
+... ACQ DS indicates we're RF return
+
+AcquireUpstream: usId = 7 pwr = 42 tempSid = 0
+ Attempting upstream 7
+
+Interleaver depth of 8 detected.
+Setting initial TRC_RANGING_OFFSET = 0x00000b3a
+BeginRange: LowBackoff = 2  HighBackoff = 8
+Power=35.00 dBmV
+SetSid3350: Setting sid [0] to slot number [1]
+Setting primary sid = [0]
+Write Ranging FIFO
+
+MMT: Range request sent
+MMT: Recv'd Range Response.
+Switching to periodic ranging with sid = 6332.
+SetSid3350: Setting sid [6332] to slot number [1]
+Setting primary sid = [6332]
+Write Ranging FIFO
+RNG_RSP: Adjusting US  +0.50dB +1790 ticks
+
+MMT: Range request sent
+MMT - T3 Timer Expired
+Power=42.50 dBmV
+
+MMT: Range request sent
+MMT: Recv'd Range Response.
+RR_SUCCESS
+EnableDsDataDma3350
+FINALIZING RANGING 1
+
+$$ ACQUIRED UPSTREAM SUCCESSFULLY $$
+******************************************
+            UPSTREAM STATUS
+******************************************
+Upstream Status      = UP
+Upstream Channel     = 7
+Upstream Frequency   = 35100000 Hz
+Upstream Power       = 35.5 dbmv
+Ranging Sid          = 6332
+Upstream Symbol Rate = 2560000 symbols/sec
+******************************************
+DHCPC: In Broadcast Mode
+Waiting for DHCP ...
+******************************************
+          DHCP LEASE INFORMATION
+******************************************
+ModeIsBroadcast  :    [TRUE]
+Server IP Address:    [x.x.x.x] [0xxxxxxxxx]
+Assigned IP Address:  [10.x.x.x] [0xaxxxxxx]
+Subnet Mask:          [255.255.224.0] [0xffffe000]
+LeaseTime:            [86400] seconds
+T1 Timer              [43200] seconds
+T2 Timer              [75600] seconds
+TftpServerAddr:       [x.x.x.x]  [0xxxxxxxxx]
+TftpBootFile:         [innocent.cfg]
+TimeOffset:           [-18000] seconds
+NumTimeServers:       [1]
+TimeServerAddr# 1:    [x.x.x.x]  [0xxxxxxxxx]
+Utilized TimeServer:  [0.0.0.0]  [0x0]
+SecurityAddr:         [0.0.0.0]  [0x0]
+NumLogServers:        [1]
+LogServerIpAddr:      [x.x.x.x]  [0xxxxxxxxx]
+NumGateway:           [1]
+Gateway Addr List #1: [10.x.x.x]  [0xaxxxxxx]
+Utilized Gateway Addr:[10.x.x.x]  [0xaxxxxxx]
+DHCP Client State:    [5]
+
+Num renewing attempts              = 0
+Num rebinding attempts             = 0
+Num times lease expired            = 0
+Total number of successful leases  = 1
+RenewingTimer     = 0x80619eb0
+RebindingTimer    = 0x80619e80
+LeaseExpiredTimer = 0x80619e50
+******************************************
+
+$$ RETRIEVED DHCP SUCCESSFULLY $$
+
+Waiting for time-of-day ...
+
+$$ RETRIEVED TIME SUCCESSFULLY $$
+
+Attempting to Download Configuration File.  Wait ...
+Calling GetTftpConfig attempt = 1
+
+$$ RETRIEVED TFTP CONFIG SUCCESSFULLY $$
+SETRANGINGSID
+ChangeRangeSid (2)
+ChangingRangeSid...sid = [6332]
+SetSid3350: Setting sid [6332] to slot number [1]
+Setting primary sid = [6332]
+Write Ranging FIFO
+SETDEFAULTUPSTREAMSID
+HandleSidOperation sid = 6332
+SetSid3350: Setting sid [6332] to slot number [1]
+Setting primary sid = [6332]
+SetQos: maxUpRate = 880000
+UsFlow::SetMaxRate=110000 Bps (880000 bps) for Sid = 0x18bc
+Setting m_BestEffortQ to hold 50 elements
+RateControl::SetMaxRate maxRate = 107800 Bps (862400 bps)
+
+
+$$ REGISTRATION SUCCESS $$
+
+
+***********************************************
+      MCNS STARTUP COMPLETED SUCCESSFULLY!
+***********************************************
+
+$$MCNS_STARTUP_COMPLETE$$
+}}}
+----
+
+CategoryModel CategoryCableModem

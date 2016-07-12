@@ -1,0 +1,39 @@
+'''Compex WP18'''
+
+[http://www.compex.com.sg/home/photobig/WP18.jpg]
+
+{{{
+Bootloader: RedBoot or MyLoader
+CPU: Intel IXP422 @ 266MHz or IXP425 @ 533MHz
+CPU Speed: 266 Mhz
+Flash size: 4 MB - 32MB
+RAM: 32 MB - 128 MB
+Wireless: 2 Atheros mini-PCI cards
+Ethernet: 1x WAN, 4x LAN
+USB: none
+Serial: yes (one internal- ttyS1, one external - ttyS0)
+JTAG: yes (standard 20 pin ARM JTAG)
+}}}
+
+/!\ '''OpenWrt only supports boards with RedBoot, in case you have one with MyLoader, you have to reflash it.'''
+
+
+Internal serial port (labeled JP4, @115200bps):
+
+{{{
+            oo
+            oo - GND
+LEDS   TX - oo         LAN
+       RX - oo
+            oo - VCC
+            oo
+}}}
+
+'''Development kits'''
+||'''Order code'''||'''Contents'''||
+||P-S4 OEMWP181A||WP18 bare board with IXP422 CPU, 4MB flash and 32MB RAM, pre-loaded with Compex Firmware||
+||P-S4 OEMWP186A||WP18 bare board (RoHS version) with IXP422 CPU, 4MB flash and 32MB RAM, pre-loaded with Compex Firmware||
+||P-S4 OEMWP183B||WP18 bare board with IXP425 CPU, 8MB flash and 64MB RAM, pre-loaded with Compex Firmware||
+||P-S4 OEMWP186B||WP18 bare board (RoHS version) with IXP425 CPU, 8MB flash and 64MB RAM, pre-loaded with Compex Firmware||
+||WP18 3B DEV KIT||WP18 bare board with IXP425 CPU, 8MB flash and 64MB RAM, Compex WLM54G (802.11g) and Compex WLM54AG (802.11a) mini-PCI cards, Compex PoE+1A4815 (PoE+ Injector), JTAG programmer and serial adapter, 5V DC PSU||
+||WP18 6B DEV KIT||WP18 bare board (RoHS version) with IXP425 CPU, 8MB flash and 64MB RAM, Compex WLM54G (802.11g) and Compex WLM54AG (802.11a) mini-PCI cards, Compex PoE+1A4815 (PoE+ Injector), JTAG programmer and serial adapter, 5V DC PSU||

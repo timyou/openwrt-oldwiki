@@ -1,0 +1,739 @@
+'''Netgear WG602 v3'''
+
+The WG602 v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 2Mb flash and 8Mb RAM, and a detachable antenna.
+
+ * Flash: Intel TE 28F160C3 BDBD70 ([http://download.intel.com/design/flcomp/datashts/29064523.pdf datasheet], [http://download.intel.com/design/flcomp/specupdt/29793814.pdf update]): 16 Mbit
+
+ * RAM: !EtronTech EM638425TS-6 ([http://etron.com/img/pdf/SDRAM/64Mb/2Mx32/Em638325(Rev%200.8).pdf datasheet]): 64Mbit (2M x 32) 6 ns (166 MHz) SDRAM
+
+It has a populated UART1 connector, and un-populated UART0 and JTAG.The wireless NIC is integrated on the board. Does not appear to use boot wait. Instead the following procedure worked for recovering a dead unit and may be useful in putting new firmware on the unit:
+
+== Recovery procedure ==
+How to upload a firmware via TFTP:
+
+ 1. Download the latest firmware from Netgear. Currently (2 April 2006) it is version [ftp://downloads.netgear.com/files/wg602v3_1_0_8.trx 1.0.8-rc3].
+
+ 1. Reboot the wg602v3: power off the device and power on while depressing the reset button for 5 seconds.
+
+ 1. tftp to the box, set binary mode, and upload the firmare file as {{{image.idts334}}} . You have a very limited time to do this, so it may actually work better to first issue the tftp command, and then reboot the wg602v3.
+
+ 1. If the upload is successful, the wg602v3 will program the flash and load the new firmware.
+
+Eg. (linux)
+
+ {{{
+$ tftp -m binary -c put wg602v3_1_0_8.trx image.idts334 
+Sent 1634304 bytes in 5.8 seconds
+}}}
+
+Eg. (windows)
+
+ {{{
+C:\...\> tftp -i 192.168.0.227 put wg602v3_1_0_8.trx image.idts334 
+Transfer successful: 1634304 bytes in 11 seconds, 148573 bytes/s
+}}}
+
+== Netgear Firmware ==
+Binary firmare releases:
+
+ * [ftp://downloads.netgear.com/files/wg602v3_V1_0_4.trx 1.0.4]
+ * [ftp://downloads.netgear.com/files/wg602v3_v1_0_5.zip 1.0.5]
+ * [ftp://downloads.netgear.com/files/wg602v3_1_0_8.trx 1.0.8 rc3]
+
+GPL source code releases:
+
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-GPL.tar.gz 1.0.4]
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-GPL-v1.0.5.tgz 1.0.5]
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-GPL-v1.0.6.tgz 1.0.6]
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-V1.0.8RC3-GPL.tar.gz 1.0.8 rc3]
+
+Some models shipped with a binary version of the 1.0.6 firmware, but such version is not available for download from Netgear support site.
+
+== OpenWRT ==
+=== Serial console ===
+This AP uses by default UART1 (/dev/ttyS1) as the console, while OpenWRT is usually configured to use UART0 (/dev/ttyS0). If you want to use the serial console on /dev/ttyS1, you need to modify the OpenWRT configuration accordingly, and rebuild. The serial port is used for two independent purposes: displaying the kernel boot messages and providing shell access to your box.
+
+The kernel console configuration is provided by its command line arguments, defined at configuraion time in the CONFIG_CMDLINE config variable. For White Russian, the file to modify is {{{target/linux/linux-2.4/config/brcm}}}, while for Kamikaze 2.4 it is {{{target/linux/brcm-2.4/config}}}. In both, you need to change
+
+ {{{
+...
+CONFIG_CMDLINE="root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noinitrd console=ttyS0,115200"
+...
+}}}
+
+into
+
+ {{{
+...
+CONFIG_CMDLINE="root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noinitrd console=ttyS1,115200"
+...
+}}}
+
+Console access to the AP can be enabled both on ttyS0 and ttyS1. The shell is started by {{{/sbin/init}}} after the kernel has booted, as configured in {{{/etc/inittab}}}. The file to modify is {{{package/base-files/default/etc/inittab}}}.
+
+For White Russian RC5, change
+
+ {{{
+::sysinit:/etc/init.d/rcS
+tts/0::askfirst:/bin/ash --login
+}}}
+
+into
+
+ {{{
+::sysinit:/etc/init.d/rcS
+tts/1::askfirst:/bin/ash --login
+}}}
+
+For Kamikaze, change:
+
+ {{{
+::sysinit:/etc/init.d/rcS
+::shutdown:/sbin/halt
+tts/0::askfirst:/bin/ash --login
+#tts/1::askfirst:/bin/ash --login
+}}}
+
+into
+
+ {{{
+::sysinit:/etc/init.d/rcS
+::shutdown:/sbin/halt
+#tts/0::askfirst:/bin/ash --login
+tts/1::askfirst:/bin/ash --login
+}}}
+
+You can leave both entries uncommented, if for any reason you want console access on both ports.
+
+If you have already built your firmware once, you can just edit {{{build_mipsel/root/etc/inittab}}} and do a {{{make target/install}}}. These changes however will be lost if you do a full rebuild.
+
+=== White Russian RC5 ===
+I haven't managed to get White Russian RC5+ (revision 3587) to boot properly on the WG602v3. I gat a lot of messages like
+
+ {{{
+CFE version 1.0.37.6 for BCM947XX (32bit,SP,LE)
+Build Date: ¤G  9¤¿ 14 13:30:06 CST 2004 (alfa@localhost.localdomain)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena
+Initializing Devices.
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.80.13.0
+rndis0: Broadcom USB RNDIS Network Adapter (P-t-P)
+CPU type 0x29008: 200MHz
+Total memory: 2000 Kbytes
+
+Total memory used by CFE:  0x80300000 - 0x803A44F0 (673008)
+Initialized Data:          0x8033A860 - 0x8033CCE0 (9344)
+BSS Area:                  0x8033CCE0 - 0x8033E4F0 (6160)
+Local Heap:                0x8033E4F0 - 0x803A24F0 (409600)
+Stack Area:                0x803A24F0 - 0x803A44F0 (8192)
+Text (code) segment:       0x80300000 - 0x8033A860 (239712)
+Boot area (physical):      0x003A5000 - 0x003E5000
+Relocation Factor:         I:00000000 - D:00000000
+
+Device eth0:  hwaddr 00-14-6C-38-DA-E7, ipaddr 192.168.0.227, mask 255.255.255.0
+        gateway not set, nameserver not set
+Reading :: Done. 1536000 bytes read
+Programming...done. 1536000 bytes written
+Loader:raw Filesys:raw Dev:flash0.os File: Options:(null)
+***************************
+****  MAC Client V1.0  ****
+***************************
+MAC exist at least one
+system ethernet mac exist and not default....
+Skip mac client process.....
+Loading: .. 3704 bytes read
+Entry at 0x80001000
+Closing network.
+Starting program at 0x80001000
+CPU revision is: 00029008
+Primary instruction cache 16kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 8kB, 2-way, linesize 16 bytes.
+Linux version 2.4.30 (fwyzard@grid006.fi.infn.it) (gcc version 3.4.4 (OpenWrt-1.0)) #1 Tue Apr 4 19:04:35 CEST 2006
+Setting the PFC value as 0x11
+Determined physical RAM map:
+ memory: 00800000 @ 00000000 (usable)
+On node 0 totalpages: 2048
+zone(0): 2048 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noinitrd console=ttyS1,115200
+CPU: BCM5350 rev 0 at 200 MHz
+Using 100.000 MHz high precision timer.
+Calibrating delay loop... 199.47 BogoMIPS
+Memory: 6164k/8192k available (1413k kernel code, 2028k reserved, 100k data, 80k init, 0k highmem)
+Dentry cache hash table entries: 1024 (order: 1, 8192 bytes)
+Inode cache hash table entries: 512 (order: 0, 4096 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+PCI: Disabled
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+Squashfs 2.1-r2 (released 2004/12/15) (C) 2002-2004 Phillip Lougher
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xb8000300 (irq = 0) is a 16550A
+ttyS01 at 0xb8000400 (irq = 2) is a 16550A
+b44.c:v0.93 (Mar, 2004)
+eth0: Broadcom 47xx 10/100BaseT Ethernet 00:14:6c:38:da:e7
+cfi_cmdset_0001: Erase suspend on write enabled
+Using word write method
+Flash device: 0x200000 at 0x1c000000
+Physically mapped flash: Couldn't find root filesystem
+Creating 5 MTD partitions on "Physically mapped flash":
+0x00000000-0x00040000 : "pmon"
+0x00040000-0x001f0000 : "linux"
+0x00000000-0x00200000 : "rootfs"
+0x001f0000-0x00200000 : "nvram"
+0x00000000-0x001f0000 : "OpenWrt"
+Initializing Cryptographic API
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+ip_conntrack version 2.1 (5953 buckets, 5953 max) - 328 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000004: 0xb800 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000008: 0x5350 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000010: 0xffff instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000014: 0x0008 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0000001c: 0x0311 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000020: 0x0090 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000024: 0x0004 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0000002c: 0x0090 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000030: 0x0001 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00000034: 0x0080 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00000000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010000: 0x946e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010004: 0x06fd instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010008: 0x77f9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0001000c: 0x059b instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010010: 0x8fe3 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010014: 0x45aa instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010018: 0x6f94 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0001001c: 0x9533 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010020: 0x7d9d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00010024: 0x02de instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00010000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020000: 0xddac instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020004: 0xdf30 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020008: 0xbf9a instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0002000c: 0xfcde instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020010: 0xf26f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020014: 0xfb99 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020018: 0xe79d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0002001c: 0xd248 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020020: 0x9b7f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00020024: 0x8ed7 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00020000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030000: 0x4448 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030004: 0x7000 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030008: 0xa5c5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030010: 0x001c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030014: 0x08d8 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030018: 0xc400 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0003001c: 0x8b1f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030024: 0x0302 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00030028: 0x6c41 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0003002c: 0xfe15 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00030000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040000: 0x5975 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040004: 0x98c9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040008: 0x9dc5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0004000c: 0xe4af instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040010: 0x0da2 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040014: 0x2a00 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040018: 0xa5da instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0004001c: 0xe27f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040020: 0x1fea instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00040024: 0x114b instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00040000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050000: 0xb179 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050004: 0x0b76 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050008: 0x3d27 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0005000c: 0xe9b7 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050010: 0xf70e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050014: 0x7621 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050018: 0xd84d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0005001c: 0x7487 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050020: 0xd953 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00050024: 0xe2cf instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00050000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060000: 0xdd48 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060004: 0x17b8 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060008: 0x8dd3 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0006000c: 0xc39f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060010: 0x29d4 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060014: 0xe29d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060018: 0x9bf1 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0006001c: 0xca2d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060020: 0xedca instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00060024: 0xfa6d instead
+Further such events for this erase block will not be printed
+Old JFFS2 bitmask found at 0x00065b20
+You cannot use older JFFS2 filesystems with newer kernels
+JFFS2: Erase block at 0x00060000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070000: 0x27de instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070004: 0xf37b instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070008: 0x0fbc instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0007000c: 0xb59b instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070010: 0xc404 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070014: 0xd715 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070018: 0x4e2a instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0007001c: 0x8e67 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070020: 0x8f04 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00070024: 0xb4f3 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00070000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080000: 0x6c13 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080004: 0x7a87 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080008: 0x6448 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0008000c: 0x7d4b instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080010: 0x781e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080014: 0xcf74 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080018: 0xd430 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0008001c: 0x26e5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080020: 0x988d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00080024: 0x1a2f instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00080000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090000: 0xd50a instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090004: 0x081c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090008: 0xb799 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0009000c: 0xfb90 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090010: 0x3873 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090014: 0x7f9f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090018: 0x24b7 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0009001c: 0x7c37 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090020: 0xfb2e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00090024: 0x5209 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00090000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0000: 0x76cc instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0004: 0xb3fb instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0008: 0x9a7e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a000c: 0xd361 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0010: 0xf0f4 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0014: 0x3f29 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0018: 0x21de instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a001c: 0x6c7a instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0020: 0x80af instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000a0024: 0x9fdb instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x000a0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0000: 0xde0f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0004: 0x9e5d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0008: 0x49d2 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b000c: 0x209c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0010: 0xf935 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0014: 0x5380 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0018: 0x89c7 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b001c: 0xc99f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0020: 0xd079 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000b0024: 0x3fcf instead
+Further such events for this erase block will not be printed
+Old JFFS2 bitmask found at 0x000b8b84
+You cannot use older JFFS2 filesystems with newer kernels
+Old JFFS2 bitmask found at 0x000b9680
+You cannot use older JFFS2 filesystems with newer kernels
+JFFS2: Erase block at 0x000b0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0000: 0x3a3f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0004: 0x2c6e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0008: 0x3cf2 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c000c: 0xd9bd instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0010: 0xa25d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0014: 0xb6dc instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0018: 0x7088 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c001c: 0x6ec9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0020: 0xe4fe instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000c0024: 0x3487 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x000c0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0000: 0x78f5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0004: 0xd5bc instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0008: 0x4b29 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d000c: 0x49a4 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0010: 0x24d9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0014: 0xcee5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0018: 0xec39 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d001c: 0xdb62 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0020: 0x4bf5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000d0024: 0x36fa instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x000d0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0000: 0xd8ff instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0004: 0x8e12 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0008: 0x5f07 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e000c: 0x86d6 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0010: 0x0d72 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0014: 0x663e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0018: 0x34cb instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e001c: 0xfdb1 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0020: 0x8663 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000e0024: 0xe426 instead
+Further such events for this erase block will not be printed
+Old JFFS2 bitmask found at 0x000e79e4
+You cannot use older JFFS2 filesystems with newer kernels
+JFFS2: Erase block at 0x000e0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0000: 0xf36e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0004: 0xdbf0 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0008: 0xcade instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f000c: 0x6dee instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0010: 0x8918 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0014: 0x13a7 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0018: 0x303f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f001c: 0xe054 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0020: 0x8702 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x000f0024: 0x9857 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x000f0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100000: 0xd121 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100004: 0x6b30 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100008: 0x5f89 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0010000c: 0xb770 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100010: 0x9af9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100014: 0x993e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100018: 0xe4df instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0010001c: 0x8742 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100020: 0x8f83 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00100024: 0xf20d instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00100000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110000: 0xdfc0 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110004: 0x393b instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110008: 0xdfe3 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0011000c: 0x4b5f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110010: 0x7415 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110014: 0x970c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110018: 0xd927 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0011001c: 0xd2cd instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110020: 0xea55 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00110024: 0x1cf9 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00110000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120000: 0x512c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120004: 0xa500 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120008: 0x743c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0012000c: 0x87ca instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120010: 0xbfc6 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120014: 0xf636 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120018: 0xc2c6 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0012001c: 0xa493 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120020: 0x241b instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00120024: 0x4038 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00120000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130000: 0xa0b8 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130004: 0x7ec5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130008: 0x609c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0013000c: 0xd9d1 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130010: 0x7f86 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130014: 0xa59f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130018: 0x3377 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0013001c: 0x5ee5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130020: 0xcaa2 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00130024: 0xdce6 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00130000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140000: 0x6516 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140004: 0xafd9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140008: 0xb73c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0014000c: 0x28c0 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140010: 0x1b87 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140014: 0x6f62 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140018: 0x1091 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0014001c: 0xbbb9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140020: 0x84ba instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00140024: 0x364a instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00140000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150000: 0xc7f7 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150004: 0xe6b4 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150008: 0xdb24 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0015000c: 0x61c9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150010: 0x7f37 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150014: 0xa28d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150018: 0x6bbd instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0015001c: 0x15d0 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150020: 0xbc77 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00150024: 0x28b0 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00150000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160000: 0x517b instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160004: 0x519c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160008: 0xd157 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0016000c: 0xa133 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160010: 0x4adf instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160014: 0xf488 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160018: 0xcb97 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0016001c: 0x312c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160020: 0xd571 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00160024: 0x25e4 instead
+Further such events for this erase block will not be printed
+Old JFFS2 bitmask found at 0x0016018c
+You cannot use older JFFS2 filesystems with newer kernels
+JFFS2: Erase block at 0x00160000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170000: 0x85a0 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170004: 0xabe6 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170008: 0xcac9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0017000c: 0x0d76 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170010: 0x857d instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170014: 0xacee instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170018: 0xa634 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0017001c: 0x8b52 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170020: 0x0f70 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00170024: 0x5a0e instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00170000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180000: 0x0349 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180004: 0xe100 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180008: 0x295c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0018000c: 0xb023 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180010: 0x8586 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180014: 0xd972 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180018: 0xe150 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0018001c: 0xb6a5 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180020: 0x4eb1 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00180024: 0x5003 instead
+Further such events for this erase block will not be printed
+Old JFFS2 bitmask found at 0x00185f14
+You cannot use older JFFS2 filesystems with newer kernels
+Old JFFS2 bitmask found at 0x0018adf4
+You cannot use older JFFS2 filesystems with newer kernels
+JFFS2: Erase block at 0x00180000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190000: 0xf571 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190004: 0xc931 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190008: 0x4b91 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0019000c: 0xfc2c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190010: 0xce69 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190014: 0x0945 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190018: 0xbfb9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0019001c: 0x8c8c instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190020: 0x2fd7 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00190024: 0x902b instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x00190000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0000: 0x950e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0004: 0xe35e instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0008: 0xa8ad instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a000c: 0x5a22 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0010: 0x2945 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0014: 0xe80f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0018: 0x5e85 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a001c: 0xc3b8 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0020: 0xebc9 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001a0024: 0x29d0 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x001a0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0000: 0x4c46 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0004: 0x0280 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0008: 0x0144 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e000c: 0x0032 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0010: 0x0338 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0014: 0x706f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0018: 0x0038 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e001c: 0x725f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0020: 0x615f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001e0024: 0x3d72 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x001e0000 is not formatted. It will be erased
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0000: 0x4c46 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0004: 0x0280 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0008: 0x0144 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f000c: 0x0032 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0010: 0x0338 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0014: 0x706f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0018: 0x0038 instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f001c: 0x725f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0020: 0x615f instead
+jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x001f0024: 0x3d72 instead
+Further such events for this erase block will not be printed
+JFFS2: Erase block at 0x001f0000 is not formatted. It will be erased
+VFS: Mounted root (jffs2 filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 80k freed
+Kernel panic: No init found.  Try passing init= option to kernel.
+}}}
+
+and then the kernel hangs with "no init found".
+
+=== Kamikaze ===
+As of revision 3586, Kamikaze appears to be basically working except for /sbin/ifconfig. 
+If you remove it from your root image, Kamikaze will boot without issues through the kernel, init, to a working shell.
+
+ {{{
+CFE version 1.0.37.6 for BCM947XX (32bit,SP,LE)
+Build Date: ¤G  9¤¿ 14 13:30:06 CST 2004 (alfa@localhost.localdomain)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena
+Initializing Devices.
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.80.13.0
+rndis0: Broadcom USB RNDIS Network Adapter (P-t-P)
+CPU type 0x29008: 200MHz
+Total memory: 2000 Kbytes
+
+Total memory used by CFE:  0x80300000 - 0x803A44F0 (673008)
+Initialized Data:          0x8033A860 - 0x8033CCE0 (9344)
+BSS Area:                  0x8033CCE0 - 0x8033E4F0 (6160)
+Local Heap:                0x8033E4F0 - 0x803A24F0 (409600)
+Stack Area:                0x803A24F0 - 0x803A44F0 (8192)
+Text (code) segment:       0x80300000 - 0x8033A860 (239712)
+Boot area (physical):      0x003A5000 - 0x003E5000
+Relocation Factor:         I:00000000 - D:00000000
+
+Device eth0:  hwaddr 00-14-6C-38-DA-E7, ipaddr 192.168.0.227, mask 255.255.255.0
+        gateway not set, nameserver not set
+Reading :: Failed.: Timeout occured
+Loader:raw Filesys:raw Dev:flash0.os File: Options:(null)
+***************************
+****  MAC Client V1.0  ****
+***************************
+MAC exist at least one
+system ethernet mac exist and not default....
+Skip mac client process.....
+Loading: .. 3732 bytes read
+Entry at 0x80001000
+Closing network.
+Starting program at 0x80001000
+CPU revision is: 00029008
+Primary instruction cache 16kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 8kB, 2-way, linesize 16 bytes.
+Linux version 2.4.32 (fwyzard@grid006.fi.infn.it) (gcc version 3.4.4 (OpenWrt-2.0)) #3 Wed Apr 5 13:50:06 CEST 2006
+Setting the PFC to its default value
+Determined physical RAM map:
+ memory: 00800000 @ 00000000 (usable)
+On node 0 totalpages: 2048
+zone(0): 2048 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noinitrd console=ttyS1,115200
+CPU: BCM5350 rev 0 at 200 MHz
+Using 100.000 MHz high precision timer.
+Calibrating delay loop... 199.47 BogoMIPS
+Memory: 6148k/8192k available (1421k kernel code, 2044k reserved, 100k data, 88k init, 0k highmem)
+Dentry cache hash table entries: 1024 (order: 1, 8192 bytes)
+Inode cache hash table entries: 512 (order: 0, 4096 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+PCI: Disabled
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xb8000300 (irq = 2) is a 16550A
+ttyS01 at 0xb8000400 (irq = 2) is a 16550A
+b44.c:v0.93 (Mar, 2004)
+eth0: Broadcom 47xx 10/100BaseT Ethernet 00:14:6c:38:da:e7
+cfi_cmdset_0001: Erase suspend on write enabled
+Using word write method
+Flash device: 0x200000 at 0x1c000000
+bootloader size: 196608
+Creating 5 MTD partitions on "Physically mapped flash":
+0x00000000-0x00030000 : "cfe"
+0x00030000-0x001f0000 : "linux"
+0x000ac800-0x0016a000 : "rootfs"
+mtd: partition "rootfs" doesn't start on an erase block boundary -- force read-only
+0x001f0000-0x00200000 : "nvram"
+0x00170000-0x001f0000 : "OpenWrt"
+sflash: found no supported devices
+Initializing Cryptographic API
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+ip_conntrack version 2.1 (5953 buckets, 5953 max) - 360 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 88k freed
+Algorithmics/MIPS FPU Emulator v1.5
+diag boardtype: 00000456
+Unlocking OpenWrt ...
+umount: Couldn't umount /rom/dev: No such file or directory
+init started:  BusyBox v1.1.1 (2006.04.04-16:53+0000) multi-call binary
+
+Please press Enter to activate this console. jffs2.bbc: SIZE compression mode activated.
+
+
+
+BusyBox v1.1.1 (2006.04.04-16:53+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r3586) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:/#
+}}}
+
+Running `/sbin/ifconfig` will give a bus error the 1st time, and lock the system the 2nd time:
+ {{{
+root@OpenWrt:/# /rom/sbin/ifconfig eth0 up 192.168.0.227 mask 255.255.255.0
+Data bus error, epc == 800ab9b4, ra == 800aba90
+Oops in traps.c::do_be, line 385:
+$0 : 00000000 1000fc00 00060000 000f3800 b8001428 00068db9 80000000 00000064
+$8 : 00000000 00000001 00000001 80196e50 0000032d 1000fc00 00000000 00000001
+$16: 80763d60 00000100 80763c00 80763d60 80441eb0 00000000 00000000 00008914
+$24: ba2e8ba3 801a25d4                   80440000 80441da0 7fff7c38 800aba90
+Hi : 00000000
+Lo : 00000000
+epc   : 800ab9b4    Not tainted
+Status: 1000fc02
+Cause : 0000801c
+PrId  : 00029008
+Process ifconfig (pid: 353, stackpage=80440000)
+Stack:    800c5f94 00000000 00000001 00000000 00000001 00008914 800ad47c
+ 80763d60 80150000 80763d60 80763c00 00000000 80763c00 800ad720 00000000
+ 00008914 00000001 80763d60 80763d60 00000000 80763c00 00000000 80441eb0
+ 800ad870 0000009a 80028300 80763d60 00000000 80763d60 00000000 80763d60
+ 800adfa4 00000004 0049acb0 805332c0 801f8034 80763c00 0049acb0 80763c00
+ 00000000 ...
+Call Trace:   [<800c5f94>] [<800ad47c>] [<80150000>] [<800ad720>] [<800ad870>]
+ [<80028300>] [<800adfa4>] [<800ca820>] [<800cc044>] [<8010c2a0>] [<80048f78>]
+ [<800c2f64>] [<80008a60>] [<8005b79c>]
+
+Code: 00452021  3c020006  34458db9 <8c820000> 11200005  00461024  1040000f  00000000  0802ae77
+Segmentation fault
+}}}
+----
+ CategoryModel

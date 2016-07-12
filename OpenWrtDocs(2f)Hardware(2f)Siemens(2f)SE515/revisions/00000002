@@ -1,0 +1,39 @@
+The SE515 hardware is the same as the Dynalink RTA770W. In fact it is sometimes referred to be RTA770BW where B stands for Annex B but the ADSL modem can handle both Annex A and B. This just depends on the flashed firmware.
+
+
+
+[http://delta-9-thc.czuby.net/~yans/openwrt/photos/se515_med.jpg]
+
+====Serial interface :====
+
+Below the reset button/on the left of the switch processor (BCM5325...)
+
+Going top-down
+
+serial connector J304
+
+{{{
+       |---|
+front  | o | 3.3V
+ of    | o   GND
+ the   | o   Tx
+board  | o | Rx
+       |---|}}}
+Console is active after login.
+
+==== Jtag interface ====
+In the bottom left corner. Soldered on the picture. Typical 12 pin header
+
+Pin one is in the very bottom down part of the header.  Jtag is fully operational.
+
+For more information see ["OpenWrtDocs/Hardware/Dynalink/RTA770W"]
+
+["OpenWrtDocs/Hardware/Dynalink/RTA770W"]
+
+]http://heinz.hippenstiel.org/familie/hp/hobby/se515/gigaset_se515dsl.html] (in German)
+
+http://2kuul.de/ Firmware archive
+
+http://k0.j0t.de/ German forum
+
+Note. Don't be afraid of German language - just use [http://babelfish.altavista.com/ "babelfish"] or any similar service..

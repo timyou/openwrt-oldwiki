@@ -1,0 +1,28 @@
+= Linksys AG300 =
+Bootloader: ["ADAM2"]
+
+== Picture ==
+attachment:ag%33%30%30brd.jpg
+
+== Serial console ==
+Note: this does not match with the picture above.  The description is exactly as written here, the new port is named JP4 and PIN1 is on the left side. So just flip the picture 90 degree to have the new layout.
+
+{{{
+|
+|    __
+|   |  |        <- Pin 1, GND
+|    --
+|   |  |        <- Pin 2, Not Connected
+|    --
+|   |  |        <- Pin 3, Router's Serial TX
+|    --
+|   |  |        <- Pin 4, Router's Serial RX
+|    --
+|   |  |        <- Pin 5, VCC
+|    --
+|    JP3
+|
+ \__led__led__led__led____________________
+                Front of AG241
+}}}
+Configure teminal with 38400 bauds, 8 bits, no parity, 1 stop bit (38400 8N1), hardware and software flow control both disabled.

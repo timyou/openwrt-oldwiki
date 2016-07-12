@@ -1,0 +1,23 @@
+[[TableOfContents]]
+= General =
+the Wistron CA8-4 is based on an Atheros System on a Chip (Soc). It got a ar2313 MIPS processor and ar5112 2.4/5GHz RoC. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+= CA8-4 =
+== Board spec ==
+ * Atheros product name: Atheros AR5002AP-X 802.11a/b/g WLAN Solution
+ * CPU: Atheros AR2313A-001
+ * RoC: Atheros AR5112A-001
+ * Flash: 4MB
+ * RAM: 32MB
+
+ * 1 x LAN RJ45
+ * Power supply: 5V DC
+== Serial ==
+Populated serial on JP1
+
+Serial-Layout:
+ * Pin 1: +3.3V
+ * Pin 2:
+ * Pin 3: TX
+ * Pin 4:
+ * Pin 5: RX
+ * Pin 6: GND

@@ -1,0 +1,45 @@
+1087503529000000	00000001	SAVE	GettingStartedTips	81.1.70.47	81-1-70-47.homechoice.co.uk			First edit from Shermozle
+1087503642000000	00000002	SAVE	GettingStartedTips	81.1.70.47	81-1-70-47.homechoice.co.uk			Fixed up code bit
+1087525839000000	00000003	SAVE	GettingStartedTips	217.81.83.231	pD95153E7.dip.t-dialin.net			
+1087984633000000	00000004	SAVE	GettingStartedTips	217.205.180.210	217.205.180.210			ssh forward on WAN and to router from inside
+1087984690000000	00000005	SAVE	GettingStartedTips	217.205.180.210	217.205.180.210			
+1088971538000000	00000006	SAVE	GettingStartedTips	68.56.225.196	pcp858839pcs.ptchar01.fl.comcast.net			
+1088971583000000	00000007	SAVE	GettingStartedTips	68.56.225.196	pcp858839pcs.ptchar01.fl.comcast.net			
+1089238277000000	00000008	SAVE	GettingStartedTips	204.163.170.33	host33.unify.com			
+1089260625000000	00000009	SAVE	GettingStartedTips	64.30.100.115	115.100-30-64.ftth.swbr.surewest.net			Explain some "obvious" stuff for new users of OpenWrt
+1089260812000000	00000010	SAVE	GettingStartedTips	64.30.100.115	115.100-30-64.ftth.swbr.surewest.net			
+1089261121000000	00000011	SAVE	GettingStartedTips	64.30.100.115	115.100-30-64.ftth.swbr.surewest.net			Added info about resetting the router before starting
+1089544016000000	00000012	SAVE	GettingStartedTips	64.81.32.143	nightfall.singingtree.com			maybe it was obvious to everybody else..
+1089698010000000	00000013	SAVE	GettingStartedTips	66.188.61.90	66.188.61.90.bay.mi.chartermi.net			
+1090348816000000	00000014	SAVE	GettingStartedTips	66.188.61.90	66.188.61.90.bay.mi.chartermi.net			
+1091110067000000	00000015	SAVE	GettingStartedTips	193.99.145.162	gatekeeper.heise.de			typo
+1091918006000000	00000016	SAVE	GettingStartedTips	217.252.125.3	pD9FC7D03.dip0.t-ipconnect.de			First login: firstboot is run automatically, but sometimes fails; added solution
+1093269414000000	00000017	SAVE	GettingStartedTips	213.84.149.226	huijben.xs4all.nl	1092931021.24.4162		Changed URLs from openwrt.ksilebo.net 's to www.openwrt.org
+1094407905000000	00000018	SAVE	GettingStartedTips	82.227.167.13	jaxx.org			
+1097425770000000	00000019	SAVE	GettingStartedTips	68.56.197.123	pcp839046pcs.venice01.fl.comcast.net			
+1097425806000000	00000020	SAVE	GettingStartedTips	68.56.197.123	pcp839046pcs.venice01.fl.comcast.net			
+1100180289000000	00000021	SAVE	GettingStartedTips	158.38.62.138	persaunet.uninett.no			
+1100182881000000	00000022	SAVE	GettingStartedTips	158.38.62.138	persaunet.uninett.no			
+1100652277000000	00000023	SAVE	GettingStartedTips	67.175.5.191	67.175.5.191			It seems the file /etc/init.d/S50Services no longer exists in the current builds
+1101076142000000	00000024	SAVE	GettingStartedTips	24.247.171.106	24.247.171.106.bay.mi.chartermi.net			
+1109287815000000	00000025	SAVE	GettingStartedTips	69.107.80.12	adsl-69-107-80-12.dsl.pltn13.pacbell.net			
+1110366359000000	00000026	SAVE	GettingStartedTips	168.209.97.34	netcache1-ctn.is.co.za	1110365911.75.8485		
+1110450990000000	00000027	SAVE	GettingStartedTips	146.64.8.10	addiction.icomtek.csir.co.za	1110365911.75.8485		
+1110733097000000	00000028	SAVE	GettingStartedTips	82.48.246.173	host173-246.pool8248.interbusiness.it			
+1111777357000000	00000029	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1111285795.34.48630		
+1111983917000000	00000030	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1111983047.52.25030		Removed WAN limit , fixed FORWARD --dport, shortened script, add -d limits, etc.
+1112255995000000	00000031	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1111983047.52.25030		Put back WAN interface limitations. Supporting connections from LAN is harder.
+1112672646000000	00000032	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1096303201.7.12400		fix ssh forwarding example
+1112744824000000	00000033	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		fixed forward_port.awk script
+1112745491000000	00000034	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		
+1112746333000000	00000035	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		added an example of the parsing of forward_port.awk
+1112750072000000	00000036	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		fixed a couple errors nvram_get i dont believe exists.
+1112750128000000	00000037	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		
+1112808187000000	00000038	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		added an example of what a script outputs when executed
+1113372678000000	00000039	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		edited the script to be more secure with the FORWARD
+1113373284000000	00000040	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		fixed the FORWARD script again 
+1113373563000000	00000041	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		FORWARD fixed again
+1113373712000000	00000042	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1112743414.79.34206		removed EXTIP setting in forward_port.awk script
+1113466900000000	00000043	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1111983047.52.25030		Derive LAN subnet from nvram settings
+1113467531000000	00000044	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1111983047.52.25030		
+1119152296000000	00000045	SAVE	GettingStartedTips	208.185.247.160	rackable1.simpli.biz	1096303201.7.12400		

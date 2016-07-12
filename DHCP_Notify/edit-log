@@ -1,0 +1,3 @@
+1215066925000000	00000001	SAVENEW	DHCP_Notify	77.126.95.116	77.126.95.116	1214757197.6.28473		adding new dhcp notify page
+1218126230000000	00000002	SAVE	DHCP_Notify	76.205.90.57	adsl-76-205-90-57.dsl.bcvloh.sbcglobal.net	1218126018.19.31527		repositories contain "mini-sendmail" NOT "mini_sendmail"
+1218137016000000	00000003	SAVE	DHCP_Notify	76.205.90.57	adsl-76-205-90-57.dsl.bcvloh.sbcglobal.net	1218126018.19.31527		added default SMTP server localhost

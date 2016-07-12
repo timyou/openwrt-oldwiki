@@ -1,0 +1,36 @@
+ADSL Modem with High-Speed Mode Wireless-G Router
+
+Model # F5D7633-4
+Ver. 1000ea
+Runtime Code version. F5D7633-4Av1_UK_1.00.009
+Boot Code Version 1.0.37-5.15 			
+Hardware Version V1.0J3
+ADSL Modem Code Version A2pB015c6
+
+Twin Aerials.
+2-pin SMPSU (Bought an adapter for UK mains plugs)
+
+When encryption is enabled with default Belkin firmware the signal is very intermittant, multiple resets & reconfigures make no difference. Used Network Stumbler to view it dropping out.
+I would like to OpenWRT it & see if I can still use it. I have  re-flashed with Belkin firmware, it is still the same. I note that the Davolink has simialr hardware.
+
+Internals.
+
+Wifi. is a mini-pci card soldered in at the "release" pins/clips. The Main & Aux aerials are soldered via very thin greay coax.
+4306KFB
+The PCB is marked (Silkscreened) with:
+WMIB103GS_V00
+109-501-4800
+
+CPU.
+Broadcom BCM6348KPB
+
+Ethernet 4-Port.
+BCM5325EKQM
+
+There is one WAN port.
+
+The PCB is marked (silkscreened) in the left hand corner below the Mini-pci with:
+WADB102GB_V01
+109-502-5300
+
+There are markings & holes on the PCB for UART & JTAG. Also CON5 which looks like a USB port ath the rear, but has missing componet places.

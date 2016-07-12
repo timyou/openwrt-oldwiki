@@ -1,0 +1,14 @@
+#acl All:
+= Getting help on IRC =
+
+IRC is "Internet Relay Chat"; a simple real time text communication; because of the "real time", many first time users expect instant answers, much like you'd get if you called someone on the phone. This is the wrong attitude and will just lead to frustration; just because you see a list of people in the IRC channel doesn't mean anyone is actually around or paying any attention. It's very common to just leave IRC constantly connected, even when away from the computer, so it may take several minutes or even hours before anyone notices or acknowledges your existence. Be patient.
+
+The way you ask a question will also dictate how likely it is you get a response. We love interesting problems and people who seem genuinely interested in understanding how things work and will often spend a significant amount of time trying to help with those problems. In contrast, if you sound like someone who's angry that it's broken, wants nothing to do with the problem and just wants someone else to fix it, you will probably be ignored or asked to leave. !OpenWrt is free software and comes with no warranty, there is no implicit reason that anyone has to help you.
+
+Don't ask "meta questions"; these are questions like "Can I ask a question?" and "Is anyone here?", aside from the logical paradoxes these questions are uninteresting, provide no information and don't advance the conversation in any meaningful way. You'll probably get an amusingly mocking answer, if any.
+
+Try to be clear and concise with your questions; don't flood us with pages of information we need to sort through just to understand your question, and don't be so vague that you need to be asked several more questions just to determine exactly what the problem is. Whenever possible you should simplify the problem into something that can be easily reproduced to demonstrate the issue. If we need to ask too many questions to understand the problem we will probably stop trying to help.
+
+Ask your question in a way that dictates the answer; if you ask a question that can be answered with a "yes" or a "no" that's probably what you'll get, try to avoid asking a yes or no question if you don't want a yes or no answer. Short answers are not intended as hostility, just as a means of moving the conversation along so we can get to the next problem. If you don't get an answer or don't get the type of answer you want, try asking a different question.
+
+You should be reasonably responsive when replying, if you've just said something in the last few seconds we will assume that you're paying attention to IRC and that if we ask you a question we shouldn't need to wait several minutes for a response. We will often get frustrated or distracted if your responses take too long. Try typing your responses as multiple lines so we can read along as you type.

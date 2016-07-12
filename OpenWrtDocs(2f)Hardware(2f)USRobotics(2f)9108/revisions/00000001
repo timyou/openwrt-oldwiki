@@ -1,0 +1,159 @@
+= USR9108 =
+
+Not supported in OpenWrt, CPU is Mips32 in BCM6348, System is Linux. Sources with build System available (with proprietary drivers).
+4MB flash, 16MB ram, minipci-wlan, USB-Host
+
+== Product ==
+http://www.usr-emea.com/support/s-prod-template.asp?loc=grmy&prod=9108
+Sources available in their GPL archive
+
+== sysinfo ==
+
+{{{
+# cat /proc/cpuinfo
+system type             : 96348GW-B
+processor               : 0
+cpu model               : BCM6348 V0.7
+BogoMIPS                : 255.59
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : yes
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+# dmesg
+Linux version 2.6.8.1 (root@localhost.localdomain) (gcc version 3.4.2) #1 Fri Fe
+b 17 15:32:57 CST 2006
+Parallel flash device: name M29W320ET, id 0x2256, size 4096KB
+Total Flash size: 4096K with 71 sectors
+96348GW-B prom init
+CPU revision is: 00029107
+mpi: No Card is in the PCMCIA slot
+Determined physical RAM map:
+ memory: 00fa0000 @ 00000000 (usable)
+On node 0 totalpages: 4000
+  DMA zone: 4000 pages, LIFO batch:1
+  Normal zone: 0 pages, LIFO batch:1
+  HighMem zone: 0 pages, LIFO batch:1
+Built 1 zonelists
+Kernel command line: root=31:0 ro noinitrd
+brcm mips: enabling icache and dcache...
+Primary instruction cache 16kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 8kB 2-way, linesize 16 bytes.
+PID hash table entries: 64 (order 6: 512 bytes)
+Using 128.000 MHz high precision timer.
+Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Memory: 14020k/16000k available (1382k kernel code, 1960k reserved, 209k data, 7
+2k init, 0k highmem)
+Calibrating delay loop... 255.59 BogoMIPS
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Checking for 'wait' instruction...  unavailable.
+NET: Registered protocol family 16
+Can't analyze prologue code at 80168434
+usbcore: registered new driver hub
+PPP generic driver version 2.4.2
+NET: Registered protocol family 24
+Using noop io scheduler
+bcm963xx_mtd driver v1.0
+ohci_hcd: 2004 Feb 02 USB 1.1 'Open' Host Controller (OHCI) Driver (PCI)
+ohci_hcd: block sizes: ed 64 td 64
+PCI: Enabling device 0000:00:09.0 (0000 -> 0002)
+ohci_hcd 0000:00:09.0: OHCI Host Controller
+PCI: Setting latency timer of device 0000:00:09.0 to 64
+ohci_hcd 0000:00:09.0: irq 20, pci mem c0000b00
+ohci_hcd 0000:00:09.0: new USB bus registered, assigned bus number 1
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 2 ports detected
+usbcore: registered new driver usblp
+drivers/usb/class/usblp.c: v0.13: USB Printer Device Class driver
+brcmboard: brcm_board_init entry
+SES: Button GPIO 0x23 is enabled
+SES: Button Interrupt 0x3 is enabled
+SES: LED GPIO 0x23 is enabled
+bcm963xx_serial driver v2.0
+NET: Registered protocol family 2
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+Ebtables v2.0 registered
+NET: Registered protocol family 8
+NET: Registered protocol family 20
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (squashfs filesystem) readonly.
+Freeing unused kernel memory: 72k freed
+Algorithmics/MIPS FPU Emulator v1.5
+atmapi: module license 'Proprietary' taints kernel.
+blaadd: blaa_detect entry
+adsl: adsl_init entry
+Broadcom BCMPROCFS v1.0 initialized
+Broadcom BCM6348B0 Ethernet Network Device v0.3 Feb 17 2006 15:29:25
+Config Ethernet Switch Through SPI Slave Select 0
+eth0: MAC Address: 00:14:C1:1F:7B:49
+dgasp: kerSysRegisterDyingGaspHandler: eth0 registered 
+PCI: Setting latency timer of device 0000:00:01.0 to 64
+PCI: Enabling device 0000:00:01.0 (0004 -> 0006)
+wl0: Broadcom BCM4318 802.11 Wireless Controller 3.131.35.0.cpe0.0
+dgasp: kerSysRegisterDyingGaspHandler: wl0 registered 
+BcmAdsl_Initialize=0xC005B218, g_pFnNotifyCallback=0xC0070B14
+pSdramPHY=0xA0FFFFF8, 0x1B7862 0xDEADBEEF
+AdslCoreHwReset: AdslOemDataAddr = 0xA0FF0694
+dgasp: kerSysRegisterDyingGaspHandler: dsl0 registered 
+ip_tables: (C) 2000-2002 Netfilter core team
+ip_conntrack version 2.1 (125 buckets, 0 max) - 368 bytes per conntrack
+eth0 Link UP.
+ip_conntrack_pptp version 2.1 loaded
+ip_nat_pptp version 2.0 loaded
+ip_conntrack_h323: init 
+ip_nat_h323: initialize the module!
+ADSL G.994 training
+ip_conntrack_rtsp v0.01 loading
+ip_nat_rtsp v0.01 loading
+ADSL G.992 started
+device eth0 entered promiscuous mode
+br0: port 1(eth0) entering learning state
+br0: topology change detected, propagating
+br0: port 1(eth0) entering forwarding state
+ADSL G.992 channel analysis
+device wl0 entered promiscuous mode
+br0: port 2(wl0) entering learning state
+br0: topology change detected, propagating
+br0: port 2(wl0) entering forwarding state
+device wl0.1 entered promiscuous mode
+device nas_1_32 entered promiscuous mode
+br0: port 4(nas_1_32) entering learning state
+br0: topology change detected, propagating
+br0: port 4(nas_1_32) entering forwarding state
+ADSL link up, interleaved, us=224, ds=2304
+eth0 Link DOWN.
+br0: port 1(eth0) entering disabled state
+eth0 Link UP.
+br0: port 1(eth0) entering learning state
+br0: topology change detected, propagating
+br0: port 1(eth0) entering forwarding state
+
+# busybox
+BusyBox v1.00 (2006.02.17-21:42+0000) multi-call binary
+
+Usage: busybox [function] [arguments]...
+   or: [function] [arguments]...
+
+        BusyBox is a multi-call binary that combines many common Unix
+        utilities into a single executable.  Most people will create a
+        link to busybox for each function they wish to use, and BusyBox
+        will act like whatever it was invoked as.
+
+Currently defined functions:
+        [, busybox, cat, chmod, date, df, dmesg, echo, expr, false, ifconfig,
+        init, insmod, kill, klogd, linuxrc, ln, logger, logread, mkdir,
+        mount, msh, ping, ps, pwd, reboot, rm, rmmod, route, sendarp,
+        sh, sysinfo, syslogd, test, tftp, tftpd, true, tty, vconfig
+
+}}}
+
+----
+CategoryModel

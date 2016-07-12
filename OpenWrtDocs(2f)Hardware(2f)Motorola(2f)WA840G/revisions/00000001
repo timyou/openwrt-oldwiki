@@ -1,0 +1,5 @@
+I suspect the WA840G is just the same hardware as WE800G, but radio is in AP mode.
+
+To get the OpenWRT going on that box follow the [:OpenWrtDocs/Hardware/Motorola/WE800G: WE800G] instructions.
+
+Note: Use [http://downloads.openwrt.org/people/kaloz/openwrt-wa840g.bin this OpenWRT image] with WA840G v1.

@@ -1,0 +1,9 @@
+'''Siemens SE505'''
+
+The SE505 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb RAM.
+The wireless NIC is a mini-PCI card. boot_wait is on by default.
+
+
+/!\ '''This router sits on 192.168.2.1 during boot_wait, so You have to TFTP to that address.'''
+
+/!\ '''The reset button is hardwired on this unit, so there is no failsafe mode.'''

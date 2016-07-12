@@ -1,0 +1,12 @@
+1177469994000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	72.70.37.47	pool-72-70-37-47.bstnma.fios.verizon.net	1177466717.29.11027		
+1177470290000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	72.70.37.47	pool-72-70-37-47.bstnma.fios.verizon.net	1177466717.29.11027		
+1177498389000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	12.159.148.121	bxb-natpool-121.cisco.com	1177466717.29.11027		
+1179087178000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	58.160.130.105	CPE-58-160-130-105.sa.bigpond.net.au	1166671862.63.24255		Added comment that NSLU2-Linux supports porting OpenWRT to the NSLU2.
+1179667575000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	58.160.130.105	CPE-58-160-130-105.sa.bigpond.net.au	1166671862.63.24255		squashfs image boots.  still to test jffs2 image.
+1182866209000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	141.26.69.147	intrepid.uni-koblenz.de	1173036009.53.47935		
+1184860734000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	141.26.69.147	intrepid.uni-koblenz.de	1173036009.53.47935		
+1185691753000000	00000008	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	85.225.62.210	c-d23ee155.94-2-64736c10.cust.bredbandsbolaget.se	1185691523.71.30063		Corrected link to package repositories
+1186657838000000	00000009	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	212.200.52.11	proxy.tippnet.co.yu	1186657654.18.20132		
+1200295403000000	00000010	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	143.93.17.25	sub25.rz-zw.fh-kl.de	1145249192.16.25609		Added to Category IXP4xxDevice
+1221253223000000	00000011	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	171.71.36.222	171.71.36.222	1142361980.51.2341		
+1229546270000000	00000012	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)NSLU2	140.99.37.69	69-dynamic-dsl.deru.com	1229545924.68.59263		

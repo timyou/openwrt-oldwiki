@@ -1,0 +1,48 @@
+== D-Link DIR-320 ==
+
+=== Hardware ===
+
+{{{
+CPU : Broadcom BCM5354KFBG
+Flash : Spansion S29AL032D (4Mbytes)
+RAM : 32Mbytes SAMSUNG 
+Switch : ?
+Wi-Fi : BCM4318
+Serial : yes
+USB : yes
+JTAG : yes
+}}}
+
+=== Serial pinout ===
+
+{{{
+[x] : TX
+[x] : GND
+[x] : VCC 3.3V
+[ ]
+[x] : RX
+}}}
+
+=== Compile image ===
+{{{
+run make menuconfig
+select target system "Broadcom BCM947xx/953xx [2.4]"
+select you need packages
+select <Exit> and "Yes"
+
+run make kernel_menuconfig
+select Memory Technology Devices (MTD) -->
+    Ram/Rom/Flash chip drivers -->>>
+        
+check all "Support X-bit buswidth"
+check all "Support X-chip flash interleave"
+
+run make
+
+}}}
+
+=== Flashing ===
+==== Serial ====
+{{{
+flash -noheader <ip address of the TFTP server>: openwrt-brcm-2.4-squashfs.trx flash1.trx
+}}}

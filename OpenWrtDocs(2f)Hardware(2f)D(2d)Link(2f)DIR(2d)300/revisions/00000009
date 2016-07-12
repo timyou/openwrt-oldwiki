@@ -1,0 +1,174 @@
+This device is identical with the [http://wiki.openwrt.org/OpenWrtDocs/Hardware/Airlink/ARxxxW ARxxxW]
+
+http://img528.imageshack.us/img528/8263/seriedir300gc7.jpg
+
+9600 8N1
+
+My USB->Serial Adapter was only 3,3V whereas this device needs 5V!
+
+= replace Bootloader =
+
+Get ap61.ram/ap61.rom from here: [http://www.dd-wrt.com/dd-wrtv2/down.php?path=downloads/v24/Atheros+WiSoc/Airlink+101+AR430W/ http://www.dd-wrt.com/dd-wrtv2/down.php?path=downloads%2Fv24%2FAtheros+WiSoc%2FAirlink+101+AR430W/] and put it in your tftp-dir
+
+I have done this via serial, but it's also possible with just telnet (see [http://wiki.openwrt.org/OpenWrtDocs/Hardware/Airlink/ARxxxW ARxxxW])
+
+'''Note:''' A nice script called [http://x-alina.freifunk-potsdam.de/downloads/dir300-flash/ dir300-flash] wraps the manual steps for replacing the original bootloader and/or flashing firmware images into a single command line. See section below for further details.
+
+{{{
+load ap61.ram
+go
+�+**Warning** FLASH configuration checksum error or invalid key
+Use 'fconfig -i' to [re]initialize database
+... waiting for BOOTP information
+Ethernet eth0: MAC address 00:1e:58:84:85:e2
+IP: 192.168.1.187/255.255.255.0, Gateway: 192.168.1.1
+Default server: 192.168.1.1
+RedBoot(tm) bootstrap and debug environment [RAM]
+production release, version "2.1.3" - built 18:43:37, Sep 20 2007
+Platform: ap61 (Atheros WiSOC)
+Copyright (C) 2000, 2001, 2002, 2003, 2004 Red Hat, Inc.
+Copyright (C) 2007, NewMedia-NET GmbH.
+Board: DLINK DIR-300
+RAM: 0x80000000-0x81000000, [0x8007ff00-0x80fe1000] available
+FLASH: 0xbfc00000 - 0xbfff0000, 64 blocks of 0x00010000 bytes each.
+DD-WRT> fconfig -i
+Initialize non-volatile configuration - continue (y/n)? y
+Run script at boot: false
+Use BOOTP for network configuration: false
+Gateway IP address: 192.168.1.1
+Local IP address: 192.168.1.10
+Local IP address mask: 255.255.255.0
+Default server IP address: 192.168.1.228
+Console baud rate: 9600
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+Update RedBoot non-volatile configuration - continue (y/n)? y
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> fis init
+About to initialize [format] FLASH image system - continue (y/n)? y
+*** Initialize FLASH Image System
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> ip_address -l 192.168.1.10 -h 192.168.1.228
+IP: 192.168.1.10/255.255.255.0, Gateway: 192.168.1.1
+Default server: 192.168.1.228
+DD-WRT> load -r -b %{FREEMEMLO} ap61.rom
+Using default protocol (TFTP)
+Raw file loaded 0x80080000-0x800a8717, assumed entry at 0x80080000
+DD-WRT> fis create -l 0x30000 -e 0xbfc00000 RedBoot
+An image named 'RedBoot' exists - continue (y/n)? y
+... Erase from 0xbfc00000-0xbfc30000: ...
+... Program from 0x80080000-0x800a8718 at 0xbfc00000: ...
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> reset
+}}}
+= install OpenWrt =
+== compile image ==
+select 'atheros' in menuconfig and run 'make'
+
+for vlan-support you have to apply this patch: http://jan.willies.info/990-phyfix.patch (2.6.26.5) and read about it here: http://inst.eecs.berkeley.edu/~pathorn/ip175c/ and http://forum.openwrt.org/viewtopic.php?pid=74189#p74189
+
+== dir300-flash ==
+
+A nice script called [http://x-alina.freifunk-potsdam.de/downloads/dir300-flash/ dir300-flash] wraps the manual steps for replacing the original bootloader and/or flashing firmware images into a single command line. The script requires a running tftpd service. See --help for further details.
+
+{{{
+$ sudo ./dir300-flash.sh eth0 openwrt-atheros-vmlinux.lzma openwrt-atheros-root.squashfs 
+Please connect now the WAN port of the DIR-300 wireless router directly to
+the interface "eth0" and then power the wireless router on.
+Waiting for the wireless router..... done
+Testing for the factory bootloader... yes
+Uploading the temporary bootloader RAM image... done
+Starting the temporary bootloader... done
+Waiting for the temporary bootloader to come up.... done
+Uploading the new bootloader ROM image... done
+Warning: Do not power off or disconnect as this may break the wireless router!
+Setting up bootloader configuration... done
+Flashing the new bootloader... done
+Resetting the wireless router... done
+Waiting for the new bootloader............. done
+Uploading the new kernel image... done
+Flashing the new kernel image... done
+Uploading the new root filesystem... done
+Flashing the new root filesystem... done
+Resetting the wireless router... done
+
+Happy Hacking! ;)
+}}}
+
+== initial flash (manually) ==
+
+{{{
+DD-WRT> fis init
+About to initialize [format] FLASH image system - continue (y/n)? y
+*** Initialize FLASH Image System
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> load -r -b %{FREEMEMLO} openwrt-atheros-vmlinux.lzma
+Using default protocol (TFTP)
+Raw file loaded 0x80040800-0x801007ff, assumed entry at 0x80040800
+DD-WRT> fis create -e 0x80041000 -r 0x80041000 vmlinux.bin.l7
+... Erase from 0xbfc30000-0xbfcf0000: ............
+... Program from 0x80040800-0x80100800 at 0xbfc30000: ............
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> load -r -b %{FREEMEMLO} openwrt-atheros-root.squashfs
+Using default protocol (TFTP)
+Raw file loaded 0x80040800-0x802207ff, assumed entry at 0x80040800
+DD-WRT> fis create rootfs
+... Erase from 0xbfcf0000-0xbffe0000: ...............................................
+... Program from 0x80040800-0x80220800 at 0xbfcf0000: ..............................
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> fconfig
+Run script at boot: true
+Boot script:
+Enter script, terminate with empty line
+>> fis load -l vmlinux.bin.l7
+>> exec
+>>
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: false
+Gateway IP address: 192.168.1.1
+Local IP address: 192.168.1.10
+Local IP address mask: 255.255.255.0
+Default server IP address: 192.168.1.228
+Console baud rate: 9600
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+Update RedBoot non-volatile configuration - continue (y/n)? y
+... Erase from 0xbffe0000-0xbfff0000: .
+... Program from 0x80ff0000-0x81000000 at 0xbffe0000: .
+DD-WRT> reset
+[...]
+DD-WRT> fis load -l vmlinux.bin.l7
+Image loaded from 0x80041000-0x80281086
+DD-WRT> exec
+Now booting linux kernel:
+ Base address 0x80030000 Entry 0x80041000
+ Cmdline :
+Linux version 2.6.26.2 (jan@jan) (gcc version 4.1.2) #1 Tue Aug 12 10:14:23 CEST 2008
+[...]
+}}}
+== reflash ==
+for reflashing via redboot use
+
+{{{
+load -r -b %{FREEMEMLO} openwrt-atheros-vmlinux.lzma
+fis create -e 0x80041000 -r 0x80041000 vmlinux.bin.l7
+load -r -b %{FREEMEMLO} openwrt-atheros-root.squashfs
+fis create rootfs
+}}}
+or from openwrt
+
+{{{
+mtd -e vmlinux.bin.l7 write openwrt-atheros-vmlinux.lzma vmlinux.bin.l7
+mtd -r write openwrt-atheros-root.squashfs rootfs
+}}}
+== Setting up the switch ==
+
+This part is not finished yet, but here you can read about it: https://dev.openwrt.org/ticket/4050 (see '2.1 compile image' also)

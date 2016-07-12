@@ -1,0 +1,55 @@
+Index: target/linux/x86-2.6/image/Makefile
+===================================================================
+--- target/linux/x86-2.6/image/Makefile	(revision 6550)
++++ target/linux/x86-2.6/image/Makefile	(working copy)
+@@ -84,6 +84,10 @@
+ 	$(call Image/Build/grub,$(1))
+ 	$(CP) $(KDIR)/root.$(1) $(BIN_DIR)/openwrt-$(BOARD)-$(KERNEL)-$(1).fs
+ 	$(CP) $(KDIR)/bzImage $(BIN_DIR)/openwrt-$(BOARD)-$(KERNEL)-vmlinuz
++
++	# create .vmdk image for vmware
++	qemu-img convert -f raw $(BIN_DIR)/openwrt-$(BOARD)-$(KERNEL)-$(1).image \
++		-O vmdk $(BIN_DIR)/openwrt-$(BOARD)-$(KERNEL)-$(1).vmdk
+ endef
+ 
+ $(eval $(call BuildImage))
+Index: target/linux/x86-2.6/Makefile
+===================================================================
+--- target/linux/x86-2.6/Makefile	(revision 6550)
++++ target/linux/x86-2.6/Makefile	(working copy)
+@@ -11,11 +11,34 @@
+ BOARDNAME:=x86
+ FEATURES:=squashfs jffs2 ext2
+ 
++define Target/Description
++	Build images for X86 architecture.
++	E. g. for Soekris net4801 or VMware image
++endef
++
+ include $(INCLUDE_DIR)/kernel-build.mk
+ DEFAULT_PACKAGES += kmod-natsemi kmod-ne2k-pci
+ 
++define Profile/net4801
++  NAME:=Soekris net4801 and compatible routers
++  PACKAGES:=kmod-natsemi
++endef
++$(eval $(call Profile,net4801))
++
++define Profile/vmware
++  NAME:=VMware image
++  PACKAGES:=kmod-e1000
++endef
++
++define Profile/vmware/Description
++	Creates VMDK images for use with VMware and VMware Player.
++	
++	Download the free VMware Player from http://http://www.vmware.com/
++	Create your own VMX configuration file at http://www.easyvmx.com/
++endef
++$(eval $(call Profile,vmware))
++
+ # include the profiles
+ -include profiles/*.mk
+ 
+ $(eval $(call BuildKernel))
+-

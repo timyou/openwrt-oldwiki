@@ -1,0 +1,11 @@
+1198987326000000	00000001	SAVENEW	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	24.175.86.179	cpe-24-175-86-179.tx.res.rr.com	1198967445.6.48072		
+1198987428000000	00000002	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	24.175.86.179	cpe-24-175-86-179.tx.res.rr.com	1198967445.6.48072		typo fix
+1198995163000000	00000003	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	24.175.86.179	cpe-24-175-86-179.tx.res.rr.com	1198967445.6.48072		Comment out https forwarding
+1198995886000000	00000004	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	24.175.86.179	cpe-24-175-86-179.tx.res.rr.com	1198967445.6.48072		Added example WWW_IP to /etc/shorewall/parms
+1199072234000000	00000005	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	24.175.86.179	cpe-24-175-86-179.tx.res.rr.com	1198967445.6.48072		Added advanced Shorewall configuration notes
+1201665769000000	00000006	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	203.184.31.228	203-184-31-228.callplus.net.nz	1183353777.75.64932		
+1201665880000000	00000007	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	203.184.31.228	203-184-31-228.callplus.net.nz	1183353777.75.64932		
+1201665970085102	99999999	ATTNEW	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	203.184.31.228	203-184-31-228.callplus.net.nz	1183353777.75.64932	firewall	
+1201666272000000	00000008	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	203.184.31.228	203-184-31-228.callplus.net.nz	1183353777.75.64932		
+1201668149000000	00000009	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	203.184.31.228	203-184-31-228.callplus.net.nz	1183353777.75.64932		
+1220392299000000	00000010	SAVE	OpenWrtDocs(2f)KamikazeConfiguration(2f)NonBridgedWiFi	91.66.134.172	91-66-134-172-dynip.superkabel.de	1219318099.12.35091		

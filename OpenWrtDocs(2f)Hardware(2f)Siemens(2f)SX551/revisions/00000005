@@ -1,0 +1,181 @@
+= Table of Contents =
+
+[[TableOfContents(2)]]
+
+= Siemens Gigaset SX551 =
+
+The Siemens Gigaset SX551 is an WLAN DSL Router. This device is also distibuted with a modified firmware by the Dutch provider KPN as the first generation Experia box (silver version). This is the version I (SA007) have.
+
+= Basic hardware info =
+The device has the following connectors on the rear (left to right).
+ * Auxiliary antenna.
+ * Telephone 1 connector (POTS).
+ * Telephone 2 connector (POTS).
+ * Line connector (Fallback).
+ * ADSL input connector.
+ * 4 numbered RJ45 10/100 MBit connectors.
+ * One USB 2.0 Port (2nd can be added with soldering).
+ *  Reset button.
+ * Large On/Off button.
+ * Power connector (12V 1.2A).
+ * Main antenna.
+
+It supports ADSL/ADSL2/ADSL2+ connections, WEP/WPA.
+Standard the USB port can be used for a fileserver (FAT only) or a very small number of printers.
+
+= Opening the casing =
+First remove the 4 screws on the bottom site (inside the U shaped anti-skid pads).
+Around the device there are 5 clips, to click them open you must pull the underside outward.
+The clips are:
+ * Rear.
+  * Above the reset button.
+ * Sides.
+  * Centered.
+ * Front.
+  * Around OK LED.
+  * Around Tel1 LED.
+
+= Extended hardware information =
+== Main processor ==
+The main processor is an [http://www.ti.com Texas Instruments] [http://focus.ti.com.cn/pdfs/bcg/ar7wi_fact_sheet.pdf TNETD7300AZDW] Processor, covered by a soldered in place cooler, an AR7 that should work with the [:AR7Port] of openWRT (yet untested).
+
+== Memory ==
+Onboard is a [http://www.psc.com.tw/english/index.jsp PSC] [http://www.zentel.com.tw/datasheet/256SD(3)PSC_V14-1.pdf A2V46S40BTP] 256Mbit (32MiB) SDRAM Memory chip.
+
+== Flash ==
+The flash chip is an [http://www.excelsemi.com/ Excelsemi] [http://www.excelsemi.com/newsub_2_2.htm ES29LV160DB-70RTG] 16Mbit (2MiB) 3.0V Flash memory, hopefully this is enough for OpenWRT.
+
+== USB 2.0 Controller ==
+The device probably will not have any USB problems since the USB controller is a seperate chip.
+The controller is a [http://www.via.com.tw/ VIA] [http://www.via.com.tw/en/products/peripherals/usb/vt6212l/ VT6212L]. A 4-port USB 2.0 Host controller.
+Unfortunatly only one port is external by default, but this can be expanded to 2 ports by adding some components and a larger connector, as soon as this works it will be posted here.
+
+== VoIP Controller ==
+VoIP is done by a VoicePump VP101X12DQC Chip (located at the bottom side of the PCB). This chip is not yet supported.
+An [http://www.legerity.com/ LegerIty] [http://www.legerity.com/products.php?cid=&sid=13&bpid=46 Le9502BTC] Provides a ringing interface circuit.
+Some other inferfacing is done by a [http://www.clare.com/Products/LITELINK.htm LiteLink] [http://www.clare.com/Products/LITELINK.htm CPC5621A] Phone Line Interface IC
+Both seem to connect to the VoicePump.
+
+== Switch chip ==
+The internal switch is a [http://www.marvell.com/ Marvell] [http://www.marvell.com/products/switching/linkstreet/LinkStreet_88E6060.pdf 88E6060-RCJ1] 6-port (4 external, 1 to the router itself, 1 unused) 10/100 switch with autosensing.
+
+== Wireless card ==
+Chipset yet unknown (hidden under a soldered on metal casing). It is an mini-pci wlan card with 2 antenna's. 
+
+== Hardware with unknown function ==
+[http://www.ti.com/ Texas Instruments] TNETV100PZ, probably some sort of companion chip of the AR7.
+
+= Pinouts =
+I'm still figuring out pinouts. Most headers are useless and only used to glue the wireless wires to.
+
+Userless headers:
+ * P1 - Next to the wlan card.
+ * P2 - At the far side of the wlan card.
+ * P3 - At an slight angle nest to the 4-port RJ45 block.
+ * P4 - In the corner of the auxilery antenna.
+ * P5 - Between the USB 2.0 controller and the main processor.
+
+JP4 - 4 Pin, directly connects to the Line port on the rear of the modem.
+J4 - 10 Pin. Probably jtag and/or serial.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. TXD.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Gnd.
+ 1. +3.3V.
+
+= Original bootlog =
+{{{
+===========================================================
+ TI ADSL AR7300 Loader 0.71.4 build Oct 18 2005 11:13:40
+                 Broad Net Technology, INC.
+===========================================================
+ESS ES29LV160D bottom boot 16-bit mode found
+
+Copying boot params.....DONE
+
+Flash Checking  Passed.
+
+Unzipping  web at 0x94f30000 ... [LZMA] done
+Unzipping code at 0x94000000 ... [LZMA] done
+}}}
+That really is all...
+
+There is a debug console which can be reached by pressing the reset when you start de device and then pressing the reset three times after that.
+(tnx equinoxe for that tip)
+
+Then the outup becomes:
+{{{
+===========================================================
+ TI ADSL AR7300 Loader 0.71.4 build Oct 18 2005 11:13:40
+                 Broad Net Technology, INC.
+===========================================================
+ESS ES29LV160D bottom boot 16-bit mode found
+
+Copying boot params.....DONE
+Reset button was pressed
+Click 1...
+Click 2...
+Click 3...
+
+Activating recovery tool...
+
+Unzipping  web at 0x94f30000 ... [ZIP] done
+Unzipping code at 0x94000000 ... [ZIP] done
+Boot ETCPIP running ...
+
+In C_Entry() function ...
+install_exception 
+sys_irq_init 
+system startup...
+tcpip_startup...
+ESS ES29LV160D bottom boot 16-bit mode found
+pBootParams=B01F0000
+Set flash memory layout to BPARAMS+RECOVER_KERNEL
+Bootcode version: 0.71.4
+Serial number: J622411250
+Hardware version: 01
+!!No configuration file present!!
+default route: 0.0.0.0
+BufferInit:
+BUF_HDR_SZ=16 BUF_ALIGN_SZ=0 BUFFER_OFFSET=80
+BUF_BUFSZ0=384 BUF_BUFSZ1=1632
+NUM_OF_B0=500 NUM_OF_B1=500
+BUF_POOL0_SZ=200000 BUF_POOL1_SZ=824000
+Buf0_Block b4330bc0  Buf1_Block b42678f0
+BUF0[0]=0xb4330bc0 BUF1[0]=0xb42678f0
+
+buffer0 pointer init OK!
+buffer1 pointer init OK!
+init_if() ; gConfig.Interface[0].Link_Type is [4]
+Interface 0 ip = 127.0.0.1
+
+init_if() ; gConfig.Interface[1].Link_Type is [1]
+MAC Address: 00:01:e3:da:90:69
+MAC1 [RX=128 TX=1]: TI External PHY
+Interface 1 ip = 192.168.2.1
+
+init_if() ; gConfig.Interface[2].Link_Type is [0]
+RUNTASK id=1 if_task if0...
+RUNTASK id=2 if_task if1...
+RUNTASK id=3 timer_task...
+RUNTASK id=4 period_task...
+RUNTASK id=5 dhcp_daemon...
+RUNTASK httpd...
+RUNTASK id=8 dhcpd_mgmt_task...
+Starting Multitask...
+MTstart2() begin  ...
+period_task running!!!
+httpd: listen at 192.168.2.1:80
+dhcpd_mgmt_task started...
+period_task running 60
+}}}
+
+= OpenWRT status =
+Untested
+
+CategoryModel ["CategoryAR7Device"]

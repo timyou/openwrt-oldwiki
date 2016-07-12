@@ -1,0 +1,33 @@
+'''Asus WL-520G'''
+
+The WL-520G is based on the Broadcom 5350 board. It has a 200MHz CPU, 2Mb flash and 8Mb RAM. The wireless NIC is integrated. In china, it's also marketed as "Asus WL-500G-X".
+
+
+Jek(YauhenKharuzhy): "I probed OpenWrt 'micro broadcom squashfs' WhiteRussian image with WL520g. Out of box it doesn't works. Sometimes it replies on ping requests (1 of 10 pings), and this is all."
+
+Kire: The kernel actually starts. The init_d scripts stop because of a "data bus error", when it runs "ifconfig eth0 up". Apart from the ethernet stuff, which is somewhat important for a router, everything works on the serial console.
+Just a few lines for information, stripped from the Asus firmware log.
+
+
+{{{
+CPU: BCM5350 rev 0 at 200 MHz
+Calibrating delay loop... 199.47 BogoMIPS
+Memory: 6388k/8192k available (1287k kernel code, 1804k reserved, 108k data, 64k init, 0k highmem)
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xb8000300 (irq = 2) is a 16550A
+ttyS01 at 0xb8000400 (irq = 0) is a 16550A
+Flash device: 0x200000 at 0x1c000000
+eth0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.90.23.0
+eth1: Broadcom BCM4320 802.11 Wireless Controller 3.90.23.0
+PCI devices found:
+    Class 0501: PCI device 14e4:0800 (rev 0).
+    Class 0200: PCI device 14e4:4713 (rev 0).
+    Class 1000: PCI device 14e4:4718 (rev 0).
+    Class 0c03: PCI device 14e4:4715 (rev 0).
+    Class 0b30: PCI device 14e4:0816 (rev 0).
+    Class 0500: PCI device 14e4:080f (rev 0).
+    Class 0280: PCI device 14e4:4320 (rev 0).
+    Class 0280: PCI device 14e4:4719 (rev 0).}}}
+
+----
+ . CategoryModel 

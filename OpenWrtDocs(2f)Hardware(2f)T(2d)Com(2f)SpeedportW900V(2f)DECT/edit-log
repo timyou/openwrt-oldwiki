@@ -1,0 +1,7 @@
+1235759887000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)T(2d)Com(2f)SpeedportW900V(2f)DECT	78.49.95.220	f049095220.adsl.alicedsl.de	1168469342.9.28610		started
+1235830085000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)T(2d)Com(2f)SpeedportW900V(2f)DECT	78.49.125.88	f049125088.adsl.alicedsl.de	1168469342.9.28610		added IC list, started pin table
+1235831016000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)T(2d)Com(2f)SpeedportW900V(2f)DECT	78.49.125.88	f049125088.adsl.alicedsl.de	1168469342.9.28610		more pins, NOR flash added
+1235832096000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)T(2d)Com(2f)SpeedportW900V(2f)DECT	78.49.125.88	f049125088.adsl.alicedsl.de	1168469342.9.28610		more pins
+1235832514000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)T(2d)Com(2f)SpeedportW900V(2f)DECT	78.49.125.88	f049125088.adsl.alicedsl.de	1168469342.9.28610		even more pins
+1235855938000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)T(2d)Com(2f)SpeedportW900V(2f)DECT	78.51.79.255	f051079255.adsl.alicedsl.de	1168469342.9.28610		added Vcc of components
+1236336144000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)T(2d)Com(2f)SpeedportW900V(2f)DECT	78.48.215.130	f048215130.adsl.alicedsl.de	1168469342.9.28610		testpin 4 isn't connected to pin 51

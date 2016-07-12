@@ -1,0 +1,129 @@
+##language:en
+== Overview ==
+
+A lot of information is being discussed, and development is taking place, on the Belkin F5D7230-4.  There is interest in having an open firmware running on this platform.  As OpenWRT is the starting point for most new Broadcom customers, and as OpenWRT's FAQ links to this page, hopefully, information can be provided here to those who have purchased Belkin's as well as those wanting to contribute to opening this platform.
+ 
+
+
+== Links ==
+
+There are a number of public forums and web sites where the installation of open source firmware for the Belkin F5D7230-4 is being discussed and published.
+
+
+=== Forums ===
+
+ 1. http://www.seattlewireless.net/index.cgi/Belkin_20F5D7230_2d4 :: Seattle Wireless "Belkin F5D7230-4"
+ 2. http://www.broadbandreports.com/forum/remark,10837191~mode=flat~days=9999 :: Broad Band Reports "Belkin Firmware Image Header"
+ 3. http://www.openwrt.org/forum/viewtopic.php?t=546 :: OpenWRT "General Discussion"
+ 4. http://www.chupa.nl/forum/showthread.php?t=601 :: Chupa Forum
+
+=== Development Pages ===
+
+ 1. http://www.efn.org/~rick/work/f5d7230/ :: Rick Bronson's "Hacking the Belkin F5D7230-4 Version 1444 router"
+ 
+
+=== Serial Pages ===
+
+ 1. http://www.rwhitby.net/wrt54gs/serial.html :: Rod Whitby's "Linksys WRT54G / WRT54GS Dual Serial Port Mod"
+ 2. http://melbourne.wireless.vic.asn.au/wiki/?minitar :: Melbourne Wireless - Old Site
+ 3. http://www.compsys1.com/workbench/On_top_of_the_Bench/Max233_Adapter/max233_adapter.html :: Comp Sys MAX232 Adapters
+ 4. http://www.theforestnetworking.com/sveasoft/serial.php :: WRT54G & WRT54GS Serial Adaptor
+
+
+=== Hardware Pages ===
+
+ 1. http://www.broadcom.com/products/product.php?product_id=BCM94712&category_id= :: Broadcom Corporation &#8211; BM94712 &#8211; 802.11b/54g&#8482; Integrated Wireless AP/Router Reference Design
+ 2. http://www.wi-fiplanet.com/news/article.php/2238881 :: Broadcom Intros New Integrated 11g Processor
+ 3. http://rage.against.org/LinksysWRT54G :: Moi Meme - LinksysWRT54G
+ 
+
+=== Software Pages ===
+
+ 1. http://web.belkin.com/support/gpl.asp :: Belkin GPL Code
+ 2. http://www.linksys.com/support/gpl.asp :: Linksys GPL Code
+ 3. http://belkin.com/support/download/download.asp?download=F5D7230-4 :: Belkin Firmware
+
+
+== Documentation ==
+
+
+A good deal of documentation has been published in the public domain, regarding the Belkin F5D7230-4.  Most of this has been in the forums (above), but some has been collated in the documents below.
+
+If you have done something that you think might help someone else, write it up and post a link here!
+
+
+
+=== Understanding the Belkin extended firmware for OpenWRT development ===
+
+{{{
+    In this paper the Belkin F5D7230-4 is explored for
+    its availability as a fully integrated wireless 
+    firewall router and VPN end-point. This work must 
+    be done in order to achieve a best-practice 
+    security solution in the Small Office / Home Office
+    (SOHO) price-point. Where, while almost all of the
+    casual risks are equivalent to those experienced 
+    by large enterprise, no mitigation technologies 
+    are available at an appropriate cost. By collating
+    a mass of publicly available information, the paper
+    concludes by providing a root shell into the 
+    device, and a number of Linux-based reports on the 
+    hardware make-up of the router. It is hoped that
+    this information can be used to adapt the OpenWRT 
+    embedded Linux distribution, for this Belkin router.
+}}}
+
+
+Document URL;
+  http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4.pdf
+
+
+
+
+=== Attaining console access via the native Belkin serial port for OpenWRT development ===
+
+{{{
+    By collating a mass of publicly available
+    information, and experimenting with a single unit,
+    the paper concludes by providing a physical 
+    console into the device, providing local root user
+    level access, and a schematic diagram for a solder-
+    less project that will allow individuals to try
+    this experiment for themselves. It is hoped that 
+    this information can be used to debug open source 
+    firmware and to then adapt the OpenWRT, and 
+    Sveasoft, embedded Linux distributions for this 
+    Belkin router. 
+}}}
+
+
+Document URL;
+  http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4%20-%20Serial%20Console.pdf
+
+
+
+=== Compiling and Installing the GPL Broadcom Reference Firmware ===
+
+{{{
+    Belkin published the Broadcom reference firmware; 
+    a small Linux distribution, designed to act as a  
+    proof-of-concept and development environment for  
+    the Belkin engineers. To minimize the amount of  
+    experimentation required to adapt the OpenWRT and 
+    Sveasoft firmware for use on the Belkin, the  
+    published Broadcom reference firmware was compiled 
+    to see if it was functional, and able to provide  
+    driver and configuration information for the open 
+    source distributions. 
+    ... 
+    Furthermore, this process was developed rapidly 
+    due to the excellent work performed by Rick 
+    Bronson. 
+}}}
+
+
+Document URL;
+  http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4%20%20-%20Broadcom%20Firmware.pdf
+
+
+

@@ -1,0 +1,28 @@
+
+= Linksys WAG200G =
+The Linksys WAG200G, and its EU variant (WAG200G-EU), is an ADSL 2+ home gateway which integrates a 4 port switch and an 802.11G wireless  acccess point.
+== Specifications ==
+ * ADSL 1/2/2+ support (up to 24Mbps)
+ * 4 10/100 Ethernet port switch
+ * IEEE 802.11b/g compliant
+== Hardware ==
+The router is based on the Texas Instruments AR7 platform (AR7WRD) which features an integrated MIPS(TM)-based 32-bit RISC core, a digital signal processor-based trans-
+ceiver and an ADSL analog front end (AFE).
+
+|| Hardware components ||
+|| SoC ||<style="text-align: center;"> TI AR7 TNETD7200ZDW ||
+|| CPU ||<style="text-align: center;"> MIPS-32 RISC core (MIPS 4KEc V4.8 @ 211MHz)||
+|| SDRAM || Mira P2V28S40BTP - 16MB (28Mx8bit words)||
+|| Flash || MXIC 29LV320MBTC - 4MB (4Mx8 single voltage 3V only) ||
+|| LAN MAC/PHY Switch ||<style="text-align: center;"> Marvell 88E6060-RCJ 6-Port Fast Ethernet Switch ||
+|| WLAN MAC & Baseband ||<style="text-align: center;"> TI TNETW1350A ||
+|| RF Frontend || Probably TNETW3428 & TNETW3422 ||
+
+=== Serial Console ===
+=== JTAG ===
+=== Software ===
+== ADAM2 ==
+== Installing OpenWRT ==
+=== MTD Layout ===
+= Link =
+Here you can find most of the hardware and software details of the WAG200G-EU: http://woytekm.googlepages.com/linksyswag200g-eu

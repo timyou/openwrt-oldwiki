@@ -1,0 +1,430 @@
+#pragma section-numbers off
+[[TableOfContents]]
+= Addon-Tech ARM8100 =
+The [http://www.addon-tech.com AddonTech] [http://www.addon-tech.com/arm8100.html ARM8100]
+is a TI AR7-based device. Thus ["AR7Port"] is compatible with these devices.
+
+The Netcomm NB5Plus4 router appears to run very similar firmware,  there appear to be many Austrailian Netcomm customers with the NB5Plus4 hardware.
+
+Older versions of the NB5Plus4 router have the same web interface as the ARM8100 router owned by Hydra which has software versions as follows:
+
+{{{
+Gateway T340A.041109a1_03
+ATM Driver 4.02.04.00
+DSL HAL 3.00.06.00
+DSL Datapump 3.00.06.00
+PDSP Firmware 0.49
+Boot Loader 0.22.03
+}}}
+
+The Addon-Tech ARM8100 has an ADAM2 bootloader, (see below for logs, etc) which can be used to flash the onboard flash ram and perform other tasks.  For a great introduction and overview of ADAM2 read [http://www.seattlewireless.net/ADAM2 this page]
+
+== Hardware Info ==
+
+Uses TI AR7 chipset, no-onboard wireless lan, however there is space on the pcb for a mini-pci socket.
+
+8MB Ram, 2Mb Flash, 4x 10/100 RJ45 Ports, ADSL2 RJ45 connector, Reset button, 7 led's, serial and jtag ports - with pin headers! Requires 12v PSU.  Serial port has 3.3v output too which has no problems powering a MAX 3222 chip.
+
+== Original Firmware Info ==
+
+The original firmware on these devices has trouble keeping track of lots of connections, for example if you use something like The All Seeing Eye to ping a bunch of game servers eventually you won't be able to make any more new connections, existing tcp connections continue to function.  After a while it goes back to normal.  The DNS server actually stops working completly when this happens however.
+
+Additionally XBox Live reports the router as having "Moderate" NAT which means it's not very good for use with XBox Live.
+
+uPnP support appears to be non functional.  Enabling it doesn't do anything, it looks like libpthread is missing (attemping to manually start it results in an error message)
+
+== Backing up original firmware ==
+
+You can telnet to the device, login as "root" with whatever passyou use used for the admin interface, or use the console via the serial port.
+
+You can then dump each mtd block to a file and download them via a web browser pointed to the router at port 1080 using the example below.
+
+{{{
+dd if=/dev/mtdblock/0 of=/var/tmp/mtd0-squashfs.bin
+dd if=/dev/mtdblock/1 of=/var/tmp/mtd1-kernel.bin
+dd if=/dev/mtdblock/2 of=/var/tmp/mtd2-adam2.bin
+dd if=/dev/mtdblock/3 of=/var/tmp/mtd3-adam2-nvram.bin
+
+/usr/sbin/thttpd -g -d /var -u root -p 1080
+}}}
+
+You'll probably have to do mtd0 seperately as there's not enough free ram to dump them all and download them at the same time.  I (Hydra) actually had to kill the admin web server and a couple of other running programs before there was enough free ram to allow thttp to open the file and transfer it after mtd0.bin had been created!
+
+== Output from various commands on the original firmware ==
+
+{{{
+# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 149.91
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00160000 00010000 "mtd0"
+mtd1: 00080000 00010000 "mtd1"
+mtd2: 00010000 00008000 "mtd2"
+mtd3: 00010000 00010000 "mtd3"
+
+# cat /proc/ticfg/env
+memsize 0x00800000
+mtd2    0x90000000,0x90010000
+mtd1    0x90010000,0x90090000
+mtd0    0x90090000,0x901f0000
+mtd3    0x901f0000,0x90200000
+my_ipaddress    192.168.100.1
+maca    00:30:54:40:14:54
+macc    00:30:54:40:14:55
+usb_rndis_mac   00:30:54:40:14:56
+autoload        1
+autoload_timeout        5
+flashsize       0x00200000
+modetty0        38400,n,8,1,hw
+modetty1        38400,n,8,1,hw
+bootserport     tty0
+cpufrequency    150000000
+sysfrequency    125000000
+bootloaderVersion       0.22.03
+ProductID       AR7RD
+HWRevision      Unknown
+SerialNumber    none
+prompt  Adam2_AR7RD
+firstfreeaddress        0x9401d328
+req_fullrate_freq       125000000
+
+# cat /proc/version
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc ve
+rsion 2.95.3 20010315 (release/MontaVista)) #1 Tue Nov 9 17:49:34 CST 2004
+
+# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:   6557696  6008832   548864        0   856064  1363968
+Swap:        0        0        0
+MemTotal:         6404 kB
+MemFree:           536 kB
+MemShared:           0 kB
+Buffers:           836 kB
+Cached:           1332 kB
+SwapCached:          0 kB
+Active:           2468 kB
+Inactive:          956 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:         6404 kB
+LowFree:           536 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+
+# cat /proc/kmsg
+STATE =  3
+<4>USB: Entering USB_init_module.
+<4>USB: Error getting mac from Adam enviroment for usbrndis
+<4>USB: Using default mac address: 00.E0.A6.66.41.EB
+<4>USB: Use Adam2 command:
+<4>USB:     setenv usb_board_mac xx.xx.xx.xx.xx.xx
+<4>USB: to set mac address
+<4>vid = 0x451
+<4>pid = 0x6060
+<4>No Serial Number String present.
+<4>man = Texas Instruments
+<4>prod = TI RNDIS Network Adapter
+<4>USB: Entering USB_Init.
+<4>USB: Leaving USB_Init.
+<4>USB: Leaving USB_init_module.
+<4>registered device TI Avalanche SAR
+<4>Initializing DSL interface
+<4>size=10120
+<4>size=38720
+<4>size=46304
+<4>size=45312
+<4>Texas Instruments ATM driver: version:[4.02.04.00]
+<6>device eth0 entered promiscuous mode
+<6>br0: port 1(eth0) entering learning state
+<6>device usbrndis entered promiscuous mode
+<6>br0: port 2(usbrndis) entering learning state
+<6>br0: port 1(eth0) entering forwarding state
+<6>br0: topology change detected, propagating
+<6>br0: port 2(usbrndis) entering forwarding state
+<6>br0: topology change detected, propagating
+
+# cat /proc/iomem
+00000000-13ffffff : reserved
+14000000-1401ffff : System RAM
+14020000-147fffff : System RAM
+  14020000-14188f5f : Kernel code
+  14199300-141b6fff : Kernel data
+a8612800-a8612fff : eth0
+
+# cat /proc/modules
+tiatm                 121536   0 (unused)
+avalanche_usb          50984   1
+
+# cat /proc/avalanche/cpmac_ver
+Texas Instruments CPMAC driver version: 1.2
+
+}}}
+
+== Output from various ADAM2 commands on original firmware ==
+{{{
+
+Adam2_AR7RD > printenv
+memsize               0x00800000
+mtd2                  0x90000000,0x90010000
+mtd1                  0x90010000,0x90090000
+mtd0                  0x90090000,0x901f0000
+mtd3                  0x901f0000,0x90200000
+my_ipaddress          192.168.100.1
+maca                  00:30:54:40:14:54
+macc                  00:30:54:40:14:55
+usb_rndis_mac         00:30:54:40:14:56
+autoload              1
+autoload_timeout      5
+flashsize             0x00200000
+modetty0              38400,n,8,1,hw
+modetty1              38400,n,8,1,hw
+bootserport           tty0
+cpufrequency          150000000
+sysfrequency          125000000
+bootloaderVersion     0.22.03
+ProductID             AR7RD
+HWRevision            Unknown
+SerialNumber          none
+prompt                Adam2_AR7RD
+firstfreeaddress      0x9401d328
+req_fullrate_freq     125000000
+
+Adam2_AR7RD > info
+Monitor Revision              0.22.03
+Monitor Compilation time      Aug 18 2004, 10:39:16
+Endianness                    Little
+External Memory rate          Full, 16 bit wide
+CPU Frequency                 150 MHz
+
+}}}
+
+== Flash Map ==
+
+||'''partition'''||'''start'''||'''end'''||'''size'''||'''description'''||
+||mtd0||`0x90090000`||`0x901f0000`||`0x160000`||squashfs||
+||mtd1||`0x90010000`||`0x90090000`||`0x080000`||kernel||
+||mtd2||`0x90000000`||`0x90010000`||`0x010000`||ADAM2||
+||mtd3||`0x901f0000`||`0x90200000`||`0x010000`||ADAM2 environment variables||
+
+Physical order of partitions on flash chip is:
+
+mtd2,mtd1,mtd0,mtd3
+
+== Installing OpenWrt ==
+
+In progress
+
+== Restoring Original Firmware ==
+
+To follow
+
+== Serial Port ==
+
+Here's the general location of the serial port.
+
+{{{
+FLASH  RAM SoC           |
+                         |
+             1 2 3 4     |
+               JP900     |
+_________________________|
+
+       V T R G
+       C X X N
+       C     D
+}}}
+
+The serial port uses CMOS 3.3v levels.  I used a [http://www.maxim-ic.com/quick_view2.cfm/qv_pk/1068 Max 3222] chip which converts 
+
+Here's a schematic of the circuit i used.
+
+http://www.hydraservices.com/files/addontecharm8100/router-serial-cable.png
+
+=== Photos ===
+http://www.hydraservices.com/files/addontecharm8100/pcb.jpg
+
+http://www.hydraservices.com/files/addontecharm8100/case.jpg
+
+=== Misc ===
+
+[http://www.hynix.com/datasheet/eng/dram/details/dram_01_HY57V641620HGT.jsp Spec of onboard RAM]
+
+[http://www.hynix.com/datasheet/pdf/dram/HY57V641620HG(L)T-xI(Rev1.0).pdf Datasheet for onboard RAM]
+
+=== Boot log from old firmware ===
+
+{{{
+ADAM2 Revision 0.22.03                      
+(C) Copyright 1996-2003 Texas Instruments Inc. All Rights Reserved.                                                                   
+(C) Copyright 2003 Telogy Networks, Inc.                                        
+Usage: setmfreq [-d] [-s sys_freq, in MHz] [cpu_freq, in MHz]                                                             
+Memory optimization Complete!                             
+
+Adam2_AR7RD >             
+Press any key to abort OS load, or wait 5 seconds for OS to boot...                                                                   
+Launching kernel decompressor.                              
+Starting LZMA Uncompression Algorithm.                                      
+Copyright (C) 2003 Texas Instruments Incorporated; Copyright (C) 1999-2003 Igor                                                                               
+Pavlov.       
+Compressed file is LZMA format.                               
+Kernel decompressor was successful ... launching kernel.                                                        
+
+LINUX started...                
+Config serial console: ttyS0,38400                                  
+CPU revision is: 00018448                         
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)                                                          
+Primary data cache 16kb, linesize 16 bytes (4 ways)                                                   
+Number of TLB entries 16.                         
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc ve                                                                                
+rsion 2.95.3 20010315 (release/MontaVista)) #1 Tue Nov 9 17:49:34 CST 2004                                                                          
+Determined physical RAM map:                            
+ memory: 14000000 @ 00000000 (reserved)                                       
+ memory: 00020000 @                    
+ memory: 007e0000 @ 14020000 (usable)                                     
+On node 0 totalpages: 2048                          
+zone(0): 2048 pages.                    
+zone(1): 0 pages.                 
+zone(2): 0 pages.                 
+Kernel command line:                    
+the pacing pre-scalar has been set as 600.                                          
+calculating r4koff... 000b71b0(750000)                                      
+CPU frequency 150.00 MHz                        
+Calibrating delay loop... 149.91 BogoMIPS                                         
+Freeing Adam2 reserved memory [0x14001000,0x0001f000]                                                     
+Memory: 6344k/8192k available (1443k kernel code, 1848k reserved, 119k data, 60k                                                                                
+ init)      
+Dentry-cache hash table entries: 1024 (order: 1, 8192 bytes)                                                            
+Inode-cache hash table entries: 512 (order: 0, 4096 bytes)                                                          
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)                                                          
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)                                                            
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)                                                          
+Checking for 'wait' instruction...  unavailable.                                                
+POSIX conformance testing by UNIFIX                                   
+Linux NET4.0 for Linux 2.4                          
+Based upon Swansea University Computer Society NET3.039                                                       
+Initializing RT netlink socket                              
+Starting kswapd               
+Disabling the Out Of Memory Killer                                  
+devfs: v1.7 (20011216) Richard Gooch (rgooch@atnf.csiro.au)                                                           
+devfs: boot_options: 0x1                        
+pty: 32 Unix98 ptys configured                              
+Serial driver version 5.05c (2001-07-08) with no serial options enabled                                                                       
+ttyS00 at 0xa8610e00 (irq = 15) is a 16550A                                           
+ttyS01 at 0xa8610f00 (irq = 16) is a 16550A                                           
+block: 64 slots per queue, batch=16                                   
+PPP generic driver version 2.4.1                                
+avalanche flash device: 0x400000 at 0x10000000.                                               
+Physically mapped flash: Found 1 x16 devices at 0x200000 in 16-bit mode                                                                       
+ Amd/Fujitsu Extended Query Table v1.0 at 0x0040                                                
+number of CFI chips: 2                      
+Looking for mtd device :mtd0:                             
+Found a mtd0 image (0x90000), with size (0x160000).                                                   
+Looking for mtd device :mtd1:                             
+Found a mtd1 image (0x10000), with size (0x80000).                                                  
+Looking for mtd device :mtd2:                             
+Found a mtd2 image (0x0), with size (0x10000).                                              
+Looking for mtd device :mtd3:                             
+Found a mtd3 image (0x1f0000), with size (0x10000).                                                   
+Looking for mtd device :mtd4:                             
+Creating 4 MTD partitions on "Physically mapped flash":                                                       
+0x00090000-0x001f0000 : "mtd0"                              
+0x00010000-0x00090000 : "mtd1"                              
+0x00000000-0x00010000 : "m                        
+0x001f0000-0x00200000 : "mtd3"                              
+NET4: Linux TCP/IP 1.0 for NET4.0                                 
+IP Protocols: ICMP, UDP, TCP, IGMP                                  
+IP: routing cache hash table of 512 buckets, 4Kbytes                                                    
+TCP: Hash tables configured (established 512 bind 512)                                                      
+Linux IP multicast router 0.06 plus PIM-SM                                          
+ip_conntrack version 2.0 (64 buckets, 512 max) - 364 bytes per conntrack                                                                        
+ip_tables: (c)2000 Netfilter core team                                      
+netfilter PSD loaded - (c) astaro AG                                    
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.                                                   
+NET4: Ethernet Bridge 008 for NET4.0                                    
+VFS: Mounted root (squashfs f                           
+Mounted devfs on /dev                     
+Freeing unused kernel memory: 60k freed                                       
+serial console detected.  Disabling virtual terminals.                                                      
+console=/dev/tts/0                  
+init started:  BusyBox v0.61.pre (2004.11.09-09:44+0000) multi-call binary                                                                          
+Starting pid 9, console /dev/tts/0: '/etc/init.d/rcS'                                                     
+ Standard Configuration File                            
+proc write:Calling Configuration                                
+Number of State module =  1                           
+STATE =  1          
+STATE =  2          
+STATE =  3          
+module =  2           
+STATE =  1          
+STATE =  2          
+module =  3           
+STATE =  1          
+STATE =  2          
+STATE =  3          
+module =  5           
+STATE =  1          
+STATE =  2          
+STATE =  3          
+module =  6           
+STATE =  1          
+STATE =  2          
+STATE =  3          
+Elements = 14             
+Total Length = 116                  
+Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/drivers/net/avalanche_us                                                                                
+b.o   
+USB: Entering USB_init_module.                              
+USB: Error getting mac from Adam enviroment for usbrndis                                                        
+USB: Using default mac address: 00.E0.A6.66.41.EB                                                 
+USB: Use Adam2 command:                       
+USB:     setenv usb_board_mac xx.xx.xx.xx.xx.xx                                               
+USB: to set mac address                       
+vid = 0x451           
+pid = 0x6060            
+No Serial Number String present.                                
+man = Texas Instruments                       
+prod = TI RNDIS Network Adapter                               
+USB: Entering USB_Init                     
+USB: Leaving USB_Init.                      
+USB: Leaving USB_init_module.                             
+Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/drivers/atm/tiatm.o                                                                           
+registered device TI Avalanche SAR                                  
+Initializing DSL interface                          
+size=10120          
+size=38720
+size=46304
+size=45312
+Texas Instruments ATM driver: version:[4.02.04.00]
+Waiting for enter to start '/bin/sh' (pid 34, terminal /dev/tts/0)
+
+Please press Enter to activate this console. Sep  8 12:00:06 cm_monitor: Monitor
+ Starting
+Sep  8 12:00:07 cfgmgr(pppoa-102): Valid Configuration Tree
+SIOCGIFFLAGS: No such device
+Sep  8 12:00:07 cfgmgr(fdb): Firewall NAT service started
+Sep  8 12:00:07 cfgmgr(bridge): Bridge Created: br0
+device usbrndis entered promiscuous mode
+Sep  8 12:00:07 cfgmgr(bridge): Bridge Interface Added: usbrndis
+br0: port 1(usbrndis) entering learning state
+device eth0 entered promiscuous mode
+Sep  8 12:00:07 cfgmgr(bridge): Bridge Interface Added: eth0
+br0: port 2(eth0) entering learning state
+br0: port 1(usbrndis) entering forwarding state
+br0: topology change detected, propagating
+br0: port 2(eth0) entering forwarding state
+br0: topology change detected, propagating
+Sep  8 12:00:16 cfgmgr(sar): DSL Carrier is down
+}}}
+
+
+----
+CategoryModel ["CategoryAR7Device"]

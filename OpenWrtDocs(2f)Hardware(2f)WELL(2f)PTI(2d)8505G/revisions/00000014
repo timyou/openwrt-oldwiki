@@ -1,0 +1,575 @@
+#pragma section-numbers off
+[[TableOfContents]]
+
+= WELL PTI-8505G =
+Wireless ADSL2/2+ Router
+
+== Product info ==
+=== Hardware ===
+||'''CPU''' || AR7 @ 211 MHz || Texas Instruments TNETD7200ZDW ||
+||'''RAM''' || 16MB || MIRA p2v28s40ctp ||
+||'''FLASH''' || 4MB || MX29lv320cb17c ||
+||'''SWITCH''' || Realtek || RTL8305SC ||
+||'''Wi-Fi''' || Unknown || Mini-pci (WMTO371) ||
+=== Loader ===
+{{{
+PSPBoot1.4 rev: 1.4.0.4
+Compiled gcc rev: 2.95.3 20010315 (release/MontaVista) [Oct 12 2006 16:40:08]
+Built for AR7WRD board in Little Endian mode.
+}}}
+=== Memory ===
+||'''dev''' ||'''start''' ||'''end''' ||'''desc''' ||
+||mtd0 || 0x9009e000 || 0x90400000 || Filesystem ||
+||mtd1 || 0x90020090 || 0x9009e000 || Kernel ||
+||mtd2 || 0x90000000 || 0x90010000 || PSPBoot ||
+||mtd3 || 0x90010000 || 0x90020000 || variabiles ||
+||mtd4 || 0x90020090 || 0x90400000 || Kernel + Filesystem ||
+The last one you have to create in PSPBoot command line
+
+{{{
+(psbl) setenv mtd4 0x90020090,0x90400000
+}}}
+
+=== Board ===
+
+http://wiki.openwrt.org/OpenWrtDocs/Hardware/WELL/PTI-8505G?action=AttachFile&do=get&target=first.jpg
+
+http://wiki.openwrt.org/OpenWrtDocs/Hardware/WELL/PTI-8505G?action=AttachFile&do=get&target=second.jpg
+
+=== Serial console ===
+The serial port uses CMOS 3.3v levels. I used a Max 3222 chip which converts.
+
+{{{
+connectors
+ ANT PWR    SWITCH        ADSL
++-||-||--|--|--|--|--|-----|-|--+
+|                               |
+| P  SWITCH                     |
+| C           CPU               |
+| I                             |
+| p  R                          |
+| o  A         . 3.3V           |
+| r  M         . TX             |
+| t    FLASH   . RX             |
+|              . GND            |
+| o   o o o o     o   o   o     |
++-------------------------------+
+ PWR  SWITCH    WiFi ADSL PPP
+leds
+}}}
+== Original Firmware ==
+=== Backup original firmware ===
+'''Strongly recommend'''
+
+Use serial console or telnet access to backup original firmware. Original firmware have no dd so i used cat
+
+{{{
+# cat /dev/mtdblock/0 > /var/tmp/mtd0.bin
+# cat /dev/mtdblock/1 > /var/tmp/mtd1.bin
+# cat /dev/mtdblock/2 > /var/tmp/mtd2.bin
+# cat /dev/mtdblock/3 > /var/tmp/mtd3.bin
+# cat /dev/mtdblock/4 > /var/tmp/mtd4.bin
+# ps
+  PID  Uid     VmSize Stat Command
+    1 root       1548 S    init
+    2 root            S    [keventd]
+    3 root            S    [ksoftirqd_CPU0]
+    4 root            S    [kswapd]
+    5 root            S    [bdflush]
+    6 root            S    [kupdated]
+    7 root            S    [mtdblockd]
+   38 root       2176 S    /usr/bin/cm_pc
+   40 root       1560 S    -sh
+   41 root       4152 S    /usr/sbin/mini_httpd -d /usr/www -u root -p 80 -c /c
+   42 root       5200 S    /usr/bin/cm_logic -m /dev/ticfg -c /etc/config.xml
+   64 root        612 S    /usr/bin/cm_klogd /dev/klog
+   66 root        644 S    /sbin/dproxy -c /etc/resolv.conf -d
+  165 root        968 S    /usr/sbin/udhcpd /var/tmp/udhcpd.conf
+  174 root       1548 R    ps
+# kill 41
+# /usr/sbin/mini_httpd -d /var/tmp -u root -p 80
+}}}
+Then using internet browser download backup files
+
+=== Restore original firmware ===
+Only use mtd4.bin (kernel + FS).
+
+Atached serial cable is probably good idea, you can see the progress of flashing and posible errors.
+
+{{{
+horinek@eddy:~/Downloads$ ftp 10.0.0.2
+Connected to 10.0.0.2.
+220 ADAM2 FTP Server ready.
+Name (10.0.0.2:horinek): adam2
+331 Password required for adam2.
+Password: adam2
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+ftp> binary
+200 Type set to I.
+ftp> quote MEDIA FLSH
+200 Media set to FLSH.
+ftp> put mtd4.bin "a mtd4"
+local: mtd4.bin remote: a mtd4
+200 Port command successful.
+120 service ready in 32 seconds.
+150 Opening BINARY mode data connection for file transfer.
+4059136 bytes sent in 83.15 secs (47.7 kB/s)
+ftp> quote REBOOT
+226 Transfer complete.
+ftp> exit
+221-Thank you for using the FTP service on ADAM2.
+221 Goodbye.
+}}}
+
+=== Information ===
+{{{
+# cat /proc/cpuinfo
+
+processor		: 0
+
+cpu model		: MIPS 4KEc V4.8
+
+BogoMIPS		: 211.35
+
+wait instruction	: no
+
+microsecond timers	: yes
+
+extra interrupt vector	: yes
+
+hardware watchpoint	: yes
+
+VCED exceptions		: not available
+
+VCEI exceptions		: not available
+
+# cat /proc/mtd
+
+dev:    size   erasesize  name
+
+mtd0: 00362000 00010000 "mtd0"
+
+mtd1: 0007df70 00010000 "mtd1"
+
+mtd2: 00010000 00002000 "mtd2"
+
+mtd3: 00010000 00010000 "mtd3"
+
+mtd4: 003e0000 00010000 "mtd4"
+
+# cat /proc/ticfg/env
+
+mtd0	0x9009e000,0x90400000
+
+mtd1	0x90020090,0x9009e000
+
+mtd2	0x90000000,0x90010000
+
+mtd3	0x90010000,0x90020000
+mtd4	0x90020090,0x90400000
+
+IPA	10.0.0.2
+
+IPA_SVR	10.0.0.100
+
+vlynq_polarity	high
+
+BUILD_OPS	0x301
+
+bootloaderVersion	1.4.0.4
+
+MAC_PORT	0
+
+MEMSZ	0x01000000
+
+FLASHSZ	0x00400000
+
+MODETTY0	9600,n,8,1,hw
+
+MODETTY1	9600,n,8,1,hw
+
+CPUFREQ	211968000
+
+MIPSFREQ	211968000
+
+SYSFREQ	105984000
+
+PROMPT	(psbl)
+
+mtd4	0x90020000,0x90400000
+
+DSL_BIT_TMODE	1
+
+DSL_UPG_DONE	1
+
+eoc_vendor_revision	2006101200000000
+
+invntry_vernum	2006101200000000
+
+eoc_vendor_id	2E2E573834354749
+
+vcc_encaps0	0.0
+
+vcc_encaps1	0.0
+
+vcc_encaps2	0.0
+
+vcc_encaps3	0.0
+
+vcc_encaps4	0.0
+
+vcc_encaps5	0.0
+
+vcc_encaps6	0.0
+
+vcc_encaps7	0.0
+
+usb_vid	0x0451
+
+usb_pid	0x6060
+
+HWA_RNDIS	00:E0:A6:66:41:EB
+
+HWA_HRNDIS	00:E0:A6:66:41:E1
+
+BOOTCFG	m:f:"mtd1"
+
+WLAN_EEPROM0	021156041B06001200000601095612000000010D56A9000000026D54143B810E
+
+WLAN_EEPROM1	12000000013984000100000101854C1068900105850600100001298507000000
+
+WLAN_EEPROM2	01C1850000300001C585000000000111850000FFFF0115850000F0FF01A58500
+
+WLAN_EEPROM3	8000000109850000800201010C03000000012184000000800181851D00030001
+
+WLAN_EEPROM4	55090100000001E5580200000001F1580800000001D5581000000001B1580400
+
+WLAN_EEPROM5	0000000000000000000C00C300FE0008011401260144014D014F0165019F01AF
+
+WLAN_EEPROM6	01B70101390000110004010101000501060002010201021E000A000205020411
+
+WLAN_EEPROM7	2244030610203031324004095449204143583130300507544920546573740108
+
+WLAN_EEPROM8	1D1396D9ED5801F20502000037007000A600E2000404441010004510F403185A
+
+WLAN_EEPROM9	4000145A1800020E0801CD000A01A1025000BD0185095000EE000A0136035000
+
+WLAN_EEPROM10	B10185090107100000400000010000050400010100000000FFFFFFFFFDFDFDFD
+
+WLAN_EEPROM11	FBF4F4F4F40E0409090909090909090909090909090909090909090909090909
+
+WLAN_EEPROM12	090909090909090909090909090909090909090909090909090909090909090E
+
+WLAN_EEPROM13	0100000000000000000000000000000302A318A3180700012000000000000000
+
+WLAN_EEPROM14	00000000000000000000000000000000000000000000000000
+
+NVS_TFTP_LOAD	0
+
+connection0	0
+
+HWA_0	00:13:64:3D:CB:79
+
+HWA_3	00:13:64:3D:CB:7A
+
+eoc_vendor_serialnum	00:13:64:3D:CB:7A
+
+WLAN_HWADDR0	00:13:64:3D:CB:7B
+
+ProductID	Wireless ADSL2/2+ Router
+
+HWRevision	94211G
+
+SerialNumber	20070821
+
+DSL_FEATURE_CNTL_0	0x00080000
+
+DSL_PHY_CNTL_0	0x00000001
+
+connection1	0xc816
+
+
+
+sar_ipacemax	6
+
+# cat /proc/meminfo
+
+        total:    used:    free:  shared: buffers:  cached:
+
+Mem:  14688256 10973184  3715072        0  1376256  4907008
+
+Swap:        0        0        0
+
+MemTotal:        14344 kB
+
+MemFree:          3628 kB
+
+MemShared:           0 kB
+
+Buffers:          1344 kB
+
+Cached:           4792 kB
+
+SwapCached:          0 kB
+
+Active:           2312 kB
+
+Inactive:         5496 kB
+
+HighTotal:           0 kB
+
+HighFree:            0 kB
+
+LowTotal:        14344 kB
+
+LowFree:          3628 kB
+
+SwapTotal:           0 kB
+
+SwapFree:            0 kB
+
+# cat /proc/iomem
+
+00000000-13ffffff : reserved
+
+14000000-1401ffff : System RAM
+
+14020000-14ffffff : System RAM
+
+  14020000-141aa5a7 : Kernel code
+
+  141bb380-141d4fff : Kernel data
+
+a8610000-a86107ff : eth0
+
+# cat /proc/modules
+
+tiatm                 133808 c0031060 96    0 (unused)
+
+avalanche_usb          65208 c0020060 96    0 (unused)
+
+# cat /proc/avalanche/cpmac_ver
+
+Texas Instruments : CPMAC Linux DDA version 1.9
+
+Texas Instruments : CPMAC DDC version 0.3
+
+# 
+}}}
+== OpenWRT ==
+=== Status ===
+||'''feature'''||'''status'''||'''notes'''||
+|| Booting kernel || Not working || Starts to boot, then blank screen and reboot ||
+|| Ethernet || N/A || ||
+|| ADSL || N/A || ||
+|| Wireless || N/A || ||
+
+=== Flashing ===
+There are two ways to flash it
+==== First method ====
+Write loader.bin to mtd1 and rootfs to mtd0
+If loader.bin is bigger than 500KB you have to resize mtd1 and mtd0 
+for example
+{{{
+(pdbs) setenv mtd1 0x90020090,0x9011bf70
+(pdbs) setenv mtd0 0x9011bf70,0x90400000
+}}}
+When router starts to boot press ESC (you have to use serial console)
+{{{
+Basic POST completed...     Success.
+Last reset cause: Software reset (memory controller also reset)
+
+
+PSPBoot1.4 rev: 1.4.0.4
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+
+Press ESC for monitor... 3
+(psbl) 
+}}}
+
+connect to router with ftp client, ip addres is in env
+{{{
+(psdl) printenv
+...
+IPA             10.0.0.2
+...
+}}}
+
+{{{
+horinek@eddy:~/apps/openwrt/build_dir/linux-ar7$ ftp 10.0.0.2
+Connected to 10.0.0.2.
+220 ADAM2 FTP Server ready.
+Name (10.0.0.2:horinek): adam2
+331 Password required for adam2.
+Password:
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+ftp> quote MEDIA FLSH
+200 Media set to FLSH.
+ftp> binary
+200 Type set to I.
+ftp> put loader.bin "kernel mtd1"
+local: loader.bin remote: kernel mtd1
+200 Port command successful.
+120 service ready in 5 seconds.
+ftp> put root.squashfs "fs mtd0"
+local: loader.bin remote: fs mtd0
+200 Port command successful.
+120 service ready in 5 seconds.
+ftp> quote REBOOT
+}}}
+
+==== Second method ====
+Same as first but you upload just openwrt-ar7-squashfs.bin to mtd4.
+Then you set BOOTCFG to m:f:"mtd4"
+{{{
+(pdbs) setenv BOOTCFG m:f:"mtd4"
+}}}
+
+=== Booting ===
+{{{
+Basic POST completed...     Success.
+
+Last reset cause: Software reset (memory controller also reset)
+
+
+
+PSPBoot1.4 rev: 1.4.0.4
+
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+
+
+
+Press ESC for monitor... 3321
+
+
+
+(psbl) 
+
+
+
+Booting...
+
+Linux version 2.6.24.2 (horinek@eddy) (gcc version 4.1.2) #1 Fri Apr 4 21:07:47 CEST 2008
+
+console [early0] enabled
+
+CPU revision is: 00018448 (MIPS 4KEc)
+
+Clocks: Sync 2:1 mode
+
+Clocks: Setting CPU clock
+
+Adjusted requested frequency 211000000 to 211968000
+
+Clocks: base = 35328000, frequency = 211968000, prediv = 1, postdiv = 1, postdiv2 = -1, mul = 6
+
+Clocks: Setting DSP clock
+
+Clocks: base = 25000000, frequency = 105984000, prediv = 1, postdiv = 2, postdiv2 = 1, mul = 10
+
+Clocks: Setting USB clock
+
+Adjusted requested frequency 48000000 to 47863741
+
+Clocks: base = 105984000, frequency = 48000000, prediv = 1, postdiv = 31, postdiv2 = -1, mul = 14
+
+TI AR7 (TNETD7200), ID: 0x002b, Revision: 0x10
+
+Determined physical RAM map:
+
+ memory: 01000000 @ 14000000 (usable)
+
+Initrd not found or empty - disabling initrd
+
+Zone PFN ranges:
+
+  Normal      81920 ->    86016
+
+Movable zone start PFN for each node
+
+early_node_map[1] active PFN ranges
+
+    0:    81920 ->    86016
+
+Built 1 zonelists in Zone order, mobility grouping off.  Total pages: 4064
+
+Kernel command line: init=/etc/preinit rootfstype=squashfs,jffs2, console=ttyS0,9600n8
+
+Primary instruction cache 16kB, VIPT, 4-way, linesize 16 bytes.
+
+Primary data cache 8kB, 4-way, VIPT, no aliases, linesize 16 bytes
+
+Synthesized clear page handler (26 instructions).
+
+Synthesized copy page handler (46 instructions).
+
+Synthesized TLB refill handler (20 instructions).
+
+Synthesized TLB load handler fastpath (32 instructions).
+
+Synthesized TLB store handler fastpath (32 instructions).
+
+Synthesized TLB modify handler fastpath (31 instructions).
+
+PID hash table entries: 64 (order: 6, 256 bytes)
+
+Dentry cache hash table entries: 2048 (order: 1, 8192 bytes)
+
+Inode-cache hash table entries: 1024 (order: 0, 4096 bytes)
+
+Memory: 12504k/16384k available (2036k kernel code, 3880k reserved, 432k data, 128k init, 0k highmem)
+
+Mount-cache hash table entries: 512
+
+net_namespace: 64 bytes
+
+NET: Registered protocol family 16
+
+Time: MIPS clocksource has been installed.
+
+NET: Registered protocol family 2
+
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+
+TCP established hash table entries: 512 (order: 0, 4096 bytes)
+
+TCP bind hash table entries: 512 (order: -1, 2048 bytes)
+
+TCP: Hash tables configured (established 512 bind 512)
+
+TCP reno registered
+
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+
+Registering mini_fo version $Id$
+
+JFFS2 version 2.2. (NAND) (SUMMARY)  © 2001-2006 Red Hat, Inc.
+
+io scheduler noop registered
+
+io scheduler deadline registered (default)
+
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+
+serial8250: ttyS0 at MMIO 0x8610e00 (irq = 15) is a TI-AR7
+
+...
+-------------- lot of empty lines here and reboot ---------------
+...
+Basic POST completed...     Success.
+
+Last reset cause: Software reset (memory controller also reset)
+
+
+
+PSPBoot1.4 rev: 1.4.0.4
+
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+}}}
+
+If anyone can solve this write or jabber me to frantisekhorinek@gmail.com. thx
+
+----
+ ["CategoryAR7Device"]

@@ -1,0 +1,10 @@
+1135673675000000	00000001	SAVENEW	SimpleFirewall	24.147.122.204	c-24-147-122-204.hsd1.ma.comcast.net	1135672908.72.56546		
+1137737862000000	00000002	SAVE	SimpleFirewall	64.142.95.196	64-142-95-196.dsl.static.sonic.net	1137737336.6.6213		Added a note about using tabs or spaces in fwlib.  Cheers, this is a time saver.
+1137798949000000	00000003	SAVE	SimpleFirewall	71.142.252.251	adsl-71-142-252-251.dsl.scrm01.pacbell.net	1137798892.65.30661		awk doesn't care about whitespace as much
+1142809308000000	00000004	SAVE	SimpleFirewall	66.170.210.87	katy-adsl-66-170-210-87.consolidated.net	1142781740.47.48047		Added changes for port translation.
+1163155161000000	00000005	SAVE	SimpleFirewall	85.133.28.242	fe0.xd-01.opusvl.com	1163154785.41.46428		
+1163155689000000	00000006	SAVE	SimpleFirewall	85.133.28.242	fe0.xd-01.opusvl.com	1163154785.41.46428		
+1163158595000000	00000007	SAVE	SimpleFirewall	85.133.28.242	fe0.xd-01.opusvl.com	1163154785.41.46428		
+1163162752000000	00000008	SAVE	SimpleFirewall	85.133.28.242	fe0.xd-01.opusvl.com	1163154785.41.46428		Firewall script tested and works for me
+1219420385000000	00000009	SAVE	SimpleFirewall	128.233.104.223	dragoon.usask.ca	1219420056.44.57743		
+1219420756000000	00000010	SAVE	SimpleFirewall	128.233.104.223	dragoon.usask.ca	1219420056.44.57743		Added LAN->WAN forwarding fix.  Added LOGDROP rules and a drop_incoming function

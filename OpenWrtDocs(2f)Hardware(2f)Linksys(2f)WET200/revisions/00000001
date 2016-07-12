@@ -1,0 +1,21 @@
+#pragma section-numbers off
+||<tablebgcolor="#f1f1ed" tablewidth="40%" tablestyle="FONT-SIZE: 0.9em; FLOAT: right; MARGIN: 0pt 0pt 1em 1em"style="PADDING-RIGHT: 0.5em; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; PADDING-TOP: 0.5em">[[TableOfContents]]||
+
+= Linksys WET200 =
+
+The WET200 is called a "Wireless-G Business Ethernet Bridge". There is a nearly identical model, the WAP200, which lacks the Switch controller and thus 4 Ethernet ports.
+
+Since the ARM9 architecture seems to be currently not supported by OpenWRT, there is no support for these two models.
+
+== Hardware Info ==
+
+||'''CPU''' ||[http://www.starsemi.com.tw/vEng/product.php Star STR9110]||
+||'''Architecture''' ||ARM922 I16/D16 core ||
+||'''CPU Speed''' ||250 Mhz ||
+||'''Flash size''' ||4 MiB (MX 29LV320CBTC-90G)||
+||'''RAM''' ||16 MiB ||
+||'''Wireless''' ||Ralink RT2661 (MiniPCI) ||
+||'''Switch''' || ADM6996M ||
+||'''Serial''' ||Yes, 9-pin header ||
+||'''JTAG''' ||No ||
+||'''USB''' ||No ||

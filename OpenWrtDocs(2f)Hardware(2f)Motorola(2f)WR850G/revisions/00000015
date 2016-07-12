@@ -1,0 +1,59 @@
+'''Motorola WR850G'''
+
+=== Hardware versions ===
+
+The WR850G has three different versions (v1, v2, v3).
+
+==== WR850G v1 ====
+The WR850G v1 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is a mini-PCI card.
+
+==== WR850G v2 ====
+The WR850G v2 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 32Mb SDRAM (but only 16Mb enabled). The wireless NIC is integrated to the board.
+
+Note: In at least one (feagle814's) WR850G v2, there is only 16mb of RAM onboard.  DO NOT try the 32mb enablement hack on the WR850G v2 without first verifying how much RAM you have!
+
+ISSI IS42S16400B1-7T is a 16MB chip.
+G-Link GLT5640L16-6TC is a ??? chip.
+
+==== WR850G v3 ====
+The WR850G v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is integrated to the board.
+
+=== How to put OpenWRT Experimental edition on a Motorola WR850G ===
+
+ * Download the motorola bin from ["downloads/experimental"].
+ * If you want, you can enable boot_wait by going to /frameDebug.asp and typing the necessary commands.
+ * Upload the firmware to the router via the Upgrade Firmware page.
+ * If you are not able to connect to your router through the LAN port after flashing try connecting using wireless or the WAN port.  You may want to set a static IP on the WAN port before flashing in case you need to connect to the router over that port.
+ * Enjoy!
+
+/!\ You may need to rename the .bin file to .trx to flash your WR850G using the Motorola web interface.
+
+/!\ After flashing your router with the new firmware all of the features may not be functioning properly.  If you are having problems with features not working properly or not working at all try resetting the NVRAM. ["OpenWrtDocs/Configuration"]
+
+=== How to put OpenWRT (non-experimental) on a Motorola WR850G ===
+
+ * Open the WR850G.  The plastic is hard and the clips are strong - use force!
+ * Attach a serial cable to the serial connector - it's a 9-pin connector with two rows, one with 5 pins and one with 4 pins.  I recommend using a cell phone data cable - they're cheap and do the voltage conversions with no assembly required. 
+  * Pin 1 (square hole): Data out of WR850G
+  * Pin 7 (three pins over from pin 1): Data into WR850G
+  * Pin 6 (two pins down, one across from pin 1): Ground
+  * Port setting is 115200, N, 8, 1, no flow control.
+
+ * Restart the router with your serial console hooked up and ready.
+ * Hold Control-C in your terminal while it boots.  You don't need boot_wait to be on for this (but it might take a couple tries!)
+ * You should get a CFE prompt.  Type flash -noheader : flash1.trx
+ * Begin a TFTP transfer of the OpenWRT firmware to the router.
+ * When this completes, it will reboot into OpenWRT.
+ * Enjoy!
+
+/!\ Until a proper bin for non-experimental is published, you have to have a serial console to be able to flash OpenWrt snapshots.
+
+=== How To Enable Boot Wait ===
+
+ * Reset router to default with  [http://broadband.motorola.com/consumers/products/WR850g/downloads/Motorola_WR850G_4.03.exe firmware 4.03]
+ * Login to the router's web page and go to /frame_debug.asp
+ * Type in: nvram set boot_wait=on
+ * Type in: nvram commit
+ * Reboot and do tftp. 
+
+/!\ Some users report that boot wait only functions for one reboot after setting it from the web interface.

@@ -1,0 +1,107 @@
+= Netgear DG834G v3 =
+Ok this is my attempt at getting OpenWRT on my router, so far I have only got the inital readouts from debug... more will come soon once I have a serial adapter and a bit more free time.
+
+== Specifications ==
+
+CPU: Texas Instruments AR7 MIPS-based, TNETD7200ZDW
+
+Flash chip: 4Mbytes, Macronix, [http://www.macronix.com/QuickPlace/hq/PageLibrary48256F5500439ED0.nsf/h_CE4C9490FDF4280B48256F550043C6D8/209CFCBBF4BCCB9148257031002F02E6/$File/MX29LV320CT-B-1.7.pdf 29LV320CBTC-70G]
+
+SDRAM: 16Mbytes, Etron Tech, [http://www.etron.com/manager/uploads/EM639165_rev1.pdf EM639165TS-6G]
+
+Switch: Marvell, 88E6060-RCJ1
+
+Wireless NIC: Texas Instruments, TNETW1350A (ACX111 varient I think)
+
+Boot loader: ADAM2
+
+== Information from NETGEAR firmware ==
+Firmware: [ftp://downloads.netgear.com/files/dg834v3_dg834gv3_4_01_28_uk_only.zip]
+
+{{{
+# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 211.35
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available}}}
+{{{
+# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  14696448 14110720   585728        0  1351680  4734976
+Swap:        0        0        0
+MemTotal:        14352 kB
+MemFree:           572 kB
+MemShared:           0 kB
+Buffers:          1320 kB
+Cached:           4624 kB
+SwapCached:          0 kB
+Active:           1488 kB
+Inactive:         5796 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        14352 kB
+LowFree:           572 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB}}}
+{{{
+# cat /proc/mounts
+/dev/mtdblock/0 / squashfs ro 0 0
+none /dev devfs rw 0 0
+/proc /proc proc rw 0 0
+ramfs /tmp ramfs rw 0 0}}}
+{{{
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00310000 00010000 "mtd0"
+mtd1: 000b0000 00010000 "mtd1"
+mtd2: 00020000 00010000 "mtd2"
+mtd3: 00010000 00010000 "mtd3"
+mtd4: 00010000 00010000 "mtd4"}}}
+{{{
+# cat /proc/version
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc version 2.95.3 20010315 (release/MontaVista)) #1 Mon Mar 12 15:51:06 CST 2007}}}
+{{{
+# cat /proc/tty/driver/serial
+serinfo:1.0 driver:5.05c revision:2001-07-08
+0: uart:16550A port:A8610E00 irq:15 baud:7944 tx:3158 rx:0 RTS|DTR
+1: uart:unknown port:A8610F00 irq:16}}}
+{{{
+# cat /proc/ticfg/env
+maca    00:11:22:33:44:55
+macb    00:11:22:33:44:55
+memsize 0x01000000
+flashsize       0x00400000
+modetty0        115200,n,8,1,hw
+modetty1        115200,n,8,1,hw
+bootserport     tty0
+cpufrequency    211968000
+sysfrequency    105984000
+bootloaderVersion       0.22.02
+ProductID       DG834
+HWRevision      Unknown
+SerialNumber    none
+my_ipaddress    169.254.87.1
+prompt  DG834
+firstfreeaddress        0x9401bd20
+req_fullrate_freq       125000000
+mtd0    0x900d0000,0x903e0000
+mtd1    0x90020000,0x900d0000
+mtd2    0x90000000,0x90020000
+mtd3    0x903e0000,0x903f0000
+mtd4    0x903f0000,0x90400000
+oam_lb_timeout  100}}}
+{{{
+# cat /proc/interrupts
+  7:   181056   R4000 timer/counter [MIPS interrupt]
+  8:        0   unified secondary [hw0 (Avalanche Primary)]
+ 15:      227   serial [hw0 (Avalanche Primary)]
+ 23:        0 + SAR  [hw0 (Avalanche Primary)]
+ 27:     3216 + Cpmac Driver [hw0 (Avalanche Primary)]
+ 29:    22699   vlynq0 [hw0 (Avalanche Primary)]
+ 31:        3 + DSL  [hw0 (Avalanche Primary)]
+ 80:    22699   TNETW1150 [hw0 (Low Vlynq)]}}}

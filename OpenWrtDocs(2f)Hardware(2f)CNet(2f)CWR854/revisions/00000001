@@ -1,0 +1,14 @@
+= CNet CWR854 =
+Similar Hardware to OpenWrtDocs/Hardware/Linksys/WGA54G
+
+Refer to http://forum.openwrt.org/viewtopic.php?pid=35988 for some details of the similar hardware
+
+== Hardware ==
+
+ * CPU [http://www.silicon-data.com/soc_9218.html SD9218] - Mips R3000 Based
+ * 2Mb RAM (EM638325TS-6)
+ * Flash
+ * WiFi - ISL3880
+ * 4 Port Ethernet Switch
+ * 1 WAN Port - PHY162509
+ * 2 SMA Connectors

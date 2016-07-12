@@ -1,0 +1,90 @@
+The Thomson '''TCM390''' is a cable modem based on Broadcom BCM3348 chip. It has no wireless capabilities, and provides just USB slave and Ethernet connectivity.
+It is compatible with DOCSIS and EuroDOCSIS standards.
+
+= Hardware description =
+Opening the box is very easy, just two screws and no clip to pop nor seal to break.
+
+ *Main Chip : Broadcom QAMLink® BCM3348KPB w/ 24MHz quartz, which indicates 192MHz or 240MHz operation
+ *RAM : 8MB SDRAM (Nanya NT5SV4M16DT-6K)
+ *Flash : 4MB (AMD/Spansion AM29DL323G B-90EI
+ *Cable Tuner : Broadcom BCM3415KQTE (with a heatsink)
+
+The board has several pin headers soldered, and two of them ar labelled as UART on the silkscreen.
+
+ *J-UART has 4 pins : pin 1 = Vcc(3V3), pin2 = Tx, pin3 = Rx, pin4 = GND
+ *JP-UART2 has 4 pins : pin 1 = Rx, pin2 = Tx, pin3 = GND, pin4 = Vcc(3V3)
+ *J22 has 8 pins, unknown usage
+ *J201 has 10 pins, and may be a JTAG connector (with all even-numbered pins tied to GND)
+ *J1 has 2 pins, unknown usage
+
+At bootup, a serial console (115200 baud, 8N1 Ansi) connected to UART1 connector, shows the following messages : 
+{{{Detected CPU .............. BCM3348A1
+Ebi Initialized .....................000002020000001C
+Sdram Initialized....................
+Icache Size: ....................2000
+Icache Linesize:.................0010
+Dcache Size: ....................2000
+Dcache Linesize:.................0010
+Sdram access OK......................
+Compressed Bootloader detected.......
+ImageCSize: ...................00609C
+ImageLoc: ...................81F80000
+Decompression Status: .......00000000
+Dcompressed Image Size:......00010765
+BSS Initialized......................
+TMP Stack initialized................
+Perm Stack initialized...............
+MemSize: ......................... 8M
+Flash detected @0xbe000000
+
+Signature: a801
+
+
+Broadcom BootLoader Version: 2.1.4c
+Build Date: Sep 26 2002
+Build Time: 17:16:22
+
+Image 1 Program Header:
+   Signature: a801
+     Control: 0004
+   Major Rev: 0002
+   Minor Rev: 0000
+  Build Time: 2003/3/20 22:04:04 Z
+ File Length: 1358978 bytes
+Load Address: 80010000
+    Filename: vxram_sto.bin
+         HCS: 92fc
+         CRC: deb956d2
+
+
+Image 2 Program Header:
+   Signature: a801
+     Control: 0004
+   Major Rev: 0002
+   Minor Rev: 0000
+  Build Time: 2003/3/20 22:04:04 Z
+ File Length: 1358978 bytes
+Load Address: 80010000
+    Filename: vxram_sto.bin
+         HCS: 92fc
+         CRC: deb956d2
+
+
+
+Enter '1', '2', or 'p' within 2 seconds or take default...
+. .
+
+Performing CRC on Image 2...
+Detected NRV2D99 compressed image... decompressing...
+Target Address: 0xA0010000
+Decompressed length: 4463656
+
+Executing Image 2...
+
+
+
+3348
+}}}
+
+Obviously, the two images in Flash are the same : identical CRC, size and buil time.
+Entering '1', '2', or 'p' within 2 seconds seems to have no action.

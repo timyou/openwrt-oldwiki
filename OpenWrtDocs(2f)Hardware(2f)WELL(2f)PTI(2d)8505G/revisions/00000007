@@ -1,0 +1,120 @@
+#pragma section-numbers off
+[[TableOfContents]]
+
+= WELL PTI-8505G =
+Wireless ADSL2/2+ Router
+
+== Product info ==
+=== Hardware ===
+||'''CPU''' || AR7 @ 211 MHz || Texas Instruments TNETD7200ZDW ||
+||'''RAM''' || 16MB || MIRA p2v28s40ctp ||
+||'''FLASH''' || 4MB || MX29lv320cb17c ||
+||'''SWITCH''' || Realtek || RTL8305SC ||
+||'''Wi-Fi''' || Unknown || Mini-pci (WMTO371) ||
+=== Loader ===
+{{{
+PSPBoot1.4 rev: 1.4.0.4
+Compiled gcc rev: 2.95.3 20010315 (release/MontaVista) [Oct 12 2006 16:40:08]
+Built for AR7WRD board in Little Endian mode.
+}}}
+=== Memory ===
+||'''dev''' ||'''start''' ||'''end''' ||'''desc''' ||
+||mtd0 || 0x9009e000 || 0x90400000 || Filesystem ||
+||mtd1 || 0x90020090 || 0x9009e000 || Kernel ||
+||mtd2 || 0x90000000 || 0x90010000 || PSPBoot ||
+||mtd3 || 0x90010000 || 0x90020000 || variabiles ||
+||mtd4 || 0x90010000 || 0x90020000 || Kernel + Filesystem ||
+The last one you have to create in PSPBoot command line
+
+{{{
+(psbl) setenv mtd4 0x90020090,0x90400000
+}}}
+
+=== Board ===
+=== Serial console ===
+The serial port uses CMOS 3.3v levels. I used a Max 3222 chip which converts.
+
+{{{
+connectors
+ ANT PWR    SWITCH        ADSL
++-||-||--|--|--|--|--|-----|-|--+
+|                               |
+| P  SWITCH                     |
+| C           CPU               |
+| I                             |
+| p  R                          |
+| o  A         . 3.3V           |
+| r  M         . RX             |
+| t    FLASH   . TX             |
+|              . GND            |
+| o   o o o o     o   o   o     |
++-------------------------------+
+ PWR  SWITCH    WiFi ADSL PPP
+leds
+}}}
+== Original Firmware ==
+=== Backup original firmware ===
+'''Strongly recommend''' Use serial console or telnet access to backup original firmware. Original firmware have no dd so i used cat
+
+{{{
+# cat /dev/mtdblock/0 > /var/tmp/mtd0.bin
+# cat /dev/mtdblock/1 > /var/tmp/mtd1.bin
+# cat /dev/mtdblock/2 > /var/tmp/mtd2.bin
+# cat /dev/mtdblock/3 > /var/tmp/mtd3.bin
+# cat /dev/mtdblock/4 > /var/tmp/mtd4.bin
+# ps
+  PID  Uid     VmSize Stat Command
+    1 root       1548 S    init
+    2 root            S    [keventd]
+    3 root            S    [ksoftirqd_CPU0]
+    4 root            S    [kswapd]
+    5 root            S    [bdflush]
+    6 root            S    [kupdated]
+    7 root            S    [mtdblockd]
+   38 root       2176 S    /usr/bin/cm_pc
+   40 root       1560 S    -sh
+   41 root       4152 S    /usr/sbin/mini_httpd -d /usr/www -u root -p 80 -c /c
+   42 root       5200 S    /usr/bin/cm_logic -m /dev/ticfg -c /etc/config.xml
+   64 root        612 S    /usr/bin/cm_klogd /dev/klog
+   66 root        644 S    /sbin/dproxy -c /etc/resolv.conf -d
+  165 root        968 S    /usr/sbin/udhcpd /var/tmp/udhcpd.conf
+  174 root       1548 R    ps
+# kill 41
+# /usr/sbin/mini_httpd -d /var/tmp -u root -p 80
+}}}
+Then using internet browser download backup files
+
+=== Restore original firmware ===
+Only use mtd4.bin (kernel + FS).
+
+Atached serial cable is probably good idea, you can see the progress of flashing and posible errors.
+
+{{{
+horinek@eddy:~/Downloads$ ftp 10.0.0.2
+Connected to 10.0.0.2.
+220 ADAM2 FTP Server ready.
+Name (10.0.0.2:horinek): adam2
+331 Password required for adam2.
+Password:
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+ftp> binary
+200 Type set to I.
+ftp> quote MEDIA FLSH
+200 Media set to FLSH.
+ftp> put mtd4.bin "a mtd4"
+local: mtd4.bin remote: a mtd4
+200 Port command successful.
+120 service ready in 32 seconds.
+150 Opening BINARY mode data connection for file transfer.
+4059136 bytes sent in 83.15 secs (47.7 kB/s)
+ftp> quote REBOOT
+226 Transfer complete.
+ftp> exit
+221-Thank you for using the FTP service on ADAM2.
+221 Goodbye.
+}}}
+
+
+----
+ ["CategoryAR7Device"]

@@ -1,0 +1,331 @@
+= Netgear WGT624 =
+[[TableOfContents]]
+
+the WGT624 is based on an Atheros System on a Chip (Soc). It got a ar2312a MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+== Specs for WGT624 Rev1 ==
+ * Atheros Product Name: Atheros AR5001AP
+ * CPU: AR2312A-00
+ * Flash: 4MB
+ * RAM: 16MB
+ * Switch: Marvell
+
+ * One Antenna (2db)
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 5V
+
+Some photos are here: http://home.fhtw-berlin.de/~s0502837/wgt624/
+
+== Serial ==
+It got populated Serial and JTAG-Headers.
+
+Serial-Layout:
+ * Pin  3 RX
+ * Pin  9 TX
+ * Pin 12 GND
+
+Serial header is the 12 pin header near the power plug. JTAG is near the antenna.
+Serial pin 1 is the pin nearest to the cpu.
+
+I wanted to buy a prolific USB to serial cellphone cable at ebay, but they sent me an Silicon Labs cable. This chipset is finally supported in 2.6.12. Works great (usb 2-1.2: CP2101 converter now attached to ttyUSB0)
+
+Set your serial terminal (i.e. minicom) to 9600 8N1, I enabled software flow control, too.
+
+Serial login is 'Gearguy' password is 'Geardog'
+
+== VxWorks ==
+
+it is running VxWorks and a rather crappy webinterface, so it makes tons of sense to port linux to it.
+{{{
+U12H01700> windsh
+
+-> version
+VxWorks (for Atheros AR5001AP default) version VxWorks5.4.2.
+Kernel: WIND version 2.5.
+Made on May  3 2005, 18:48:19.
+Boot line:
+tffs:(0,0):/fl/APIMG1 e=192.168.1.20:0xffffff00 f=0x8 o=et
+value = 70 = 0x46 = 'F'
+}}}
+
+
+== Firmware ==
+My WGT624 came with firmware 4.2.7 which introduces problems with further upgrades because it changes the board id. Therefore 4.2.7 isn't avaible, but if you got this firmware version, you can fix it, if you interrupt the bootloader by pressing ESC immediatly after powering up. It will look like this:
+{{{
+ar531x rev 0x00005743 firmware startup...
+SDRAM TEST...PASSED
+
+Atheros AR5001AP default version 0.0.0.225
+
+[Boot]: S
+name:    Atheros AR5001AP default
+board ID:U12H017T00_NETGEAR
+magic:   35333131
+cksum:   544d
+rev:     4
+major:   1
+minor:   0
+pciid:   0013
+wlan0:   no  ff:ff:ff:ff:ff:ff
+wlan1:   yes 00:09:5b:87:de:ac
+enet0:   yes 00:09:5b:87:de:ad
+enet1:   no  ff:ff:ff:ff:ff:ff
+uart0:   yes
+sysled:  yes, gpio 7
+factory: yes, gpio 6
+serclk:  internal
+cpufreq: calculated 180000000 Hz
+sysfreq: calculated 45000000 Hz
+memcap:  disabled
+watchdg: enabled
+}}}
+
+This is how it should like like, but if the board ID is like U12H013T00_NETGEAR (that's what it was on 4.2.7) it won't accept any further firmware updates, so you have to change it back to U12H017T00_NETGEAR in order to flash either 4.2.8 or the beta firmware 4.2.10. You can change this board ID with pressing 'B' on the bootprompt.
+
+
+== Boot via TFTP ==
+
+this is only theoretical at the moment:
+
+the default boot parameters are:
+{{{
+ $dev(0,procnum)host:/file h=# e=# b=# g=# u=usr [pw=passwd] f=# 
+                           tn=targetname s=script o=other 
+ boot device: tffs=drive,removable     file name: /tffs0/vxWorks 
+ Boot flags:           
+   0x02  - load local system symbols 
+   0x04  - don't autoboot 
+   0x08  - quick autoboot (no countdown) 
+   0x20  - disable login security 
+   0x40  - use bootp to get boot parameters 
+   0x80  - use tftp to get boot image 
+   0x100 - use proxy arp 
+
+available boot devices:Enhanced Network Devices
+ et0 et1 tffs
+[Boot]: p
+
+boot device          : tffs:
+unit number          : 0 
+processor number     : 0 
+file name            : /fl/APIMG1
+inet on ethernet (e) : 192.168.1.20:0xffffff00
+flags (f)            : 0x8 
+other (o)            : et
+
+}}}
+
+So we will have to set the boot device to et0, the flags to 0x80 (use tftp) and the /tftpboot/kernelimage
+
+I just tried the following
+{{{
+[Boot]: p
+
+boot device          : et
+unit number          : 0 
+processor number     : 0 
+host name            : tftpserver
+file name            : /tftpboot/image
+inet on ethernet (e) : 192.168.1.20:0xffffff00
+host inet (h)        : 192.168.1.2
+flags (f)            : 0x88 
+other (o)            : et
+}}}
+host name and host inet should point to the tftp server. If everything went good, you should see something like this on your tftp-server:
+{{{
+Aug 28 14:16:16 duron in.tftpd[3758]: RRQ from 192.168.1.20 filename /tftpboot/image 
+Aug 28 14:16:16 duron in.tftpd[3758]: sending NAK (1, File not found) to 192.168.1.20
+}}}
+and on your WGT624
+{{{
+[Boot]: @
+Attached TCP/IP interface to et0.
+Attaching network interface lo0... done.
+Loading... Error code 1: File not found
+tftpGet: Error occurred while transferring the file.
+Erroneous header read
+
+Error loading file: errno = 0x610001.
+}}}
+
+== Kernel ==
+Kaloz got the [http://downloads.openwrt.org/reference/mips-linux-2.4.25.tar.bz2 sources] from Devicescape with the needed patches. 
+According to arch/mips/ar531x/README.BUILD, I've downloaded:
+
+ftp://ftp.mips.com/pub/tools/software/sde-for-linux/sdelinux-5.01-4eb.i386.rpm
+{{{
+$ mips-linux-gcc --version
+2.96-mips3264-000710
+}}}
+It's a good start to reproduce the very same environment, as they did in order to exclude all problems that might occur while porting to a newer compiler or kernel.
+
+
+{{{
+$ ln -s defconfig-ar531x-jffs2 .config
+$ make oldconfig
+$ make clean ARCH=mips CROSS_COMPILE=mips-linux-
+$ make  ARCH=mips CROSS_COMPILE=mips-linux- vmlinux
+....
+mips-linux-ld -G 0 -static -n -T arch/mips/ld.script arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o init/version.o init/do_mounts.o \
+        --start-group \
+        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o drivers/net/net.o drivers/mtd/mtdlink.o drivers/net/wireless/wireless_net.o drivers/media/media.o \
+        net/network.o \
+        arch/mips/lib/lib.a /tmp/software/openwgt/mips-linux-2.4.25/lib/lib.a arch/mips/ar531x/ar531x.o \
+        --end-group \
+        -o vmlinux
+mips-linux-nm vmlinux | grep -v '\(compiled\)\|\(\.o$\)\|\( [aUw] \)\|\(\.\.ng$\)\|\(LASH[RL]DI\)' | sort > System.map
+$ cp vmlinux /tftpboot/image
+}}}
+
+Then I started the network booting on my WGT624:
+{{{
+[Boot]: @
+Attached TCP/IP interface to et0.
+Attaching network interface lo0... done.
+Loading... 1265416 + 293776
+Starting at 0x8013a040...
+
+<4>CPU revision is: 00018009
+<4>Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+<4>Primary data cache 16kB 4-way, linesize 16 bytes.
+<4>Linux version 2.4.25 (malte@duron) (gcc version 2.96-mips3264-000710) #1 Sun Aug 28 17:09:56 CEST 2005
+<4>Determined physical RAM map:
+<4> memory: 01000000 @ 00000000 (usable)
+<4>On node 0 totalpages: 4096
+<4>zone(0): 4096 pages.
+<4>zone(1): 0 pages.
+<4>zone(2): 0 pages.
+<4>Kernel command line: console=ttyS0,9600
+<4>Using 90.000 MHz high precision timer.
+<4>Calibrating delay loop... 179.40 BogoMIPS
+<6>Memory: 14664k/16384k available (1235k kernel code, 1720k reserved, 80k data, 60k init, 0k highmem)
+<6>Dentry cache hash table entries: 2048 (order: 2, 16384 bytes)
+<6>Inode cache hash table entries: 1024 (order: 1, 8192 bytes)
+<6>Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+<6>Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+<4>Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+<4>Checking for 'wait' instruction...  available.
+<4>POSIX conformance testing by UNIFIX
+<6>Linux NET4.0 for Linux 2.4
+<6>Based upon Swansea University Computer Society NET3.039
+<4>Initializing RT netlink socket
+<4>Starting kswapd
+<5>JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+<6>Serial driver version 5.05c (2001-07-08) with no serial options enabled
+<6>ttyS00 at 0xbc000003 (irq = 37) is a 16550A
+<6>Generic MIPS RTC Driver v1.0
+<5>physmap flash device: 200000 at be000000
+<5> Amd/Fujitsu Extended Query Table v1.1 at 0x0040
+<5>number of CFI chips: 1
+<5>cfi_cmdset_0002: Disabling fast programming due to code brokenness.
+<4>AHB interrupt: PROCADDR=0x01000000  PROC1=0x80000a56  DMAADDR=0x00000000  DMA1=0x00000000
+ar531x rev 0x00005743 firmware startup...
+SDRAM TEST...PASSED
+
+
+Atheros AR5001AP default version 0.0.0.225
+}}}
+
+As you can see, it's restarting after this AHB interrupt thingie. But at least it is finally booting a linux kernel.
+
+== porting to a newer kernel ==
+
+I've downloaded the current 2.4 mips kernel via cvs and the newest [ftp://ftp.mips.com/pub/tools/software/sde-for-linux/6.02.03-1/mips-sdelinux-v6.02.03-1.i386.rpm official mips (big endian) crosscompiler]:
+{{{
+$ mips-linux-gcc --version
+mips-linux-gcc (GCC) 3.4.4 mipssde-6.02.03-20050629
+}}}
+
+ths over at #mipslinux explains:
+"In a hosted (i.e. userland) environment the compiler is free to transform libc calls. Goes horribly wrong in the kernel, which doesn't implement libc. :-)"
+
+This happens with GCC 3.4, so add -ffreestanding to the GCCFLAGS in arch/mips/Makefile.
+
+
+{{{
+cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co -r linux_2_4 linux
+cp -a mips-linux-2.4.25/arch/mips/ar531x/ linux/arch/mips/
+cp -a mips-linux-2.4.25/include/asm-mips/atheros/ linux/include/asm-mips/
+cp -a mips-linux-2.4.25/defconfig-ar531x-jffs2 linux/.config
+cp -a mips-linux-2.4.25/arch/mips/Makefile linux/arch/mips/Makefile
+cp -a mips-linux-2.4.25/arch/mips/config-shared.in linux/arch/mips/config-shared.in
+cp -a mips-linux-2.4.25/include/asm-mips/bootinfo.h linux/include/asm-mips/
+cp -a mips-linux-2.4.25/drivers/mtd/chips/jedec_probe.c linux/drivers/mtd/chips/
+cp -a mips-linux-2.4.25/arch/mips/kernel/setup.c linux/arch/mips/kernel/setup.c
+cp -a mips-linux-2.4.25/drivers/mtd/chips/cfi_cmdset_0020.c linux/drivers/mtd/chips/
+cp -a mips-linux-2.4.25/drivers/mtd/maps/physmap.c linux/drivers/mtd/maps
+cp -a mips-linux-2.4.25/drivers/mtd/redboot.c linux/drivers/mtd/
+cd linux
+make oldconfig
+make  ARCH=mips CROSS_COMPILE=mips-linux- dep
+make  ARCH=mips CROSS_COMPILE=mips-linux- vmlinux
+
+mips-linux-ld -G 0 -static -n -T arch/mips/ld.script arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o init/version.o init/do_mounts.o \
+        --start-group \
+        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o drivers/net/net.o drivers/mtd/mtdlink.o drivers/media/media.o \
+        net/network.o \
+        arch/mips/lib/lib.a /usr/src/mips/linux/lib/lib.a arch/mips/ar531x/ar531x.o \
+        --end-group \
+        -o vmlinux
+mips-linux-nm vmlinux | grep -v '\(compiled\)\|\(\.o$\)\|\( [aUw] \)\|\(\.\.ng$\)\|\(LASH[RL]DI\)' | sort > System.map
+}}}
+
+
+{{{
+[Boot]: @
+Attached TCP/IP interface to et0.
+Attaching network interface lo0... done.
+Loading... 1589216
+Starting at 0x80140040...
+
+CPU revision is: 00018009
+Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 16kB, 4-way, linesize 16 bytes.
+Linux version 2.4.31 (malte@duron) (gcc version 3.4.4 mipssde-6.02.03-20050629) #5 Tue Aug 30 01:25:55 CEST 2005
+Determined physical RAM map:
+ memory: 01000000 @ 00000000 (usable)
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: console=ttyS0,9600
+Using 90.000 MHz high precision timer.
+Calibrating delay loop... 179.40 BogoMIPS
+Memory: 14640k/16384k available (1256k kernel code, 1744k reserved, 80k data, 60k init, 0k highmem)
+Dentry cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Checking for 'wait' instruction...  available.
+POSIX conformance testing by UNIFIX
+Unable to handle kernel paging request at virtual address 00000014, epc == 8004994c, ra == 80049954
+Oops in fault.c::do_page_fault, line 206:
+$0 : 00000000 1000c100 00000000 801f50a0 8015dff4 801f5120 00000000 1000c101
+$8 : 00000030 801154e0 8015da28 00000000 000001f5 8015d9f0 00000000 1000c101
+$16: 80002794 801f50a0 00010f00 801f5120 ffffffe9 80125478 80170000 80156e4c
+$24: 80170000 00000001                   8013e000 8013fe30 00000000 80049954
+Hi : 00000000
+Lo : 00000080
+epc   : 8004994c    Not tainted
+Status: 1000c103
+Cause : 90800008
+PrId  : 00018009
+Process swapper (pid: 0, stackpage=8013e000)
+Stack:    8015c8c0 00000001 80170000 0000043f 80170000 80170000 80170000
+ 1000c101 000f3aff 8017755c 80169c1c 8016a055 00000060 8015c8c0 80170000
+ 80160000 80002794 00000000 00010f00 8014e258 00000000 80125478 00000001
+ 80156e4c 00000000 8000922c 8013fea8 801b7270 00808000 8009e894 80170000
+ 80156e4c 80009cc4 000003e9 00010f00 00000000 8013ff68 ffffffff 8015fee4
+ 0000041b ...
+Call Trace:   [<80002794>] [<80125478>] [<8000922c>] [<8009e894>] [<80009cc4>]
+ [<80016848>] [<80002794>] [<80125478>] [<80014c5c>] [<801254a4>] [<80004738>]
+ [<80014c5c>] [<80125478>]
+
+Code: 00409821  3c168017  8ec213c0 <0c0161ae> 8c440014  104000ae  00408021  0c01260c  00402021 
+Kernel panic: Attempted to kill the idle task!
+In idle task - not syncing
+}}}

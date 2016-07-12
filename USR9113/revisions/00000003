@@ -1,0 +1,26 @@
+= USR9113 =
+== Hardware ==
+||CPU||BCM6358||
+||System Type||96358GW-B||
+||Flash||4MiB||
+||RAM||32MiB||
+||WLAN||BCM4321||
+||Switch||unknown 4 Ports||
+== Serial Port ==
+J506
+||Pin||Function||
+||1||TxD||
+||2||RxD||
+||3||3,3V||
+||4||GND||
+J506 is the same Port but with 9Pin Header
+||Pin||Function||
+||1||TxD||
+||7||RxD||
+||6,8||GND||
+||others||unknown||
+== JTAG ==
+J201
+||Pin||Function||
+||2,4,6,8,10,12||GND||
+||others||unknown||

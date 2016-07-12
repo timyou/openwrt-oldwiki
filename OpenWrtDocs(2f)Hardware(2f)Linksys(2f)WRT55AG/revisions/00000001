@@ -1,0 +1,10 @@
+'''Linksys WRT55AG'''
+
+=== Hardware versions ===
+There are two versions of the WRT55AG. At this time it is unknown what the hardware inside consists of. You can get the version number from the sticker on the bottom of the device.
+
+==== WRT55AG v1.0 ====
+We have no information about the internals of these units, yet, so they are '''NOT''' supported.
+
+==== WRT55AG v2.0 ====
+The WRT55AG v1.0 uses ...?

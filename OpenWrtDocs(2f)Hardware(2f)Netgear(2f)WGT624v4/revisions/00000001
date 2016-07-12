@@ -1,0 +1,57 @@
+[[TableOfContents]]
+
+= Netgear WGT624 v4 =
+Please let me know what commands should be run on this router to provide needed information.
+
+
+[http://rodgers.org.uk/archives/64 Information on getting shell access]
+
+== Hardware Versions ==
+
+== Specs for WGT624 v4 -- HW REV V4 ==
+
+ * CPU:
+ * Flash: 
+ * RAM: 
+ * Switch: 
+ * Wireless: 
+ * One External Antenna 
+ * One Internal Antenna, etched onto PCB. ???
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 
+
+== Photos ==
+
+=== HW REV V3H1 ===
+
+
+== Serial or JTAG ==
+
+=== HW REV V3H1 ===
+
+
+== Telnet ==
+[http://rodgers.org.uk/archives/64 Information on getting shell access]
+
+=== Useful Commands ===
+
+==== version ====
+
+==== wla get hardware ====
+
+==== show flashShow ====
+{{{
+U12H05500> put stuff here}}}
+
+==== show mem ====
+
+==== show interface ====
+{{{
+}}}
+==== ftpc ====
+
+=== remote shells ===
+
+----
+ . CategoryModel

@@ -1,0 +1,925 @@
+[[TableOfContents]]
+
+= Linksys AG241 =
+== Specifications AG241v2 ==
+
+Bootloader: ["ADAM2"]
+
+== Specifications AG241v2-EU ==
+
+Switch 4-Port ADSL Router with Firewall/QoS Control (ADSL 2/2+ Compliant)
+
+ * - CPU: Texas Instruments AR7 MIPS-based, TNETD7200ZDW
+ * - Flash chip: 4Mbytes, Macronix, [http://www.macronix.com/QuickPlace/hq/PageLibrary48256F5500439ED0.nsf/h_CE4C9490FDF4280B48256F550043C6D8/209CFCBBF4BCCB9148257031002F02E6/$File/MX29LV320CTBver17.pdf?OpenElement 29LV320CTTC-70G], 32Mbit NOR-type Flash Memory organized as 4M x 8
+ * - SDRAM: 16Mbytes, MIRA, P2V28S40CTP, 3.3V at 143MHz organised as 8M x 16.
+ * - Switch: Infineon, [ ADM6996LC]
+ * - Switch: Infineon, [ ADM6996LC]
+ * - Wireless NIC: '''NONE'''
+ * - 4x-ethernet-port transformer: LHB, 20pt1024xlx
+ * - Bootloader: ["PSPBoot"]
+== Picture (AG241v2-EU) ==
+attachment:ag241-eu.jpg
+
+== Serial console ==
+Note: this does not match with the picture above.  The description is exactly as written here, the new port is named JP4 and PIN1 is on the left side. So just flip the picture 90 degree to have the new layout.
+
+attachment:serial_console_pins_ttl.jpg
+
+{{{
+Pins Connections:
+
+  - Pin 1, GND
+  - Pin 2, Not Connected
+  - Pin 3, Router's Serial RX
+  - Pin 4, Router's Serial TX
+  - Pin 5, VCC
+
+Configure teminal with:
+   - Baud Rate: 38400 bauds.
+   - Data: 8 bits.
+   - Parity: no parity.
+   - Stop: 1 stop bit.
+   - Flow Control: none
+}}}
+== BootLoader ==
+=== PSPBoot ===
+{{{
+free space start: 0xb0010000
+free space end: 0xb0400000
+Basic POST completed...     Success.
+Last reset cause: Hardware reset (Power-on reset)
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+FlashType:
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+Press ESC for monitor... 1
+}}}
+command: '''help'''
+
+{{{
+(psbl) help
+reboot            version           fa                printenv
+setenv            unsetenv          defragenv         fmt
+boot              dm                oclk              help
+}}}
+command: '''version'''
+
+{{{
+(psbl) version
+PSPBoot 1.3.6.14
+Compiled gcc rev: 2.95.3 20010315 (release/MontaVista) [Jan  2 2006 22:47:50]
+Built for AR7WRD board in Little Endian mode.
+Optional modules included (+) or not (-):
+ +tibinary -ffs -tftp -ftp -dhcp -pcapp -dual_img
+}}}
+
+command: '''printenv'''
+{{{
+(psbl) printenv
+
+BUILD_OPS       0x1
+bootloaderVersion       1.3.6.14
+ProductID       AR7WRD
+HWRevision      Unknown
+SerialNumber    none
+SwRev           0.22.19
+BOOTCFG         m:f:"mtd1"
+MEMSZ           0x1000000
+FLASHSZ         0x400000
+MODETTY0        38400,n,8,1,hw
+MODETTY1        38400,n,8,1,hw
+CPUFREQ         211968000
+MIPSFREQ        211968000
+SYSFREQ         125000000
+PROMPT          (psbl)
+mtd0            0x900e0000,0x903d0000
+mtd1            0x90020000,0x903d0000
+mtd2            0x90000000,0x90020000
+mtd3            0x903f0000,0x90400000
+mtd4            0x903d0000,0x903f0000
+pair_selection  0
+multi_lang      1
+modulation      MMODE
+eoc_vendor_id   4c696e6b73797300
+eoc_vendor_revision     0
+HWA_0           00:1C:10:BC:7F:AC
+eoc_vendor_serialnum    CHZ41G900740
+autoload_timeout        25
+IPA             192.168.1.1
+MAC_PORT        0
+}}}
+
+== Booting ... ==
+=== Flashing and Booting Original Firmware ===
+Flasing AG241v2-EU
+
+1.- Power on the router
+
+{{{
+free space start: 0xb0010000
+free space end: 0xb0400000
+
+Basic POST completed...     Success.
+Last reset cause: Hardware reset (Power-on reset)
+
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+
+FlashType:
+
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+}}}
+
+2.- Press ESC key to enter in PSPBoot Mode
+
+{{{
+Press ESC for monitor... 2
+}}}
+
+3.- When you have on PSPBoot chek your ip (PSPBoot)
+
+{{{
+(psbl) printenv
+...
+IPA             192.168.1.1
+...
+}}}
+
+4.- Transfer the firmware to router
+
+{{{
+[crowm@proteus bin]$ tftp -v -m binary 192.168.1.1 -c put AG241V2-EU-v2_01_01-00-TSM-20070805.bin upgrade_code.bin
+mode set to octet
+Connected to 192.168.1.1 (192.168.1.1), port 69
+putting AG241V2-EU-v2_01_01-00-TSM-20070805.bin to 192.168.1.1:upgrade_code.bin [octet]
+Sent 3330104 bytes in 4.9 seconds [5400468 bit/s]
+}}}
+
+5.- PSPBoot Flash the Firmware (When we see as Flash the OpenWRT we will see the possible errors of the PSPBoot.)
+
+{{{
+(psbl) tftp_ramAddress = 94400000
+Code Pattern Correct!
+Erase base: b0020000   size: 3b0000
+Erasing from 0xb0020000 to 0xb03d0000.
+FlashEraseBlock(b0020000,b03cffff);
+...........................................................
+Erase Successful.
+
+....................................................free space start: 0xb0010000
+free space end: 0xb0400000
+
+Basic POST completed...     Success.
+Last reset cause: Software reset (memory controller also reset)
+}}}
+
+Booting after Flash.
+
+{{{
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+
+FlashType:
+
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+Press ESC for monitor... 1
+
+(psbl)
+
+Booting...
+Launching kernel decompressor.
+Starting LZMA Uncompression Algorithm.
+Copyright (C) 2003 Texas Instruments Incorporated; Copyright (C) 1999-2003 Igor
+Pavlov.
+Compressed file is LZMA format.
+Kernel decompressor was successful ... launching kernel.
+
+LINUX started...
+Config serial console: ttyS0,38400
+Auto Detection OHIO chip
+This SOC has MDIX cababilities on chip.
+WLAN 1350 chip configured.
+CONFIG_AVALANCHE_VLYNQ_POLARITY_LOW
+Failed to initialize the vlynq @ 0xa8611800.
+The error msg: Error in configuring clocks..
+CPU revision is: 00018448
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 8kb, linesize 16 bytes (4 ways)
+Number of TLB entries 16.
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc ve
+rsion 2.95.3 20010315 (release/MontaVista)) #31 Thu Jul 12 20:29:16 CST 2007
+Determined physical RAM map:
+ memory: 14000000 @ 00000000 (reserved)
+ memory: 00020000 @ 14000000 (ROM data)
+ memory: 00fe0000 @ 14020000 (usable)
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line:
+calculating r4koff... 00102c00(1059840)
+CPU frequency 211.97 MHz
+Calibrating delay loop... 211.35 BogoMIPS
+Freeing Adam2 reserved memory [0x14001000,0x0001f000]
+Memory: 13880k/16384k available (1882k kernel code, 2504k reserved, 139k data, 6
+4k init)
+Dentry-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+TI Optimizations: Allocating TI-Cached Memory Pool.
+Warning: Number of buffers is not configured.Setting default to 512
+Using 512 Buffers for TI-Cached Memory Pool.
+DEBUG: Using Hybrid Mode.
+NSP Optimizations: Succesfully allocated TI-Cached Memory Pool.
+Initializing RT netlink socket
+Starting kswapd
+Disabling the Out Of Memory Killer
+devfs: v1.7 (20011216) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 32 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0xa8610e00 (irq = 15) is a 16550A
+block: 64 slots per queue, batch=16
+CPMAC Auto Detect Enabled: detected external PHY and external switch as well..
+Error getting CPMAC Configuration params for instance:0
+Environment Variable:MACCFG_A not set in bootloader
+Setting Default configuration params for CPMAC instance:0
+Default Asymmetric MTU for eth0 1500
+TI CPMAC Linux DDA version 1.8 - CPMAC DDC version 0.2
+Cpmac: Installed 1 instances.
+Cpmac driver is allocating buffer memory at init time.
+PPP generic driver version 2.4.1
+avalanche flash device: 0x400000 at 0x10000000.
+ Amd/Fujitsu Extended Query Table v1.1 at 0x0040
+Physically mapped flash: Swapping erase regions for broken CFI table.
+number of CFI chips: 1
+Looking for mtd device :mtd0:
+Found a mtd0 image (0xe0000), with size (0x2f0000).
+Looking for mtd device :mtd1:
+Found a mtd1 image (0x20000), with size (0x3b0000).
+Looking for mtd device :mtd2:
+Found a mtd2 image (0x0), with size (0x20000).
+Looking for mtd device :mtd3:
+Found a mtd3 image (0x3f0000), with size (0x10000).
+Looking for mtd device :mtd4:
+Found a mtd4 image (0x3d0000), with size (0x20000).
+Creating 5 MTD partitions on "Physically mapped flash":
+0x000e0000-0x003d0000 : "mtd0"
+0x00020000-0x003d0000 : "mtd1"
+0x00000000-0x00020000 : "mtd2"
+0x003f0000-0x00400000 : "mtd3"
+0x003d0000-0x003f0000 : "mtd4"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 1024 bind 1024)
+IPv4 over IPv4 tunneling driver
+Default Asymmetric MTU for tunl0 1480
+GRE over IPv4 tunneling driver
+Default Asymmetric MTU for gre0 1476
+Linux IP multicast router 0.06 plus PIM-SM
+klips_info:ipsec_init: KLIPS startup, FreeS/WAN IPSec version: super-freeswan-1.
+99.8
+Default Asymmetric MTU for ipsec0 0
+Default Asymmetric MTU for ipsec1 0
+Default Asymmetric MTU for ipsec2 0
+Default Asymmetric MTU for ipsec3 0
+Default Asymmetric MTU for ipsec4 0
+klips_info:ipsec_alg_init: KLIPS alg v=0.8.1-0 (EALG_MAX=255, AALG_MAX=15)
+klips_info:ipsec_alg_init: calling ipsec_alg_static_init()
+ipsec_1des_init(alg_type=15 alg_id=2 name=1des): ret=0
+You should NOT load 1DES support except for testing purposes !
+ipsec_null_init(alg_type=15 alg_id=11 name=null): ret=0
+ip_conntrack version 2.0 (128 buckets, 1024 max) - 392 bytes per conntrack
+ip_tables: (c)2000 Netfilter core team
+netfilter PSD loaded - (c) astaro AG
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+Initializing the WAN Bridge.
+Please set the MAC Address for the WAN Bridge.
+Set the Environment variable 'wan_br_mac'.
+MAC Address should be in the following format: xx.xx.xx.xx.xx.xx
+802.1Q VLAN Support v1.6  Ben Greear <greearb@candelatech.com>
+vlan Initialization complete.
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 64k freed
+Firmware Version: 2.01.03
+ret = -1
+www -> /www
+mount: Invalid argument
+Hit enter to continue...Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/
+drivers/net/mac/writemac.o
+killall: httpd: no process killed
+
+ Configured 19 states
+now insmod tiatm
+Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/drivers/atm/tiatm.o
+name=[eth0] lan_ifname=[br0]
+=====> set br0 hwaddr to eth0
+wlconf: No such file or directory
+Lan Ipaddr: 255.255.255.0 Netmask: 255.255.255.0................
+255.255.255.0 255.255.255.0
+.............list  ..............
+antsel: No such file or directory
+[HTTPD Starting on /www]
+The boot is UNKNOWN
+tftp server started
+tftpd: standalone socket
+HTTPD start,  port 80
+dhcpd:auto_search_ip=0,firstsetlanip=1
+.............list  ..............
+info, udhcp server (v0.9.8) started
+log_ipaddr=255
+killall: leijun--upnpd-igd ver 0.83 2004-0329: no process killed
+Now Start syslog.........................!!zebra disabled
+killall: adslpolling: no process killed
+IDLE
+Hit enter to continue...wan def hwaddr 00:1C:10:BC:7F:AD
+polling now .......
+upnpd-igd:current select wan connection:0
+upnp_content_num_0 = 14
+killall: begin_now: no process killed
+}}}
+==== Information Original Firmware ====
+===== System Info =====
+{{{
+# cat /proc/version
+Linux version 2.4.17_mvl21-malta-mips_fp_le (tom@excelsior) (gcc version 2.95.3
+20010315 (release/MontaVista)) #34 Sun Aug 5 03:22:19 BST 2007
+}}}
+===== CPU Info =====
+{{{
+# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 211.35
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+===== FLASH Map Info =====
+{{{
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 002f0000 00010000 "mtd0"
+mtd1: 003b0000 00010000 "mtd1"
+mtd2: 00020000 00010000 "mtd2"
+mtd3: 00010000 00002000 "mtd3"
+mtd4: 00020000 00010000 "mtd4"
+}}}
+===== ATM Driver Info (TI Avalanche SAR) =====
+{{{
+# cat /proc/avalanche/avsar_ver
+ATM Driver version:[6.00.01.00]
+DSL HAL version: [6.00.01.00]
+DSP Datapump version: [6.00.04.00] Annex A
+SAR HAL version: [01.07.2b]
+PDSP Firmware version:[0.54]
+Chipset ID: [Ohio250(7200/7100A2)]
+}}}
+===== Loaded Kernel Modules =====
+{{{
+# cat /proc/modules
+tiatm                 123936   0
+}}}
+===== Devices =====
+{{{
+# cat /proc/devices
+Character devices:
+  1 mem
+  2 pty/m%d
+  3 pty/s%d
+  4 tts/%d
+  5 cua/%d
+ 10 misc
+ 36 netlink
+ 90 mtd
+108 ppp
+128 ptm
+136 pts/%d
+162 raw
+253 gpio
+254 nvram
+
+Block devices:
+ 31 mtdblock
+}}}
+===== Free =====
+{{{
+# free
+              total         used         free       shared      buffers
+  Mem:        13912         8196         5716            0          836
+ Swap:            0            0            0
+Total:        13912         8196         5716
+}}}
+===== MemInfo =====
+{{{
+# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  14245888  8404992  5840896        0   856064  2727936
+Swap:        0        0        0
+MemTotal:        13912 kB
+MemFree:          5704 kB
+MemShared:           0 kB
+Buffers:           836 kB
+Cached:           2664 kB
+SwapCached:          0 kB
+Active:           1712 kB
+Inactive:         2956 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        13912 kB
+LowFree:          5704 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+}}}
+===== IOMem =====
+{{{
+# cat /proc/iomem
+00000000-13ffffff : reserved
+14000000-1401ffff : System RAM
+14020000-14ffffff : System RAM
+  14020000-141fe137 : Kernel code
+  14210300-14232fff : Kernel data
+a8610000-a86107ff : eth0
+}}}
+===== Running Proccesses =====
+{{{
+# ps -ax
+  PID  Uid     Stat Command
+    1 admin    S    init
+    2 admin    S    [keventd]
+    3 admin    S    [ksoftirqd_CPU0]
+    4 admin    S    [kswapd]
+    5 admin    S    [bdflush]
+    6 admin    S    [kupdated]
+    7 admin    S    [mtdblockd]
+    8 admin    S    [mail]
+   12 admin    S    resetbutton
+   22 admin    S    cron
+   25 admin    S    tftpd -a 192.168.1.1 -s /tmp -c -l
+   28 admin    S    httpd
+   34 admin    S    dnsmasq -h -i br0 -r /tmp/resolv.conf
+   38 admin    S    udhcpd /tmp/udhcpd.conf
+   44 admin    S    telnetd
+   45 admin    S    klogd
+   46 admin    S    syslogd
+   47 admin    S    upnpd-igd br0
+   50 admin    S    /tmp/adslpolling
+   51 admin    S    /bin/sh
+ 1112 admin    R    ps -ax
+}}}
+
+===== Avalanche (/proc/avalanche) =====
+{{{
+# ls -l
+-r--r--r--    1 0        0               0 Jan  1 02:12 psp_version
+-r--r--r--    1 0        0               0 Jan  1 02:12 developers
+-r--r--r--    1 0        0               0 Jan  1 02:12 led_cfg
+-r--r--r--    1 0        0               0 Jan  1 02:12 led_ver
+dr-xr-xr-x    2 0        0               0 Jan  1 02:12 marvell
+-r--r--r--    1 0        0               0 Jan  1 02:12 eth0_rfc2665_stats
+-rw-r--r--    1 0        0               0 Jan  1 02:12 cpmac_stats
+-r--r--r--    1 0        0               0 Jan  1 02:12 cpmac_link
+-r--r--r--    1 0        0               0 Jan  1 02:12 cpmac_ver
+-r--r--r--    1 0        0               0 Jan  1 02:12 cpmac_config
+-rw-r--r--    1 0        0               0 Jan  1 02:12 wan_bridge
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_ver
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_channels
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_sarhal_stats
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_oam_ping
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_pvc_table
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_rxsnr0
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_rxsnr1
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_rxsnr2
+-r--r--r--    1 0        0               0 Jan  1 02:12 clear_eoc_stats
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_bit_allocation_table
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_dsl_modulation_schemes
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_private
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_modem_training
+-rw-r--r--    1 0        0               0 Jan  1 02:12 avsar_modem_stats
+-rw-r--r--    1 0        0               0 Jan  1 02:12 avsar_qos_enable}}}
+====== (/proc/avalanche/psp_version) ======
+{{{
+# cat /proc/avalanche/psp_version
+
+Linux OS DSL-PSP version 4.6.1.9 on BasePSP Version 7.1.0.8 Aug  5 2007 03:25:09
+ Avalanche SOC Version: 0x10002b operating in cached, write back, write allocate
+ mode Cpu Frequency:211 MHZ System Bus frequency: 125 MHZ
+}}}
+
+====== (/proc/avalanche/developers) ======
+{{{
+# cat /proc/avalanche/developers
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Salt Lake City Kernel Developement team (1999-2000)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell            - Kernel ports, ADSL driver
+Brady Brown             - filesystem, kernel port
+Mike Hassler            - filesystem, timers
+Victor Wells            - Ram disk image, EMAC driver
+Kevin Mcdonald          - f/s, ramdisk compression
+Rosemary Rogers         - kitchen gnomes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Germantown Kernel Developement team (2001- )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell            - Kernel ports, ADSL driver
+Victor Wells            - VMAC driver
+James Beaulieu          - VMAC driver, PCI
+Hari Krishna            - USB driver
+Boris Marenkov          - USB driver
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+India Kernel Development Team (2002-)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Nitin Dhingra           - Intc, Avalanche
+Suraj Iyer                      - Intc, SEAD2, AR7 Port (2.4.17)
+Suraj Iyer                      - CPMAC (2.4.17)
+Sharath Kumar           - SEAD2, AR7 Port (2.4.17)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+}}}
+====== (/proc/avalanche/led_cfg) ======
+{{{
+cat /proc/avalanche/led_cfg
+
+Module:adsl
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED OFF
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_FLASH
+
+            gpio: 33
+
+            param1: 200
+
+            param2: 200
+
+        State: 3
+
+            mode: LED_ON
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 4
+
+            mode: LED_ON
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+Module:cpmac
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 15
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 15
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 15
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 15
+
+            param1: 100
+
+            param2: 0
+
+Module:usb
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 12
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 12
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 12
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 12
+
+            param1: 100
+
+            param2: 0
+
+Module:pppoe
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 13
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 13
+
+            param1: 0
+
+            param2: 0
+
+Module:wlan
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 6
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 6
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 6
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 6
+
+            param1: 100
+
+            param2: 0
+}}}
+====== (/proc/avalanche/led_ver) ======
+{{{
+# cat /proc/avalanche/led_ver
+
+TI Linux LED Driver Version 0.1
+}}}
+====== (/proc/avalanche/cpmac_stats) ======
+{{{
+cat /proc/avalanche/cpmac_stats
+
+Cpmac 1, Address a8610000
+ Transmit Stats
+   Tx Valid Bytes Sent        :221468
+   Good Tx Frames (Hardware)  :622
+   Good Tx Frames (Software)  :620
+   Good Tx Broadcast Frames   :0
+   Good Tx Multicast Frames   :622
+   Pause Frames Sent          :0
+   Collisions                 :0
+   Tx Error Frames            :0
+   Carrier Sense Errors       :0
+
+
+Cpmac 1, Address a8610000
+ Receive Stats
+   Rx Valid Bytes Received    :0
+   Good Rx Frames (Hardware)  :0
+   Good Rx Frames (Software)  :0
+   Good Rx Broadcast Frames   :0
+   Good Rx Multicast Frames   :0
+   Pause Frames Received      :0
+   Rx CRC Errors              :0
+   Rx Align/Code Errors       :0
+   Rx Jabbers                 :0
+   Rx Filtered Frames         :0
+   Rx Fragments               :0
+   Rx Undersized Frames       :0
+   Rx Overruns                :0
+}}}
+====== (/proc/avalanche/cpmac_link) ======
+{{{
+# cat /proc/avalanche/cpmac_link
+CPMAC devices = 1
+eth0: Link State: UP    Phy -1, Speed = 100, Duplex = Full
+}}}
+====== (/proc/avalanche/cpmac_ver) ======
+{{{
+# cat /proc/avalanche/cpmac_ver
+Texas Instruments : CPMAC Linux DDA version 1.8
+Texas Instruments : CPMAC DDC version 0.2
+}}}
+====== (/proc/avalanche/cpmac_config) ======
+{{{
+# cat cpmac_config
+CPMAC devices = 1
+
+CPMAC Driver Internal Config Info for Unit 0
+vlanEnable         = 0
+rxBufSize          = 1528
+rxBufOffset        = 2
+instId             = 0
+numTxChannels      = 1
+numRxChannels      = 1
+cpmacBusFrequency  = 62500000
+baseAddress        = A8610000
+intrLine           = 19
+resetLine          = 17
+mdioBaseAddress    = A8611E00
+mdioResetLine      = 22
+mdioIntrLine       = 0
+PhyMask            = 80000000
+MLinkMask          = 00000000
+MdioBusFrequency   = 62500000
+MdioClockFrequency = 2200000
+MdioTickMSec       = 10
+phyMode            = 1024
+passCRC            = 0
+qosEnable          = 0
+noBufferChaining   = 0
+copyMACCntrlFrsEne = 0
+copyShortFramesEn  = 0
+copyErrorFramesEn  = 0
+promiscousEnable   = 1
+promiscousChannel  = 0
+broadcastEnable    = 1
+broadcastChannel   = 0
+multicastEnable    = 1
+multicastChannel   = 0
+maxRxPktLength     = 1526
+bufferOffset       = 0
+pType              = 1
+txShortGapEnable   = 0
+gigaBitEnable      = 0
+txPacingEnable     = 0
+miiEnable          = 1
+txFlowEnable       = 0
+rxFlowEnable       = 0
+loopbackEnable     = 0
+fullDuplexEnable   = 1
+}}}
+====== (/proc/avalanche/wan_bridge) ======
+{{{
+# cat /proc/avalanche/wan_bridge
+0
+}}}
+====== (/proc/avalanche/avsar_ver) ======
+{{{
+# cat /proc/avalanche/avsar_ver
+ATM Driver version:[6.00.01.00]
+DSL HAL version: [6.00.01.00]
+DSP Datapump version: [6.00.04.00] Annex A
+SAR HAL version: [01.07.2b]
+PDSP Firmware version:[0.54]
+Chipset ID: [Ohio250(7200/7100A2)]
+}}}
+==== Configuration Files ====
+===== LED Configuration =====
+{{{
+}}}
+===== NVRAM Configuration =====
+{{{
+}}}
+=== Flashing and Booting OpenWRT Firmware (trunk) ===
+{{{
+working ... ;)
+}}}
+
+{{{
+free space start: 0xb0010000
+free space end: 0xb0400000
+Basic POST completed...     Success.
+Last reset cause: Hardware reset (Power-on reset)
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+FlashType:
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+Press ESC for monitor... 1
+(psbl)
+Booting...
+}}}
+
+== Flash ==
+Since this device uses PSPBoot no flashing of openwrt via tftp is possible. Also no ftpd as with adam2 is available. The device seems to use the code pattern "AG3BPBOT" instead of "WAG2" so the image gets denied via tftp and http. The only solution I found to put openwrt on is to get the original sources from Linksys, recompile the image with an enabled telnetd and do the flashing with an mtd binary via telnet.
+
+You can get further infos from a forum thread
+
+http://forums.whirlpool.net.au/forum-replies.cfm?t=511748&p=8
+
+----
+ . ["CategoryAR7Device"]

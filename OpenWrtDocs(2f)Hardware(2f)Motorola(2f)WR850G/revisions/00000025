@@ -1,0 +1,51 @@
+'''Motorola WR850G'''
+
+=== Hardware versions ===
+
+The WR850G has three different versions (v1, v2, v3).
+
+==== WR850G v1 ====
+The WR850G v1 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is a mini-PCI card.
+
+==== WR850G v2 ====
+The WR850G v2 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM (memory addressing wraps address to ram, so when it boots, the simple memory size routine doesn't check for address wrapping, so it reports 32Mb). The wireless NIC is integrated to the board.
+
+Note: In at least two (feagle814's, rgh12's) WR850G v2, there is 16MB of RAM onboard.  DO NOT try the 32mb enablement hack on the WR850G v2 without first verifying how much RAM you really have (see earlier paragraph on the address wrap problem)!
+
+ISSI IS42S16400B1-7T is a 8MB chip (1Mbx16x4, 64Mb total [divided by 8 = 8megabytes]).  If you have the ISSI IS42S16800xx-7t it is a 16MB chip (2Mbx16x4 128Mb total [divided by 8 = 16megabytes]).  There are two RAM chips installed on the v2 router, the other one is on the back side of the circuitboard.  Since the Linksys wrt54gs has 32megabytes of ram (2 chips also) installed in it, and if you wanted to use the same packages as it does, then you must either change the 8MB chips to 16MB chips, or live with the fact that you will be somewhat restricted in what you can do with the smaller amount of memory available (possibly limiting what packages you can safely run). If you are really lucky, you may not have to do anything at all (if you have the 16MB chips installed already).
+
+The WR850G v2 is housed in gray plastic and sports a reverse SMA antenna connector. 
+
+Warning Note: Do not erase the NVRAM, at least on this version.  It doesn't seem to be rewritten by the bootloader upon reboot, as with the WRT54G. 
+
+==== WR850G v3 ====
+The WR850G v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is integrated to the board.
+
+G-Link GLT5640L16-6TC is a 8MB chip.  Your router should have two of these.  Check the bottom of the PCB for the second one.
+
+The WR850G v3 version is housed in black pastic and has a hard wired non removable (without desoldering) antenna.
+
+=== How To Enable Boot Wait ===
+
+ * Reset router to default with  [http://broadband.motorola.com/consumers/products/WR850g/downloads/Motorola_WR850G_4.03.exe firmware 4.03]
+ * Login to the router's web page and go to /frame_debug.asp
+ * Type in: nvram set boot_wait=on
+ * Type in: nvram commit
+ * Reboot and do tftp. 
+
+/!\ Some users report that boot_wait only functions for one reboot after setting it from the web interface.
+
+
+=== Finding the serial ports on the WR850G ===
+First serial port:
+
+ * Open the WR850G. The plastic is hard and the clips are strong - use force!
+ * Attach a serial cable to the serial connector - it's a 9-pin connector with two rows, one with 5 pins and one with 4 pins. I recommend using a [http://www.nslu2-linux.org/wiki/HowTo/AddASerialPort cell phone data cable] - they're cheap and do the voltage conversions with no assembly required.
+  * Pin 1 (square hole): Data out of WR850G
+  * Pin 7 (three pins over from pin 1): Data into WR850G
+  * Pin 6 (two pins down, one across from pin 1): Ground
+  * Port setting is 115200, N, 8, 1, no flow control.
+
+Second serial port:
+
+While the first serial port is easy to find (and described in the "non-experimental" installation section above), the second serial port is quite well hidden.  On the bottom of the board near the serial connector you'll notice there are two small black components labeled "0".  Next to them there are solder pads where you'd expect two more "0" components to go - but they're missing!  On the set of pads away from the serial connector, the second serial port signals are exposed.  Get out your fine-tipped soldering iron and solder some fine wires to the pads opposite the serial connector.  RR93 is data out of the WR, and RR94 is data in.

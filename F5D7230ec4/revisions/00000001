@@ -1,0 +1,466 @@
+The MicraDigital '''F5D7230ec4''' (ver. 1020ec) is a economic wireless router sold in Europe in 2006 and 2007. MicraDigital is a brand of Belkin. 
+
+= Hardware Description =
+Unlike the Belkin F5D7230, which is reported to use a Broadcom chip, it's based on an Atheros '''AR2315A''' chip (which can also run OpenWRT, it's a MIPS R4K core). 
+
+Opening the box is easy as soon as the two rubber pads under the box are removed, exposing two screws. The top lid is clipped on several points (two in front, two in back, one on each side) but comes easily by bending a little bit the thin plastic of the case.
+
+ * Main chip : Atheros AR2315A-00, under EMI screed (which also serves as a heatsink)
+ * RAM : 8MB SDRAM (IC4S16400-7T, 133MHz)
+ * Flash : 2MB Serial Flash (ST M25P16, 50MHz SPI)
+ * Switch : IC+ IP175C
+ * Radio : integrated into the Atheros chip.
+
+10-pin serial port and 14-pin (unsocketed) JTAG ports are accessible onboard. 
+
+== Serial port pinout ==
+As seen facing the front panel 
+
+{{{   2 4 6 8 10 
+> 1 3 5 7 9}}}
+
+3 = Rx,  
+4 = Tx,  
+9 = GND,  
+10 = 3V3
+
+Using a DB9 ribbon, you get standard RS232 pinout (2 = Rx, 3 = Tx, 5 = GND), but you still need a RS232 level converter (like MAX232)
+
+== JTAG pinout ==
+This port seems to comply with EJTAG header specification.
+
+= Pictures =
+Coming soon.
+
+The board really looks like the reference design from Atheros http://www.atheros.com/pt/AR5006AP-G.htm, the parts are almost placed in the same way. There is an undetachable external antenna, and an onboard patch antenna. On the first one a SMD coax connector is populated, and the PCB has room for a SMA connector instead of the soldered pigtail. 
+
+= Serial Access =
+Hooking a RS232 line driver (e.g. MAX232) on the 10-pin connector, and running minicom at 115200, 8-bit, no parity, 1 stop bit, no flow control, one can get a lot of informations about the boot process :
+{{{
+ar531xPlus rev 0x00000086 boot loader startup...
+Flash initialized
+SDRAM initialized
+Cache initialized
+
+Copy program from 0xbfc00000 to 0x80520000, length 0x0000ce3c bytes ... done
+Jump to SDRAM 0x80520cb4 [0x10000008, 0x00000000, 0x00000000]
+Clear BSS section ... done
+Stack: 0x8053ec60
+Heap: 0x8053ec70
+
+
+
+=========================================================================
+ Wireless Gateway WG4005F 1-AK ZZ Loader V0.08 build Oct 21 2005 15:44:10
+                  Arcadyan Technology Corporation
+=========================================================================
+
+Flash Found. It is 2MB Flash....
+
+Copying boot params.....DONE
+cpuFreq=240000000 sysFreq=60000000 cntFreq=120000000
+
+Press any key to enter command mode ...
+Checking Valid Image in Flash... Passed.
+failed(4)
+
+Try to find image for running...
+Valid Code found in the Flash
+done
+Uncompressed size = 2111292
+I am going to run the Code image from 80001000
+
+
+
+
+firmware startup...
+Stack: 0x807a2da0
+Heap: 0x807a2db0
+[GPIO FLOW] SetGpio() Begin ..
+/cygdrive/e/ttf2004ak/source/firmware/hardware/ar5312/ar531xbsp.c:bsp_gpio_init is called
+[GPIO FLOW] SetGpio() End.
+##### _ftext      = 0x80001000
+##### _fdata      = 0x801CEA20
+##### __bss_start = 0x8020473C
+##### end         = 0x80792DA0
+##### stack size  = 0x10000
+##### Backup Data from 0x801CEA20 to 0x807A2DA0, size = 220444 bytes
+
+install_exception
+Installing TLB Refill exception handler from 80008930 to 80000000, size=184
+Installing General exception handler from 800089E8 to 80000180, size=216
+Installing Interrupt exception handler from 80008AC0 to 80000200, size=160
+misc_int_init
+mips_int_enable : 0x00000400
+Connect the AHB interrupt
+sysBoardDataInit
+Init the GPIOs !!!
+Enable arbitration for SOC devices !!!
+cpuFreq=184000000 sysFreq=40000000 cntFreq=92000000
+should call WLanReset..
+AR531X_TIMER=00061A69
+AR531X_RELOAD=00061A80
+time1 0003a925, time2 0003a919
+AR531X_IMR=00000028
+mips_cp0_status=10000401
+mips_cp0_cause=B0800000
+[INIT] System Log Pool startup ...
+[INIT] MTinitialize ..
+Runtime code version: 1.0.4
+System startup...
+[INIT] Memory COLOR 0, 400000 bytes ..
+[INIT] Memory COLOR 1, 450000 bytes ..
+[INIT] Memory COLOR 2, 351200 bytes ..
+
+Flash Found. It is 2MB Flash....
+Set flash memory layout to Boot Parameters found !!!
+Bootcode version: V0.08
+Serial number: J546027xxx
+Hardware version: 01
+sizeof(struct III_Config_t) is 82912
+!!! Invalid wireless channel range 0 ~ 0
+!!! Use default value 1 ~ 13
+default route: 0.0.0.0
+BufferInit:
+BUF_HDR_SZ=48 BUF_ALIGN_SZ=4 BUFFER_OFFSET=112
+BUF_BUFSZ0=272 BUF_BUFSZ1=1776
+NUM_OF_B0=0 NUM_OF_B1=600
+BUF_POOL0_SZ=0 BUF_POOL1_SZ=1094400
+sizeof(BUFFER0)=320,sizeof(BUFFER1)=1824
+*BUF0=0x80583598 *BUF1=0x80478288
+Altgn *BUF0=0x805835a0 *BUF1=0x80478290
+End at BUF0:0x805835a0, BUF1:0x80583590
+
+BUF0[0]=0x805835a0 BUF1[0]=0x80478290
+
+buffer0 pointer init OK!
+buffer1 pointer init OK!
+time = 08/01/2003, 00:00:00
+Interface 0 ip = 127.0.0.1
+
+ar531xmac_init: ifno=1, initstr=UNIT=0 VLAN=1
+/cygdrive/e/ttf2004ak/source/firmware/hardware/ar5312/ar531xbsp.c:sysEnetInit is called
+ae531xEndLoad: loading device ...
+ae531xEndLoad: unit=0, pDmaBuf=0xa0339380, dmaBufSize=5136, txDescCount=128, rxDescCount=128, clCount=256
+ae531xEndLoad: System param: mac=b0500000, dma=b0501000, ivec=4, ilev=1000
+ae531xEndLoad: Flash ea = 00:12:bf:14:10:xx
+ae0 qt = 1, buf begin = 80000000, buf end = 80000000
+ae0 qt = 1, drsc begin = a0339390, desc end = a0339d7c
+Tx Queue b=0xa0339390, e=0xa0339d7c, c=0xa0339390, s@c=0x       0
+ae0 qt = 2, buf begin = 80478302, buf end = 804b0be2
+ae0 qt = 2, drsc begin = a0339d90, desc end = a033a77c
+Rx Queue b=0xa0339d90, e=0xa033a77c, c=0xa0339d90, s@c=0x80000000
+ae531xMemInit: Memory setup complete.
+Found PHY enet0 port0: model 0x18 revision 0x0
+Found PHY enet0 port1: model 0x18 revision 0x0
+Found PHY enet0 port2: model 0x18 revision 0x0
+Found PHY enet0 port3: model 0x18 revision 0x0
+Found PHY enet0 port4: model 0x18 revision 0x0
+Port 0, Negogiation timeout
+eth0: Phy Status=7849
+eth0: Phy Status=7849
+eth0: Phy Status=7849
+eth0: Phy Status=7849
+eth0: Phy Status=7849
+ip_VLANInit> WAN port
+ip_VLANInit> LAN port
+ip_VLANInit> LAN port
+ip_VLANInit> LAN port
+ip_VLANInit> LAN port
+Smart Router : 189
+ae0 Phy Setup Failed
+Please check the ethernet cable on port 0!
+eth0: duplex 0, link 0
+ae_SetMacFromPhy: enet0 as half duplex, 10Mbps
+ae0: setting TXDP=0xa0339390 RXDP=0xa0339d90
+ae0 Verify MAC address 14BF1200 0000xx10
+  sb = 00 12 BF 14 10 xx
+ae531xRxFilterConfig: MacControl = 1084000C
+ae531xEndLoad: Done loading, pDrvCtrl=80339178 txQ=803391A4 rxQ=803391B8
+ae_unitLinkGained :
+ae_SetMacFromPhy: enet0 as half duplex, 10Mbps
+call ae531xStart
+ae531xStart: Interrupt connected 0x0 0x4 0x8010A620 0x80339178.
+ae531xDmaIntEnable 0001a1e2
+ae531xStart: complete. im = 0001A1E2, is = 00660004.
+mips_int_enable : 0x00001400
+Wake up DHCP client
+ar531xmac_init: enet0 set to VLAN mode
+ar531xmac_init: enet0 interface 1 registered to VLAN 1
+
+  DmaStatus  = 0x  660004
+  DmaBusMode = 0x    2084
+  DmaRxBase  = 0x  339d90
+  DmaTxBase  = 0x  339390
+  DmaControl = 0x  202002
+  DmaIntr    = 0x   1a1e2
+  MacControl = 0x1084000c
+  MacAddrHi  = 0x    c610
+  MacAddrLo  = 0x14bf1200
+  MacVlan1   = 0x    8100
+  MacVlan2   = 0x       0
+
+Rx Queue b=0xa0339d90, e=0xa033a77c, c=0xa0339d90, s@c=0x80000000
+Current Rx buffer = 0x  478302
+Tx Queue b=0xa0339390, e=0xa0339d7c, c=0xa0339390, s@c=0x       0
+Current Tx buffer = 0x       0
+time = 08/01/2003, 00:00:00
+ae531xRxFilterConfig: MacControl = 1084000C
+Interface 1 ip = 192.168.2.1
+
+ae531xRxFilterConfig: MacControl = 1084000C
+ar531xmac_init: ifno=2, initstr=UNIT=0 VLAN=2
+ar531xmac_init: driver already loaded, number of instances is 2
+ar531xmac_init: enet0 set to VLAN mode
+ar531xmac_init: enet0 interface 2 registered to VLAN 2
+
+  DmaStatus  = 0x  660004
+  DmaBusMode = 0x    2084
+  DmaRxBase  = 0x  339d90
+  DmaTxBase  = 0x  339390
+  DmaControl = 0x  202002
+  DmaIntr    = 0x   1a1e2
+  MacControl = 0x1084000c
+  MacAddrHi  = 0x    c610
+  MacAddrLo  = 0x14bf1200
+  MacVlan1   = 0x    8100
+  MacVlan2   = 0x       0
+
+Rx Queue b=0xa0339d90, e=0xa033a77c, c=0xa0339d90, s@c=0x80000000
+Current Rx buffer = 0x  478302
+Tx Queue b=0xa0339390, e=0xa0339d7c, c=0xa0339390, s@c=0x       0
+Current Tx buffer = 0x       0
+time = 08/01/2003, 00:00:00
+iput_IpLinkUp(ifno=2)> ifp->add_default_route:1
+Re-Init NAT data structure
+Init NAT data structure
+Interface 2 ip = 0.0.0.0
+
+[HWLAN] ifno=4 irno=7 port=0x00000000
+[HWLAN] semBCreate return 1 803204cc, count 1
+semTake() is called in ISR
+[HWLAN] pRadio->abolt = 00000000
+[HWLAN] pRadio->abolt = 00000000
+semGive() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+
+[...]
+
+semTake() is called in ISR
+semGive() is called in ISR
+[HWLAN] gSetting.BasicRate=f
+[HWLAN] apCfgDefaultSet : prepare to set WDS..
+apInit: Initialize Access Point.
+[HWLAN] ar5hwcCreatePhy : ifno:4 pdevInfo=803a6604, devno=1
+[HWLAN] devno 1 pdevInfo 803a6604
+[HWLAN] Base address = b0000000, irq 3
+Attach AR5212 0x13 0x803a6604
+[HWLAN] DOMAIN 00008348
+[HWLAN] MAC Address=00-12-BF=14-10-xx
+[HWLAN] wlan1 revisions: mac 11.0 phy 4.8 analog 7.0 eeprom 5.2
+semTake() is called in ISR
+semGive() is called in ISR
+[HWLAN] phwChannel 2437, channelFlags 00005400
+[HWLAN] size of ATHEROS_DESC hardware part 32
+[HWLAN] CACHE_LINE_SIZE 16, AR_DESC_SIZE 128
+[HWLAN] AR_HEADER_SIZE 96, AR_BUF_SIZE 1696numDescriptors = 704
+[HWLAN] wlan1: pDmaBuf=A0205100
+[HWLAN] pMemBuf a0205100 pdevInfo->pDmaBuf a0205100
+[HWLAN] semBCreate return 2 803204e0, count 1
+[HWLAN] ar5hwcQueueCreate: semaphore id 803204e0
+[HWLAN] semBCreate return 3 803204f4, count 1
+[HWLAN] ar5hwcQueueCreate: semaphore id 803204f4
+[HWLAN] semBCreate return 4 80320508, count 1
+[HWLAN] ar5hwcQueueCreate: semaphore id 80320508
+[HWLAN] semBCreate return 5 8032051c, count 1
+[HWLAN] ar5hwcQueueCreate: semaphore id 8032051c
+[HWLAN] pMemBuf a0221100, pdevInfo->pDmaBuf + pdevInfo->dmaBufSize a023b920
+[HWLAN] muxDevLoad is called for vportNum 10000, loadfn 8006f3c0, vportStr 16: 0: 1
+[HWLAN] semBCreate return 6 80320530, count 1
+[HWLAN] semBCreate return 7 80320544, count 1
+[HWLAN] semBCreate return 8 80320558, count 1
+[HWLAN] semBCreate return 9 8032056c, count 1
+[HWLAN] semBCreate return 10 80320580, count 1
+[HWLAN] semBCreate return 11 80320594, count 1
+[HWLAN] semBCreate return 12 803205a8, count 1
+[HWLAN] semBCreate return 13 803205bc, count 1
+[HWLAN] ioctl CMD=0xb
+mips_int_connect: ivec 3 ar5hwcInt 80053e48 pdevInfo 803a6604
+mips_int_enable : 0x00001C00
+[HWLAN] bridgePortAdd : vp, 10000
+[HWLAN] bridgePortAdd (base BSS) succeeded for vp1
+should call linkSockAttach()
+[HWLAN] semBCreate return 14 803205d0, count 0
+[HWLAN] semBCreate return 15 803205e4, count 0
+[HWLAN] semBCreate return 16 803205f8, count 1
+[HWLAN] semBCreate return 17 8032060c, count 1
+semGive() is called in ISR
+[HWLAN] semBCreate return 18 80320620, count 0
+[HWLAN] semBCreate return 19 80320634, count 1
+[HWLAN] semBCreate return 20 80320648, count 1
+semGive() is called in ISR
+[HWLAN] semBCreate return 21 8032065c, count 0
+[HWLAN] semBCreate return 22 80320670, count 1
+[HWLAN] semBCreate return 23 80320684, count 1
+
+[...]
+
+semGive() is called in ISR
+[HWLAN] semBCreate return 204 803214a8, count 0
+[HWLAN] semBCreate return 205 803214bc, count 1
+[HWLAN] semBCreate return 206 803214d0, count 1
+semGive() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+wlan1 added STA: 00:12:bf:14:10:xx (860)
+semGive() is called in ISR
+[HWLAN] semBCreate return 207 803214e4, count 1
+semTake() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+semTake() is called in ISR
+semGive() is called in ISR
+[HWLAN] semBCreate return 208 803214f8, count 0
+semGive() is called in ISR
+[HWLAN] ifno=4 after call apInit() : .... bg 1 , a 0 ....
+time = 08/01/2003, 00:00:00
+[HWLAN] hwlan_ioctl() ..
+Interface 4 ip = 192.168.2.1
+
+[HWLAN] hwlan_ioctl() ..
+ruleCheck()> Group: 0,  Error: Useless rule index will be truncated
+ruleCheck()> Group: 1,  Error: Useless rule index will be truncated
+ruleCheck()> Group: 2,  Error: Useless rule index will be truncated
+CBAC rule format check succeed !!
+reqCBACBuf()> init match pool, Have: 500
+Memory Address: 0x80757d4c ~ 0x8075b418
+reqCBACBuf()> init timeGap pool, Have: 5000
+Memory Address: 0x8075b418 ~ 0x80773acc
+reqCBACBuf()> init sameHost pool, Have: 1000
+Memory Address: 0x80773acc ~ 0x8077b7ec
+CBAC rule pool initialized !!
+Init NAT data structure
+RUNTASK id=2 if_task if0...
+RUNTASK id=3 if_task if1...
+RUNTASK id=4 if_task if2...
+RUNTASK id=5 if_task if4...
+RUNTASK id=6 timer_task...
+RUNTASK id=7 conn_mgr...
+RUNTASK id=8 main_8021x...
+RUNTASK id=9 period_task...
+cerb_SetLicense> license='BE754602716'
+RUNTASK id=10 dhcp_daemon...
+RUNTASK id=11 dhcp_clt...on interface 2
+RUNTASK id=12 pptp_callmgr...
+httpd: listen at 192.168.2.1:80
+HTTPD TIMER_RESOURCE:5, FS_RESOURCE:6
+RUNTASK httpd...
+RUNTASK id=15 dnsproxy...
+RUNTASK id=16 dhcpd_mgmt_task...
+UPnP is disabled
+RUNTASK id=17 parecon_task...
+RUNTASK id=18 parecon_auth_task...
+
+>>> belkin_wan_cfg task runs successfully, task_id = 19
+Starting Multitask...
+RUNTASK id=20 hwlan_light_isr...
+MTstart2() begin  ...
+init psock cnt=3
+Atheros_NetTask running ...
+[HWLAN] Ready
+[reset_802dot1x] wireless module ready
+[reset_802dot1x] 802.1Xv2 ready
+Disable the irq 7
+Disable the irq 7
+}}}
+
+You can even get a debug monitor when hitting "Enter" when propted :
+{{{
+ar531xPlus rev 0x00000086 boot loader startup...
+Flash initialized
+SDRAM initialized
+Cache initialized
+
+Copy program from 0xbfc00000 to 0x80520000, length 0x0000ce3c bytes ... done
+Jump to SDRAM 0x80520cb4 [0x10000008, 0x00000000, 0x00000000]
+Clear BSS section ... done
+Stack: 0x8053ec60
+Heap: 0x8053ec70
+
+
+
+=========================================================================
+ Wireless Gateway WG4005F 1-AK ZZ Loader V0.08 build Oct 21 2005 15:44:10
+                  Arcadyan Technology Corporation
+=========================================================================
+
+Copying boot params.....DONE
+cpuFreq=240000000 sysFreq=60000000 cntFreq=120000000
+
+Press any key to enter command mode ...
+
+[WG4005F 1-AK ZZ Boot 2]:h
+
+======================
+ [U] Upload to Flash
+ [E] Erase Flash
+ [M] Upload to Memory
+ [R] Read from Memory
+ [W] Write to Memory
+ [T] Memory Test
+ [Y] Go to Memory
+ [G] Run Runtime Code
+ [A] Set MAC Address
+ [#] Set Serial Number
+ [V] Set Board Version
+ [P] Print Boot Params
+ [0] ALERT LED Off
+ [1] ALERT LED On
+ [2] WLAN LEDs Off
+ [3] WLAN LEDs On
+ [4] Ethernet LED On
+ [C] Set Country Code
+ [B] Reboot
+======================
+
+[WG4005F 1-AK ZZ Boot 2]:p
+
+
+MAC address: 00-12-BF-14-10-xx
+
+Serial number: J546027xxx
+
+Hardware version: 01
+
+Country Code: 0x0012
+
+[WG4005F 1-AK ZZ Boot 2]:
+}}}
+
+And, last but not least, by hitting enter at the end of the boot process you can upload a firmware by tftp :
+{{{
+====== console mode ======
+  shift-0: enable debug
+  g      : mini-loader
+  ENTER  : show this help
+==========================
+ae531xDmaIntEnable 0001a1e2
+mips_int_enable : 0x00001C00
+
+
+[Mini Loader - image must start at 0x80001000]
+TFTP Server IP address [192.168.2.100]:
+}}}

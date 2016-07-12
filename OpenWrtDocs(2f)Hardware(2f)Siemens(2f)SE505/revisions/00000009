@@ -1,0 +1,28 @@
+'''Siemens SE505'''
+
+There are currently two versions of the SE505:
+
+/!\ '''boot_wait is on by default on both versions.'''
+
+/!\ '''These routers sit via NVRAM on 192.168.2.1 during boot_wait, so You have to TFTP to that address.'''
+
+= Siemens SE505 v1 =
+
+The inital version (v1) is based on the Broadcom 4710 board. It has a 125MHz CPU, 4MB flash and 16MB RAM. The wireless NIC is a mini-PCI card.
+
+After several bugfixes releases from WHITE RUSSIAN (RC2) works well on this router.
+
+/!\ '''The reset button is hardwired on the Se505 v1, so there is no failsafe mode. You can set back default nvram settings by pressing reset button while turning on the router.'''
+
+/!\ '''The IP of the machine uploading firmware has to be 192.168.x.100.''' [documented under FAQ on the Siemens site]
+
+= Siemens SE505v2 =
+
+The current SE505 (v2) has a 200 MHz BCM4712KPB CPU, 4MB flash and 8 MB RAM on board.
+
+There are some problems (LEDs? default NVRAM?) getting OpenWrt to work on the newer hardware, see the forums.
+
+The PCB of the SE505 v2 looks very like the Belkin F5D7230 v1440 (2MB flash) and you can compile the Broadcom reference firmware or get serial access using the tips in http://midnightcode.org/papers/ . Hacking telnet access to the original Linux-2.4.20 firmware from Siemens http://communications.siemens.com/repository/695/69584/Gigaset_SE505_3.01.05_English.exe using http://midnightcode.org/projects/pluto/code/belky-0.5.c
+and a second busybox is easy. Tips: SeattleWireless:Belkin_20F5D7230_2d4 (shell on the box).
+----
+CategoryModel

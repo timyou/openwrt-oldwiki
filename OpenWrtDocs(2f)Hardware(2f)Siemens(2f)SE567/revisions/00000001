@@ -1,0 +1,79 @@
+#pragma section-numbers off
+
+||<tablebgcolor="#f1f1ed" tablewidth="40%" tablestyle="FONT-SIZE: 0.9em; FLOAT: right; MARGIN: 0pt 0pt 1em 1em"style="PADDING-RIGHT: 0.5em; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; PADDING-TOP: 0.5em">[[TableOfContents]]||
+
+= Siemens Gigaset SE567 =
+This device seems to be sold to telecommunication companies to brand and distribute.
+[http://gigaset.com/shc/0,1935,hq_en_0_125794_rArNrNrNrN,00.html Link on Siemens Website]
+
+== (Telus Branded) ==
+=== Summary ===
+So far no one has booted openwrt on this device.
+
+||<tablestyle="FLOAT: right; margin: -15px 0 0 0; padding: 0;">attachment:Gigaset_SE567_CPU.jpg||
+
+||'''Architecture''' ||ARM ||
+||'''Vendor''' ||TI||
+||'''Bootloader''' ||? ||
+||'''Flash size''' ||4 MiB ||
+||'''RAM''' ||16 MiB ||
+||'''Wireless''' ||TNETW1350A ||
+||'''Ethernet''' ||88E6060-RCJ1 ||
+||'''USB''' ||No ||
+||'''Serial'''||Yes ||
+
+=== Chips on the PCB ===
+
+ * CPU - TNETD7200ZDW - Texas Instraments AR7
+
+ * Ethernet Switch Marvell 88E6060-RCJ1
+
+ * Flashchip - MX29LV320CTTC [http://pdf1.alldatasheet.com/datasheet-pdf/view/143118/MCNIX/MX29LV320CTTC-70.html]
+
+ * RAM Samsung K4S281632I-UC75
+
+ * Wireless (under shield) 66ZYC27 TNETW3422
+
+ * wireless TNETW1350A
+
+=== Pads on PCB ===
+
+J8 is a serial port and it works if you use a 3.3v TTL to RS-232.
+
+'''J8'''
+
+3.3v TTL Serial
+|| Square Solder Pad -> ||'''Pad 1''' || Ground ||'''Pad 2''' || TX ||'''Pad 3''' || RX ||'''Pad 4''' || Not Connected ||'''Pad 5''' || 3.3v ||
+
+=== JTAG Port ===
+
+Not yet documented.
+
+=== Serial Ports ===
+
+J8 is a 3.3v serial port.  Boot messages can be seen if you connect a 3.3v level shifter here and monitor with a serial port. 
+
+DO NOT CONNECT DIRECTLY TO A PC SERIAL PORT. Use a 3.3v TTL level shifter. 
+Details at this page:
+ * http://wiki.openwrt.org/OpenWrtDocs/Customizing/Hardware/Serial_Console
+
+=== Original Bootloader ===
+When a serial console is installed you can press enter as soon as the device boots to get a command prompt in the boot loader. pressing 'h' gives you this menu.
+{{{
+
+}}}
+
+=== Original Firmware Boot Messages ===
+
+{{{
+
+}}}
+
+=== TODO ===
+
+ * Find the data sheets for the chips used in this device.
+ * Figure out what J7 is and the pinout for it.(Jtag?)
+
+== Other Categories this device is in ==
+
+ . CategoryNotSupported

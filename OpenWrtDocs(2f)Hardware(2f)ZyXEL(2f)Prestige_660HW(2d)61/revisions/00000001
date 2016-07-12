@@ -1,0 +1,170 @@
+= Prestige 660HW-61 =
+
+The device is based on Texas Instruments AR7, so you need the AR7Port in OpenWrt trunk.
+It uses [:Bootbase] as the bootloader. There's a detailed [http://www.adslayuda.com/Zyxel650-9.html example session] (spanish) of flashing the router firmware+bootbase available.
+
+== Serial Console ==
+
+You can build a serial cable using the above [ http://www.adslayuda.com/Zyxel650-9.html example session url ] plus [http://www.adslayuda.com/index.php?name=PNphpBB2&file=viewtopic&t=53480 some forum posts] (spanish) showing how to use various mobile cables. This way, you don't need to buy a MAX232 chip plus capacitors to do the TTL level conversion (*DO NOT* connect your PC's serial port directly !).
+
+I used a SIEMENS S55 slim lumberg [http://pinouts.ru/data/siemens_c55_pinout.shtml cable] to do the thrick.
+
+=== Router startup through serial console ===
+
+Bootbase Version: V1.06 | 04/01/2004 11:22:33
+RAM: Size = 16384 Kbytes
+DRAM POST: Testing: 16384K
+OK
+FLASH: Intel 16M *1
+
+ZyNOS Version: V3.40(PE.7) | 09/29/2004  17:42:50
+
+Press any key to enter debug mode within 3 seconds.
+................<ENTER>
+Enter Debug Mode
+
+=== Enabling privileged commands ===
+
+Thanks (again) to adslayuda for the [http://www.adslayuda.com/Zyxel650-9.html howto] on the password algorithm. The following code can be used to compute it:
+
+{{{
+
+/* ZyXEL prestige 660HW series password calculator by brainstorm <brainstorm at nopcode org>
+ * Thanks to http://www.adslayuda.com/Zyxel650-9.html authors
+ *
+ * Example usage:
+ *
+ * Router:
+ * ======
+ *
+ * ATSE
+ * 0028D6DF1C03
+ * OK
+ *
+ * Computer:
+ * ========
+ *
+ * ./zyxel 0028D6DF1C03
+ * ATEN 1,221E3111
+ *
+ * Router:
+ * ======
+ * ATEN 1,221E3111
+ * OK
+ *
+ * "Dangerous" commands enabled :-)
+ *
+ * */
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define magic1  0x10F0A563L
+#define magic2  7
+#define atse_length 12  /* ATSE command, ZyNOS seed password length */
+
+int main (int argc, char* argv[]) {
+
+        char *seed, a[7], c[3];
+        unsigned int b,d,e,password;
+
+        if ( argc != 2 ) {
+                printf("Only one argument is permitted: 00BDC8667E5B\n");
+                exit(-1);
+
+        } else if ( strlen(argv[1]) != atse_length ) {
+                printf( "Incorrect parameter length, should be %d characters long\n", atse_length );
+                exit (-2);
+        }
+
+        seed = argv[1];
+        strncpy (a, seed , 6);
+        e = strtol(a,NULL,16);
+
+        strncpy (c, seed + strlen(seed)-2, 2);
+        d = strtol(c,NULL,16) & magic2;
+        b = e + magic1;
+
+        b = ( b >> d ) | (( b & d ) << (sizeof(int)*8 - d));
+
+        password = b ^ e;
+        printf("ATEN 1,%X\n", password);
+
+        return 0;
+}
+
+}}}
+
+
+== Memory layout ==
+
+Bootbase provides a powerful flashing/debugging console, for instance, the ATMP command shows us how is the memory allocated. Later on, you can use the ATDUx,y command to dump memory contents starting at x plus an y offset:
+
+{{{
+ATMP
+
+ROMIO image start at b0010000
+code version:
+code start: 94008000
+code length: 1C3D24
+memMapTab: 14 entries, start = b0037000, checksum = A88D
+$RAM Section:
+  0: BootExt(RAMBOOT), start=94008000, len=38000
+  1: HTPCode(RAMCODE), start=94020000, len=E0000
+  2: RasCode(RAMCODE), start=94020000, len=FE0000
+$ROM Section:
+  3: BootBas(ROMIMG), start=b0000000, len=4000
+  4: DbgArea(ROMIMG), start=b0004000, len=2000
+  5: RomDir2(ROMDIR), start=b0006000, len=A000
+  6: BootExt(ROMIMG), start=b0010030, len=17FD0
+  7: HTPCode(ROMBIN), start=b0028000, len=F000
+          (Compressed)
+          Version: HTP_P660 V 0.05, start: b0028030
+          Length: 17618, Checksum: 3B6A
+          Compressed Length: 7F07, Checksum: 64E7
+  8: MemMapT(ROMMAP), start=b0037000, len=C00
+  9: termcap(ROMIMG), start=b0037c00, len=400
+ 10: tiadsl(ROMBIN), start=b0038000, len=24A00
+          (Compressed)
+          Version: ADSL ATU-R, start: b0038030
+          Length: 40736, Checksum: 9761
+          Compressed Length: 2242D, Checksum: 6E3D
+ 11: tiwlan(ROMBIN), start=b005ca00, len=1BC00
+          (Compressed)
+          Version: WLAN, start: b005ca30
+          Length: 12894, Checksum: 539D
+          Compressed Length: C1A0, Checksum: 4883
+ 12: RomDefa(ROMIMG), start=b0078600, len=A000
+ 13: RasCode(ROMBIN), start=b0082600, len=17DA00
+          (Compressed)
+          Version: P660HW-61 ATU-R, start: b0082630
+          Length: 446098, Checksum: 321B
+          Compressed Length: 151724, Checksum: 7D74
+}}}
+
+For instance, ATDU b0037c00,400 will produce the following output (refer to the "termcap" entry above for memory address and length):
+
+{{{
+B0037C00: 76 74 31 30 30 7C 64 65-63 2D 76 74 31 30 30 7C   vt100|dec-vt100|
+B0037C10: 76 74 31 30 30 2D 61 6D-7C 76 74 31 30 30 61 6D   vt100-am|vt100am
+B0037C20: 7C 64 65 63 20 76 74 31-30 30 3A 5C 0D 0A 09 3A   |dec vt100:\...:
+B0037C30: 64 6F 3D 5E 4A 3A 63 6F-23 38 30 3A 6C 69 23 32   do=^J:co#80:li#2
+B0037C40: 34 3A 63 6C 3D 35 30 5C-45 5B 3B 48 5C 45 5B 32   4:cl=50\E[;H\E[2
+B0037C50: 4A 3A 73 66 3D 32 2A 5C-45 44 3A 5C 0D 0A 09 3A   J:sf=2*\ED:\...:
+B0037C60: 6C 65 3D 5E 48 3A 62 73-3A 61 6D 3A 63 6D 3D 35   le=^H:bs:am:cm=5
+B0037C70: 5C 45 5B 25 69 25 64 3B-25 64 48 3A 6E 64 3D 32   \E[%i%d;%dH:nd=2
+B0037C80: 5C 45 5B 43 3A 75 70 3D-32 5C 45 5B 41 3A 5C 0D   \E[C:up=2\E[A:\.
+B0037C90: 0A 09 3A 63 65 3D 33 5C-45 5B 4B 3A 63 64 3D 35   ..:ce=3\E[K:cd=5
+B0037CA0: 30 5C 45 5B 4A 3A 73 6F-3D 32 5C 45 5B 37 6D 3A   0\E[J:so=2\E[7m:
+B0037CB0: 73 65 3D 32 5C 45 5B 6D-3A 75 73 3D 32 5C 45 5B   se=2\E[m:us=2\E[
+B0037CC0: 34 6D 3A 75 65 3D 32 5C-45 5B 6D 3A 5C 0D 0A 09   4m:ue=2\E[m:\...
+B0037CD0: 3A 6D 64 3D 32 5C 45 5B-31 6D 3A 6D 72 3D 32 5C   :md=2\E[1m:mr=2\
+B0037CE0: 45 5B 37 6D 3A 6D 62 3D-32 5C 45 5B 35 6D 3A 6D   E[7m:mb=2\E[5m:m
+B0037CF0: 65 3D 32 5C 45 5B 6D 3A-69 73 3D 5C 45 5B 31 3B   e=2\E[m:is=\E[1;
+< Press any key to Continue, ESC to Quit >
+}}}
+
+
+----
+CategoryModel ["CategoryAR7Device"]

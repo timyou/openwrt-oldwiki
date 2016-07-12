@@ -1,0 +1,42 @@
+## Please add only OpenWrt and WRT300N related things to this page! Thanks.
+
+'''Linksys WRT300N'''
+
+'''Identification by S/N'''
+
+Useful for identifying shrinkwrapped units. The '''S/N''' can be found on
+the box, below the UPC barcode.
+||||<tablestyle="width 50%"> (!) '''Please contribute to this list.''' (!) ||||'''!OpenWrt'''||
+||'''Model'''||<:> '''S/N'''||<:>  '''Stable[[BR]]White Russian'''||<:>  '''Development[[BR]]Kamikaze'''||
+||<(|2>WRT300N v1.0||<:> CNP01||<:|2> ( ) ||<:|2> ( ) ||
+
+
+
+'''WRT300N v1.0'''
+
+The WRT300N v1.0 is based on the Broadcom 4704 cpu. I guess it has about 300MHz.
+It has 4 MB flash and 32 MB SDRAM. The wireless NIC is a Broadcom Cardbus card with BCM4329 Chipset. 
+The switch is an Broadcom BCM5325 FKQMG.
+
+
+'''Table summary'''
+
+How to get info:
+
+ * board info: {{{nvram show | grep board | sort}}}[[BR]]
+ * cpu model: {{{grep cpu /proc/cpuinfo}}}
+
+||'''Model'''       ||'''boardrev'''||'''boardtype'''||'''boardflags'''||'''boardflags2'''||'''boardnum'''||'''wl0_corerev'''||'''cpu model'''||'''boot_ver'''||'''pmon_ver'''||
+||WRT300N v1.0       ||     -        ||  ?  ||      -         ||       -         ||  ?          ||       ?         || BCM4704 V0.0  ||  v1.0        ||  ?        ||
+
+
+'''Hardware hacking'''
+
+'''Opening the case'''
+Pull off the blue Cover Plates on top and bottom of the Device,
+pull off the blac Fromt cover and remove the 4 Screws in Bottom.
+
+
+
+----
+CategoryModel

@@ -1,0 +1,1823 @@
+/!\ ~+'''WARNING'''+~ '''THIS GUIDE IS CURRENTLY WORK IN PROGRESS!'''
+
+[[TableOfContents]]
+
+= Linksys AG241 =
+== Specifications AG241v2 ==
+
+Bootloader: ["ADAM2"]
+
+== Specifications AG241v2-EU ==
+
+Switch 4-Port ADSL Router with Firewall/QoS Control (ADSL 2/2+ Compliant)
+
+ * - CPU: Texas Instruments AR7 MIPS-based, [http://focus.ti.com/lit/ml/spat013a/spat013a.pdf TNETD7200ZDW]
+ * - Flash chip: 4Mbytes, Macronix, [http://www.macronix.com/QuickPlace/hq/PageLibrary48256F5500439ED0.nsf/h_CE4C9490FDF4280B48256F550043C6D8/209CFCBBF4BCCB9148257031002F02E6/$File/MX29LV320CTBver17.pdf?OpenElement 29LV320CTTC-70G], 32Mbit NOR-type Flash Memory organized as 4M x 8
+ * - SDRAM: 16Mbytes, MIRA, P2V28S40CTP, 3.3V at 143MHz organised as 8M x 16.
+ * - Switch: Infineon, [ ADM6996LC]
+ * - Wireless NIC: '''NONE'''
+ * - 4x-ethernet-port transformer: LHB, 20pt1024xlx
+ * - Bootloader: ["PSPBoot"]
+
+=== Fast-track installation for UK ADSL users! ===
+
+This 
+
+http://downloads.openwrt.org/kamikaze/8.09_RC1/ar7/openwrt-AG241v2-squashfs-code.bin
+
+works fine with this:
+ http://www.dabs.com/productview.aspx?Quicklinx=3NNZ
+
+Configure a crossover cable to the thing. Set your local IP to
+192.168.1.2/255.255.255.0.
+
+Rename that .bin to upgrade_code.bin, and get ready to execute this:
+
+> tftp -i 192.168.1.1 PUT upgrade_code.bin
+
+Now, switch the AG241v2 on, and somewhere between 0.5 and 1.5 seconds,
+press RETURN. If you did it right, the Windows tftp client will tell you the transfer was
+successful after a few seconds. If not, switch the router off and try again.
+
+The POWER LED will start to flash red+green after a couple of minutes when you get the timing right. Else, it'll just load the normal Linksys web application - no harm done.
+
+Once you've got it, telnet to 192.168.1.1, set a root password, then login with ssh.
+
+Now fiddle with its networking setup so that it matches your LAN
+ * ifconfig br-lan aaa.bbb.ccc.ddd netmask 255.255.255.0
+ * route add default gateway aaa.bbb.ccc.ddd
+ * vi /etc/resolv.conf to add 'nameserver aaa.bbb.ccc.ddd'
+
+try and ping www.google.com. When you get a reply:
+
+opkg update
+opkg install kmod-pppoa ppp-mod-pppoa kmod-sangam-atm-annex-a
+
+It's now ready to connect to your ISP
+
+vi /etc/config/network - change 'option encaps' from llc to vc. set vpi/vci
+to 0/38.
+
+Finally, as mine didn't start the 'wan' interface automatically at
+start, I stuck a dirty "ifup wan" into /etc/init.d/sysklogd
+
+== Picture (AG241v2-EU) ==
+attachment:ag241-eu.jpg
+
+== Serial console ==
+Note: this does not match with the picture above.  The description is exactly as written here, the new port is named JP4 and PIN1 is on the left side. So just flip the picture 90 degree to have the new layout.
+
+attachment:serial_console_pins_ttl.jpg
+
+{{{
+Pins Connections:
+
+  - Pin 1, GND
+  - Pin 2, Not Connected
+  - Pin 3, Router's Serial RX
+  - Pin 4, Router's Serial TX
+  - Pin 5, VCC
+
+Configure teminal with:
+   - Baud Rate: 38400 bauds.
+   - Data: 8 bits.
+   - Parity: no parity.
+   - Stop: 1 stop bit.
+   - Flow Control: none
+}}}
+== BootLoader ==
+=== PSPBoot ===
+{{{
+free space start: 0xb0010000
+free space end: 0xb0400000
+Basic POST completed...     Success.
+Last reset cause: Hardware reset (Power-on reset)
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+FlashType:
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+Press ESC for monitor... 1
+}}}
+command: '''help'''
+
+{{{
+(psbl) help
+reboot            version           fa                printenv
+setenv            unsetenv          defragenv         fmt
+boot              dm                oclk              help
+}}}
+command: '''version'''
+
+{{{
+(psbl) version
+PSPBoot 1.3.6.14
+Compiled gcc rev: 2.95.3 20010315 (release/MontaVista) [Jan  2 2006 22:47:50]
+Built for AR7WRD board in Little Endian mode.
+Optional modules included (+) or not (-):
+ +tibinary -ffs -tftp -ftp -dhcp -pcapp -dual_img
+}}}
+
+command: '''printenv'''
+{{{
+(psbl) printenv
+
+BUILD_OPS       0x1
+bootloaderVersion       1.3.6.14
+ProductID       AR7WRD
+HWRevision      Unknown
+SerialNumber    none
+SwRev           0.22.19
+BOOTCFG         m:f:"mtd1"
+MEMSZ           0x1000000
+FLASHSZ         0x400000
+MODETTY0        38400,n,8,1,hw
+MODETTY1        38400,n,8,1,hw
+CPUFREQ         211968000
+MIPSFREQ        211968000
+SYSFREQ         125000000
+PROMPT          (psbl)
+mtd0            0x900e0000,0x903d0000
+mtd1            0x90020000,0x903d0000
+mtd2            0x90000000,0x90020000
+mtd3            0x903f0000,0x90400000
+mtd4            0x903d0000,0x903f0000
+pair_selection  0
+multi_lang      1
+modulation      MMODE
+eoc_vendor_id   4c696e6b73797300
+eoc_vendor_revision     0
+HWA_0           00:1C:10:BC:7F:AC
+eoc_vendor_serialnum    CHZ41G900740
+autoload_timeout        25
+IPA             192.168.1.1
+MAC_PORT        0
+}}}
+
+== Booting ... ==
+=== Flashing and Booting Original Firmware ===
+Flasing AG241v2-EU
+
+1.- Power on the router
+
+{{{
+free space start: 0xb0010000
+free space end: 0xb0400000
+
+Basic POST completed...     Success.
+Last reset cause: Hardware reset (Power-on reset)
+
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+
+FlashType:
+
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+}}}
+
+2.- Press ESC key to enter in PSPBoot Mode
+
+{{{
+Press ESC for monitor... 2
+}}}
+
+3.- When you have on PSPBoot chek your ip (PSPBoot)
+
+{{{
+(psbl) printenv
+...
+IPA             192.168.1.1
+...
+}}}
+
+4.- Transfer the firmware to router
+
+{{{
+[crowm@proteus bin]$ tftp -v -m binary 192.168.1.1 -c put AG241V2-EU-v2_01_01-00-TSM-20070805.bin upgrade_code.bin
+mode set to octet
+Connected to 192.168.1.1 (192.168.1.1), port 69
+putting AG241V2-EU-v2_01_01-00-TSM-20070805.bin to 192.168.1.1:upgrade_code.bin [octet]
+Sent 3330104 bytes in 4.9 seconds [5400468 bit/s]
+}}}
+
+5.- PSPBoot Flash the Firmware (When we see as Flash the OpenWRT we will see the possible errors of the PSPBoot.)
+
+{{{
+(psbl) tftp_ramAddress = 94400000
+Code Pattern Correct!
+Erase base: b0020000   size: 3b0000
+Erasing from 0xb0020000 to 0xb03d0000.
+FlashEraseBlock(b0020000,b03cffff);
+...........................................................
+Erase Successful.
+
+....................................................free space start: 0xb0010000
+free space end: 0xb0400000
+
+Basic POST completed...     Success.
+Last reset cause: Software reset (memory controller also reset)
+}}}
+
+Booting after Flash.
+
+{{{
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+
+FlashType:
+
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+Press ESC for monitor... 1
+
+(psbl)
+
+Booting...
+Launching kernel decompressor.
+Starting LZMA Uncompression Algorithm.
+Copyright (C) 2003 Texas Instruments Incorporated; Copyright (C) 1999-2003 Igor
+Pavlov.
+Compressed file is LZMA format.
+Kernel decompressor was successful ... launching kernel.
+
+LINUX started...
+Config serial console: ttyS0,38400
+Auto Detection OHIO chip
+This SOC has MDIX cababilities on chip.
+WLAN 1350 chip configured.
+CONFIG_AVALANCHE_VLYNQ_POLARITY_LOW
+Failed to initialize the vlynq @ 0xa8611800.
+The error msg: Error in configuring clocks..
+CPU revision is: 00018448
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 8kb, linesize 16 bytes (4 ways)
+Number of TLB entries 16.
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc ve
+rsion 2.95.3 20010315 (release/MontaVista)) #31 Thu Jul 12 20:29:16 CST 2007
+Determined physical RAM map:
+ memory: 14000000 @ 00000000 (reserved)
+ memory: 00020000 @ 14000000 (ROM data)
+ memory: 00fe0000 @ 14020000 (usable)
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line:
+calculating r4koff... 00102c00(1059840)
+CPU frequency 211.97 MHz
+Calibrating delay loop... 211.35 BogoMIPS
+Freeing Adam2 reserved memory [0x14001000,0x0001f000]
+Memory: 13880k/16384k available (1882k kernel code, 2504k reserved, 139k data, 6
+4k init)
+Dentry-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+TI Optimizations: Allocating TI-Cached Memory Pool.
+Warning: Number of buffers is not configured.Setting default to 512
+Using 512 Buffers for TI-Cached Memory Pool.
+DEBUG: Using Hybrid Mode.
+NSP Optimizations: Succesfully allocated TI-Cached Memory Pool.
+Initializing RT netlink socket
+Starting kswapd
+Disabling the Out Of Memory Killer
+devfs: v1.7 (20011216) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 32 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0xa8610e00 (irq = 15) is a 16550A
+block: 64 slots per queue, batch=16
+CPMAC Auto Detect Enabled: detected external PHY and external switch as well..
+Error getting CPMAC Configuration params for instance:0
+Environment Variable:MACCFG_A not set in bootloader
+Setting Default configuration params for CPMAC instance:0
+Default Asymmetric MTU for eth0 1500
+TI CPMAC Linux DDA version 1.8 - CPMAC DDC version 0.2
+Cpmac: Installed 1 instances.
+Cpmac driver is allocating buffer memory at init time.
+PPP generic driver version 2.4.1
+avalanche flash device: 0x400000 at 0x10000000.
+ Amd/Fujitsu Extended Query Table v1.1 at 0x0040
+Physically mapped flash: Swapping erase regions for broken CFI table.
+number of CFI chips: 1
+Looking for mtd device :mtd0:
+Found a mtd0 image (0xe0000), with size (0x2f0000).
+Looking for mtd device :mtd1:
+Found a mtd1 image (0x20000), with size (0x3b0000).
+Looking for mtd device :mtd2:
+Found a mtd2 image (0x0), with size (0x20000).
+Looking for mtd device :mtd3:
+Found a mtd3 image (0x3f0000), with size (0x10000).
+Looking for mtd device :mtd4:
+Found a mtd4 image (0x3d0000), with size (0x20000).
+Creating 5 MTD partitions on "Physically mapped flash":
+0x000e0000-0x003d0000 : "mtd0"
+0x00020000-0x003d0000 : "mtd1"
+0x00000000-0x00020000 : "mtd2"
+0x003f0000-0x00400000 : "mtd3"
+0x003d0000-0x003f0000 : "mtd4"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 1024 bind 1024)
+IPv4 over IPv4 tunneling driver
+Default Asymmetric MTU for tunl0 1480
+GRE over IPv4 tunneling driver
+Default Asymmetric MTU for gre0 1476
+Linux IP multicast router 0.06 plus PIM-SM
+klips_info:ipsec_init: KLIPS startup, FreeS/WAN IPSec version: super-freeswan-1.
+99.8
+Default Asymmetric MTU for ipsec0 0
+Default Asymmetric MTU for ipsec1 0
+Default Asymmetric MTU for ipsec2 0
+Default Asymmetric MTU for ipsec3 0
+Default Asymmetric MTU for ipsec4 0
+klips_info:ipsec_alg_init: KLIPS alg v=0.8.1-0 (EALG_MAX=255, AALG_MAX=15)
+klips_info:ipsec_alg_init: calling ipsec_alg_static_init()
+ipsec_1des_init(alg_type=15 alg_id=2 name=1des): ret=0
+You should NOT load 1DES support except for testing purposes !
+ipsec_null_init(alg_type=15 alg_id=11 name=null): ret=0
+ip_conntrack version 2.0 (128 buckets, 1024 max) - 392 bytes per conntrack
+ip_tables: (c)2000 Netfilter core team
+netfilter PSD loaded - (c) astaro AG
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+Initializing the WAN Bridge.
+Please set the MAC Address for the WAN Bridge.
+Set the Environment variable 'wan_br_mac'.
+MAC Address should be in the following format: xx.xx.xx.xx.xx.xx
+802.1Q VLAN Support v1.6  Ben Greear <greearb@candelatech.com>
+vlan Initialization complete.
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 64k freed
+Firmware Version: 2.01.03
+ret = -1
+www -> /www
+mount: Invalid argument
+Hit enter to continue...Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/
+drivers/net/mac/writemac.o
+killall: httpd: no process killed
+
+ Configured 19 states
+now insmod tiatm
+Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/drivers/atm/tiatm.o
+name=[eth0] lan_ifname=[br0]
+=====> set br0 hwaddr to eth0
+wlconf: No such file or directory
+Lan Ipaddr: 255.255.255.0 Netmask: 255.255.255.0................
+255.255.255.0 255.255.255.0
+.............list  ..............
+antsel: No such file or directory
+[HTTPD Starting on /www]
+The boot is UNKNOWN
+tftp server started
+tftpd: standalone socket
+HTTPD start,  port 80
+dhcpd:auto_search_ip=0,firstsetlanip=1
+.............list  ..............
+info, udhcp server (v0.9.8) started
+log_ipaddr=255
+killall: leijun--upnpd-igd ver 0.83 2004-0329: no process killed
+Now Start syslog.........................!!zebra disabled
+killall: adslpolling: no process killed
+IDLE
+Hit enter to continue...wan def hwaddr 00:1C:10:BC:7F:AD
+polling now .......
+upnpd-igd:current select wan connection:0
+upnp_content_num_0 = 14
+killall: begin_now: no process killed
+}}}
+==== Information Original Firmware ====
+===== System Info =====
+{{{
+# cat /proc/version
+Linux version 2.4.17_mvl21-malta-mips_fp_le (tom@excelsior) (gcc version 2.95.3
+20010315 (release/MontaVista)) #34 Sun Aug 5 03:22:19 BST 2007
+}}}
+===== CPU Info =====
+{{{
+# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 211.35
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+===== FLASH Map Info =====
+{{{
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 002f0000 00010000 "mtd0"
+mtd1: 003b0000 00010000 "mtd1"
+mtd2: 00020000 00010000 "mtd2"
+mtd3: 00010000 00002000 "mtd3"
+mtd4: 00020000 00010000 "mtd4"
+}}}
+===== ATM Driver Info (TI Avalanche SAR) =====
+{{{
+# cat /proc/avalanche/avsar_ver
+ATM Driver version:[6.00.01.00]
+DSL HAL version: [6.00.01.00]
+DSP Datapump version: [6.00.04.00] Annex A
+SAR HAL version: [01.07.2b]
+PDSP Firmware version:[0.54]
+Chipset ID: [Ohio250(7200/7100A2)]
+}}}
+===== Loaded Kernel Modules =====
+{{{
+# cat /proc/modules
+tiatm                 123936   0
+}}}
+===== Devices =====
+{{{
+# cat /proc/devices
+Character devices:
+  1 mem
+  2 pty/m%d
+  3 pty/s%d
+  4 tts/%d
+  5 cua/%d
+ 10 misc
+ 36 netlink
+ 90 mtd
+108 ppp
+128 ptm
+136 pts/%d
+162 raw
+253 gpio
+254 nvram
+
+Block devices:
+ 31 mtdblock
+}}}
+===== Free =====
+{{{
+# free
+              total         used         free       shared      buffers
+  Mem:        13912         8196         5716            0          836
+ Swap:            0            0            0
+Total:        13912         8196         5716
+}}}
+===== MemInfo =====
+{{{
+# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  14245888  8404992  5840896        0   856064  2727936
+Swap:        0        0        0
+MemTotal:        13912 kB
+MemFree:          5704 kB
+MemShared:           0 kB
+Buffers:           836 kB
+Cached:           2664 kB
+SwapCached:          0 kB
+Active:           1712 kB
+Inactive:         2956 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        13912 kB
+LowFree:          5704 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+}}}
+===== IOMem =====
+{{{
+# cat /proc/iomem
+00000000-13ffffff : reserved
+14000000-1401ffff : System RAM
+14020000-14ffffff : System RAM
+  14020000-141fe137 : Kernel code
+  14210300-14232fff : Kernel data
+a8610000-a86107ff : eth0
+}}}
+===== Running Proccesses =====
+{{{
+# ps -ax
+  PID  Uid     Stat Command
+    1 admin    S    init
+    2 admin    S    [keventd]
+    3 admin    S    [ksoftirqd_CPU0]
+    4 admin    S    [kswapd]
+    5 admin    S    [bdflush]
+    6 admin    S    [kupdated]
+    7 admin    S    [mtdblockd]
+    8 admin    S    [mail]
+   12 admin    S    resetbutton
+   22 admin    S    cron
+   25 admin    S    tftpd -a 192.168.1.1 -s /tmp -c -l
+   28 admin    S    httpd
+   34 admin    S    dnsmasq -h -i br0 -r /tmp/resolv.conf
+   38 admin    S    udhcpd /tmp/udhcpd.conf
+   44 admin    S    telnetd
+   45 admin    S    klogd
+   46 admin    S    syslogd
+   47 admin    S    upnpd-igd br0
+   50 admin    S    /tmp/adslpolling
+   51 admin    S    /bin/sh
+ 1112 admin    R    ps -ax
+}}}
+
+===== TiCfg (/proc/ticfg/env) =====
+{{{
+# cat /proc/ticfg/env
+BUILD_OPS       0x1
+bootloaderVersion       1.3.6.14
+ProductID       AR7WRD
+HWRevision      Unknown
+SerialNumber    none
+SwRev   0.22.19
+BOOTCFG m:f:"mtd1"
+MEMSZ   0x1000000
+FLASHSZ 0x400000
+MODETTY0        38400,n,8,1,hw
+MODETTY1        38400,n,8,1,hw
+CPUFREQ 211968000
+MIPSFREQ        211968000
+SYSFREQ 125000000
+PROMPT  (psbl)
+mtd0    0x900e0000,0x903d0000
+mtd1    0x90020000,0x903d0000
+mtd2    0x90000000,0x90020000
+mtd3    0x903f0000,0x90400000
+mtd4    0x903d0000,0x903f0000
+pair_selection  0
+multi_lang      1
+modulation      MMODE
+eoc_vendor_id   4c696e6b73797300
+eoc_vendor_revision     0
+HWA_0   00:1C:10:BC:7F:AC
+eoc_vendor_serialnum    CHZ41G900740
+autoload_timeout        25
+IPA     192.168.1.1
+MAC_PORT        0
+}}}
+===== Avalanche (/proc/avalanche) =====
+{{{
+# ls -l
+-r--r--r--    1 0        0               0 Jan  1 02:12 psp_version
+-r--r--r--    1 0        0               0 Jan  1 02:12 developers
+-r--r--r--    1 0        0               0 Jan  1 02:12 led_cfg
+-r--r--r--    1 0        0               0 Jan  1 02:12 led_ver
+dr-xr-xr-x    2 0        0               0 Jan  1 02:12 marvell
+-r--r--r--    1 0        0               0 Jan  1 02:12 eth0_rfc2665_stats
+-rw-r--r--    1 0        0               0 Jan  1 02:12 cpmac_stats
+-r--r--r--    1 0        0               0 Jan  1 02:12 cpmac_link
+-r--r--r--    1 0        0               0 Jan  1 02:12 cpmac_ver
+-r--r--r--    1 0        0               0 Jan  1 02:12 cpmac_config
+-rw-r--r--    1 0        0               0 Jan  1 02:12 wan_bridge
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_ver
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_channels
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_sarhal_stats
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_oam_ping
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_pvc_table
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_rxsnr0
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_rxsnr1
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_rxsnr2
+-r--r--r--    1 0        0               0 Jan  1 02:12 clear_eoc_stats
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_bit_allocation_table
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_dsl_modulation_schemes
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_private
+-r--r--r--    1 0        0               0 Jan  1 02:12 avsar_modem_training
+-rw-r--r--    1 0        0               0 Jan  1 02:12 avsar_modem_stats
+-rw-r--r--    1 0        0               0 Jan  1 02:12 avsar_qos_enable}}}
+====== (/proc/avalanche/psp_version) ======
+{{{
+# cat /proc/avalanche/psp_version
+
+Linux OS DSL-PSP version 4.6.1.9 on BasePSP Version 7.1.0.8 Aug  5 2007 03:25:09
+ Avalanche SOC Version: 0x10002b operating in cached, write back, write allocate
+ mode Cpu Frequency:211 MHZ System Bus frequency: 125 MHZ
+}}}
+
+====== (/proc/avalanche/developers) ======
+{{{
+# cat /proc/avalanche/developers
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Salt Lake City Kernel Developement team (1999-2000)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell            - Kernel ports, ADSL driver
+Brady Brown             - filesystem, kernel port
+Mike Hassler            - filesystem, timers
+Victor Wells            - Ram disk image, EMAC driver
+Kevin Mcdonald          - f/s, ramdisk compression
+Rosemary Rogers         - kitchen gnomes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Germantown Kernel Developement team (2001- )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell            - Kernel ports, ADSL driver
+Victor Wells            - VMAC driver
+James Beaulieu          - VMAC driver, PCI
+Hari Krishna            - USB driver
+Boris Marenkov          - USB driver
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+India Kernel Development Team (2002-)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Nitin Dhingra           - Intc, Avalanche
+Suraj Iyer                      - Intc, SEAD2, AR7 Port (2.4.17)
+Suraj Iyer                      - CPMAC (2.4.17)
+Sharath Kumar           - SEAD2, AR7 Port (2.4.17)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+}}}
+====== (/proc/avalanche/led_cfg) ======
+{{{
+cat /proc/avalanche/led_cfg
+
+Module:adsl
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED OFF
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_FLASH
+
+            gpio: 33
+
+            param1: 200
+
+            param2: 200
+
+        State: 3
+
+            mode: LED_ON
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 4
+
+            mode: LED_ON
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+Module:cpmac
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 15
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 15
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 15
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 15
+
+            param1: 100
+
+            param2: 0
+
+Module:usb
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 12
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 12
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 12
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 12
+
+            param1: 100
+
+            param2: 0
+
+Module:pppoe
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 13
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 13
+
+            param1: 0
+
+            param2: 0
+
+Module:wlan
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 6
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 6
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 6
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 6
+
+            param1: 100
+
+            param2: 0
+}}}
+====== (/proc/avalanche/led_ver) ======
+{{{
+# cat /proc/avalanche/led_ver
+
+TI Linux LED Driver Version 0.1
+}}}
+====== (/proc/avalanche/cpmac_stats) ======
+{{{
+cat /proc/avalanche/cpmac_stats
+
+Cpmac 1, Address a8610000
+ Transmit Stats
+   Tx Valid Bytes Sent        :221468
+   Good Tx Frames (Hardware)  :622
+   Good Tx Frames (Software)  :620
+   Good Tx Broadcast Frames   :0
+   Good Tx Multicast Frames   :622
+   Pause Frames Sent          :0
+   Collisions                 :0
+   Tx Error Frames            :0
+   Carrier Sense Errors       :0
+
+
+Cpmac 1, Address a8610000
+ Receive Stats
+   Rx Valid Bytes Received    :0
+   Good Rx Frames (Hardware)  :0
+   Good Rx Frames (Software)  :0
+   Good Rx Broadcast Frames   :0
+   Good Rx Multicast Frames   :0
+   Pause Frames Received      :0
+   Rx CRC Errors              :0
+   Rx Align/Code Errors       :0
+   Rx Jabbers                 :0
+   Rx Filtered Frames         :0
+   Rx Fragments               :0
+   Rx Undersized Frames       :0
+   Rx Overruns                :0
+}}}
+====== (/proc/avalanche/cpmac_link) ======
+{{{
+# cat /proc/avalanche/cpmac_link
+CPMAC devices = 1
+eth0: Link State: UP    Phy -1, Speed = 100, Duplex = Full
+}}}
+====== (/proc/avalanche/cpmac_ver) ======
+{{{
+# cat /proc/avalanche/cpmac_ver
+Texas Instruments : CPMAC Linux DDA version 1.8
+Texas Instruments : CPMAC DDC version 0.2
+}}}
+====== (/proc/avalanche/cpmac_config) ======
+{{{
+# cat cpmac_config
+CPMAC devices = 1
+
+CPMAC Driver Internal Config Info for Unit 0
+vlanEnable         = 0
+rxBufSize          = 1528
+rxBufOffset        = 2
+instId             = 0
+numTxChannels      = 1
+numRxChannels      = 1
+cpmacBusFrequency  = 62500000
+baseAddress        = A8610000
+intrLine           = 19
+resetLine          = 17
+mdioBaseAddress    = A8611E00
+mdioResetLine      = 22
+mdioIntrLine       = 0
+PhyMask            = 80000000
+MLinkMask          = 00000000
+MdioBusFrequency   = 62500000
+MdioClockFrequency = 2200000
+MdioTickMSec       = 10
+phyMode            = 1024
+passCRC            = 0
+qosEnable          = 0
+noBufferChaining   = 0
+copyMACCntrlFrsEne = 0
+copyShortFramesEn  = 0
+copyErrorFramesEn  = 0
+promiscousEnable   = 1
+promiscousChannel  = 0
+broadcastEnable    = 1
+broadcastChannel   = 0
+multicastEnable    = 1
+multicastChannel   = 0
+maxRxPktLength     = 1526
+bufferOffset       = 0
+pType              = 1
+txShortGapEnable   = 0
+gigaBitEnable      = 0
+txPacingEnable     = 0
+miiEnable          = 1
+txFlowEnable       = 0
+rxFlowEnable       = 0
+loopbackEnable     = 0
+fullDuplexEnable   = 1
+}}}
+====== (/proc/avalanche/wan_bridge) ======
+{{{
+# cat /proc/avalanche/wan_bridge
+0
+}}}
+====== (/proc/avalanche/avsar_ver) ======
+{{{
+# cat /proc/avalanche/avsar_ver
+ATM Driver version:[6.00.01.00]
+DSL HAL version: [6.00.01.00]
+DSP Datapump version: [6.00.04.00] Annex A
+SAR HAL version: [01.07.2b]
+PDSP Firmware version:[0.54]
+Chipset ID: [Ohio250(7200/7100A2)]
+}}}
+==== Configuration Files ====
+===== LED Configuration =====
+{{{
+# cat /etc/led.conf
+#################################################################
+# Configuration File for AR7WRD board
+##################################################################
+##################################################################
+# The GPIO numbers 0 to 31  ==> correspond to GPIO pins  #########
+# The GPIO numbers 32,33 are mapped to ADSL (LED) pins ###########
+##################################################################
+
+
+module = adsl    # module = {adsl,usb,pppoe,wlan}
+##################################################################
+# Note: state 0 for adsl is dummy state and is present only for ##
+#       compatibility with the new LED driver                   ##
+##################################################################
+state   = 0     # 0=dummy, 1=idle, 2=training, 3=sync, 4=activity
+gpio    = 33    # gpio number
+mode    = 0     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 1     # 0=dummy, 1=idle, 2=training, 3=sync, 4=activity
+gpio    = 33    # gpio number
+mode    = 0     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 2     # 0=dummy, 1=idle, 2=training, 3=sync, 4=activity
+gpio    = 33    # gpio number
+mode    = 4     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 200   # flash on duration in ms
+param2  = 200   # flash off duration in ms
+
+state   = 3     # 0=dummy, 1=idle, 2=training, 3=sync, 4=activity
+gpio    = 33    # gpio number
+mode    = 1     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 4     # 0=dummy, 1=idle, 2=training, 3=sync, 4=activity
+gpio    = 33    # gpio number
+mode    = 1     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 0    # blink/flash rate in ms
+######################################################################
+module = cpmac    # module = {adsl,usb,pppoe,wlan,cpmac}
+
+state   = 0     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 15    # gpio number
+mode    = 0     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+
+state   = 1     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 15    # gpio number
+mode    = 1     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 2     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 15    # gpio number
+mode    = 2     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 100   # blink/flash rate in ms
+
+state   = 3     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 15    # gpio number
+mode    = 2     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 100   # blink/flash rate in ms
+
+#################################################
+module = usb    # module = {adsl,usb,pppoe,wlan}
+
+state   = 0     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 12    # gpio number
+mode    = 0     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+
+state   = 1     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 12    # gpio number
+mode    = 1     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 2     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 12    # gpio number
+mode    = 2     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 100   # blink/flash rate in ms
+
+state   = 3     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 12    # gpio number
+mode    = 2     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 100   # blink/flash rate in ms
+
+######################################################################
+module = pppoe    # module = {adsl,usb,pppoe,wlan}
+
+state   = 0     # 0 = pppoe down, 1 = pppoe active
+gpio    = 13    # gpio number
+mode    = 0     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 1     # 0 = pppoe down, 1 = pppoe active
+gpio    = 13    # gpio number
+mode    = 1     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+######################################################################
+module = wlan   # module = {adsl,usb,pppoe,wlan}
+
+state   = 0     # 0 = link down, 1 = link up
+gpio    = 6     # gpio number
+mode    = 0     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 1     # 0 = link down, 1 = link up
+gpio    = 6     # gpio number
+mode    = 1     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+
+state   = 2     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 6     # gpio number
+mode    = 2     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 100   # blink/flash rate in ms
+
+state   = 3     # 0 = link down, 1 = link up, 2 = pkt rcv, 3 = pkt xmit
+gpio    = 6     # gpio number
+mode    = 2     # 0 = off,1 = on,2 = blinkoff,3 = blinkon, 4 = Flash
+param1  = 100   # blink/flash rate in ms
+}}}
+===== NVRAM Configuration =====
+{{{
+# nvram show
+
+action_service=
+active_connection_selection=32
+add_software_version=00
+adsluptime=0
+aol_block_traffic=0
+aol_block_traffic1=0
+aol_block_traffic2=0
+authprotocol=MD5
+AutoDetect_dhcp=1
+autofw_port0=
+autosearchflag0=0
+autosearchflag1=0
+autosearchflag2=0
+autosearchflag3=0
+autosearchflag4=0
+autosearchflag5=0
+autosearchflag6=0
+autosearchflag7=0
+auto_search_ip=0
+autosearchlist0=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+autosearchlist1=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+autosearchlist2=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+autosearchlist3=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+autosearchlist4=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+autosearchlist5=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+autosearchlist6=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+autosearchlist7=-1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1 -1:-1
+block_activex=0
+block_cookie=0
+block_java=0
+block_proxy=0
+block_wan=1
+boot_type=pspboot
+boot_ver=0.22.19
+bridged_config=1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 1:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0
+client_ip_lease=172800
+cloud_enable=0
+code_pattern=AG3A
+console_loglevel=1
+ct_modules=
+d11g_bcn=100
+d11g_channel=11
+d11g_dtim=1
+d11g_frag=2346
+d11g_mode=1
+d11g_rate=0
+d11g_rateset=default
+d11g_rts=2347
+daylight_time=1
+ddns_cache=
+ddns_change=
+ddns_enable=0
+ddns_enable_buf=
+ddns_hostname=
+ddns_hostname_2=
+ddns_hostname_buf=
+ddns_interval=60
+ddns_passwd=
+ddns_passwd_2=
+ddns_passwd_buf=
+ddns_status=
+ddns_username=
+ddns_username_2=
+ddns_username_buf=
+devname=AG241V2
+dhcp_domain=wan
+dhcp_lease=0
+dhcp_num=191
+dhcp_reserved_ip=0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 0:: 
+dhcpserver_ipaddr=0.0.0.0
+dhcp_start=64
+dhcp_wins=wan
+dmz_enable=0
+dmz_ipaddr=0
+dr_lan_rx=0
+dr_lan_tx=0
+dr_setting=0
+dr_wan_rx=1
+dr_wan_tx=0
+dsl_modulation=MMODE
+email_config=0:20:NULL:NULL:NULL
+email_enable_flag=0
+entry_config=0::1:0:1:0:1:1:0 0::1:0:1:0:1:1:0 0::1:0:1:0:1:1:0 0::1:0:1:0:1:1:0 0::1:0:1:0:1:1:0
+filter_client0=
+filter_dport_grp1=
+filter_dport_grp10=
+filter_dport_grp2=
+filter_dport_grp3=
+filter_dport_grp4=
+filter_dport_grp5=
+filter_dport_grp6=
+filter_dport_grp7=
+filter_dport_grp8=
+filter_dport_grp9=
+filter_id=1
+filter_ip_grp1=
+filter_ip_grp10=
+filter_ip_grp2=
+filter_ip_grp3=
+filter_ip_grp4=
+filter_ip_grp5=
+filter_ip_grp6=
+filter_ip_grp7=
+filter_ip_grp8=
+filter_ip_grp9=
+filter_lan_checkbox1=0
+filter_lan_checkbox10=0
+filter_lan_checkbox2=0
+filter_lan_checkbox3=0
+filter_lan_checkbox4=0
+filter_lan_checkbox5=0
+filter_lan_checkbox6=0
+filter_lan_checkbox7=0
+filter_lan_checkbox8=0
+filter_lan_checkbox9=0
+filter_mac_grp1=
+filter_mac_grp10=
+filter_mac_grp2=
+filter_mac_grp3=
+filter_mac_grp4=
+filter_mac_grp5=
+filter_mac_grp6=
+filter_mac_grp7=
+filter_mac_grp8=
+filter_mac_grp9=
+filter_maclist=
+filter_macmode=deny
+filter=on
+filter_port=
+filter_port_grp1=
+filter_port_grp10=
+filter_port_grp2=
+filter_port_grp3=
+filter_port_grp4=
+filter_port_grp5=
+filter_port_grp6=
+filter_port_grp7=
+filter_port_grp8=
+filter_port_grp9=
+filter_rule1=
+filter_rule10=
+filter_rule2=
+filter_rule3=
+filter_rule4=
+filter_rule5=
+filter_rule6=
+filter_rule7=
+filter_rule8=
+filter_rule9=
+filter_services=$NAME:003:DNS$PROT:003:udp$PORT:005:53:53<&nbsp;>$NAME:004:Ping$PROT:004:icmp$PORT:003:0:0<&nbsp;>$NAME:004:HTTP$PROT:003:tcp$PORT:005:80:80<&nbsp;>$NAME:005:HTTPS$PROT:003:tcp$PORT:007:443:443<&nbsp;>$NAME:003:FTP$PROT:003:tcp$PORT:005:21:21<&nbsp;>$NAME:004:POP3$PROT:003:tcp$PORT:007:110:110<&nbsp;>$NAME:004:IMAP$PROT:003:tcp$PORT:007:143:143<&nbsp;>$NAME:004:SMTP$PROT:003:tcp$PORT:005:25:25<&nbsp;>$NAME:004:NNTP$PROT:003:tcp$PORT:007:119:119<&nbsp;>$NAME:006:Telnet$PROT:003:tcp$PORT:005:23:23<&nbsp;>$NAME:004:SNMP$PROT:003:udp$PORT:007:161:161<&nbsp;>$NAME:004:TFTP$PROT:003:udp$PORT:005:69:69<&nbsp;>$NAME:003:IKE$PROT:003:udp$PORT:007:500:500<&nbsp;>
+filter_tod1=
+filter_tod10=
+filter_tod2=
+filter_tod3=
+filter_tod4=
+filter_tod5=
+filter_tod6=
+filter_tod7=
+filter_tod8=
+filter_tod9=
+filter_tod_buf1=
+filter_tod_buf10=
+filter_tod_buf2=
+filter_tod_buf3=
+filter_tod_buf4=
+filter_tod_buf5=
+filter_tod_buf6=
+filter_tod_buf7=
+filter_tod_buf8=
+filter_tod_buf9=
+filter_wan_checkbox10=1
+filter_wan_checkbox1=1
+filter_wan_checkbox2=1
+filter_wan_checkbox3=1
+filter_wan_checkbox4=1
+filter_wan_checkbox5=1
+filter_wan_checkbox6=1
+filter_wan_checkbox7=1
+filter_wan_checkbox8=1
+filter_wan_checkbox9=1
+filter_wan_ip_grp1=
+filter_wan_ip_grp10=
+filter_wan_ip_grp2=
+filter_wan_ip_grp3=
+filter_wan_ip_grp4=
+filter_wan_ip_grp5=
+filter_wan_ip_grp6=
+filter_wan_ip_grp7=
+filter_wan_ip_grp8=
+filter_wan_ip_grp9=
+filter_wan_ip_range1=
+filter_wan_ip_range10=
+filter_wan_ip_range2=
+filter_wan_ip_range3=
+filter_wan_ip_range4=
+filter_wan_ip_range5=
+filter_wan_ip_range6=
+filter_wan_ip_range7=
+filter_wan_ip_range8=
+filter_wan_ip_range9=
+filter_web_host1=
+filter_web_host10=
+filter_web_host2=
+filter_web_host3=
+filter_web_host4=
+filter_web_host5=
+filter_web_host6=
+filter_web_host7=
+filter_web_host8=
+filter_web_host9=
+filter_web_url1=
+filter_web_url10=
+filter_web_url2=
+filter_web_url3=
+filter_web_url4=
+filter_web_url5=
+filter_web_url6=
+filter_web_url7=
+filter_web_url8=
+filter_web_url9=
+firsttime=1970-01-01T00:00:00Z
+firsttimeflag=0
+forward_port=
+forward_port0=21-21>192.168.1.0:21-21,tcp,off,FTP
+forward_port1=23-23>192.168.1.0:23-23,tcp,off,Telnet
+forward_port2=25-25>192.168.1.0:25-25,tcp,off,SMTP
+forward_port3=53-53>192.168.1.0:53-53,udp,off,DNS
+forward_port4=59-59>192.168.1.0:59-59,udp,off,TFTP
+forward_port5=79-79>192.168.1.0:79-79,tcp,off,finger
+forward_port6=80-80>192.168.1.0:80-80,tcp,off,HTTP
+forward_port7=110-110>192.168.1.0:110-110,tcp,off,POP3
+forward_port8=119-119>192.168.1.0:119-119,tcp,off,NNTP
+forward_port9=161-161>192.168.1.0:161-161,udp,off,SNMP
+fqdn_cfg=00000
+fqdn_ip_cfg=0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+fw_disable=0
+get_auth=public
+hardware_type=0
+http_def_passwd=admin
+http_lanport=80
+http_passwd=admin
+http_remote_passwd=admin
+http_remote_username=tech
+http_username=admin
+http_wanport=51003
+igmp_proxy_channel=32
+igmp_proxy_enable=0
+inform_ip=0.0.0.0
+ipppoe_config=::1:20:20:: ::1:20:20:: ::1:20:20:: ::1:20:20:: ::1:20:20:: ::1:20:20:: ::1:20:20:: ::1:20:20::
+ipppoe_enable=0 0 0 0 0 0 0 0
+ip_range_setting=0:0:0.0.0.0-0.0.0.0
+ipsecadv_config=0:1:2:1:3600:1:0:0:1:0:5:60 0:1:2:1:3600:1:0:0:1:0:5:60 0:1:2:1:3600:1:0:0:9:0:5:60 0:1:2:1:3600:1:0:0:1:0:5:60 0:1:2:1:3600:1:0:0:1:0:5:60
+ipsec_bind=a:a:a:a:a
+ipsec_enable=0
+ipsec_natt=0
+ipsec_pass=1
+ipsec_status=00000
+keytype_config=0:null:3600:null:null:null:null 0:null:3600:null:null:null:null 0:null:3600:null:null:null:null 0:null:3600:null:null:null:null 0:null:3600:null:null:null:null
+l2tp_pass=1
+lan_def_hwaddr=00:E0:A0:A6:66:7F
+lan_detect_dhcp=0
+lan_dhcp_dns=192.168.1.1
+lan_domain=
+lan_hwaddr=00:1C:10:BC:7F:AC
+lan_hwnames=
+lan_ifname=br0
+lan_ifnames=eth0
+lan_ipaddr=192.168.1.1
+lan_lease=1440
+lan_netmask=255.255.255.0
+lan_proto=dhcp
+lan_stp=0
+lan_wins=
+log_enable=1
+log_ipaddr=255
+log_level=2
+ltype_config=0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 
+macclone_addr=00:00:00:00:00:00 00:00:00:00:00:00 00:00:00:00:00:00 00:00:00:00:00:00 00:00:00:00:00:00 00:00:00:00:00:00 00:00:00:00:00:00 00:00:00:00:00:00
+mac_clone_enable=0
+macclone_enable=0 0 0 0 0 0 0 0
+mac_write=1
+mtu_config=1:1492 1:1492 1:1492 1:1492 1:1492 1:1492 1:1492 1:1492
+mtu_enable=0
+mul_select_conf_0=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_conf_1=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_conf_2=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_conf_3=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_conf_4=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_conf_5=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_conf_6=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_conf_7=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+mul_select_enable_0=0
+mul_select_enable_1=0
+mul_select_enable_2=0
+mul_select_enable_3=0
+mul_select_enable_4=0
+mul_select_enable_5=0
+mul_select_enable_6=0
+mul_select_enable_7=0
+multicast_pass=1
+nat_enable=1
+ntp_mode=auto
+ntp_server=
+NTPServer1=time.nist.gov
+NTPServer2=time.stdtime.gov.tw
+NTPServer3=time.chttl.com.tw
+NTPServer4=time-nw.nist.gov
+NTPServer5=
+os_date=Aug  5 2007
+os_name=linux
+os_server=
+os_version=3.50.21.0
+pa0b0=0x170c
+pa0b1=0xfa24
+pa0b2=0xfe70
+pa0maxpwr=0x48
+ping_config=0.0.0.0:60:1:1000:5000
+ping_ip=
+ping_times=
+port_trigger=
+ppp_ac=
+ppp_demand=0
+ppp_get_ac=
+ppp_get_srv=
+ppp_idletime=5
+ppp_keepalive=0
+ppp_mru=1500
+ppp_mtu=1500
+pppoa_config=::1:20:20 ::1:20:20 ::1:20:20 ::1:20:20 ::1:20:20 ::1:20:20 ::1:20:20 ::1:20:20
+pppoe_ac=
+pppoe_config=::1:20:20: ::1:20:20: ::1:20:20: ::1:20:20: ::1:20:20: ::1:20:20: ::1:20:20: ::1:20:20:
+pppoe_demand=0
+pppoe_dhcp_enable0=0
+pppoe_dhcp_enable1=0
+pppoe_dhcp_enable2=0
+pppoe_dhcp_enable3=0
+pppoe_dhcp_enable4=0
+pppoe_dhcp_enable5=0
+pppoe_dhcp_enable6=0
+pppoe_dhcp_enable7=0
+pppoe_idletime=5
+pppoe_ifname=
+pppoe_keepalive=0
+pppoe_pass=1
+pppoe_passwd=
+pppoe_service=
+pppoe_static=0
+pppoe_static_ip=
+pppoe_username=
+ppp_passwd=
+ppp_redialperiod=30
+ppp_service=
+ppp_static=0
+ppp_static_ip=
+ppp_username=
+pptp_get_ip=
+pptp_pass=1
+pptp_server_ip=
+pvc_select_conf_0=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_conf_1=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_conf_2=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_conf_3=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_conf_4=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_conf_5=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_conf_6=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_conf_7=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:00-00-00-00-00-00:0:0:0:0:0:0:0:0:0
+pvc_select_enable_0=0
+pvc_select_enable_1=0
+pvc_select_enable_2=0
+pvc_select_enable_3=0
+pvc_select_enable_4=0
+pvc_select_enable_5=0
+pvc_select_enable_6=0
+pvc_select_enable_7=0
+qos_adv=0
+qos_app0=0
+qos_app1=0
+qos_app2=0
+qos_app3=0
+qos_app4=0
+qos_app5=0
+qos_app6=0
+qos_app7=0
+qos_size=0
+qos_spec_port0=0
+qos_spec_port1=0
+qos_spec_port2=0
+qosSW=0
+qos_vid=1
+qos_vlan=0
+range_end_ip=0.0.0.0
+range_start_ip=0.0.0.0
+release_date=Aug  5 2007
+remote_management=0
+remote_upgrade=0
+restore_defaults=0
+restore_single=1
+rip_enable=0
+routed_config=0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0:0.0.0.0
+router_disable=0
+router_name=AG241V2
+rtype_config=0.0.0.0:255.255.255.0 0.0.0.0:255.255.255.0 0.0.0.0:255.255.255.0 0.0.0.0:255.255.255.0 0.0.0.0:255.255.255.0 
+sdram_config=0x0000
+sdram_init=0x0419
+sdram_ncdl=0x00000000
+sdram_refresh=0x8040
+security_mode=disabled
+security_mode_last=
+set_auth=private
+sg_config=0.0.0.0:null 0.0.0.0:null 0.0.0.0:null 0.0.0.0:null 0.0.0.0:null
+share_wanip=0
+share_wanip_comm=0
+share_wanip_content=$255$10
+single_pc_ipaddr=0.0.0.0
+single_pc_mode=0
+singleportforward_connection=0
+skip_amd_check=0
+skip_intel_check=0
+snmp_enable=0
+snmp_ip_limit=0
+snmpv3_support=Disable
+software_version=2.01.01-TSM-20070805
+static_route=
+static_route_name=
+stats_server=
+telnet_enable=1
+timer_interval=3600
+time_zone=-08 1 1
+traceroute_ip=
+trap_ipaddr=192.168.1.100
+tunnel_entry=0
+upnp_active_connection=0
+upnp_content_0_0=0:1:80:80:0:0:HTTP
+upnp_content0=0:1:80:80:0:0:HTTP
+upnp_content_0_10=0:2:161:161:0:0:SNMP
+upnp_content_0_1=0:1:21:21:0:0:FTP
+upnp_content_0_11=0:1:2401:2401:0:0:CVS
+upnp_content_0_12=0:1:2701:2701:0:0:SMS
+upnp_content_0_13=0:1:2702:2702:0:0:SMS
+upnp_content_0_2=0:1:22:22:0:0:FTP
+upnp_content_0_3=0:1:23:23:0:0:Telnet
+upnp_content_0_4=0:1:25:25:0:0:SMTP
+upnp_content_0_5=0:2:69:69:0:0:TFTP
+upnp_content_0_6=0:1:79:79:0:0:finger
+upnp_content_0_7=0:2:123:123:0:0:NTP
+upnp_content_0_8=0:1:110:110:0:0:POP3
+upnp_content_0_9=0:1:119:119:0:0:NNTP
+upnp_content_1_0=0:1:80:80:0:0:HTTP
+upnp_content10=0:2:161:161:0:0:SNMP
+upnp_content1=0:1:21:21:0:0:FTP
+upnp_content_1_10=0:2:161:161:0:0:SNMP
+upnp_content_1_1=0:1:21:21:0:0:FTP
+upnp_content11=0:1:2401:2401:0:0:CVS
+upnp_content_1_11=0:1:2401:2401:0:0:CVS
+upnp_content_1_12=0:1:2701:2701:0:0:SMS
+upnp_content_1_13=0:1:2702:2702:0:0:SMS
+upnp_content_1_2=0:1:22:22:0:0:FTP
+upnp_content12=0:1:2701:2701:0:0:SMS
+upnp_content_1_3=0:1:23:23:0:0:Telnet
+upnp_content13=0:1:2702:2702:0:0:SMS
+upnp_content_1_4=0:1:25:25:0:0:SMTP
+upnp_content_1_5=0:2:69:69:0:0:TFTP
+upnp_content_1_6=0:1:79:79:0:0:finger
+upnp_content_1_7=0:2:123:123:0:0:NTP
+upnp_content_1_8=0:1:110:110:0:0:POP3
+upnp_content_1_9=0:1:119:119:0:0:NNTP
+upnp_content_2_0=0:1:80:80:0:0:HTTP
+upnp_content2=0:1:22:22:0:0:FTP
+upnp_content_2_10=0:2:161:161:0:0:SNMP
+upnp_content_2_1=0:1:21:21:0:0:FTP
+upnp_content_2_11=0:1:2401:2401:0:0:CVS
+upnp_content_2_12=0:1:2701:2701:0:0:SMS
+upnp_content_2_13=0:1:2702:2702:0:0:SMS
+upnp_content_2_2=0:1:22:22:0:0:FTP
+upnp_content_2_3=0:1:23:23:0:0:Telnet
+upnp_content_2_4=0:1:25:25:0:0:SMTP
+upnp_content_2_5=0:2:69:69:0:0:TFTP
+upnp_content_2_6=0:1:79:79:0:0:finger
+upnp_content_2_7=0:2:123:123:0:0:NTP
+upnp_content_2_8=0:1:110:110:0:0:POP3
+upnp_content_2_9=0:1:119:119:0:0:NNTP
+upnp_content_3_0=0:1:80:80:0:0:HTTP
+upnp_content3=0:1:23:23:0:0:Telnet
+upnp_content_3_10=0:2:161:161:0:0:SNMP
+upnp_content_3_1=0:1:21:21:0:0:FTP
+upnp_content_3_11=0:1:2401:2401:0:0:CVS
+upnp_content_3_12=0:1:2701:2701:0:0:SMS
+upnp_content_3_13=0:1:2702:2702:0:0:SMS
+upnp_content_3_2=0:1:22:22:0:0:FTP
+upnp_content_3_3=0:1:23:23:0:0:Telnet
+upnp_content_3_4=0:1:25:25:0:0:SMTP
+upnp_content_3_5=0:2:69:69:0:0:TFTP
+upnp_content_3_6=0:1:79:79:0:0:finger
+upnp_content_3_7=0:2:123:123:0:0:NTP
+upnp_content_3_8=0:1:110:110:0:0:POP3
+upnp_content_3_9=0:1:119:119:0:0:NNTP
+upnp_content_4_0=0:1:80:80:0:0:HTTP
+upnp_content4=0:1:25:25:0:0:SMTP
+upnp_content_4_10=0:2:161:161:0:0:SNMP
+upnp_content_4_1=0:1:21:21:0:0:FTP
+upnp_content_4_11=0:1:2401:2401:0:0:CVS
+upnp_content_4_12=0:1:2701:2701:0:0:SMS
+upnp_content_4_13=0:1:2702:2702:0:0:SMS
+upnp_content_4_2=0:1:22:22:0:0:FTP
+upnp_content_4_3=0:1:23:23:0:0:Telnet
+upnp_content_4_4=0:1:25:25:0:0:SMTP
+upnp_content_4_5=0:2:69:69:0:0:TFTP
+upnp_content_4_6=0:1:79:79:0:0:finger
+upnp_content_4_7=0:2:123:123:0:0:NTP
+upnp_content_4_8=0:1:110:110:0:0:POP3
+upnp_content_4_9=0:1:119:119:0:0:NNTP
+upnp_content_5_0=0:1:80:80:0:0:HTTP
+upnp_content5=0:2:69:69:0:0:TFTP
+upnp_content_5_10=0:2:161:161:0:0:SNMP
+upnp_content_5_1=0:1:21:21:0:0:FTP
+upnp_content_5_11=0:1:2401:2401:0:0:CVS
+upnp_content_5_12=0:1:2701:2701:0:0:SMS
+upnp_content_5_13=0:1:2702:2702:0:0:SMS
+upnp_content_5_2=0:1:22:22:0:0:FTP
+upnp_content_5_3=0:1:23:23:0:0:Telnet
+upnp_content_5_4=0:1:25:25:0:0:SMTP
+upnp_content_5_5=0:2:69:69:0:0:TFTP
+upnp_content_5_6=0:1:79:79:0:0:finger
+upnp_content_5_7=0:2:123:123:0:0:NTP
+upnp_content_5_8=0:1:110:110:0:0:POP3
+upnp_content_5_9=0:1:119:119:0:0:NNTP
+upnp_content_6_0=0:1:80:80:0:0:HTTP
+upnp_content6=0:1:79:79:0:0:finger
+upnp_content_6_10=0:2:161:161:0:0:SNMP
+upnp_content_6_1=0:1:21:21:0:0:FTP
+upnp_content_6_11=0:1:2401:2401:0:0:CVS
+upnp_content_6_12=0:1:2701:2701:0:0:SMS
+upnp_content_6_13=0:1:2702:2702:0:0:SMS
+upnp_content_6_2=0:1:22:22:0:0:FTP
+upnp_content_6_3=0:1:23:23:0:0:Telnet
+upnp_content_6_4=0:1:25:25:0:0:SMTP
+upnp_content_6_5=0:2:69:69:0:0:TFTP
+upnp_content_6_6=0:1:79:79:0:0:finger
+upnp_content_6_7=0:2:123:123:0:0:NTP
+upnp_content_6_8=0:1:110:110:0:0:POP3
+upnp_content_6_9=0:1:119:119:0:0:NNTP
+upnp_content_7_0=0:1:80:80:0:0:HTTP
+upnp_content7=0:2:123:123:0:0:NTP
+upnp_content_7_10=0:2:161:161:0:0:SNMP
+upnp_content_7_1=0:1:21:21:0:0:FTP
+upnp_content_7_11=0:1:2401:2401:0:0:CVS
+upnp_content_7_12=0:1:2701:2701:0:0:SMS
+upnp_content_7_13=0:1:2702:2702:0:0:SMS
+upnp_content_7_2=0:1:22:22:0:0:FTP
+upnp_content_7_3=0:1:23:23:0:0:Telnet
+upnp_content_7_4=0:1:25:25:0:0:SMTP
+upnp_content_7_5=0:2:69:69:0:0:TFTP
+upnp_content_7_6=0:1:79:79:0:0:finger
+upnp_content_7_7=0:2:123:123:0:0:NTP
+upnp_content_7_8=0:1:110:110:0:0:POP3
+upnp_content_7_9=0:1:119:119:0:0:NNTP
+upnp_content8=0:1:110:110:0:0:POP3
+upnp_content9=0:1:119:119:0:0:NNTP
+upnp_content_num_0=14
+upnp_content_num_1=14
+upnp_content_num=14
+upnp_content_num_2=14
+upnp_content_num_3=14
+upnp_content_num_4=14
+upnp_content_num_5=14
+upnp_content_num_6=14
+upnp_content_num_7=14
+upnp_enable=1
+v3authpasw=1111111111
+v3privpasw=
+v3rwuser=v3rwuser
+vcc_config=0:35:1483bridged:llc:ubr:0:0:0:1 8:35:1483bridged:llc:ubr:0:0:1:0 0:43:1483bridged:llc:ubr:0:0:1:0 0:51:1483bridged:llc:ubr:0:0:1:0 0:59:1483bridged:llc:ubr:0:0:1:0 8:43:1483bridged:llc:ubr:0:0:1:0 8:51:1483bridged:llc:ubr:0:0:1:0 8:59:1483bridged:llc:ubr:0:0:1:0
+wan_active_connection=8
+wan_autoresult=0:-1 0:-1 0:-1 0:-1 0:-1 0:-1 0:-1 0:-1
+wan_connection=0
+wan_ddm_connection=0
+wan_def_hwaddr=00:1C:10:BC:7F:AD
+wan_dns=
+wan_domain=
+wan_enable_last=8
+wan_gateway=0.0.0.0
+wan_hostname=
+wan_hwaddr=
+wan_hwname=
+wan_ifname=eth1
+wan_ifnames=eth1
+wan_ipaddr=0.0.0.0
+wan_lease=86400
+wan_mtu=1500
+wan_netmask=0.0.0.0
+wan_post_connection=0
+wan_pppoe_ac=pppoe_ac
+wan_pppoe_demand=pppoe_demand
+wan_pppoe_idletime=pppoe_idletime
+wan_pppoe_ifname=pppoe_ifname
+wan_pppoe_keepalive=pppoe_keepalive
+wan_pppoe_mru=pppoe_mru
+wan_pppoe_mtu=pppoe_mtu
+wan_pppoe_passwd=pppoe_passwd
+wan_pppoe_service=pppoe_service
+wan_pppoe_username=pppoe_username
+wan_primary=1
+wan_proto=dhcp
+wan_static_dns=0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0 0.0.0.0:0.0.0.0
+wan_unit=0
+wanuptime0=0
+wanuptime1=0
+wanuptime2=0
+wanuptime3=0
+wanuptime4=0
+wanuptime5=0
+wanuptime6=0
+wanuptime7=0
+wan_wins=
+wk_mode=gateway
+wl0_auth=0
+wl0_auth_mode=disabled
+wl0_bcn=100
+wl0_channel=11
+wl0_closed=0
+wl0_country=Worldwide
+wl0_dtim=1
+wl0_frag=2346
+wl0_frameburst=off
+wl0_gmode=1
+wl0_gmode_protection=off
+wl0_hwaddr=
+wl0_ifname=
+wl0_key=1
+wl0_key1=
+wl0_key2=
+wl0_key3=
+wl0_key4=
+wl0_lazywds=1
+wl0_maclist=
+wl0_macmode=disabled
+wl0_mode=ap
+wl0_phytype=g
+wl0_plcphdr=long
+wl0_radius_ipaddr=
+wl0_radius_key=
+wl0_radius_port=1812
+wl0_rate=0
+wl0_rateset=default
+wl0_rts=2347
+wl0_ssid=linksys
+wl0_unit=0
+wl0_wds=
+wl0_wep=off
+wl0_wpa_gtk_rekey=3600
+wl0_wpa_psk=
+wl_active_add_mac=0
+wl_active_mac=
+wl_antdiv=-1
+wl_auth=0
+wl_auth_mode=disabled
+wl_bcn=100
+wl_channel=11
+wl_closed=0
+wl_corerev=
+wl_country=Worldwide
+wl_dtim=1
+wl_firmware_version=
+wl_frag=2346
+wl_frameburst=off
+wl_gmode=1
+wl_gmode_protection=off
+wl_hwaddr=
+wl_ifname=
+wl_infra=1
+wl_key=1
+wl_key1=
+wl_key2=
+wl_key3=
+wl_key4=
+wl_lazywds=1
+wl_mac_deny=
+wl_mac_list=
+wl_maclist=
+wl_macmode1=disabled
+wl_macmode=disabled
+wl_management_enable=1
+wl_mode=ap
+wl_passphrase=
+wl_phytype=g
+wl_phytypes=
+wl_plcphdr=long
+wl_radio=1
+wl_radioids=
+wl_radius_ipaddr=
+wl_radius_key=
+wl_radius_port=1812
+wl_rate=0
+wl_rateset=default
+wl_rts=2347
+wl_ssid=linksys
+wl_unit=0
+wl_wds=
+wl_wep_bit=64
+wl_wep_buf=
+wl_wep_gen=
+wl_wep_last=
+wl_wep=off
+wl_wpa_gtk_rekey=3600
+wl_wpa_psk=
+
+}}}
+=== Flashing and Booting OpenWRT Firmware (trunk) ===
+{{{
+working ... ;)
+}}}
+
+{{{
+free space start: 0xb0010000
+free space end: 0xb0400000
+Basic POST completed...     Success.
+Last reset cause: Hardware reset (Power-on reset)
+PSPBoot1.3 rev: 0.22.19.5
+CyberTAN rev: 0.22.19
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+FlashType:
+No mac find, use default mac
+mac_value: 00:1C:10:BC:7F:AC
+Press ESC for monitor... 1
+(psbl)
+Booting...
+}}}
+
+== Flash ==
+Since this device uses PSPBoot no flashing of openwrt via tftp is possible. Also no ftpd as with adam2 is available. The device seems to use the code pattern "AG3BPBOT" instead of "WAG2" so the image gets denied via tftp and http. The only solution I found to put openwrt on is to get the original sources from Linksys, recompile the image with an enabled telnetd and do the flashing with an mtd binary via telnet.
+
+You can get further infos from a forum thread
+
+http://forums.whirlpool.net.au/forum-replies.cfm?t=511748&p=8
+
+----
+ . ["CategoryAR7Device"]

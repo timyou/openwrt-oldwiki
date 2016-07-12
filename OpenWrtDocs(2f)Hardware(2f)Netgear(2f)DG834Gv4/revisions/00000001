@@ -1,0 +1,27 @@
+= Netgear DG834G V4 =
+== Hardware ==
+According to [http://en.wikipedia.org/wiki/DG834G Wikipedia], not based anymore on TI AR7, but Broadcom. Confirmed by image below.
+
+ * BCM6348 V0.7 cpu @ 239.20 bogomips
+ * Broadcom BCM4318 802.11 Wireless Controller
+ * Broadcom BCM6348B0 Ethernet Network Device v0.3
+ * Linux version 2.6.8.1 (gcc version 3.4.2)
+Doesn't have /proc/sys/dev/adam2/, so might not be adam2 based bootloader?
+
+attachment:DG834Gv4-thumb.jpg
+
+[attachment:DG834Gv4.jpg Larger version available (Higher quality) (1.14 MiB)]
+
+Lights have been reordered along the front, new order as follows:
+
+Power | Ethernet 1 | Ethernet 2 | Ethernet 3 | Ethernet 4 | Wireless | DSL | Internet
+
+''' See Also '''
+
+ * [:OpenWrtDocs/BroadcomBCM63xxPort:BroadcomBCM63xxPort]
+ * [http://dgteam.ilbello.com/ DGTeam Firmware]
+
+----
+ . CategoryModel ["CategoryBCM63xx"]
+ . CategoryDslModems
+ . Category80211gDevices

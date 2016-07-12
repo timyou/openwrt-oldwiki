@@ -1,0 +1,161 @@
+'''Siemens SE505'''
+
+SE505 product page is now   [http://gigaset.siemens.com/shc/0,1935,hq_en_0_15702_rArNrNrNrN_variation:-5_pageType:downloads_imagePos:0,00.html#content : located here]
+
+There are three known versions of the SE505. Only the version SE505V1 (S4) and  SE505V2 (S8) are currently supported by OpenWRT. The third version, SE505V3 (T7, T8), has not been reported to work.
+
+Another description (in German) and link to images of versions 1 and 2 can be found here:
+http://wiki.opennet-initiative.de/index.php/Siemens_SE505
+
+A good hardware description with pictures of the unsupported versions can be found here:
+http://bern.openwireless.ch/SE505
+
+= Siemens SE505 v1 =
+The inital version (v1) is based on the Broadcom 4710 board. It has a 125MHz CPU, 4MB flash and 16MB RAM. The wireless NIC is a mini-PCI card.
+
+After several bugfixes releases from WHITE RUSSIAN (RC2) works well on this router.
+
+/!\ '''The reset button is hardwired on the Se505 v1, so there is no failsafe mode. You can set back default nvram settings by pressing reset button while turning on the router.'''
+
+/!\ '''The IP of the machine uploading firmware has to be 192.168.x.100.''' [documented under FAQ on the Siemens site]
+
+= Siemens SE505 v2 =
+The SE505 (v2) has a 200 MHz BCM4712KPB CPU, 4MB flash and 8 MB RAM on board. This hardware version has been sold in important quantities as part of ADSL packages from major ISPs in Germany and Austria.
+
+SE505V2 is very similar to [http://wiki.openwrt.org/OpenWrtDocs/Hardware/Belkin/F5D7230: Belkin F5D7230 v1440] (2MB flash), and you can compile the Broadcom reference firmware or get serial access using the tips in http://midnightcode.org/papers/ . Hacking telnet access to the original Linux-2.4.20 firmware from Siemens, using http://midnightcode.org/projects/pluto/code/belky-0.5.c (see SeattleWireless:Belkin_20F5D7230_2d4 "shell on the box" ).
+
+Problems with the hardware detection in Whiterussian RC5 have been fixed in RC6. The former recommendation to fall back to Whiterussian RC4 is obsolete now.
+
+Whiterussian RC6 "micro" will work, but limited RAM will result in poor stability when using PPPOE. The possibility of a RAM upgrade to 16 or 32MByte, and of retrofitting USB, makes this box a cheap alternative to more expensive hardware like ASUS WL500G.
+
+__ /!\ __ '''The reset button is hardwired on the SE505V2, so there is no failsafe mode. The ''''''CFE will ''''''reset default nvram settings by pressing the reset button while turning on the router (see reset-button-mod below). '''
+
+__ /!\ __ '''The tftp address during boot_wait is determined by NVRAM. CFE-default is 192.168.2.1 '''
+
+ .
+== Internal Connectors ==
+On Siemens SE505V2 models, the JTAG connector is labeled J7 (male 2mm connecting plug).
+
+{{{
+JTAG connector J7
+   2   1
+    o o
+    o o-TDO
+GND-o o-TDI
+GND-o o-TCK
+GND-o o-TMS
+  10   9
+}}}
+The serial connector is labeled J2 and has the following pinout (Molex 2mm):
+
+{{{
+serial connector J2
+       |---|
+front  | o | Rx
+ of    | o   Tx
+ the   | o   GND
+board  | o | 3.3V
+       |---|
+}}}
+Refer to the [:Serial Console:Serial Console ]page for details on the necessary 3.3V / RS232C level shifter.
+
+== SE505V2 Hardware Mods ==
+=== RAM Upgrade ===
+__ /!\ __ Upgrading memory will void the warranty, and requires a steady hand and good soldering skills.
+
+The SE505V2 has one 4Mx16 SDRAM chip (8 MB), and spare pads for a second RAM chip. The RAM initialization of the CFE gnores the sdram_init value in the nvram, and 8Mx16 chips will be accessed as 4Mx16 chips. Mixing 4Mx16 and 8Mx16 is possible, and will give the same result as two 4Mx16 chips.  32MB are reported to work by using two 16Mx16 chips.
+
+Instructions to upgrading from 8MB to 16MB:
+
+1) find the right SDRAM chips: 64MB or 128MB SODIMMS are a good source for SDRAM chips with the right bus width (16 bit - always check the data sheet!). Unsoldering the chips with a hot-air gun works fine (be careful not to overheat the chips!).
+
+2) desolder the LEDs (at least the WLAN- and the WWW-LED)
+
+3 clean the RAM pads using a 50W soldering iron and desoldering wick.
+
+4) solder a 4Mx16 SDRAM chip to the unpopulated RAM pads.
+
+ . Hint: using desoldering wick and a strong (50W) soldering iron works better than an expensive soldering needle! Do not overheat the pads and double check for shorts!
+5) connect the address lines for the second RAM chip:
+
+{{{
+shorten the pads with the following labels using (very) fine wire:
+  R314
+  R315
+  R316
+  R317
+  R318
+}}}
+After booting the router you should have 16MB!
+
+Now do:
+
+{{{
+nvram set sdram_ncdl=0
+nvram commit
+reboot
+}}}
+to let the CFE reconfigure the timing value. This is all you have to do! It makes no sense to adjust sdram_init, since it is ignored by the CFE of this router.
+
+Hint: don't solder a capacitor to C319! This capacitor is for fine trimming the RAM timing, and it isn't necessary for stable operation..
+
+Hint: for upgrading to 32MB you'll need two 16x16MB chips from a 4 chip 128MB, or from an 8 chip 256MB SODIMM (be extremely careful when desoldering the 4x16MB chip from the router!)
+
+TODO: If you solder 32 MB into the router (two 8Mx16 SDRAM), only 16MB will be used (32MB when upgrading with 64MB chips). According to the boot message on the serial interface, the CFE  only sees 16MB. Setting a different value to "sdram_init" doesn't help. If anyone knows how to build the Siemens / Belkin variant of the broadcom CFE, please let us know.
+
+==== Self compiled CFE ====
+A self compiled CFE which can set new "sdram_init" values can be found here:
+([http://forum.openwrt.org/viewtopic.php?id=9379: see forum thread])
+
+=== Retrofitting USB ===
+The SE505V2 can be retrofitted a USB1.1 port. Note that a mass storage device (as a thumb drive) attached to USB1.1 is much faster than SDcards attached with the MMC mod (it uses only a small fraction of the CPU cycles of the SPI interface  simulated with GPIO). Writing to a thumb drive formated with the EXT2 is typically 10 times as fast as writing to the JFFS file system ([http://forum.openwrt.org/viewtopic.php?id=8656: see forum thread])!
+
+The following USB devices have been tested with this mod : USB hub, MSD (hard disc, thumb drive), RS232 interface (PL2303), CDC device (modem), audio class device (USB speakers), OV511 webcam
+
+Note: for taking full advantage of the USB mod, a RAM upgrade to 16MB is highly recommended!
+
+Instructions for retrofitting a USB port to the SE505V2:
+
+1) +5V USB power supply .
+
+{{{
+Locate the unpopulated pads on the power plug side and add the following components:
+  C906: capacitor 100µF-470µF ( > 16V )
+  C986: capacitor 10µF ( > 16V )
+  U981: LM7805 (DPAC or TO220 converted to SMD w/ heat sink soldered to the PCB)
+}}}
+2) USB components :
+
+{{{
+On the antenna side of the PCB add the following components:
+  F51: shorten(or better use a 500mA polyfuse specified for USB use)
+  R723 and R724: resistors 15k
+  R733 and R734: shorten (better use 22R - 33R)
+  J51: USB-plug (Reichelt.de part# "USB AW-VL")
+}}}
+Software side: Installing USB kernel modules is simple, following the UsbStorageHowto. Note that the SE505V2 has an OHCI controller.
+
+=== Reset Button Mod ===
+The reset button is hard wired to the CPU reset generator chip (7703I) by a capacitor. Failsafe mode, as well as running scripts in /etc/hotplug.d/buttons are only possible after removing this capacitor! Hotplug scripts are very handy for unmounting USB mass storage devices!.
+
+Instructions:
+
+1) Hardware side.
+
+{{{
+Locate C365 near J7 (JTAG connector) and LED "LAN4".
+  C365: remove
+}}}
+2) Software side
+
+As of Whiterussian RC6 there is no working hardware detection for SE505V2, patching the diag module is necessary (use this link: https://dev.openwrt.org/ticket/1100, or contact whiterussian repository maintainers, who failed so far to integrate even the most basic support for SE505V2 into the RC6 diag module). 
+
+= Siemens SE505 v3 =
+SE505 v3) has a BCM4712KFB CPU, 2 x 2MB flash (AT45DB161B) and 8 MB SDRAM (M12L64164A-7T). The PCB is prepared for USB and JTAG, but doesn't have a pads for a second RAM chip. Unlike versions V1 and V2 the V3 routers have an AC power supply! 
+
+Retrofitting the JTAG and the USB interface is most likely possible. Replacing the RAM chip by a chip with 16MB or  32MB has not yet been reported to work, and it might require a new CFE. It is not known if the flash chips are supported by the current JTAG tools.
+
+Most reports suggest that there are compatibility problems of SE 505 v3 with OpenWRT.
+
+----
+ . CategoryModel

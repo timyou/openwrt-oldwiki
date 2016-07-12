@@ -1,0 +1,73 @@
+Hauppauge's MediaMVP provides music, video and photo display on a standard (PAL or NTSC) television monitor using a small $100 embedded Linux thin-client device.
+
+While it uses IBM's 250MHz PowerPC core with hardware MPEG2 capability (the same processor series used by dream-multimedia-tv.de's boxen) it is a multimedia playback device only. It is not self-contained as it must use DHCP and TFTP to locate and retrieve its firmware from a network connection, much like a diskless workstation.
+
+The stock Hauppauge firmware uses the device solely to display streaming video from a desktop PC. While third-party Linux firmware for this unit does not share a common codebase with projects such as OpenWRT and NSLU2-Linux, it does add key capabilities which allow this device to use an OpenWRT device as network-attached storage. Attached to USB-capable units such as the Linksys WRTSL54GS, Asus WL-500g series or the Asus WL-700, it could replace a self-contained media player.
+
+=== MediaMVP firmware ===
+The MediaMVP device operates by obtaining boot information from a DHCP server, then downloading its firmware from the network using TFTP into 32Mb of onboard RAM. The firmware then retrieves sound and images from the network for display on the TV monitor.
+
+The MediaMVP Media Center ([http://www.mvpmc.org/index.php?pg=faq mvpmc.org]) is a third-party firmware media player for the Hauppauge MediaMVP. According to its authors, it is a total replacement for the Hauppauge software and can be booted onto the MediaMVP via tftp; mvpmc supports playing audio (mp3, ogg, wav, ac3) and video (mpeg1, mpeg2) from MythTV or ReplayTV digital video recorders. It can also play audio and video via HTTP, NFS, and CIFS and is capable of playing internet radio via SlimServer. It can also display images (jpg, bmp, png) via NFS and CIFS.
+
+This firmware is available under GPL at http://mvpmc.sourceforge.net and is documented [http://www.mvpmc.org/mvpmc-HOWTO-singlehtml.html here] and [http://mvpmc.wikispaces.com/howto_boot_OpenWRT here]. Network boot support for this device is provided by OpenWRT Kamikaze [https://dev.openwrt.org/browser/packages/net/mvprelay here].
+
+The functions that the network server must provide to support this device are:
+ * DHCP - issue an address to the device and (depending on model version) provide a pointer to the TFTP firmware download
+ * TFTP - provide access to a downloadable firmware file (dongle.bin) and possibly device-specific configuration files
+ * NFS or CIFS - provide access to the stored multimedia files to be displayed (as network-attached storage)
+
+The MediaMVP device itself then retrieves the media, decompresses MPEG 1/2 in hardware and generates audio/video signals for the TV/monitor.
+
+=== Booting MediaMVP hardware from network ===
+There are various versions of the MediaMVP for wired and wireless networks; these fall into two general categories:
+
+The first units (no longer manufactured) were considered "non-flash" devices in that they only contained enough flash memory to boot from TFTP. Any application firmware, including the stock Hauppauge application itself, had to be retrieved from the network every time the unit was powered-up.
+
+The current version (revision H1 and subsequent, H2, H3, H4...) are "flash" devices that contain just enough flash memory to store the standard version of the application firmware. These may also be booted with third-party firmware from a network TFTP server, but there are differences in the boot procedure these follow.
+
+It is assumed that OpenWRT and network-attached storage (see UsbStorageHowTo) are already configured before beginning MediaMVP installation.
+
+A DHCP server (dnsmasq) is part of the standard OpenWRT configuration, and a TFTP server (atftpd or tftpd-hpa, latter is shown here) is installed using ipkg:
+ * ipkg install libwrap
+ * ipkg install tftpd-hpa
+
+In all cases, a TFTP [http://mvpmc.wikispaces.com/bootsever boot server] must be available to serve the firmware (which should be renamed to dongle.bin) and any local [http://mvpmc.wikispaces.com/mvpmc.config configuration] files. Some MediaMVP versions also require a .ver file, which is extracted from the dongle.bin firmware using dd.
+
+==== Original ("non-flash") MediaMVP boot ====
+This applies only to MediaMVP hardware revisions *before* H1. These devices have very little flash memory and must always boot from TFTP.
+
+OpenWRT's default DHCP server is [http://www.nabble.com/Router-Setup-t4145166.html DNSmasq], which is documented more fully [http://www.thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html here].
+
+In /etc/dnsmasq.conf, the location of the firmware (dongle.bin) and the address of an (optional) network time server need to be [http://forum.openwrt.org/viewtopic.php?pid=11988 specified]:
+{{{
+ # configure MediaMVP
+ # time server (NTP):
+  dhcp-option=42,192.43.244.18
+ # TFTP/boot-from-LAN info:
+  dhcp-boot=dongle.bin,OpenWrt,192.168.1.1
+}}}
+
+A static IP address may be assigned to the MediaMVP unit by adding its MAC address (printed on the underside of the unit) to /etc/ethers
+
+The mvpmc firmware must be downloaded and placed in the TFTP server's root directory. For instance, if the firmware is in /opt/tftpboot/dongle.bin, start TFTPd using:
+{{{
+  tftpd-hpa -l -a 192.168.1.1 -c -s /opt/tftpboot
+}}}
+
+If the device cannot obtain the download from the default location, it will attempt to use an alternate port (16869) for TFTP:
+{{{
+  tftpd-hpa -l -a 192.168.1.1:16869 -c -s /opt/tftpboot
+}}}
+
+==== Current ("flash") MediaMVP device boot ====
+This applies to revisions H1 and subsequent. These have slightly more flash memory and the [http://mvpmc.wikispaces.com/H2+Linux+Boot+-+NEW boot sequence] differs from the original.
+
+Instead of obtaining the location of the boot file through DHCP, these devices use DHCP for address assignment only. They expect an MVPrelay server to be present on port 16881 as a pointer to indicate where to look for the TFTP server. TFTP itself is then required to be available on port 16869 at the specified address.
+{{{
+ tftpd-hpa -l -a 192.168.1.1:16869 -c -s /opt/tftpboot
+ mvprelay 16881 5906 6337 192.168.1.1
+}}}
+
+The [https://dev.openwrt.org/ticket/1262 MVPrelay] server is part of OpenWRT ([https://dev.openwrt.org/browser/packages/net/mvprelay Kamikaze] distributions only) and must be active in order to boot the newer MediaMVP's. The first parameter is the port on which mvprelay is to listen; the last parameter is the network address of the TFTP server.
+----
+CategoryHowTo

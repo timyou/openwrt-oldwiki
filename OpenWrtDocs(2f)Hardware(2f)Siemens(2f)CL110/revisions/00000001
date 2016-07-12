@@ -1,0 +1,84 @@
+= Siemens CL 110 Router =
+
+Homepage: http://w5.siemens.ch/eip/products_broadband.php
+
+I will add more informations soon.
+
+
+
+System-Log 		
+{{{Datum / Uhrzeit 	Bereich 	Niveau 	Meldung
+2006/01/01 00:01:13 	daemon 	notice 	pppd[308]: PPPoE Server Detected
+2006/01/01 00:01:12 	daemon 	notice 	pppd[308]: PPP: Start to connect ...
+2006/01/01 00:00:54 	daemon 	notice 	pppd[308]: PPPoE Server Detected
+2006/01/01 00:00:50 	daemon 	notice 	pppd[308]: PPP: Start to connect ...
+2006/01/01 00:00:32 	daemon 	notice 	pppd[308]: PPPoE Server Detected
+2006/01/01 00:00:30 	daemon 	notice 	pppd[308]: PPP: Start to connect ...
+2006/01/01 00:00:27 	user 	warn 	kernel: ATM Soft SAR: ATM link connected.
+2006/01/01 00:00:27 	user 	crit 	kernel: ADSL link up, interleaved, us=446, ds=4044
+2006/01/01 00:00:26 	user 	crit 	kernel: ADSL G.992 message exchange
+2006/01/01 00:00:21 	user 	crit 	kernel: ADSL G.992 channel analysis
+2006/01/01 00:00:20 	user 	warn 	kernel: board_ioctl: boot complete!
+2006/01/01 00:00:19 	user 	warn 	kernel: ip_conntrack_pptp version 2.1 unloaded
+2006/01/01 00:00:19 	user 	warn 	kernel: ip_nat_pptp version 2.0 unloaded
+2006/01/01 00:00:19 	user 	warn 	kernel: ip_nat_rtsp v0.01 loading
+2006/01/01 00:00:17 	user 	warn 	kernel: ip_conntrack_rtsp v0.01 loading
+2006/01/01 00:00:16 	user 	warn 	kernel: ip_nat_h323: initialize the module!
+2006/01/01 00:00:16 	user 	crit 	kernel: ADSL G.992 started
+2006/01/01 00:00:16 	user 	warn 	kernel: ip_conntrack_h323: init
+2006/01/01 00:00:16 	user 	warn 	kernel: ip_nat_pptp version 2.0 loaded
+2006/01/01 00:00:16 	user 	warn 	kernel: ip_conntrack_pptp version 2.1 loaded
+2006/01/01 00:00:15 	user 	warn 	kernel: ip_conntrack version 2.1 (125 buckets, 0 max) - 368 bytes per conntrack
+2006/01/01 00:00:14 	user 	warn 	kernel: ip_tables: (C) 2000-2002 Netfilter core team
+2006/01/01 00:00:14 	user 	crit 	kernel: ADSL G.994 training
+2006/01/01 00:00:14 	user 	warn 	kernel: disable vlan
+2006/01/01 00:00:14 	user 	warn 	kernel: AdslCoreHwReset: AdslOemDataAddr = 0xA0FF8104
+2006/01/01 00:00:14 	user 	warn 	kernel: pSdramPHY=0xA0FFFFF8, 0x19218E 0xDEADBEEF
+2006/01/01 00:00:14 	user 	crit 	kernel: eth0 Link UP.
+2006/01/01 00:00:14 	user 	warn 	kernel: USB Vendor id=069a, USB Product id=0316
+2006/01/01 00:00:14 	user 	warn 	kernel: usb0: Host MAC Address: 00 1B 9E 14 B2 24
+2006/01/01 00:00:14 	user 	warn 	kernel: usb0: MAC Address: 00 1B 9E 14 B2 23
+2006/01/01 00:00:14 	user 	warn 	kernel: Broadcom BCM6338A2 USB Network Device v0.4 Dec 20 2006 17:45:01
+2006/01/01 00:00:14 	user 	warn 	kernel: eth0: MAC Address: 00:1B:9E:14:B2:22
+2006/01/01 00:00:14 	user 	warn 	kernel: Config Internal PHY Through MDIO
+2006/01/01 00:00:14 	user 	warn 	kernel: Broadcom BCM6338A2 Ethernet Network Device v0.3 Dec 20 2006 17:44:59
+2006/01/01 00:00:14 	user 	warn 	kernel: Internal PHY
+2006/01/01 00:00:14 	user 	warn 	kernel: adsl: adsl_init entry
+2006/01/01 00:00:14 	user 	warn 	kernel: blaadd: blaa_detect entry
+2006/01/01 00:00:14 	user 	warn 	kernel: atmapi: module license 'Proprietary' taints kernel.
+2006/01/01 00:00:14 	user 	warn 	kernel: 1.parse options inodes 1781 block 64
+2006/01/01 00:00:14 	user 	warn 	kernel: tmpfs size 262144
+2006/01/01 00:00:14 	user 	warn 	kernel: Algorithmics/MIPS FPU Emulator v1.5
+2006/01/01 00:00:14 	user 	warn 	kernel: VFS: Mounted root (squashfs filesystem) readonly.
+2006/01/01 00:00:14 	user 	notice 	kernel: Ebtables v2.0 registered
+2006/01/01 00:00:14 	user 	warn 	kernel: bcm963xx_serial driver v2.0
+2006/01/01 00:00:14 	user 	warn 	kernel: brcmboard: brcm_board_init entry
+2006/01/01 00:00:14 	user 	warn 	kernel: rootfs_addr 0bfc10100
+2006/01/01 00:00:14 	user 	warn 	kernel: bootf1=ff bootf2=ff
+2006/01/01 00:00:14 	user 	warn 	kernel: bcm963xx_mtd driver v1.0
+2006/01/01 00:00:14 	user 	warn 	kernel: Using noop io scheduler
+2006/01/01 00:00:14 	user 	warn 	kernel: 1.parse options inodes 1772 block 1772
+2006/01/01 00:00:14 	user 	warn 	kernel: Can't analyze prologue code at 8014ca6c
+2006/01/01 00:00:14 	user 	warn 	kernel: Checking for 'wait' instruction... unavailable.
+2006/01/01 00:00:14 	user 	warn 	kernel: Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+2006/01/01 00:00:14 	user 	warn 	kernel: Calibrating delay loop... 239.20 BogoMIPS
+2006/01/01 00:00:14 	user 	warn 	kernel: Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+2006/01/01 00:00:14 	user 	warn 	kernel: Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+2006/01/01 00:00:14 	user 	warn 	kernel: Using 120.000 MHz high precision timer.
+2006/01/01 00:00:14 	user 	warn 	kernel: PID hash table entries: 64 (order 6: 512 bytes)
+2006/01/01 00:00:14 	user 	warn 	kernel: Primary data cache 8kB 2-way, linesize 16 bytes.
+2006/01/01 00:00:14 	user 	warn 	kernel: Primary instruction cache 16kB, physically tagged, 2-way, linesize 16 bytes.
+2006/01/01 00:00:14 	user 	warn 	kernel: brcm mips: enabling icache and dcache...
+2006/01/01 00:00:14 	user 	warn 	kernel: Kernel command line: root=31:0 ro noinitrd
+2006/01/01 00:00:14 	user 	warn 	kernel: Built 1 zonelists
+2006/01/01 00:00:14 	user 	warn 	kernel: memory: 00fa0000 @ 00000000 (usable)
+2006/01/01 00:00:14 	user 	warn 	kernel: Determined physical RAM map:
+2006/01/01 00:00:14 	user 	warn 	kernel: CPU revision is: 00029010
+2006/01/01 00:00:14 	user 	warn 	kernel: Scratch pad is not used for this flash part.
+2006/01/01 00:00:14 	user 	warn 	kernel: bootf1=ff bootf2=ff
+2006/01/01 00:00:14 	user 	warn 	kernel: Total Flash size: 4096K with 71 sectors NVRAM @0 block
+2006/01/01 00:00:14 	user 	warn 	kernel: FLASH_BASE bfc00000,blk 0
+2006/01/01 00:00:14 	user 	warn 	kernel: man/device id 01/2200
+2006/01/01 00:00:14 	user 	warn 	kernel: Linux version 2.6.8.1 (compiled by michaelc) (gcc version 3.4.2) #1 Wed Dec 20 17:46:30 CST 2006
+2006/01/01 00:00:14 	user 	notice 	kernel: klogd started: BusyBox v1.00 (2005)
+2006/01/01 00:00:14 	syslog 	emerg 	BCM63XX started: BusyBox v1.00 (2005)}}}

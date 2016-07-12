@@ -1,0 +1,47 @@
+== US Robotics 5461 ==
+
+= WHITE RUSSIAN (0.9) RUNS =
+
+WHITE RUSSIAN (0.9) without problems.
+Kamikaze is very unstable.
+
+= Hardware =
+
+This repeater is an USR5441 but without usb and switch.
+
+ * Macronix 29LV160CBTC-70G = 2 MB FLASH
+ * ISSI IS4232200C1-6T RKKK66400D 0545 = 8MB RAM
+ * Broadcom BCM5350KPB5 HT0545 P11 756443 N5A = CPU (rev 0)
+
+= Software =
+
+Openwrt Boot output
+
+{{{
+...
+...
+}}}
+
+
+= Firmware upload =
+You need too build a serial cable and load the openwrt trx from CFE.
+
+
+= Serial =
+{{{
+  ______________________________
+ |  LAN LEDS     PWR LEDS       |
+ |  __________                  |
+ | | RF STUFF |      _________  |
+ | |__________|     |  RAM    | |
+ |   _____   _____  |_________| |
+ |  |FLASH| |     |             |
+ |  |_____| | CPU |             |
+ |          |_____|             |
+ |                      . TX    | Serial is 115200-N-8-1
+ |                      . RX    |
+ |                      . 3.3v  |
+ |                      . GND   |
+ |_|USB|_|WAN|_|  LAN  |_|R|_|P||    R = reset P = power (5v)
+
+}}}

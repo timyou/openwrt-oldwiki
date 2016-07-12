@@ -1,0 +1,163 @@
+= How do I enable the USB stick on ASUS WL-500gx (WL-500GDeluxe, wl500gx) ? =
+
+Good idea is to read http://rotz.org/archives/2005/03/wl500g_usb_stic.html
+
+You can see which packages are available:
+{{{
+root@OpenWrt:~#ipkg list | grep USB
+kmod-usb-core - Kernel Support for USB
+kmod-usb-ohci - Kernel driver for OHCI USB controllers
+kmod-usb-printer - Kernel modules for USB Printer support
+kmod-usb-storage - Kernel modules for USB storage support
+kmod-usb-uhci - Kernel driver for UHCI USB controllers
+kmod-usb2 - Kernel driver for USB2 controllers
+libusb - a Library for accessing Linux USB devices
+lsusb - A program to list USB devices
+}}}
+
+In ASUS WL-500gx you need these packages (install command): {{{ipkg install kmod-usb-core kmod-usb-uhci kmod-usb-storage}}}
+
+Next you have to add next lines to /etc/modules
+
+{{{
+scsi_mod
+sd_mod
+sg
+usbcore
+uhci
+usb-storage
+}}}
+
+You can use command {{{vi /etc/modules}}}
+
+Now check if you see your USB stick (of course joining in your ASUS): {{{dmesg}}}
+
+If it correct you see similar as below
+
+{{{
+usb.c: registered new driver usbdevfs
+usb.c: registered new driver hub
+uhci.c: USB Universal Host Controller Interface driver v1.1
+PCI: Enabling device 01:02.0 (0000 -> 0001)
+uhci.c: USB UHCI at I/O 0x100, IRQ 2
+usb.c: new USB bus registered, assigned bus number 1
+hub.c: USB hub found
+hub.c: 2 ports detected
+PCI: Enabling device 01:02.1 (0000 -> 0001)
+uhci.c: USB UHCI at I/O 0x120, IRQ 2
+usb.c: new USB bus registered, assigned bus number 2
+hub.c: USB hub found
+hub.c: 2 ports detected
+hub.c: new USB device 01:02.0-2, assigned address 2
+usb.c: USB device 2 (vend/prod 0xd7d/0x100) is not claimed by any active driver.
+Initializing USB Mass Storage driver...
+usb.c: registered new driver usb-storage
+scsi0 : SCSI emulation for USB Mass Storage devices
+  Vendor: Apacer    Model: HandyDrive        Rev: 1.05
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+Attached scsi removable disk sda at scsi0, channel 0, id 0, lun 0
+SCSI device sda: 256000 512-byte hdwr sectors (131 MB)
+sda: Write Protect is off
+Partition check:
+ /dev/scsi/host0/bus0/target0/lun0: p1
+WARNING: USB Mass Storage data integrity not assured
+USB Mass Storage device found at 2
+USB Mass Storage support registered.
+}}}
+
+Next you can mount and use your USB stick (with relevant modul for your file system in memory and created directory for mount): {{{mount /dev/scsi/host0/bus0/target0/lun0/part1 /mnt}}}
+
+
+= How do I boot from USB stick on ASUS WL-500gx (WL-500GDeluxe, wl500gx) ? =
+This guide assumes that you're using a jffs root, with squashfs root some steps might be a little different.
+
+For this to work you need the same kernel modules for USB as described above. You also need the modules for the ext3 filesystem: 
+{{{
+ipkg install kmod-ext2 kmod-ext3
+}}}
+
+The next step is to partition the USB stick and create an ext3fs partition. This requires fdisk. As fdisk isn't included in the default OpenWrt distribution, you'll have to either build it yourself and include fdisk, or use Linux on a desktop computer. (A Linux Live CD works fine). This is the command for doing it from OpenWrt:
+{{{
+fdisk /dev/scsi/host0/bus0/target0/lun0/disc
+}}}
+
+From a desktop Linux distribution, it's more like:
+{{{
+fdisk /dev/sda
+}}}
+/!\ ''Make sure you're modifying the right device. If you have any other USB drives, or a SCSI or SATA drive, your USB stick might be at /dev/sdb or /dev/sdb (and so on) instead!''
+
+For more information about using fdisk, see: http://www.tldp.org/HOWTO/Partition/partition-5.html
+
+Next, "format" the newly created partition
+
+OpenWrt:
+{{{
+mke2fs -j /dev/scsi/host0/bus0/target0/lun0/part1
+}}}
+Desktop Linux:
+{{{
+mke2fs -j /dev/sda
+}}}
+Same warning as above applies here.
+
+Make sure you have /usb and /mnt directories on the jffs partition:
+{{{
+mkdir /usb /mnt
+}}}
+
+Now, we will copy everything from the flash to the USB:
+{{{
+# mount it
+mount -t ext3 /dev/scsi/host0/bus0/target0/lun0/part1 /mnt
+# copy everything
+tar cvO -C / bin/ etc/ lib/ sbin/ usr/ www/ var/ | tar x -C /mnt
+# create required dirs
+mkdir -p /mnt/tmp && mkdir -p /mnt/dev && mkdir -p /mnt/proc && mkdir -p /mnt/jffs
+# unmount
+umount /mnt
+}}}
+
+Next, remove /sbin/init from the jffs partition (this is just a symlink to busybox anyway):
+{{{
+rm /sbin/init
+}}}
+
+And replace it with this script:
+{{{
+#!/bin/sh
+boot_dev="/dev/scsi/host0/bus0/target0/lun0/part1"
+
+# install needed modules for usb and the ext3 filesystem
+insmod usbcore
+insmod uhci && sleep 2s
+insmod scsi_mod && insmod sd_mod && insmod sg && insmod usb-storage
+insmod ext2 && insmod jbd && insmod ext3
+sleep 2s
+
+# mount the usb stick
+mount -t ext3 -o rw "$boot_dev" /usb
+
+# if everything looks ok, do the pivot root
+if [ -x /usb/sbin/init ] && [ -d /usb/jffs ]; then
+   pivot_root /usb /usb/jffs
+   mount none /proc -t proc
+   mount none /dev -t devfs
+   mount none /tmp -t tmpfs size=50%
+   mkdir -p /dev/pts
+   mount none /dev/pts -t devpts
+   umount /jffs/proc /jffs/dev/pts
+   sleep 1s
+   umount /jffs/tmp /jffs/dev
+fi
+
+# finally, run the real init (from usb hopefully).
+exec /bin/busybox init
+}}}
+
+Make sure your new /sbin/init is executable:
+{{{
+chmod a+x /sbin/init
+}}}
+
+Now just reboot, and it should boot from the USB storage automatically.

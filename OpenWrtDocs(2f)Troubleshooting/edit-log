@@ -1,0 +1,158 @@
+1104563972000000	00000001	SAVENEW	OpenWrtDocs(2f)Troubleshooting	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1104964620000000	00000002	SAVE	OpenWrtDocs(2f)Troubleshooting	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1105399087000000	00000003	SAVE	OpenWrtDocs(2f)Troubleshooting	80.242.32.51	cache.aramiska.net	1105398764.58.50604		Added missing command for read/write jffs2 access in failsafe
+1105778209000000	00000004	SAVE	OpenWrtDocs(2f)Troubleshooting	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1105875241000000	00000005	SAVE	OpenWrtDocs(2f)Troubleshooting	81.173.181.31	xdsl-81-173-181-31.netcologne.de	1105875059.57.45450		
+1106373778000000	00000006	SAVE	OpenWrtDocs(2f)Troubleshooting	68.165.170.95	h-68-165-170-95.snvacaid.dynamic.covad.net	1106373440.46.23058		Tested the flash chip TFTP method on a WRT54GS v1.1 and it worked.
+1106376884000000	00000007	SAVE	OpenWrtDocs(2f)Troubleshooting	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1106591558000000	00000008	SAVE	OpenWrtDocs(2f)Troubleshooting	213.39.190.135	c190135.adsl.hansenet.de	1105463883.08.55165		
+1107108490000000	00000009	SAVE	OpenWrtDocs(2f)Troubleshooting	131.191.55.120	00121740ec3a.click-network.com	1106337239.03.21973		
+1107190696000000	00000010	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		JTAG-Method added
+1107190868000000	00000011	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		JTAG-Method added
+1107191244000000	00000012	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		
+1107191846000000	00000013	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		
+1107197170000000	00000014	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		
+1107197636000000	00000015	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		
+1107197939000000	00000016	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		
+1107198007000000	00000017	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		
+1107198291000000	00000018	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.180.64	d180064.adsl.hansenet.de	1105463883.08.55165		
+1107279386000000	00000019	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.71.195	d071195.adsl.hansenet.de	1105463883.08.55165		
+1107299045000000	00000020	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.71.195	d071195.adsl.hansenet.de	1105463883.08.55165		
+1107553215000000	00000021	SAVE	OpenWrtDocs(2f)Troubleshooting	128.95.134.41	D-128-95-134-41.dhcp4.washington.edu	1106460826.6.34503		
+1107686562000000	00000022	SAVE	OpenWrtDocs(2f)Troubleshooting	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1107720658000000	00000023	SAVE	OpenWrtDocs(2f)Troubleshooting	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1107895011000000	00000024	SAVE	OpenWrtDocs(2f)Troubleshooting	216.212.68.131	host68-131.birch.net	1105845315.3.63554		
+1107895129000000	00000025	SAVE	OpenWrtDocs(2f)Troubleshooting	216.212.68.131	host68-131.birch.net	1105845315.3.63554		
+1108060126000000	00000026	SAVE	OpenWrtDocs(2f)Troubleshooting	128.95.134.41	D-128-95-134-41.dhcp4.washington.edu	1106460826.6.34503		
+1108822952000000	00000027	SAVE	OpenWrtDocs(2f)Troubleshooting	84.128.221.222	p5480DDDE.dip.t-dialin.net	1108811712.32.62379		
+1108836510000000	00000028	SAVE	OpenWrtDocs(2f)Troubleshooting	84.128.221.222	p5480DDDE.dip.t-dialin.net	1108811712.32.62379		added hint on how to boot failsafe mode without reset button
+1109828160000000	00000029	SAVE	OpenWrtDocs(2f)Troubleshooting	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1109907958000000	00000030	SAVE	OpenWrtDocs(2f)Troubleshooting	128.95.134.41	D-128-95-134-41.dhcp4.washington.edu	1106460826.6.34503		
+1115956160000000	00000031	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1115955424.1.25297		not clear from link jumper page that GSv2 has screws
+1115956729000000	00000032	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1115956566.21.51121		
+1116439534000000	00000033	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1096303201.7.12400		
+1117770574000000	00000034	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1117085850.14.45106		
+1117770927000000	00000035	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1117085850.14.45106		
+1117771158000000	00000036	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1117085850.14.45106		
+1117771268000000	00000037	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1096303201.7.12400		
+1118024416000000	00000038	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1117085850.14.45106		
+1118024475000000	00000039	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1117085850.14.45106		
+1118116258000000	00000040	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1096303201.7.12400		
+1118414546000000	00000041	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1115937162.18.58882		typo correction
+1118434551000000	00000042	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1115937162.18.58882		
+1119140350000000	00000043	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1119140109.22.60340		
+1119140473000000	00000044	SAVE	OpenWrtDocs(2f)Troubleshooting	208.185.247.160	rackable1.simpli.biz	1119140109.22.60340		
+1120304260000000	00000045	SAVE	OpenWrtDocs(2f)Troubleshooting	217.160.135.112	chrom.openbsd-geek.de	1108641180.99.15726		
+1120304516000000	00000046	SAVE	OpenWrtDocs(2f)Troubleshooting	217.160.135.112	chrom.openbsd-geek.de	1108641180.99.15726		
+1120519411000000	00000047	SAVE	OpenWrtDocs(2f)Troubleshooting	62.242.24.181	62.242.24.181	1120518598.78.2045		Add a note on my expirience on migrating from jffs2 to squashfs
+1120521024000000	00000048	SAVE	OpenWrtDocs(2f)Troubleshooting	62.242.24.181	62.242.24.181	1120518598.78.2045		Fix spelling some (thank you mrfrenzy), also stress the warning
+1120521125000000	00000049	SAVE	OpenWrtDocs(2f)Troubleshooting	62.242.24.181	62.242.24.181	1120518598.78.2045		Fix typo
+1120521408000000	00000050	SAVE	OpenWrtDocs(2f)Troubleshooting	62.242.24.181	62.242.24.181	1120518598.78.2045		Fix some english problems
+1120539620000000	00000051	SAVE	OpenWrtDocs(2f)Troubleshooting	24.1.29.255	c-24-1-29-255.hsd1.tx.comcast.net	1114908278.49.36917		typo correction
+1120553195000000	00000052	SAVE	OpenWrtDocs(2f)Troubleshooting	80.5.160.8	bagu-cache-5.server.ntli.net	1120553096.75.60194		fixed a typo on binary numbers
+1120699845000000	00000053	SAVE	OpenWrtDocs(2f)Troubleshooting	217.160.135.112	chrom.openbsd-geek.de	1108641180.99.15726		
+1120783234000000	00000054	SAVE	OpenWrtDocs(2f)Troubleshooting	82.120.42.223	APuteaux-152-1-12-223.w82-120.abo.wanadoo.fr	1120160773.78.1265		1.1 wrt54g was hard to flash back...
+1121418244000000	00000055	SAVE	OpenWrtDocs(2f)Troubleshooting	62.242.24.181	62.242.24.181	1120518598.78.2045		Put info on how to recover from switching filesystems the wrong way
+1121418347000000	00000056	SAVE	OpenWrtDocs(2f)Troubleshooting	62.242.24.181	62.242.24.181	1120518598.78.2045		Fix heading, and improve language
+1122210414000000	00000057	SAVE	OpenWrtDocs(2f)Troubleshooting	83.205.202.246	AMarseille-253-1-27-246.w83-205.abo.wanadoo.fr	1104929839.08.29390		
+1122666631000000	00000058	SAVE	OpenWrtDocs(2f)Troubleshooting	213.158.112.63	office.mxr.mos.at	1122666491.86.50016		
+1122712307000000	00000059	SAVE	OpenWrtDocs(2f)Troubleshooting	193.77.186.194	BSN-77-186-194.dsl.siol.net	1122712125.15.6471		added note about source port mismatch
+1124267011000000	00000060	SAVE	OpenWrtDocs(2f)Troubleshooting	193.251.28.106	ARouen-106-1-1-106.w193-251.abo.wanadoo.fr	1124266075.11.7603		
+1124640671000000	00000061	SAVE	OpenWrtDocs(2f)Troubleshooting	62.99.207.55	gate.hartware.at	1124640351.27.31404		I've tried the "Shorting Pins Method" with wrt54g v2.2 - pin 16&17 has to be sho
+1124732905000000	00000062	SAVE	OpenWrtDocs(2f)Troubleshooting	65.13.16.163	adsl-065-013-016-163.sip.asm.bellsouth.net	1124338280.12.31349		
+1124733202000000	00000063	SAVE	OpenWrtDocs(2f)Troubleshooting	65.13.16.163	adsl-065-013-016-163.sip.asm.bellsouth.net	1124338280.12.31349		
+1124932095000000	00000064	SAVE	OpenWrtDocs(2f)Troubleshooting	205.153.246.1	126.1.salpublib.org	1124931753.54.36383		I added the warning about invalidating your arp cache when switching to failsafe
+1125371218000000	00000065	SAVE	OpenWrtDocs(2f)Troubleshooting	24.95.77.45	cpe-24-95-77-45.columbus.res.rr.com	1125370552.85.13065		added note re: odd prb. on 54gs where reset button was reqd. before tftp svr up.
+1126371001000000	00000066	SAVE	OpenWrtDocs(2f)Troubleshooting	212.201.70.70	wbx-neon.stw-bonn.de	1108641180.99.15726		
+1126371122000000	00000067	SAVE	OpenWrtDocs(2f)Troubleshooting	212.201.70.70	wbx-neon.stw-bonn.de	1108641180.99.15726		
+1126733765000000	00000068	SAVE	OpenWrtDocs(2f)Troubleshooting	195.56.146.238	openwrt.org	1096303201.7.12400		update jffs2->squashfs troubleshooting
+1127958320000000	00000069	SAVE	OpenWrtDocs(2f)Troubleshooting	66.62.174.31	66-62-174-31.wwc.edu	1127958128.73.6981		
+1128204971000000	00000070	SAVE	OpenWrtDocs(2f)Troubleshooting	85.142.4.138	dial.iwan.ru	1120300957.95.18564		JTAG length
+1128736271000000	00000071	SAVE	OpenWrtDocs(2f)Troubleshooting	24.1.30.243	c-24-1-30-243.hsd1.tx.comcast.net	1114908278.49.36917		added Buffalo WBR2-G54 to "Shorting Pins"
+1128969931000000	00000072	SAVE	OpenWrtDocs(2f)Troubleshooting	85.142.4.138	dial.iwan.ru	1120300957.95.18564		debrick tools mirror
+1129936770000000	00000073	SAVE	OpenWrtDocs(2f)Troubleshooting	81.178.151.145	81-178-151-145.dsl.pipex.com	1129936000.89.38064		Add note describing World of Warcraft TCP corruption / "Ghost Town" bug
+1131364757000000	00000074	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		Updating ...
+1131367633000000	00000075	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131371062000000	00000076	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131372559000000	00000077	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131373262000000	00000078	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131373496000000	00000079	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131376272000000	00000080	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131376582000000	00000081	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131377155000000	00000082	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131377719000000	00000083	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131377817000000	00000084	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131378532000000	00000085	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131379423000000	00000086	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131379468000000	00000087	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131379669000000	00000088	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131380698000000	00000089	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131380972000000	00000090	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131381889000000	00000091	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131382546000000	00000092	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131382961000000	00000093	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		Update done.
+1131383746000000	00000094	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1132952261000000	00000095	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.30.164	p54911EA4.dip0.t-ipconnect.de	1117454370.53.3153		
+1133132887000000	00000096	SAVE	OpenWrtDocs(2f)Troubleshooting	84.56.187.222	dslb-084-056-187-222.pools.arcor-ip.net	1133126814.52.17288		
+1133425759000000	00000097	SAVE	OpenWrtDocs(2f)Troubleshooting	24.6.251.208	c-24-6-251-208.hsd1.ca.comcast.net	1096303201.7.12400		warning about resetting nvram
+1134079457000000	00000098	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.22.11	p5491160B.dip0.t-ipconnect.de	1117454370.53.3153		Add a note for the reset button function in OpenWrt
+1134079758000000	00000099	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.22.11	p5491160B.dip0.t-ipconnect.de	1117454370.53.3153		
+1134301781000000	00000100	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.38.120	p54912678.dip0.t-ipconnect.de	1117454370.53.3153		Add section serial console and fill it with some content
+1134302378000000	00000101	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.38.120	p54912678.dip0.t-ipconnect.de	1117454370.53.3153		
+1135208041000000	00000102	SAVE	OpenWrtDocs(2f)Troubleshooting	217.155.44.246	dsl-217-155-44-246.zen.co.uk	1135207615.48.19100		Hint to use telnet in failsafe
+1136687363000000	00000103	SAVE	OpenWrtDocs(2f)Troubleshooting	168.103.54.221	kollasch.net	1120505591.8.16746		where to find information on connecting serial port
+1136900246000000	00000104	SAVE	OpenWrtDocs(2f)Troubleshooting	85.250.193.253	85-250-193-253.bb.netvision.net.il	1136410098.57.31707		Clarified reset button & DMZ LED instructions
+1136911778000000	00000105	SAVE	OpenWrtDocs(2f)Troubleshooting	62.0.97.84	HFA62-0-97-84.bb.netvision.net.il	1136410098.57.31707		
+1137258357000000	00000106	SAVE	OpenWrtDocs(2f)Troubleshooting	128.95.134.146	D-128-95-134-146.dhcp4.washington.edu	1106460826.6.34503		
+1138117138000000	00000107	SAVE	OpenWrtDocs(2f)Troubleshooting	200.71.61.137	cr2007161137.cable.net.co	1138116439.1.43066		
+1140205177000000	00000108	SAVE	OpenWrtDocs(2f)Troubleshooting	62.178.66.218	chello062178066218.23.11.tuwien.teleweb.at	1140204903.09.37444		
+1141352622000000	00000109	SAVE	OpenWrtDocs(2f)Troubleshooting	222.152.185.226	222-152-185-226.jetstream.xtra.co.nz	1105667594.24.36733		
+1141355604000000	00000110	SAVE	OpenWrtDocs(2f)Troubleshooting	222.152.185.226	222-152-185-226.jetstream.xtra.co.nz	1105667594.24.36733		
+1141409854000000	00000111	SAVE	OpenWrtDocs(2f)Troubleshooting	169.237.154.45	supernova.ucdavis.edu	1141085543.79.57900		
+1141670910000000	00000112	SAVE	OpenWrtDocs(2f)Troubleshooting	169.237.154.45	supernova.ucdavis.edu	1141085543.79.57900		new failsafe mode, added links to source and binaries
+1141671615000000	00000113	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.102.210	p549166D2.dip.t-dialin.net	1117454370.53.3153		minor changes
+1141818187000000	00000114	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.94.223	p54915EDF.dip.t-dialin.net	1117454370.53.3153		
+1143379451000000	00000115	SAVE	OpenWrtDocs(2f)Troubleshooting	203.206.172.245	203-206-172-245.perm.iinet.net.au	1143378466.64.39717		
+1143379598000000	00000116	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.72.171	p549148AB.dip.t-dialin.net	1117454370.53.3153		update
+1143379688000000	00000117	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.72.171	p549148AB.dip.t-dialin.net	1117454370.53.3153		
+1143379770000000	00000118	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.72.171	p549148AB.dip.t-dialin.net	1117454370.53.3153		
+1143391953000000	00000119	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.72.171	p549148AB.dip.t-dialin.net	1117454370.53.3153		
+1143392124000000	00000120	SAVE	OpenWrtDocs(2f)Troubleshooting	84.145.72.171	p549148AB.dip.t-dialin.net	1117454370.53.3153		
+1143824036000000	00000121	SAVE	OpenWrtDocs(2f)Troubleshooting	157.159.41.36	florian.maisel.int-evry.fr	1108894844.79.6421		Change mirrors for recvudp binaries
+1143938374000000	00000122	SAVE	OpenWrtDocs(2f)Troubleshooting	24.184.9.219	ool-18b809db.dyn.optonline.net	1141786409.88.60589		
+1143956158000000	00000123	SAVE	OpenWrtDocs(2f)Troubleshooting	69.181.160.168	c-69-181-160-168.hsd1.ca.comcast.net	1096303201.7.12400		
+1144835202000000	00000124	SAVE	OpenWrtDocs(2f)Troubleshooting	194.84.254.250	ip250.intra.global-one.ru	1120300957.95.18564		JTAG on Siemens/SE505 noved to model's page
+1145051532000000	00000125	SAVE	OpenWrtDocs(2f)Troubleshooting	216.31.249.246	216-31-249-246.cust.telepacific.net	1096303201.7.12400		
+1145618396000000	00000126	SAVE	OpenWrtDocs(2f)Troubleshooting	80.171.230.247	d230247.adsl.hansenet.de	1105463883.08.55165		
+1148004203000000	00000127	SAVE	OpenWrtDocs(2f)Troubleshooting	71.199.31.244	c-71-199-31-244.hsd1.co.comcast.net	1145976603.23.10451		
+1148261071000000	00000128	SAVE	OpenWrtDocs(2f)Troubleshooting	68.118.93.24	68-118-93-24.dhcp.kgpt.tn.charter.com	1148260561.75.59690		minor notes on jtag cable
+1148261314000000	00000129	SAVE	OpenWrtDocs(2f)Troubleshooting	68.118.93.24	68-118-93-24.dhcp.kgpt.tn.charter.com	1148260561.75.59690		
+1149128067000000	00000130	SAVE	OpenWrtDocs(2f)Troubleshooting	212.202.23.48	port-212-202-23-48.dynamic.qsc.de	1149018005.72.63574		
+1149128925000000	00000131	SAVE	OpenWrtDocs(2f)Troubleshooting	212.202.23.48	port-212-202-23-48.dynamic.qsc.de	1149018005.72.63574		remove jtag redunancy 
+1149129033000000	00000132	SAVE	OpenWrtDocs(2f)Troubleshooting	212.202.23.48	port-212-202-23-48.dynamic.qsc.de	1149018005.72.63574		formatting
+1153912543000000	00000133	SAVE	OpenWrtDocs(2f)Troubleshooting	85.14.84.18	demiurg.asn.pl	1153912197.1.19941		
+1154031560000000	00000134	SAVE	OpenWrtDocs(2f)Troubleshooting	151.191.175.220	151.191.175.220	1154031366.0.763		
+1154031604000000	00000135	SAVE	OpenWrtDocs(2f)Troubleshooting	151.191.175.220	151.191.175.220	1154031366.0.763		
+1154706997000000	00000136	SAVE	OpenWrtDocs(2f)Troubleshooting	70.111.237.198	pool-70-111-237-198.nwrk.east.verizon.net	1154706639.17.58839		
+1154776695000000	00000137	SAVE	OpenWrtDocs(2f)Troubleshooting	24.207.180.215	24-207-180-215.dhcp.stls.mo.charter.com	1154776410.78.65145		
+1154958543000000	00000138	SAVE	OpenWrtDocs(2f)Troubleshooting	192.91.60.10	proxyeu01.ext.ti.com	1154958455.78.26509		update link to Serial_Console
+1159846118000000	00000139	SAVE	OpenWrtDocs(2f)Troubleshooting	69.157.16.135	bas2-hamilton14-1167921287.dsl.bell.ca	1159571521.05.9292		Added finding the IP for your lost router 
+1160079534000000	00000140	SAVE	OpenWrtDocs(2f)Troubleshooting	75.32.19.214	adsl-75-32-19-214.dsl.pltn13.sbcglobal.net	1096303201.7.12400		remove misleading information
+1163092590000000	00000141	SAVE	OpenWrtDocs(2f)Troubleshooting	81.191.125.118	host-81-191-125-118.bluecom.no	1163092175.6.64622		
+1164542896000000	00000142	SAVE	OpenWrtDocs(2f)Troubleshooting	76.21.110.31	c-76-21-110-31.hsd1.ca.comcast.net	1096303201.7.12400		sick of telling people to install nas; hope they rtfm
+1166715541000000	00000143	SAVE	OpenWrtDocs(2f)Troubleshooting	87.86.105.3	ip-87-86-105-3.easynet.co.uk	1140091389.39.21344		
+1174534415000000	00000144	SAVE	OpenWrtDocs(2f)Troubleshooting	76.167.65.155	cpe-76-167-65-155.socal.res.rr.com	1171599668.3.32030		"flush your ARP" example
+1176230227000000	00000145	SAVE	OpenWrtDocs(2f)Troubleshooting	75.32.19.214	adsl-75-32-19-214.dsl.pltn13.sbcglobal.net	1096303201.7.12400		
+1178299191000000	00000146	SAVE	OpenWrtDocs(2f)Troubleshooting	142.165.96.187	142-165-96-187.yktn.hsdb.sasknet.sk.ca	1170429892.98.332		There is no UDP utility on this page, though the text says otherwise.  Without that, an example is needed.
+1178299296000000	00000147	SAVE	OpenWrtDocs(2f)Troubleshooting	142.165.96.187	142-165-96-187.yktn.hsdb.sasknet.sk.ca	1170429892.98.332		
+1178319613000000	00000148	SAVE/REVERT	OpenWrtDocs(2f)Troubleshooting	76.21.110.142	c-76-21-110-142.hsd1.ca.comcast.net	1096303201.7.12400	00000145	
+1178319784000000	00000149	SAVE	OpenWrtDocs(2f)Troubleshooting	76.21.110.142	c-76-21-110-142.hsd1.ca.comcast.net	1096303201.7.12400		
+1178375810000000	00000150	SAVE	OpenWrtDocs(2f)Troubleshooting	85.10.26.105	cpe-85-10-26-105.dynamic.amis.net	1154119971.84.48724		
+1178648853000000	00000151	SAVE	OpenWrtDocs(2f)Troubleshooting	75.32.19.214	adsl-75-32-19-214.dsl.pltn13.sbcglobal.net	1096303201.7.12400		
+1191731525000000	00000152	SAVE	OpenWrtDocs(2f)Troubleshooting	65.28.255.65	cpe-65-28-255-65.woh.res.rr.com	1191731204.5.5238		
+1198296962000000	00000153	SAVE	OpenWrtDocs(2f)Troubleshooting	200.71.62.161	Static-IP-cr2007162161.cable.net.co	1193881144.21.17764		
+1201646463000000	00000154	SAVE	OpenWrtDocs(2f)Troubleshooting	74.95.204.177	74-95-204-177-SFBA.hfc.comcastbusiness.net	1150779081.4.62318		Flashing alternative firmware or opening the case voids most warranties.Not JTAG
+1204813637000000	00000155	SAVE	OpenWrtDocs(2f)Troubleshooting	68.157.167.28	adsl-068-157-167-028.sip.sav.bellsouth.net	1204128190.59.6727		
+1204813771000000	00000156	SAVE	OpenWrtDocs(2f)Troubleshooting	68.157.167.28	adsl-068-157-167-028.sip.sav.bellsouth.net	1204128190.59.6727		
+1204815207000000	00000157	SAVE	OpenWrtDocs(2f)Troubleshooting	68.157.167.28	adsl-068-157-167-028.sip.sav.bellsouth.net	1204128190.59.6727		
+1225842316000000	00000158	SAVE	OpenWrtDocs(2f)Troubleshooting	84.141.55.3	p548D3703.dip0.t-ipconnect.de	1225842148.83.3991		Changed 'FreyFunk' to 'FreiFunk'

@@ -1,0 +1,558 @@
+[[TableOfContents]]
+
+= Netgear WGT624 =
+the WGT624 is based on an Atheros System on a Chip (Soc). It got a ar2312a MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+== Specs for WGT624 Rev1 ==
+ * Atheros Product Name: Atheros AR5001AP
+ * CPU: AR2312A-00
+ * Flash: 4MB
+ * RAM: 16MB
+ * Switch: Marvell
+ * One Antenna (2db)
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 5V
+
+A photo can be found [http://www.wireless-forum.ch/forum/files/netgear_wgt624_platine.jpg here].
+
+== Specs for WGT624v2 ==
+ * FCC ID: PY3WGR614v3
+ * internal label: U12H018, REV.1
+ * CPU: Atheros AR2313A
+ * Flash: MX 29LV160BTTC-90 (2MByte)
+ * RAM: Winbond W981216DH-75 (16 MByte)
+ * Switch: Marvell 88E6060-RCJ
+ * one external fixed antenna, one antenna on the PCB
+ * Powersupply: 12V/1A
+
+The PCB layout [http://www.embraceit.com.au/wgt624/ here] resembles the one of a WGT624v2 (it's got a step-down converter close to the antenna compared to v1).
+
+== Serial ==
+It got populated Serial and JTAG-Headers.
+
+Serial-Layout rev 1:
+
+ * Pin 1 +3.3V
+ * Pin 3 RX
+ * Pin 9 TX
+ * Pin 12 GND
+Serial-Layout rev 2:
+
+ * Pin 1 +3.3V
+ * Pin 4 RX
+ * Pin 10 TX
+ * Pin 12 GND
+Serial-Layout rev 3:
+
+ * Pin 1 +3.3V
+ * Pin 3 RX
+ * Pin 9 TX
+ * Pin 11 GND
+For v1/v2 the serial header is the 12 pin header near the power plug. JTAG is near the antenna. Serial pin 1 is the pin nearest to the cpu, view from top.
+
+{{{
+<- switch / powerplug
+pin 11 * * pin 12
+pin 09 * * pin 10
+pin 07 * * pin 08
+pin 05 * * pin 06
+pin 03 * * pin 04
+pin 01 * * pin 02
+<- ram / cpu
+}}}
+For v3 the serial header is on the antenna side and the jtag header is on the WAN-port side.
+
+I wanted to buy a prolific USB to serial cellphone cable at ebay, but they sent me an Silicon Labs cable. This chipset is finally supported in 2.6.12. Works great (usb 2-1.2: CP2101 converter now attached to ttyUSB0)
+
+Set your serial terminal (i.e. minicom) to 9600 8N1, I enabled software flow control, too.
+
+Serial login is 'Gearguy' password is 'Geardog'
+
+== VxWorks ==
+it is running VxWorks and a rather crappy webinterface, so it makes tons of sense to port linux to it.
+
+{{{
+U12H01700> windsh
+-> version
+VxWorks (for Atheros AR5001AP default) version VxWorks5.4.2.
+Kernel: WIND version 2.5.
+Made on May  3 2005, 18:48:19.
+Boot line:
+tffs:(0,0):/fl/APIMG1 e=192.168.1.20:0xffffff00 f=0x8 o=et
+value = 70 = 0x46 = 'F'
+}}}
+== Firmware ==
+My WGT624 came with firmware 4.2.7 which introduces problems with further upgrades because it changes the board id. Therefore 4.2.7 isn't avaible, but if you got this firmware version, you can fix it, if you interrupt the bootloader by pressing ESC immediatly after powering up. It will look like this:
+
+{{{
+ar531x rev 0x00005743 firmware startup...
+SDRAM TEST...PASSED
+Atheros AR5001AP default version 0.0.0.225
+[Boot]: S
+name:    Atheros AR5001AP default
+board ID:U12H017T00_NETGEAR
+magic:   35333131
+cksum:   544d
+rev:     4
+major:   1
+minor:   0
+pciid:   0013
+wlan0:   no  ff:ff:ff:ff:ff:ff
+wlan1:   yes 00:09:5b:87:de:ac
+enet0:   yes 00:09:5b:87:de:ad
+enet1:   no  ff:ff:ff:ff:ff:ff
+uart0:   yes
+sysled:  yes, gpio 7
+factory: yes, gpio 6
+serclk:  internal
+cpufreq: calculated 180000000 Hz
+sysfreq: calculated 45000000 Hz
+memcap:  disabled
+watchdg: enabled
+}}}
+This is how it should like like, but if the board ID is like U12H013T00_NETGEAR (that's what it was on 4.2.7) it won't accept any further firmware updates, so you have to change it back to U12H017T00_NETGEAR in order to flash either 4.2.8 or the beta firmware 4.2.10. You can change this board ID with pressing 'B' on the bootprompt.
+
+== Boot via TFTP ==
+this is only theoretical at the moment
+
+UPDATE: Kamikaze boots up fine over TFTP when configured to use ramdisk for the root filesystem (WGT624v3)
+
+the default boot parameters are:
+
+{{{
+ $dev(0,procnum)host:/file h=# e=# b=# g=# u=usr [pw=passwd] f=#
+                           tn=targetname s=script o=other
+ boot device: tffs=drive,removable     file name: /tffs0/vxWorks
+ Boot flags:
+   0x02  - load local system symbols
+   0x04  - don't autoboot
+   0x08  - quick autoboot (no countdown)
+   0x20  - disable login security
+   0x40  - use bootp to get boot parameters
+   0x80  - use tftp to get boot image
+   0x100 - use proxy arp
+available boot devices:Enhanced Network Devices
+ et0 et1 tffs
+[Boot]: p
+boot device          : tffs:
+unit number          : 0
+processor number     : 0
+file name            : /fl/APIMG1
+inet on ethernet (e) : 192.168.1.20:0xffffff00
+flags (f)            : 0x8
+other (o)            : et
+}}}
+So we will have to set the boot device to et0, the flags to 0x80 (use tftp) and the /tftpboot/kernelimage
+
+I just tried the following
+
+{{{
+[Boot]: p
+boot device          : et
+unit number          : 0
+processor number     : 0
+host name            : tftpserver
+file name            : /tftpboot/image
+inet on ethernet (e) : 192.168.1.20:0xffffff00
+host inet (h)        : 192.168.1.2
+flags (f)            : 0x88
+other (o)            : et
+}}}
+host name and host inet should point to the tftp server. If everything went good, you should see something like this on your tftp-server:
+
+{{{
+Aug 28 14:16:16 duron in.tftpd[3758]: RRQ from 192.168.1.20 filename /tftpboot/image
+Aug 28 14:16:16 duron in.tftpd[3758]: sending NAK (1, File not found) to 192.168.1.20
+}}}
+and on your WGT624
+
+{{{
+[Boot]: @
+Attached TCP/IP interface to et0.
+Attaching network interface lo0... done.
+Loading... Error code 1: File not found
+tftpGet: Error occurred while transferring the file.
+Erroneous header read
+Error loading file: errno = 0x610001.
+}}}
+There is simple fix for above error 0x610001. boot bios expect ELF file, and not image for update over web interface. There is simple method for converting .img file (I'm using TrendNet, so my image file is 510APB_1121ETSI.img) to ELF file:
+
+{{{
+$ dd if=510APB_1121ETSI.img of=tftp.img skip=52 bs=1
+$ file tftp.img
+tftp.img: ELF 32-bit MSB executable, MIPS, MIPS-II version 1 (SYSV), statically linked, stripped
+}}}
+'''''Update by chyang:''''' Can anyone verify whether the extraction works for WGT624's .chk file? I checked the extracted file, but apparantly, the format is not ELF, some kind of 'sqz' prefix in the file, don't quite know whether it will boot via tftp since my bricked wireless router is not with me at present. Thanks.
+
+The .chk file seems to be some kind of proprietary compressed format. If you have a bricked WGT624 (I've done this with a v2), you can't load Netgears firmware via TFTP because it doesn't recognize the compressed file, but you can load the TrendNet firmware mentioned earlier. Once loaded you can then use the TrendNet web-interface to load a newer Netgear firmware onto the router. It seems to be stored in the compressed format on the router.
+
+**On the topic of the Trendnet interface, the default credentials are not working for me, ie: username (blank) & password: admin.  Does anyone know why this might be or have a solution?  I believe it could a common issue.**
+
+
+== Kernel ==
+Kaloz got the [http://downloads.openwrt.org/reference/mips-linux-2.4.25.tar.bz2 sources] from Devicescape with the needed patches. According to arch/mips/ar531x/README.BUILD, I've downloaded:
+
+ftp://ftp.mips.com/pub/tools/software/sde-for-linux/sdelinux-5.01-4eb.i386.rpm
+
+{{{
+$ mips-linux-gcc --version
+2.96-mips3264-000710
+}}}
+It's a good start to reproduce the very same environment, as they did in order to exclude all problems that might occur while porting to a newer compiler or kernel.
+
+{{{
+$ ln -s defconfig-ar531x-ramdisk .config
+$ make oldconfig
+$ make clean ARCH=mips CROSS_COMPILE=mips-linux-
+$ make  ARCH=mips CROSS_COMPILE=mips-linux- vmlinux
+....
+mips-linux-ld -G 0 -static -n -T arch/mips/ld.script arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o init/version.o init/do_mounts.o \
+        --start-group \
+        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o drivers/net/net.o drivers/mtd/mtdlink.o drivers/net/wireless/wireless_net.o drivers/media/media.o \
+        net/network.o \
+        arch/mips/lib/lib.a /tmp/software/openwgt/mips-linux-2.4.25/lib/lib.a arch/mips/ar531x/ar531x.o \
+        --end-group \
+        -o vmlinux
+mips-linux-nm vmlinux | grep -v '\(compiled\)\|\(\.o$\)\|\( [aUw] \)\|\(\.\.ng$\)\|\(LASH[RL]DI\)' | sort > System.map
+$ cp vmlinux /tftpboot/image
+}}}
+{{{
+[Boot]: @
+Attached TCP/IP interface to et0.
+Attaching network interface lo0... done.
+Loading... 1861632
+Starting at 0x80124040...
+<4>CPU revision is: 00018009
+<4>Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+<4>Primary data cache 16kB 4-way, linesize 16 bytes.
+<4>Linux version 2.4.25 (malte@duron) (gcc version 2.96-mips3264-000710) #4 Sat Sep 3 18:06:35 CEST 2005
+<4>Determined physical RAM map:
+<4> memory: 01000000 @ 00000000 (usable)
+<4>Initial ramdisk at: 0x80149000 (389120 bytes)
+<4>On node 0 totalpages: 4096
+<4>zone(0): 4096 pages.
+<4>zone(1): 0 pages.
+<4>zone(2): 0 pages.
+<4>Kernel command line: console=ttyS0,9600
+<4>Using 90.000 MHz high precision timer.
+<4>Calibrating delay loop... 179.40 BogoMIPS
+<6>Memory: 14368k/16384k available (1149k kernel code, 2016k reserved, 456k data, 64k init, 0k highmem)
+<6>Dentry cache hash table entries: 2048 (order: 2, 16384 bytes)
+<6>Inode cache hash table entries: 1024 (order: 1, 8192 bytes)
+<6>Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+<6>Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+<4>Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+<4>Checking for 'wait' instruction...  available.
+<4>POSIX conformance testing by UNIFIX
+<6>Linux NET4.0 for Linux 2.4
+<6>Based upon Swansea University Computer Society NET3.039
+<4>Initializing RT netlink socket
+<4>Starting kswapd
+<6>Serial driver version 5.05c (2001-07-08) with no serial options enabled
+<6>ttyS00 at 0xbc000003 (irq = 37) is a 16550A
+<6>Generic MIPS RTC Driver v1.0
+<4>RAMDISK driver initialized: 16 RAM disks of 3072K size 1024 blocksize
+<5>physmap flash device: 200000 at be000000
+<5> Amd/Fujitsu Extended Query Table v1.1 at 0x0040
+<5>number of CFI chips: 1
+<5>cfi_cmdset_0002: Disabling fast programming due to code brokenness.
+<5>Using physmap partition definition
+<5>Creating 1 MTD partitions on "Physically mapped flash":
+<5>0x000f0000-0x001d0000 : "rootfs"
+<6>NET4: Linux TCP/IP 1.0 for NET4.0
+<6>IP Protocols: ICMP, UDP, TCP, IGMP
+<6>IP: routing cache hash table of 512 buckets, 4Kbytes
+<6>TCP: Hash tables configured (established 1024 bind 2048)
+<6>NET4: Ethernet Bridge 008 for NET4.0
+<5>RAMDISK: Compressed image found at block 0
+<6>Freeing initrd memory: 380k freed
+<4>VFS: Mounted root (ext2 filesystem) readonly.
+<6>Freeing unused kernel memory: 64k freed
+<4>Algorithmics/MIPS FPU Emulator v1.5
+init started:  BusyBox v1.00-pre10 (2004.06.09-17:51+0000) multi-call binary
+Starting pid 10, console /dev/co<6>wlan: 0.7.3.1 BETA
+nsole: '/etc/rc.d/rcS'
+Load MADWiFi wlan module
+Using ../../lib/modules/2.4.25<6>ath_hal: 0.9.9.2
+/net/wlan.o
+Load MADWiFi Atheros HAL module
+Using ../../lib/mo<6>ath_pci: 0.8.5.5 BETA
+<4>macVersion = 4, macRev = 3
+dules/2.4.25/net<4>Setup queue (0) for WME_AC_BK
+<4>Setup queue (1) for WME_AC_BE
+<4>Setup queue (2) for WME_AC_VI
+<4>Setup queue (3) for WME_AC_VO
+<3>ath0: mac 4.3 phy 4.2 5ghz radio 4.6
+<4>ath0: 11b rates: 1Mbps 2Mbps 5.5Mbps 11Mbps
+<4>ath0: 11g rates: 1Mbps 2Mbps 5.5Mbps 11Mbps 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+<4>ath0: 802.11 address: 00:09:5b:87:de:ac
+<6>ath0: Atheros 5312 WiSoC: mem=0xb8500000, irq=5
+/ath_hal.o
+Warning: loading ath_hal will taint the kernel: non-GPL license - Proprietary
+  See http://www.tux.org/lkml/#export-tainted for information about tainted modules
+Load MADWiFi Atheros Driver module
+Using ../../lib/modules/2.4.25/net/ath_lbus.o
+Starting pid 19, console /dev/console: '/bin/sh'
+BusyBox v1.00-pre10 (2004.06.09-17:51+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+#
+}}}
+== newer busybox ==
+I thought it'd be nice if there were some more apps like dd in order to extract the mtds. It should be possible to get networking running via the built-in atheros-wifi-drivers. That could make it possible to transfer the mtd images to another computer with dd and this ath0.
+
+I wanted to get a openwrt root filesystem for this AP, but OpenWRT doesn't support big endian mipses out of the box, so you have to run a make menuconfig, select all your busybox stuff, and make it static! After you've saved your config, open the .config with an editor and replace all occurences of mipsel with mips, and comment out all the kernel stuff as there isn't yet any kernel support for AR531x yet. It should look like this:
+
+{{{
+#
+# Kernel Configuration / Device Support
+#
+#BR2_LINUX_2_4=y
+#BR2_LINUX_2_4_BRCM=y
+#BR2_TARGET_WRT54G=y
+#BR2_TARGET_WRT54GS=y
+#BR2_TARGET_MOTOROLA=y
+}}}
+Then type 'make' and get a beer.
+
+{{{
+cd mips-linux-2.4.25/arch/mips/ramdisk/
+gunzip ramdisk.gz
+mount -t loop ramdisk /mnt/ramdisk
+cp -R openwrt/build_mips/busybox-1.00/ipkg/busybox/{bin,sbin,usr} /mnt/ramdisk
+umount /mnt/ramdisk
+gzip -9 ramdisk
+}}}
+rebuild your kernel and you'll get a vmlinux with a builtin ramdisk with this new busybox.
+
+== MadWifi ==
+As I want to export the images via the ath0, I have to get a wlan working, but for now there is a problem with this binary-driver:
+
+{{{
+BusyBox v1.00 (2005.09.04-01:01+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+/ # ifconfig ath0
+ath0      Link encap:Ethernet  HWaddr 00:09:5B:87:DE:AC
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:199
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:5 Memory:b8500000-b85ffffc
+/ # ifconfig ath0 up
+<4>ath0: hardware error; resetting
+<4>ath0: hardware error; resetting
+<4>ath0: hardware error; resetting
+...
+}}}
+Fortunatly there is an opensource madwifi driver. Download that driver:
+
+{{{
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/madwifi co madwifi
+cd madwifi
+less README
+export TARGET=mips-be-elf
+export TOOLPREFIX=/usr/local/bin/mips-linux-
+make KERNELPATH=/usr/src/mips/mips-linux-2.4.25
+Checking if all requirements are met... FAILED
+Please enable crypto API.
+make: *** [configcheck] Error 1
+}}}
+So we have to recompile the kernel with the crypto API. As I don't know which crypto stuff is actually necessary, I include all (except of HMAC, that doesn't compile). I don't care about the size for now. So add this to your .config:
+
+{{{
+#
+# Cryptographic options
+#
+CONFIG_CRYPTO=y
+#CONFIG_CRYPTO_HMAC=y
+CONFIG_CRYPTO_NULL=y
+CONFIG_CRYPTO_MD4=y
+CONFIG_CRYPTO_MD5=y
+CONFIG_CRYPTO_SHA1=y
+CONFIG_CRYPTO_SHA256=y
+CONFIG_CRYPTO_SHA512=y
+CONFIG_CRYPTO_WP512=y
+CONFIG_CRYPTO_DES=y
+CONFIG_CRYPTO_BLOWFISH=y
+CONFIG_CRYPTO_TWOFISH=y
+CONFIG_CRYPTO_SERPENT=y
+CONFIG_CRYPTO_AES=y
+CONFIG_CRYPTO_CAST5=y
+CONFIG_CRYPTO_CAST6=y
+CONFIG_CRYPTO_TEA=y
+CONFIG_CRYPTO_KHAZAD=y
+CONFIG_CRYPTO_ANUBIS=y
+CONFIG_CRYPTO_ARC4=y
+CONFIG_CRYPTO_DEFLATE=y
+CONFIG_CRYPTO_MICHAEL_MIC=y
+CONFIG_CRYPTO_TEST=y
+}}}
+Now the madwifi sources compile fine, you have to copy the needed modules from the source tree to the ramdisk:
+
+{{{
+ath/ath_pci.o
+ath_hal/ath_hal.o
+ath_rate/onoe/ath_rate_onoe.o
+net80211/{wlan.o,wlan_wep.o,wlan_tkip.o,wlan_ccmp.o,wlan_acl.o,wlan_xauth.o}
+}}}
+You might want to strip these modules with ${TOOLPREFIX}strip -S. I just wanted to copy these files to the ramdisk, but I discovered that there is an ath_lbus and not an ath_pci. Google doesn't know anything about this lbus stuff, but it seems as they use some esoteric bus system. I'm a bit stumped. I tried the pci modules nevertheless, but they don't seem to work:
+
+[http://modular.fas.harvard.edu/t42/madwifi/Makefile.inc This]'' speaks of "lbus". Could someone more knowledgable than I see if this might help?''
+
+{{{
+lsmod
+Module                  Size  Used by    Tainted: P
+ath_pci                43660   0 (unused)
+wlan_ccmp               4732   0 (unused)
+wlan_tkip               9980   0 (unused)
+wlan_wep                3964   0 (unused)
+wlan_acl                2492   0 (unused)
+wlan_xauth               332   0 (unused)
+ath_rate_onoe           4172   0 [ath_pci]
+ath_hal               185152   0 [ath_pci]
+wlan                   91776   0 [ath_pci wlan_ccmp wlan_tkip wlan_wep wlan_acl wlan_xauth ath_rate_onoe]
+# ifconfig -a
+lo        Link encap:Local Loopback
+          LOOPBACK  MTU:16436  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)}}}
+== porting to a newer kernel ==
+I've downloaded the current 2.4 mips kernel via cvs and the newest [ftp://ftp.mips.com/pub/tools/software/sde-for-linux/6.02.03-1/mips-sdelinux-v6.02.03-1.i386.rpm official mips (big endian) crosscompiler]:
+
+{{{
+$ mips-linux-gcc --version
+mips-linux-gcc (GCC) 3.4.4 mipssde-6.02.03-20050629
+}}}
+ths over at #mipslinux explains: "In a hosted (i.e. userland) environment the compiler is free to transform libc calls. Goes horribly wrong in the kernel, which doesn't implement libc. :-)"
+
+This happens with GCC 3.4, so add -ffreestanding to the GCCFLAGS in arch/mips/Makefile.
+
+Someone might wonder, why I only copy and do not patch, but it's just because there aren't any two-way-differences in the files, so copying does the job.
+
+{{{
+cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co -r linux_2_4 linux
+cp -a mips-linux-2.4.25/arch/mips/ar531x/ linux/arch/mips/
+cp -a mips-linux-2.4.25/include/asm-mips/atheros/ linux/include/asm-mips/
+cp -a mips-linux-2.4.25/defconfig-ar531x-jffs2 linux/.config
+cp -a mips-linux-2.4.25/arch/mips/Makefile linux/arch/mips/Makefile
+cp -a mips-linux-2.4.25/arch/mips/config-shared.in linux/arch/mips/config-shared.in
+cp -a mips-linux-2.4.25/include/asm-mips/bootinfo.h linux/include/asm-mips/
+cp -a mips-linux-2.4.25/drivers/mtd/chips/jedec_probe.c linux/drivers/mtd/chips/
+cp -a mips-linux-2.4.25/arch/mips/kernel/setup.c linux/arch/mips/kernel/setup.c
+cp -a mips-linux-2.4.25/drivers/mtd/chips/cfi_cmdset_0020.c linux/drivers/mtd/chips/
+cp -a mips-linux-2.4.25/drivers/mtd/maps/physmap.c linux/drivers/mtd/maps
+cp -a mips-linux-2.4.25/drivers/mtd/redboot.c linux/drivers/mtd/
+cd linux
+make oldconfig
+make  ARCH=mips CROSS_COMPILE=mips-linux- dep
+make  ARCH=mips CROSS_COMPILE=mips-linux- vmlinux
+mips-linux-ld -G 0 -static -n -T arch/mips/ld.script arch/mips/kernel/head.o arch/mips/kernel/init_task.o init/main.o init/version.o init/do_mounts.o \
+        --start-group \
+        arch/mips/kernel/kernel.o arch/mips/mm/mm.o kernel/kernel.o mm/mm.o fs/fs.o ipc/ipc.o arch/mips/math-emu/fpu_emulator.o \
+         drivers/char/char.o drivers/block/block.o drivers/misc/misc.o drivers/net/net.o drivers/mtd/mtdlink.o drivers/media/media.o \
+        net/network.o \
+        arch/mips/lib/lib.a /usr/src/mips/linux/lib/lib.a arch/mips/ar531x/ar531x.o \
+        --end-group \
+        -o vmlinux
+mips-linux-nm vmlinux | grep -v '\(compiled\)\|\(\.o$\)\|\( [aUw] \)\|\(\.\.ng$\)\|\(LASH[RL]DI\)' | sort > System.map
+}}}
+{{{
+[Boot]: @
+Attached TCP/IP interface to et0.
+Attaching network interface lo0... done.
+Loading... 1589216
+Starting at 0x80140040...
+CPU revision is: 00018009
+Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 16kB, 4-way, linesize 16 bytes.
+Linux version 2.4.31 (malte@duron) (gcc version 3.4.4 mipssde-6.02.03-20050629) #5 Tue Aug 30 01:25:55 CEST 2005
+Determined physical RAM map:
+ memory: 01000000 @ 00000000 (usable)
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: console=ttyS0,9600
+Using 90.000 MHz high precision timer.
+Calibrating delay loop... 179.40 BogoMIPS
+Memory: 14640k/16384k available (1256k kernel code, 1744k reserved, 80k data, 60k init, 0k highmem)
+Dentry cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Checking for 'wait' instruction...  available.
+POSIX conformance testing by UNIFIX
+Unable to handle kernel paging request at virtual address 00000014, epc == 8004994c, ra == 80049954
+Oops in fault.c::do_page_fault, line 206:
+$0 : 00000000 1000c100 00000000 801f50a0 8015dff4 801f5120 00000000 1000c101
+$8 : 00000030 801154e0 8015da28 00000000 000001f5 8015d9f0 00000000 1000c101
+$16: 80002794 801f50a0 00010f00 801f5120 ffffffe9 80125478 80170000 80156e4c
+$24: 80170000 00000001                   8013e000 8013fe30 00000000 80049954
+Hi : 00000000
+Lo : 00000080
+epc   : 8004994c    Not tainted
+Status: 1000c103
+Cause : 90800008
+PrId  : 00018009
+Process swapper (pid: 0, stackpage=8013e000)
+Stack:    8015c8c0 00000001 80170000 0000043f 80170000 80170000 80170000
+ 1000c101 000f3aff 8017755c 80169c1c 8016a055 00000060 8015c8c0 80170000
+ 80160000 80002794 00000000 00010f00 8014e258 00000000 80125478 00000001
+ 80156e4c 00000000 8000922c 8013fea8 801b7270 00808000 8009e894 80170000
+ 80156e4c 80009cc4 000003e9 00010f00 00000000 8013ff68 ffffffff 8015fee4
+ 0000041b ...
+Call Trace:   [<80002794>] [<80125478>] [<8000922c>] [<8009e894>] [<80009cc4>]
+ [<80016848>] [<80002794>] [<80125478>] [<80014c5c>] [<801254a4>] [<80004738>]
+ [<80014c5c>] [<80125478>]
+Code: 00409821  3c168017  8ec213c0 <0c0161ae> 8c440014  104000ae  00408021  0c01260c  00402021
+Kernel panic: Attempted to kill the idle task!
+In idle task - not syncing
+}}}
+== Problems with the WGT624v3 ==
+The WGT624v3 has an AR2316A part that doesn't seem to work with the build process above. Some autopsy photos at http://www.seiner.com/blog/Travels/?p=164 . Using the recommended toolchain (gcc version 2.96-mips3264-000710) and the Devicescape 2.4.25 kernel, it dies with the following error at boot:
+
+{{{
+ar531xPlus rev 0x00000087 firmware startup...
+Atheros AR5001AP default version 4.0.0.167
+ 0
+auto-booting...
+Attached TCP/IP interface to et0.
+Attaching network interface lo0... done.
+Loading... 1861632
+Starting at 0x80124040...
+Invalid CPU access:  AHBERR0 - 0x00000003 AHBERR4 - 0x00000145 at phys addr 0x18300004 read 2
+Data bus error
+Exception Program Counter: 0x801334c4
+Status Register: 0x10008400
+Cause Register: 0x1080041c
+Error address: 0x00000000, Error ID: 0x0000
+Task: 0x80fca1d0 ""
+80127344: 8013343c (431021, ac520000, 1620ffae, 2209025)
+80127344: 8013343c (3c038014, 27de0001, 1e1080, 2463be40)
+80127344: 8013343c (1040000c, 3c048014, 82420000, 10400006)
+80127344: 8013343c (afa20010, 1000000c, ac520000, 2bc20008)
+80127344: 8013343c (3c048014, 8fa20010, 26f70001, 24420004)
+80127344: 8013343c (2405003d, 10400009, 2ae20008, 10400015)
+80127344: 8013343c (2402025, 14400018, 2402025, c041592)
+... (continues)
+80127344: 8013343c (80124040, 0, 78, 80ef86b4)
+80127344: 8013343c (0, 0, 0, 0)
+$0    =        0   t0    = 80123fe0   s0    = 80123bef   t8    =        0
+at    =        0   t1    = 801c87fc   s1    = 80ffa4b0   t9    =        0
+v0    =        0   t2    = 80f0de90   s2    =        1   k0    =        0
+v1    = 801d0000   t3    = 80f0de90   s3    = 80ffa4e0   k1    =        0
+a0    = 801c85e3   t4    = 80fb8bd4   s4    = 80123bef   gp    = 80122000
+a1    = 80000ff0   t5    =        0   s5    = 80ffa504   sp    = 801239a0
+a2    = 801c85d0   t6    =    ba704   s6    =        1   s8    =        1
+a3    = 80001000   t7    =        0   s7    = 80efba66   ra    = 8012734c
+divlo = cccccccd   divhi =        0   sr    = 10008400   pc    = 80e98660
+}}}
+Can anyone post a working kernel binary for the 624v1, to double check it's not a build problem? Maybe this is why the Netgear v1/v2 firmware is incompatible with the v3. Perhaps the ar531xPlus needs a different patch.
+
+----
+ . CategoryModel

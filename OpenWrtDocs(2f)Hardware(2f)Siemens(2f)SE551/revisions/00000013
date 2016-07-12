@@ -1,0 +1,67 @@
+= General =
+
+Currently it seems, that boot_wait is turned off, as the device does not respond to tftp after reboot.[[BR]]
+initially it is bound to 192.168.2.1.[[BR]]
+It is also not possible to upload openwrt image via web interface. This aborts with an error.[[BR]]
+Up to now I would consider SE551 as unsupported as there is no possibility to upload firmware to the device.[[BR]]
+/!\ Find additional information on http://opossum.rat.at/~anno/SE551/
+
+= Related Hardware =
+
+This router is identical in layout to the SMCWBR14T-G router. The only difference is that the SMC router has only 1 coil and only 3 capasitors providing less power (cheap bastards!). The USB chip and port has also gone missing. The firmware seems to be similar, but the SMC device has a slightly older Loader (v0.03, log similar device here [http://forum.openwrt.org/viewtopic.php?pid=36180])
+
+= Product infos =
+
+... can be found here: [http://gigaset.siemens.com/shc/0,1935,hq_en_0_89729_rArNrNrNrN,00.html][[BR]]
+Siemens open source software repository is located here: [http://now-portal.c-lab.de/projects/gigaset/][[BR]]
+This router seems however to have a propiertary OS instead.
+
+= Hardware found in device =
+
+{{{ar531xPlus rev 0x00000087 boot loader startup...}}}
+So AtherosPort seems like the right place
+
+It seems, that flash memory is integrated into CPU. [[BR]]
+CPU is an AR2316A Atheros Chipset and covered by a soldered-in heatsink
+
+Infineon (ADMTek) ADM6996Lc [[BR]]
+Ethernet Switch
+
+VIA Vectro VT6212L[[BR]]
+USB 2.0 Controller
+
+ALTERA EPM3032ATC-44 7/144-10[[BR]]
+
+Butterfly Ant Type3
+
+LFE8623
+
+TXC 25.0MHz Xtal
+
+TXC 24.0MHz Xtal
+
+APL1117[[BR]]
+Voltage Regulator
+
+SI IC42S16800[[BR]]
+16MB RAM
+
+APW34063[[BR]]
+DC/DC Converter Controlling IC
+
+APM9435[[BR]]
+P-Channel Enhancement Mode MOSFET
+
+10Pin Connector
+Serial Interface
+
+= Serial Interface =
+Communication is at 115kBaud,8,N,1.[[BR]]
+You need an external level shifter IC like a MAX3232.[[BR]]
+/!\ For additional safety I added a 500E resistor in line to pin 5, as I measured some voltage (3.3V), when pin not connected.
+||Function||Pin#||Pin#||Function||
+||???||1||2||NC||
+||RxD||3||4||NC||
+||TxD||5||6||NC||
+||NC||7||8||NC||
+||GND||9||10||+3.4V||

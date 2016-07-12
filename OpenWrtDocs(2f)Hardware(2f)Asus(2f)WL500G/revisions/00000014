@@ -1,0 +1,28 @@
+'''Asus WL-500G'''
+
+The WL-500G is based on the Broadcom 4710 board. It has a 125 MHz CPU, 4 MB flash and 16 MB RAM.
+
+WL-500G R2.40 is based on the Broadcom BCM4702KBP. Ethernet Switch is BCM5325. It has 4 MB FLASH and 16 MB DRAM. [http://www.nag.ru/goodies/foto/wireless/asus_wl_500g/asus_wl_500g.html photos]
+
+Another [http://wl500g.info/showthread.php?t=8 discussion] and more photos. Hmm... R2.40 variant which based on the BCM4333KPB.
+
+It has an USB 1.1 port and a LPT parallel port ([http://www.attansic.com.tw/english/products/pdf/AT7601F_1.0.pdf Attansic AT761F] ). The wireless NIC is a Broadcom card WL-120G in the Mini-PCI slot.
+
+There is '''no''' serial port connector, external NS16c550 required.
+
+No JTAG connector, but there are some pins on the back on the PCB, labelled as TIP23... . May be this is JTAG. Pinout is unknown at the present time.
+
+'''boot_wait''' is on by default.
+
+The integrated switch does not support VLAN tagging.
+There are two ethernet network interfaces, one for the 4 LAN ports and one for the WAN port.
+
+The LAN device is eth0, the WAN interface is eth1 and the WLAN interface is eth2.
+
+To make the WL-500G distinguish between the LAN and WLAN devices, do the following:
+
+{{{
+nvram set lan_ifname=eth0
+nvram commit
+reboot
+}}}

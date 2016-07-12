@@ -1,0 +1,191 @@
+= Netgear DG834N =
+As of today there are two versions of this router/modem known as DG834N and DG834Nv2. According to the [http://kbserver.netgear.com/kb_web_files/n101777.asp official information] the differences are:
+ * DG834Nv2 has added a pushbutton on the front panel for Wi-Fi Protected Setup, also referred to as “Push “N” Connect”.
+ * DG834Nv2 LEDs have been redefined
+Both models use the same firmware.
+
+||Platform||[http://www.broadcom.com/products/DSL/xDSL-CPE-Solutions/BCM6358 BCM6358] V1.0||
+||Flash||4MB (MX29LV320CBTC-70G)||
+||SDRAM||16MB (EM6A9160TS-5G)||
+||Switch||BCM5325||
+||WLAN||[http://linuxwireless.org/en/users/Drivers/b43#unsupported BCM4321] (PCI ID 14e4:4329)||
+
+Apparently it has much in common with [:OpenWrtDocs/Hardware/Netgear/DG834GT:DG834GT].
+
+''' Cpu Info '''
+
+{{{
+# cat /proc/cpuinfo
+system type             : 96358GW-16
+processor               : 0
+cpu model               : BCM6358 V1.0
+BogoMIPS                : 299.00
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+unaligned access                : 259371093
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+''' Flash Partitions '''
+
+{{{
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 002cb000 00010000 "fs"
+mtd1: 003e0000 00010000 "tag+fs+kernel"
+mtd2: 00010000 00002000 "bootloader"
+mtd3: 00010000 00010000 "nvram"
+mtd4: 00010000 00002000 "bootloader"
+}}}
+
+''' Boot Log (with [http://dgteam.ilbello.com/ DGTeam Firmware]) '''
+
+{{{
+Linux version 2.6.8.1 (root@localhost.localdomain) (gcc version 3.4.2) #1 Sat Mar 1 19:34:59 CST 2008
+Parallel flash device: name AM29LV320MB, id 0x2200, size 4096KB
+Total Flash size: 4096K with 71 sectors
+96358GW-16 prom init
+CPU revision is: 0002a010
+Determined physical RAM map:
+ memory: 00fa0000 @ 00000000 (usable)
+On node 0 totalpages: 4000
+  DMA zone: 4000 pages, LIFO batch:1
+  Normal zone: 0 pages, LIFO batch:1
+  HighMem zone: 0 pages, LIFO batch:1
+Built 1 zonelists
+Kernel command line: root=31:0 ro noinitrd
+brcm mips: enabling icache and dcache...
+Primary instruction cache 32kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 16kB 2-way, linesize 16 bytes.
+PID hash table entries: 64 (order 6: 512 bytes)
+Using 150.000 MHz high precision timer.
+Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Memory: 13664k/16000k available (1560k kernel code, 2316k reserved, 243k data, 84k init, 0k highmem)
+Calibrating delay loop... 299.00 BogoMIPS
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Checking for 'wait' instruction...  unavailable.
+NET: Registered protocol family 16
+MPI: Detected 3.3 vdc Cardbus card
+Can't analyze prologue code at 80194924
+devfs: 2004-01-31 Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+Initializing Cryptographic API
+PPP generic driver version 2.4.2
+NET: Registered protocol family 24
+Using noop io scheduler
+bcm963xx_mtd driver v1.0
+Physically mapped flash: Found 1 x16 devices at 0x0 in 16-bit bank
+ Amd/Fujitsu Extended Query Table at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+Creating 5 MTD partitions on "Physically mapped flash":
+0x00010100-0x002c6100 : "fs"
+mtd: partition "fs" doesn't start on an erase block boundary -- force read-only
+0x00010000-0x003f0000 : "tag+fs+kernel"
+0x00000000-0x00010000 : "bootloader"
+0x003f0000-0x00400000 : "nvram"
+0x00000000-0x00010000 : "bootloader"
+brcmboard: brcm_board_init entry
+SES: Button GPIO 0x8025 is enabled
+SES: Button Interrupt 0x3 is enabled
+SES: LED GPIO 0x8025 is enabled
+bcm963xx_serial driver v2.0
+NET: Registered protocol family 2
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+ip_conntrack version 2.1 (125 buckets, 0 max) - 384 bytes per conntrack
+ip_ct_h323: init success
+ip_conntrack_pptp version 2.1 loaded
+ip_nat_h323: init success
+ip_nat_pptp version 2.0 loaded
+ip_tables: (C) 2000-2002 Netfilter core team
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+Ebtables v2.0 registered
+NET: Registered protocol family 8
+NET: Registered protocol family 20
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 84k freed
+bcm_enet: module license 'Proprietary' taints kernel.
+Broadcom BCM6358A1 Ethernet Network Device v0.3 Mar  1 2008 19:33:31
+Config Ethernet Switch Through MDIO Pseudo PHY Interface
+ethsw: found bcm5325e!
+dgasp: kerSysRegisterDyingGaspHandler: eth0 registered 
+eth0: MAC Address: 00:1F:33:07:67:82
+blaadd: blaa_detect entry
+adsl: adsl_init entry
+netfilter PSD loaded - (c) astaro AG
+ipt_random match loaded
+BcmAdsl_Initialize=0xC007C478, g_pFnNotifyCallback=0xC0094D14
+AnnexCParam=0x7FFF7E78 AnnexAParam=0x00003987 adsl2=0x00000003
+pSdramPHY=0xA0FFFFF8, 0x1B7745 0xDEADBEEF
+AdslCoreHwReset: AdslOemDataAddr = 0xA0FFB1E4
+AnnexCParam=0x7FFF7E78 AnnexAParam=0x00003987 adsl2=0x00000003
+dgasp: kerSysRegisterDyingGaspHandler: dsl0 registered 
+ATM proc init !!!
+device eth0 entered promiscuous mode
+br0: port 1(eth0) entering learning state
+br0: topology change detected, propagating
+br0: port 1(eth0) entering forwarding state
+PCI: Setting latency timer of device 0000:00:00.0 to 64
+PCI: Enabling device 0000:00:00.0 (0004 -> 0006)
+wl0: wlc_attach: use mac addr from the system pool by id: 0x776c0000
+wl0: MAC Address: 00:1F:33:07:67:82
+wl0: Broadcom BCM4329 802.11 Wireless Controller 4.150.10.15.cpe2.2
+dgasp: kerSysRegisterDyingGaspHandler: wl0 registered 
+device wl0 entered promiscuous mode
+br0: port 2(wl0) entering learning state
+wled_proc_init succeed
+ADSL G.994 training
+br0: port 2(wl0) entering disabled state
+br0: port 2(wl0) entering learning state
+br0: topology change detected, propagating
+br0: port 2(wl0) entering forwarding state
+Algorithmics/MIPS FPU Emulator v1.5
+AnnexCParam=0x7FFF7E68 AnnexAParam=0x00003980 adsl2=0x00000002
+ADSL link down
+ADSL G.994 training
+ADSL G.992 started
+ADSL G.992 channel analysis
+ADSL G.992 message exchange
+ADSL link down
+ADSL G.994 training
+ADSL G.992 started
+ADSL G.992 channel analysis
+ADSL G.992 message exchange
+ADSL link up, interleaved, us=1888, ds=13488
+br0: port 2(wl0) entering disabled state
+device wl0 left promiscuous mode
+br0: port 2(wl0) entering disabled state
+kerSysDeregisterDyingGaspHandler: wl0 is deregistering
+kerSysDeregisterDyingGaspHandler: wl0 is deregistered
+Memory leak of bytes 10692
+wl0: wlc_attach: use mac addr from the system pool by id: 0x776c0000
+wl0: MAC Address: 00:1F:33:07:67:82
+wl0: Broadcom BCM4329 802.11 Wireless Controller 4.150.10.15.cpe2.2
+dgasp: kerSysRegisterDyingGaspHandler: wl0 registered 
+device wl0 entered promiscuous mode
+br0: port 2(wl0) entering learning state
+wled_proc_init succeed
+br0: port 2(wl0) entering disabled state
+br0: port 2(wl0) entering learning state
+br0: topology change detected, propagating
+br0: port 2(wl0) entering forwarding state
+}}}
+
+''' See Also '''
+
+ * [:OpenWrtDocs/BroadcomBCM63xxPort:BroadcomBCM63xxPort]
+ * [http://www.xbitlabs.com/articles/networking/print/netgear-dg834n.html Netgear DG834N - photos of PCB]
+ * [http://dgteam.ilbello.com/ DGTeam Firmware]
+
+----
+CategoryModel ["CategoryBCM63xx"]

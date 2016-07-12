@@ -1,0 +1,1117 @@
+[[TableOfContents]]
+
+= Netgear WGT624 v4 =
+Please let me know what commands should be run on this router to provide needed information.
+
+
+[http://rodgers.org.uk/archives/64 Information on getting shell access]
+
+== Hardware Versions ==
+
+== Specs for WGT624 v4 -- HW REV V4 ==
+
+ * CPU:Atheros AR2318
+ * Flash:MX25L3205AMC-20G (32 Mb/4 MB)
+ * RAM:Samsung 743 K4S281632I-UC75 (128 Mb/16 MB) 
+ * Switch:Infineon ADM6996FC
+ * Wireless:Atheros AR2318 (WiSOC)
+ * One External Antenna 
+ * One Internal Antenna, etched onto PCB. ???
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 
+
+== Photos ==
+
+[http://physchem.ox.ac.uk/~rodgers/netgear/internal_photos/ High resolution photos of the main board are available here].
+
+=== HW REV V3H1 ===
+
+
+== Serial or JTAG ==
+
+=== HW REV V3H1 ===
+
+
+== Telnet ==
+[http://rodgers.org.uk/archives/64 Information on getting shell access]
+
+=== Useful Commands ===
+
+==== version ====
+
+{{{Shell:
+
+(none) login: root
+Password:
+
+
+BusyBox v1.00-pre10 (2007.06.22-11:16+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+wlan[0,0]->
+
+Contents of /proc....:
+
+wlan[0,0]-> cat files.txt | ./busybox2 xargs mycmd.sh
+
+Contents of /proc/wlan_log
+
+
+
+Contents of /proc/crypto
+
+name         : md5
+module       : kernel
+type         : digest
+blocksize    : 64
+digestsize   : 16
+
+name         : sha1
+module       : kernel
+type         : digest
+blocksize    : 64
+digestsize   : 20
+
+name         : aes
+module       : kernel
+type         : cipher
+blocksize    : 16
+min keysize  : 16
+max keysize  : 32
+
+
+
+Contents of /proc/mtd
+
+dev:    size   erasesize  name
+mtd0: 00030000 00010000 "RedBoot"
+mtd1: 00010000 00010000 "POT"
+mtd2: 00010000 00010000 "nvram"
+mtd3: 00010000 00010000 "BD"
+mtd4: 00010000 00010000 "TM1"
+mtd5: 00010000 00010000 "TM2"
+mtd6: 00110000 00010000 "kernel"
+mtd7: 00250000 00010000 "rootfs"
+mtd8: 0000f000 00010000 "FIS directory"
+mtd9: 00001000 00010000 "RedBoot config"
+
+
+Contents of /proc/misc
+
+130 watchdog
+135 rtc
+
+
+Contents of /proc/slabinfo
+
+slabinfo - version: 1.1
+kmem_cache            55     72    108    2    2    1
+tcp_tw_bucket          0      0     96    0    0    1
+tcp_bind_bucket        4    113     32    1    1    1
+tcp_open_request       0     59     64    0    1    1
+inet_peer_cache        0      0     64    0    0    1
+ip_fib_hash           13    113     32    1    1    1
+ip_dst_cache           8     24    160    1    1    1
+arp_cache              2     40     96    1    1    1
+blkdev_requests      512    520     96   13   13    1
+dnotify_cache          0      0     20    0    0    1
+file_lock_cache        0      0     96    0    0    1
+fasync_cache           0      0     16    0    0    1
+uid_cache              0      0     32    0    0    1
+skbuff_head_cache    285    288    160   12   12    1
+sock                  25     30    800    5    6    1
+sigqueue               0     29    132    0    1    1
+kiobuf                 0      0     64    0    0    1
+cdev_cache            52     59     64    1    1    1
+bdev_cache             1     59     64    1    1    1
+mnt_cache             10     59     64    1    1    1
+inode_cache          352    416    480   51   52    1
+dentry_cache         372    660    128   22   22    1
+filp                 142    150    128    5    5    1
+names_cache            0      1   4096    0    1    1
+buffer_head          684    720     96   18   18    1
+mm_struct             24     30    128    1    1    1
+vm_area_struct       349    360     96    9    9    1
+fs_cache              23    113     32    1    1    1
+files_cache           24     27    416    3    3    1
+signal_act            25     26   3104   13   13    2
+size-131072(DMA)       0      0 131072    0    0   32
+size-131072            1      1 131072    1    1   32
+size-65536(DMA)        0      0  65536    0    0   16
+size-65536             5      5  65536    5    5   16
+size-32768(DMA)        0      0  32768    0    0    8
+size-32768             4      4  32768    4    4    8
+size-16384(DMA)        0      0  16384    0    0    4
+size-16384             2      2  16384    2    2    4
+size-8192(DMA)         0      0   8192    0    0    2
+size-8192              9      9   8192    9    9    2
+size-4096(DMA)         0      0   4096    0    0    1
+size-4096             55     55   4096   55   55    1
+size-2048(DMA)         0      0   2048    0    0    1
+size-2048            146    152   2048   75   76    1
+size-1024(DMA)         0      0   1024    0    0    1
+size-1024             17     20   1024    5    5    1
+size-512(DMA)          0      0    512    0    0    1
+size-512              14     24    512    2    3    1
+size-256(DMA)          0      0    256    0    0    1
+size-256              26     30    256    2    2    1
+size-128(DMA)          0      0    128    0    0    1
+size-128             543    570    128   19   19    1
+size-64(DMA)           0      0     64    0    0    1
+size-64               67    118     64    2    2    1
+size-32(DMA)           0      0     32    0    0    1
+size-32              553    678     32    6    6    1
+
+
+Contents of /proc/partitions
+
+
+
+Contents of /proc/iomem
+
+00000000-00ffffff : System RAM
+  00041000-001670df : Kernel code
+  0017d000-00191fff : Kernel data
+
+
+Contents of /proc/ioports
+
+
+
+Contents of /proc/cpuinfo
+
+system type             : Atheros AR531X_COBRA
+processor               : 0
+cpu model               : unknown V6.4
+BogoMIPS                : 183.50
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 16
+extra interrupt vector  : yes
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+
+Contents of /proc/execdomains
+
+0-0     Linux                   [kernel]
+
+
+Contents of /proc/swaps
+
+Filename                        Type            Size    Used    Priority
+
+
+Contents of /proc/locks
+
+
+
+Contents of /proc/cmdline
+
+console=ttyS0,9600
+
+
+Contents of /proc/dma
+
+ 4: cascade
+
+
+Contents of /proc/filesystems
+
+nodev   rootfs
+nodev   bdev
+nodev   proc
+nodev   sockfs
+nodev   tmpfs
+nodev   shm
+nodev   pipefs
+nodev   ramfs
+        squashfs
+
+
+Contents of /proc/interrupts
+
+           CPU0
+  0:         10            MIPS  spurious_irq
+  2:          0            MIPS  cascade
+  3:      65916            MIPS  wifi0
+  4:      39562            MIPS  ae531x_MAC_intr
+  7:     125780            MIPS  timer
+ 32:          0     AR531X MISC  spurious_misc
+ 34:          0     AR531X MISC  ar531x_ahb_proc_interrupt
+ 36:          0     AR531X MISC  cascade
+ 37:        292     AR531X MISC  serial
+
+ERR:          0
+
+
+Contents of /proc/devices
+
+Character devices:
+  1 mem
+  2 pty
+  3 ttyp
+  4 ttyS
+  5 cua
+ 10 misc
+ 90 mtd
+100 acos_nat_cli
+108 ppp
+123 aglog
+128 ptm
+136 pts
+162 raw
+
+Block devices:
+ 31 mtdblock
+
+
+Contents of /proc/stat
+
+cpu  5458 0 10764 109579
+cpu0 5458 0 10764 109579
+page 2494 128
+swap 0 0
+intr 231705 10 0 0 66035 39567 0 0 125801 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 292 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+disk_io:
+ctxt 164433
+btime 1235723207
+processes 1625
+
+
+Contents of /proc/modules
+
+wlan_tkip              11412   4 (autoclean)
+wlan_xauth               548   0 (autoclean) (unused)
+wlan_scan_ap            2900   0 (autoclean) (unused)
+ath_ahb                83268   1
+ath_rate_atheros       26760   0 [ath_ahb]
+ath_hal               185968   1 [ath_ahb ath_rate_atheros]
+wlan_acl                5516   2 (autoclean)
+wlan                  160176   1 [wlan_tkip wlan_xauth wlan_scan_ap ath_ahb ath_rate_atheros wlan_acl]
+ar531x-wdt              2168   1
+ae531x                 21856   1
+acos_nat              323776   0 (unused)
+
+
+Contents of /proc/version
+
+Linux version 2.4.25-LSDK-5.0.2.46 (glenn@dev) (gcc version 3.3.3) #1 Fri Jun 22 19:10:00 CST 2007
+
+
+Contents of /proc/meminfo
+
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  14839808 10895360  3944448        0   618496  4100096
+Swap:        0        0        0
+MemTotal:        14492 kB
+MemFree:          3852 kB
+MemShared:           0 kB
+Buffers:           604 kB
+Cached:           4004 kB
+SwapCached:          0 kB
+Active:           4036 kB
+Inactive:         2512 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        14492 kB
+LowFree:          3852 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+
+
+Contents of /proc/uptime
+
+1258.44 1111.27
+
+
+Contents of /proc/loadavg
+
+1.01 1.12 0.86 2/30 1650
+
+
+wlan[0,0]-> ls /tmp
+
+wlanconfig         ddnsStatus.log     bunzip2            patch
+wlanconfig.0       timesync           bzcat              grep
+wlanconfig.0.0     uudecodetmp        bzip2              uncompress
+var                uudecode2tmp       catv               unexpand
+wlacmd             busybox2           chgrp              uniq
+hostapd.on.0.0     chmod              chown              unix2dos
+hostapd.conf.0.0   mknod              chpst              unlzma
+hostapd.conf.etc   unzip              chroot             uptime
+udhcpd.leases      uudecode           chrt               wc
+udhcpd.conf        uuencode           cmp                which
+udhcpd_resrv.conf  vconfig            cpio               whoami
+udhcpd.pid         vi                 date               ssh
+M.conf             wget               dc                 dropbear
+zebra.conf         xargs              dd                 dropbearkey
+ripd.conf          yes                diff               dbclient
+wan_dev            zcat               dos2unix           scp
+wan_time           zcip               less               dev
+ppp                setup.sh           ln                 secret.key
+udhcpc             ftpc.err           md5sum             proc.txt
+udhcpc0.expires    dropbearmulti      nc                 files.txt
+resolv.conf        strace             nmeter             mycmd.sh
+lan_dev            arp                nohup
+lan_time           awk                nslookup
+lan1_time          basename           od
+
+wlan[0,0]-> version
+Release version : Netgear Wireless Router WGT624v4
+                  U12H08300/V2.0.4/2.0.4
+           Time : Jun 22 2007 19:21:26
+
+
+wlan[0,0]-> lsmod
+Module                  Size  Used by    Tainted: P
+wlan_tkip              11412   4 (autoclean)
+wlan_xauth               548   0 (autoclean)  (unused)
+wlan_scan_ap            2900   0 (autoclean)  (unused)
+ath_ahb                83268   1
+ath_rate_atheros       26760   0 [ath_ahb]
+ath_hal               185968   1 [ath_ahb ath_rate_atheros]
+wlan_acl                5516   2 (autoclean)
+wlan                  160176   1 [wlan_tkip wlan_xauth wlan_scan_ap ath_ahb ath_rate_atheros wlan_acl]
+ar531x-wdt              2168   1
+ae531x                 21856   1
+acos_nat              323776   0 (unused)
+
+
+wlan[0,0]-> iwpriv
+lo        no private ioctls.
+
+eth0      no private ioctls.
+
+eth0.1    no private ioctls.
+
+eth0.2    no private ioctls.
+
+br0       no private ioctls.
+
+wifi0     no private ioctls.
+
+ath0      Available private ioctl :
+          setoptie         (8BE8) : set 256 byte  & get   0
+          getoptie         (8BE9) : set   0       & get 256 byte
+          setkey           (8BE2) : set  64 byte  & get   0
+          delkey           (8BE4) : set   7 byte  & get   0
+          setmlme          (8BE6) : set  10 byte  & get   0
+          addmac           (8BEA) : set   1 addr  & get   0
+          delmac           (8BEC) : set   1 addr  & get   0
+          setchanlist      (8BEE) : set  32 byte  & get   0
+          getchanlist      (8BED) : set   0       & get  32 byte
+          getchaninfo      (8BE7) : set   0       & get 2044 byte
+          mode             (8BF1) : set   6 char  & get   0
+          get_mode         (8BF2) : set   0       & get   6 char
+          setwmmparams     (8BE3) : set   4 int   & get   0
+          getwmmparams     (8BE5) : set   3 int   & get   1 int
+          cwmin            (0001) : set   3 int   & get   0
+          get_cwmin        (0001) : set   2 int   & get   1 int
+          cwmax            (0002) : set   3 int   & get   0
+          get_cwmax        (0002) : set   2 int   & get   1 int
+          aifs             (0003) : set   3 int   & get   0
+          get_aifs         (0003) : set   2 int   & get   1 int
+          txoplimit        (0004) : set   3 int   & get   0
+          get_txoplimit    (0004) : set   2 int   & get   1 int
+          acm              (0005) : set   3 int   & get   0
+          get_acm          (0005) : set   2 int   & get   1 int
+          noackpolicy      (0006) : set   3 int   & get   0
+          get_noackpolicy  (0006) : set   2 int   & get   1 int
+          setparam         (8BE0) : set   2 int   & get   0
+          getparam         (8BE1) : set   1 int   & get   1 int
+          authmode         (0003) : set   1 int   & get   0
+          get_authmode     (0003) : set   0       & get   1 int
+          protmode         (0004) : set   1 int   & get   0
+          get_protmode     (0004) : set   0       & get   1 int
+          mcastcipher      (0005) : set   1 int   & get   0
+          get_mcastcipher  (0005) : set   0       & get   1 int
+          mcastkeylen      (0006) : set   1 int   & get   0
+          get_mcastkeylen  (0006) : set   0       & get   1 int
+          ucastciphers     (0007) : set   1 int   & get   0
+          get_uciphers     (0007) : set   0       & get   1 int
+          ucastcipher      (0008) : set   1 int   & get   0
+          get_ucastcipher  (0008) : set   0       & get   1 int
+          ucastkeylen      (0009) : set   1 int   & get   0
+          get_ucastkeylen  (0009) : set   0       & get   1 int
+          keymgtalgs       (0015) : set   1 int   & get   0
+          get_keymgtalgs   (0015) : set   0       & get   1 int
+          rsncaps          (0016) : set   1 int   & get   0
+          get_rsncaps      (0016) : set   0       & get   1 int
+          roaming          (000C) : set   1 int   & get   0
+          get_roaming      (000C) : set   0       & get   1 int
+          privacy          (000D) : set   1 int   & get   0
+          get_privacy      (000D) : set   0       & get   1 int
+          countermeasures  (000E) : set   1 int   & get   0
+          get_countermeas  (000E) : set   0       & get   1 int
+          dropunencrypted  (000F) : set   1 int   & get   0
+          get_dropunencry  (000F) : set   0       & get   1 int
+          wpa              (000A) : set   1 int   & get   0
+          get_wpa          (000A) : set   0       & get   1 int
+          driver_caps      (0010) : set   1 int   & get   0
+          get_driver_caps  (0010) : set   0       & get   1 int
+          maccmd           (0011) : set   1 int   & get   0
+          wmm              (0012) : set   1 int   & get   0
+          get_wmm          (0012) : set   0       & get   1 int
+          hide_ssid        (0013) : set   1 int   & get   0
+          get_hide_ssid    (0013) : set   0       & get   1 int
+          ap_bridge        (0014) : set   1 int   & get   0
+          get_ap_bridge    (0014) : set   0       & get   1 int
+          inact            (0017) : set   1 int   & get   0
+          get_inact        (0017) : set   0       & get   1 int
+          inact_auth       (0018) : set   1 int   & get   0
+          get_inact_auth   (0018) : set   0       & get   1 int
+          inact_init       (0019) : set   1 int   & get   0
+          get_inact_init   (0019) : set   0       & get   1 int
+          abolt            (001A) : set   1 int   & get   0
+          get_abolt        (001A) : set   0       & get   1 int
+          dtim_period      (001C) : set   1 int   & get   0
+          get_dtim_period  (001C) : set   0       & get   1 int
+          bintval          (001D) : set   1 int   & get   0
+          get_bintval      (001D) : set   0       & get   1 int
+          doth             (001E) : set   1 int   & get   0
+          get_doth         (001E) : set   0       & get   1 int
+          doth_pwrtgt      (001F) : set   1 int   & get   0
+          get_doth_pwrtgt  (001F) : set   0       & get   1 int
+          doth_reassoc     (0020) : set   1 int   & get   0
+          compression      (0021) : set   1 int   & get   0
+          get_compression  (0021) : set   0       & get   1 int
+          ff               (0022) : set   1 int   & get   0
+          get_ff           (0022) : set   0       & get   1 int
+          turbo            (0001) : set   1 int   & get   0
+          get_turbo        (0001) : set   0       & get   1 int
+          xr               (0023) : set   1 int   & get   0
+          get_xr           (0023) : set   0       & get   1 int
+          burst            (0024) : set   1 int   & get   0
+          get_burst        (0024) : set   0       & get   1 int
+          doth_chanswitch  (8BF0) : set   2 int   & get   0
+          pureg            (0025) : set   1 int   & get   0
+          get_pureg        (0025) : set   0       & get   1 int
+          ar               (0026) : set   1 int   & get   0
+          get_ar           (0026) : set   0       & get   1 int
+          wds              (0027) : set   1 int   & get   0
+          get_wds          (0027) : set   0       & get   1 int
+          bgscan           (0028) : set   1 int   & get   0
+          get_bgscan       (0028) : set   0       & get   1 int
+          bgscanidle       (0029) : set   1 int   & get   0
+          get_bgscanidle   (0029) : set   0       & get   1 int
+          bgscanintvl      (002A) : set   1 int   & get   0
+          get_bgscanintvl  (002A) : set   0       & get   1 int
+          mcast_rate       (002B) : set   1 int   & get   0
+          get_mcast_rate   (002B) : set   0       & get   1 int
+          coverageclass    (002C) : set   1 int   & get   0
+          get_coveragecls  (002C) : set   0       & get   1 int
+          countryie        (002D) : set   1 int   & get   0
+          get_countryie    (002D) : set   0       & get   1 int
+          scanvalid        (002E) : set   1 int   & get   0
+          get_scanvalid    (002E) : set   0       & get   1 int
+          regclass         (003B) : set   1 int   & get   0
+          get_regclass     (003B) : set   0       & get   1 int
+          rssi11a          (002F) : set   1 int   & get   0
+          get_rssi11a      (002F) : set   0       & get   1 int
+          rssi11b          (0030) : set   1 int   & get   0
+          get_rssi11b      (0030) : set   0       & get   1 int
+          rssi11g          (0031) : set   1 int   & get   0
+          get_rssi11g      (0031) : set   0       & get   1 int
+          rate11a          (0032) : set   1 int   & get   0
+          get_rate11a      (0032) : set   0       & get   1 int
+          rate11b          (0033) : set   1 int   & get   0
+          get_rate11b      (0033) : set   0       & get   1 int
+          rate11g          (0034) : set   1 int   & get   0
+          get_rate11g      (0034) : set   0       & get   1 int
+          uapsd            (0035) : set   1 int   & get   0
+          get_uapsd        (0035) : set   0       & get   1 int
+          sleep            (0036) : set   1 int   & get   0
+          get_sleep        (0036) : set   0       & get   1 int
+          qosnull          (0037) : set   1 int   & get   0
+          pspoll           (0038) : set   1 int   & get   0
+          eospdrop         (0039) : set   1 int   & get   0
+          get_eospdrop     (0039) : set   0       & get   1 int
+          markdfs          (003A) : set   1 int   & get   0
+          get_markdfs      (003A) : set   0       & get   1 int
+          chanbw           (003C) : set   1 int   & get   0
+          get_chanbw       (003C) : set   0       & get   1 int
+          shpreamble       (003E) : set   1 int   & get   0
+          get_shpreamble   (003E) : set   0       & get   1 int
+
+
+wlan[0,0]-> iwconfig
+lo        no wireless extensions.
+
+eth0      no wireless extensions.
+
+eth0.1    no wireless extensions.
+
+eth0.2    no wireless extensions.
+
+br0       no wireless extensions.
+
+wifi0     no wireless extensions.
+
+ath0      IEEE 802.11g  ESSID:"****"
+          Mode:Master  Frequency:2.437GHz  Access Point: **:**:**:**
+          Bit Rate:0kb/s   Tx-Power:18 dBm   Sensitivity=0/3
+          Retry:off   RTS thr:off   Fragment thr:off
+          Encryption key: ***************** [3]   Security mode:open
+          Power Management:off
+          Link Quality:0/94  Signal level:-95 dBm  Noise level:-95 dBm
+          Rx invalid nwid:3  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+wlan[0,0]-> ifconfig
+ath0      Link encap:Ethernet  HWaddr ***************
+          UP BROADCAST RUNNING MULTICAST  MTU:2290  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:242 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:27994 (27.3 KiB)
+
+br0       Link encap:Ethernet  HWaddr ***************
+          inet addr:***************  Bcast:***************  Mask:***************
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:71033 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:33846 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:5526390 (5.2 MiB)  TX bytes:5113859 (4.8 MiB)
+
+eth0      Link encap:Ethernet  HWaddr ***************
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:74630 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:34986 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:10035580 (9.5 MiB)  TX bytes:0 (0.0 B)
+
+eth0.1    Link encap:Ethernet  HWaddr ***************
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:71105 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:33845 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:5816735 (5.5 MiB)  TX bytes:5249197 (5.0 MiB)
+
+eth0.2    Link encap:Ethernet  HWaddr ***************
+          inet addr:***************  Bcast:***************  Mask:***************
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:3525 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1142 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:3174025 (3.0 MiB)  TX bytes:101620 (99.2 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+wifi0     Link encap:Ethernet  HWaddr ***************
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:59 errors:0 dropped:0 overruns:0 frame:254
+          TX packets:294 errors:3 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:199
+          RX bytes:3202 (3.1 KiB)  TX bytes:47310 (46.2 KiB)
+          Interrupt:3 Memory:b0000000-b00ffffc
+
+wlan[0,0]-> acos_service
+usage: rc [start|stop|restart|start_ripd|stop_ripd]
+
+wlan[0,0]-> acos_init
+Reading board data...
+Using /lib/modules/2.4.25/net/acos_nat.o
+Warning: loading acos_nat will taint the kernel: no license
+  See http://www.tux.org/lkml/#export-tainted for information about tainted modules
+insmod: A module named acos_nat already exists
+
+wlan[0,0]-> brctl show
+bridge name     bridge id               STP enabled     interfaces
+br0             8000.***************       no              eth0.1
+                                                        ath0
+wlan[0,0]-> /usr/sbin/wanled 0
+wlan[0,0]-> /usr/sbin/wanled 1
+
+(This turns WAN LED on or off.)
+
+wlan[0,0]-> /usr/sbin/param show
+os_name=
+os_version=3.90.23.0
+os_date=Jun 22 2007
+board_id=U12H083T00_NETGEAR
+timer_interval=3600
+ntp_server=192.5.41.40 192.5.41.41 133.100.9.2
+ntp_update_interval=86400
+time_zone=0
+log_level=0
+upnp_enable=1
+ezc_enable=1
+ezc_version=2
+is_default=1
+os_server=
+stats_server=
+console_loglevel=1
+router_disable=0
+ure_disable=1
+fw_disable=0
+log_ipaddr=
+lan_ifname=br0
+lan_ifnames=eth0.1 ath0
+lan_hwnames=
+lan_hwaddr=***************
+lan_ipaddr=***************
+lan_netmask=***************
+lan_proto=dhcp
+lan_wins=
+lan_domain=
+lan_lease=86400
+lan_stp=1
+lan_route=
+wan_ifname=eth0.2
+wan_ifnames=
+wan_hwname=
+wan_hwaddr=***************
+wan_proto=dhcp
+wan_ipaddr=0.0.0.0
+wan_netmask=***************
+wan_gateway=***************
+wan_dns=***************
+wan_wins=*************** ***************
+wan_hostname=
+wan_domain=
+wan_lease=86400
+static_route=
+pppoe_ifname=ppp0
+pppoe_username=guest
+pppoe_passwd=
+pppoe_idletime=300
+pppoe_keepalive=1
+pppoe_dod=1
+pppoe_mru=1492
+pppoe_mtu=1492
+pppoe_servicename=
+pppoe_acname=
+pppoe_localip=0.0.0.0
+pppoe_echo_interval=30
+pppoe_max_echo_fail=3
+pppoe_session_id=0
+pppoe_server_mac=
+wan_desc=
+wan_route=
+wan_primary=0
+wan_unit=0
+filter_maclist=
+filter_macmode=deny
+filter_client0=
+dmz_ipaddr=
+forward_port0=
+autofw_port0=
+dhcp_mode=manual
+dhcp_start=***************
+dhcp_end=***************
+dhcp_domain=
+dhcp_wins=
+dhcp_resrv_ip=
+dhcp_resrv_mac=
+http_username=***************
+http_passwd=***************
+http_wanport=
+http_lanport=80
+wlan_acl_enable=0
+wlan_acl_num=64
+wlan_acl_dev0=
+wlan_acl_dev1=
+wlan_acl_dev2=
+wlan_acl_dev3=
+wlan_acl_dev4=
+wlan_acl_dev5=
+wlan_acl_dev6=
+wlan_acl_dev7=
+wlan_acl_dev8=
+wlan_acl_dev9=
+wlan_acl_dev10=
+wlan_acl_dev11=
+wlan_acl_dev12=
+wlan_acl_dev13=
+wlan_acl_dev14=
+wlan_acl_dev15=
+wlan_acl_dev16=
+wlan_acl_dev17=
+wlan_acl_dev18=
+wlan_acl_dev19=
+wlan_acl_dev20=
+wlan_acl_dev21=
+wlan_acl_dev22=
+wlan_acl_dev23=
+wlan_acl_dev24=
+wlan_acl_dev25=
+wlan_acl_dev26=
+wlan_acl_dev27=
+wlan_acl_dev28=
+wlan_acl_dev29=
+wlan_acl_dev30=
+wlan_acl_dev31=
+wlan_acl_dev32=
+wlan_acl_dev33=
+wlan_acl_dev34=
+wlan_acl_dev35=
+wlan_acl_dev36=
+wlan_acl_dev37=
+wlan_acl_dev38=
+wlan_acl_dev39=
+wlan_acl_dev40=
+wlan_acl_dev41=
+wlan_acl_dev42=
+wlan_acl_dev43=
+wlan_acl_dev44=
+wlan_acl_dev45=
+wlan_acl_dev46=
+wlan_acl_dev47=
+wlan_acl_dev48=
+wlan_acl_dev49=
+wlan_acl_dev50=
+wlan_acl_dev51=
+wlan_acl_dev52=
+wlan_acl_dev53=
+wlan_acl_dev54=
+wlan_acl_dev55=
+wlan_acl_dev56=
+wlan_acl_dev57=
+wlan_acl_dev58=
+wlan_acl_dev59=
+wlan_acl_dev60=
+wlan_acl_dev61=
+wlan_acl_dev62=
+wlan_acl_dev63=
+wlan_acl_mac0=
+wlan_acl_mac1=
+wlan_acl_mac2=
+wlan_acl_mac3=
+wlan_acl_mac4=
+wlan_acl_mac5=
+wlan_acl_mac6=
+wlan_acl_mac7=
+wlan_acl_mac8=
+wlan_acl_mac9=
+wlan_acl_mac10=
+wlan_acl_mac11=
+wlan_acl_mac12=
+wlan_acl_mac13=
+wlan_acl_mac14=
+wlan_acl_mac15=
+wlan_acl_mac16=
+wlan_acl_mac17=
+wlan_acl_mac18=
+wlan_acl_mac19=
+wlan_acl_mac20=
+wlan_acl_mac21=
+wlan_acl_mac22=
+wlan_acl_mac23=
+wlan_acl_mac24=
+wlan_acl_mac25=
+wlan_acl_mac26=
+wlan_acl_mac27=
+wlan_acl_mac28=
+wlan_acl_mac29=
+wlan_acl_mac30=
+wlan_acl_mac31=
+wlan_acl_mac32=
+wlan_acl_mac33=
+wlan_acl_mac34=
+wlan_acl_mac35=
+wlan_acl_mac36=
+wlan_acl_mac37=
+wlan_acl_mac38=
+wlan_acl_mac39=
+wlan_acl_mac40=
+wlan_acl_mac41=
+wlan_acl_mac42=
+wlan_acl_mac43=
+wlan_acl_mac44=
+wlan_acl_mac45=
+wlan_acl_mac46=
+wlan_acl_mac47=
+wlan_acl_mac48=
+wlan_acl_mac49=
+wlan_acl_mac50=
+wlan_acl_mac51=
+wlan_acl_mac52=
+wlan_acl_mac53=
+wlan_acl_mac54=
+wlan_acl_mac55=
+wlan_acl_mac56=
+wlan_acl_mac57=
+wlan_acl_mac58=
+wlan_acl_mac59=
+wlan_acl_mac60=
+wlan_acl_mac61=
+wlan_acl_mac62=
+wlan_acl_mac63=
+wla_temp_setting=0
+wla_ssid=***************
+wla_temp_ssid=***************
+wla_region=11
+wla_temp_region=11
+wla_wirelessmode=11g
+wla_channel=06
+wla_mode=dynamic super g
+wla_secu_type=***************
+wla_auth_type=automatic
+wla_wlanstate=Enable
+wla_temp_channel=01
+wla_temp_mode=dynamic super g
+wla_temp_enable=enable_ap
+wla_temp_broadcast=ssid_bc
+wla_temp_secu_type=***************
+wla_wep_length=0
+wla_defaKey=0
+wla_key1=
+wla_key2=
+wla_key3=
+wla_key4=
+wla_passphrase=***************
+wla_wme=1
+wla_temp_defaKey=0
+wla_temp_key1=
+wla_temp_key2=
+wla_temp_key3=
+wla_temp_key4=
+wla_temp_passphrase=
+wla_disable_superg=0
+wla_abolt=255
+wla_friendly=1
+wla_xr=Enable
+wla_rts=2346
+wla_frag=2346
+wla_cfgfile1=
+wla_cfgfile2=
+wla_cfgfile3=
+wla_cfgfile4=
+wla_preamble=auto
+restore_defaults=0
+http_timeout=5
+http_rmenable=0
+http_rmport=***************
+http_rmstartip=***************
+http_rmendip=***************
+upnp_turn_on=0
+upnp_advert_period=30
+upnp_advert_ttl=5
+upnp_portmap_entry=0
+upnp_duration=3600
+upnp_DHCPServerConfigurable=1
+wan_dns_sel=0
+wan_dns1=*************** ***************
+wan_hwaddr_sel=0
+wan_hwaddr2=***************
+blank_state=0
+run_wiz=0
+wiz_pppoe_wait_time=5
+wiz_dhcp_wait_time=5
+system_name=
+pptp_username=
+pptp_passwd=
+pptp_serv_ip=***************
+pptp_user_ip=
+pptp_dod=1
+pptp_idletime=5
+pptp_conn_id=
+pptp_gateway=
+bpa_username=
+bpa_passwd=
+bpa_server=login-server
+bpa_idletime=5
+bpa_status=0
+bpa_debug_level=1
+wan_bpa_minheartbeat=2
+wan_bpa_maxheartbeat=20
+wan_bpa_localport=5050
+run_test=0
+logo_enable=0
+rip_enable=0
+rip_filter_enable=0
+rip_dir=0
+rip_version=2
+rip_multicast=1
+ddns_enable=1
+ddns_hostname=***************
+ddns_username=***************
+ddns_passwd=***************
+ddns_wildcard=0
+ddns_update_time=***************
+ddns_checked=1
+ddns_last_ip=***************
+fwpt_enable=1
+fwpt_timeout=1200
+inbound_policy_tbl=***************
+inbound_record=***************
+port_tr_conf=
+fwpt_count=0
+bs_enable=0
+bs_keyword=
+bs_keywords=
+bs_trustedip=***************
+bs_enable_temp=0
+bs_keywords_temp=
+bs_trustedip_temp=***************
+schedule_config=127:0:0:23:59
+wan_mtu=1500
+fw_dmz_ip4=0
+fw_dmz_enab=0
+bpa_dod=1
+fw_spi_enab=1
+fw_rsp_ping=0
+fw_bks_block_type=0
+blk_srv_tbl=
+all_service_tbl=***************
+fw_email_email_enable=0
+fw_email_email_alert=0
+fw_email_email_smtp=
+fw_email_email_addr=
+fw_email_pid=696
+schedule_daylightadjust=0
+ver_check_enable=0
+ver_check_config_file=/files/firmware/WGT624V4.LatestVersion
+ver_check_ftp_svr1=router-fw1.ftp.netgear.com
+ver_check_ftp_svr2=router-fw2.ftp.netgear.com
+ver_check_ftp_svr3=router-fw3.ftp.netgear.com
+ver_check_ftp_username=anonymous
+ver_check_ftp_password=WGT624V4@
+super_username=Gearguy
+super_passwd=Geardog
+tftp_serv_ipaddr=192.168.1.2
+potValue=4320
+potMaxValue=4320
+potInterval=60
+nat_inbound_filtering=0
+lanip_changed=0
+lanip_setup_changed=1
+friendly_name=WGT624v4
+buildin_registrar=0
+allow_registrar_config=1
+pf_services_tbl=***************
+et0macaddr=***************
+et1macaddr=***************
+fw_email_send_all=0
+wan_ipaddr_old=***************
+dhcp_serv_ip=***************
+domain_name=
+dhcp_dns=***************
+dhcp_devname=
+fwpt_df_count=0
+filter_rule_tbl=
+
+wlan[0,0]-> /usr/sbin/cli
+Welcome to Foxconn
+login: ambit
+Password: ----------
+Foxconn$?
+  exit   Close telnet connection or logout from console.
+  fw     firewall
+  nat    Agnat Info
+Foxconn$
+Foxconn$?
+  exit   Close telnet connection or logout from console.
+  fw     firewall
+  nat    Agnat Info
+
+Foxconn$fw filter ?
+  add   add a filter
+  del   delete a rule
+  list  list filter
+  mod   modify a rule
+  move  move up or down a rule
+  sche  attach a schdeule to a rule
+Foxconn$fw filter list
+index 1, rule type 0, source 0.0.0.0/0.0.0.0(MASK):0-0, dest 0.0.0.0/0.0.0.0(MASK):0-0, service index 0, dir 0x04, match: DROP, not 
+
+match: N/A, enable: Y
+----------------------------------------------------------------------
+index 2, rule type 0, source 0.0.0.0/0.0.0.0(MASK):0-0, dest 0.0.0.0/0.0.0.0(MASK):0-0, service index 1, dir 0x01, match: ALLOW, not 
+
+match: N/A, enable: Y
+----------------------------------------------------------------------
+index 3, rule type 1, source 0.0.0.0/0.0.0.0(MASK):0-0, dest 0.0.0.0/0.0.0.0(MASK):0-0, service index 0, dir 0x04, match: ALLOW, not 
+
+match: N/A, enable: Y
+----------------------------------------------------------------------
+index 4, rule type 0, source 0.0.0.0/0.0.0.0(MASK):0-0, dest 0.0.0.0/0.0.0.0(MASK):0-0, protocol 0x00, dir 0x70, match: ALLOW, not 
+
+match: N/A, enable: Y
+----------------------------------------------------------------------
+total 4 rule(s)
+
+Foxconn$nat ?
+  alg         show alg list
+  cc          check connection
+  conntab     show connection table
+  off         nat off
+  on          nat on
+  ruleadd     add NAT rule
+  ruleclear   clear NAT rule
+  ruledelete  delete NAT rule by rule ID
+  ruleget     Show all NAT rules
+  ruletab     show rule table
+  status      Show NAT status
+  version     Show NAT version
+Foxconn$nat alg
+
+FTP alg : 0, enabled
+protocol[0] = 6, port[0] = 21
+
+ICQC2S alg : 1, enabled
+protocol[0] = 6, port[0] = 5190
+protocol[1] = 17, port[1] = 5190
+
+ICQP2P alg : 2, enabled
+protocol[0] = 6, port[0] = 0
+protocol[1] = 6, port[1] = 0
+protocol[2] = 0, port[2] = 1
+protocol[3] = 0, port[3] = 0
+protocol[4] = 0, port[4] = 0
+
+H323 alg : 3, enabled
+protocol[0] = 6, port[0] = 1720
+
+H245 alg : 4, enabled
+protocol[0] = 6, port[0] = 0
+protocol[1] = 6, port[1] = 0
+
+LDAP alg : 5, enabled
+protocol[0] = 6, port[0] = 389
+
+YMSG alg : 6, enabled
+protocol[0] = 6, port[0] = 5050
+
+MSN alg : 7, enabled
+protocol[0] = 6, port[0] = 1863
+
+SIP alg : 8, enabled
+protocol[0] = 17, port[0] = 5060
+
+IKE alg : 9, enabled
+protocol[0] = 17, port[0] = 500
+
+PPTP alg : 10, enabled
+protocol[0] = 6, port[0] = 1723
+
+L2TP alg : 11, enabled
+protocol[0] = 17, port[0] = 1701
+
+HTTP URL Filter alg : 12, enabled
+protocol[0] = 6, port[0] = 80
+
+NNTP URL Filter alg : 13, enabled
+protocol[0] = 6, port[0] = 119
+
+AIM alg : 14, enabled
+protocol[0] = 17, port[0] = 5061
+}}}
+
+----
+ . CategoryModel

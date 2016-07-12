@@ -1,0 +1,229 @@
+Describe OpenWrtDocs/Hardware/Belkin/F5D7633-4 here.
+
+hope this will help you
+
+
+# cat /var/proc
+cat: /var/proc: No such file or directory
+# cat /proc/cpuinfo
+system type             : 96348GW-10
+processor               : 0
+cpu model               : BCM6348 V0.7
+BogoMIPS                : 255.59
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+
+
+# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  14643200 13537280  1105920        0  1736704  4235264
+Swap:        0        0        0
+MemTotal:        14300 kB
+MemFree:          1080 kB
+MemShared:           0 kB
+Buffers:          1696 kB
+Cached:           4136 kB
+SwapCached:          0 kB
+Active:           1376 kB
+Inactive:         6556 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        14300 kB
+LowFree:          1080 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+
+
+# cat cmdline
+root=/dev/mtdblock0 ro
+
+
+
+# cat devices
+Character devices:
+  1 mem
+  2 pty
+  3 ttyp
+  4 ttyS
+  5 cua
+ 10 misc
+108 ppp
+162 raw
+205 atmapi
+206 bcrmboard
+208 adsl
+212 bcm
+
+Block devices:
+ 31 mtdblock
+
+
+# cat filesystems
+nodev   rootfs
+nodev   bdev
+nodev   proc
+nodev   sockfs
+nodev   tmpfs
+nodev   shm
+nodev   pipefs
+        cramfs
+
+
+# cat version
+Linux version 2.4.17 (root@JoshuaNotebook) (gcc version 3.1) #13 Wed Jul 20 10:22:55 CST 2005
+
+
+
+ipt_state                552   2
+ipt_mark                 364   0 (unused)
+ipt_limit                956   7
+ipt_TCPMSS              2524  38
+ipt_REDIRECT             708   2
+ipt_MASQUERADE          1380   1
+ipt_MARK                 668   0 (unused)
+ipt_LOG                 3532   7
+ipt_FTOS                 972   0 (unused)
+ip_nat_wm               1208   0 (unused)
+ip_nat_tftp             1720   0 (unused)
+ip_nat_pptp             1692   0 (unused)
+ip_nat_irc              2296   0 (unused)
+ip_nat_ipsec            5628   0 (unused)
+ip_nat_h323             2656   0 (unused)
+ip_nat_ftp              3128   0 (unused)
+ip_conntrack_wm         1228   0 (unused)
+ip_conntrack_tftp       1548   0 (unused)
+ip_conntrack_pptp       3228   0 (unused)
+ip_conntrack_irc        2716   0 (unused)
+ip_conntrack_ipsec      7460   0 (unused)
+ip_conntrack_h323       2028   0 (unused)
+ip_conntrack_ftp        3804   0 (unused)
+iptable_mangle          1900   0 (unused)
+iptable_nat            18360   8 [ipt_REDIRECT ipt_MASQUERADE ip_nat_wm ip_nat_tftp ip_nat_pptp ip_nat_irc ip_nat_ipsec ip_nat_h323 ip_nat_ftp]
+ip_conntrack           22448   9 [ipt_state ipt_REDIRECT ipt_MASQUERADE ip_nat_wm ip_nat_tftp ip_nat_irc ip_nat_h323 ip_nat_ftp ip_conntrack_wm ip_conntrack_tftp ip_conntrack_pptp ip_conntrack_irc ip_conntrack_ipsec ip_conntrack_h323 ip_conntrack_ftp iptable_nat]
+iptable_filter          1708   0 (unused)
+ip_tables              14624  14 [ipt_state ipt_mark ipt_limit ipt_TCPMSS ipt_REDIRECT ipt_MASQUERADE ipt_MARK ipt_LOG ipt_FTOS iptable_mangle iptable_nat iptable_filter]
+wl                    379664   0 (unused)
+bcm_enet               18512   2
+bcmprocfs               9848   0
+adsldd                135260   0 (unused)
+blaa                    8116   0 (unused)
+atmapi                 51728   0 [adsldd blaa]
+
+
+
+# cat slabinfo
+slabinfo - version: 1.1
+kmem_cache            56     72    108    2    2    1
+ip_conntrack           6    648    320    4   54    1
+ip_mrt_cache           0      0     96    0    0    1
+tcp_tw_bucket          0     40     96    0    1    1
+tcp_bind_bucket        8    113     32    1    1    1
+tcp_open_request       0     59     64    0    1    1
+inet_peer_cache        0    590     64    0   10    1
+ip_fib_hash           11    113     32    1    1    1
+ip_dst_cache          85   3216    160    8  134    1
+arp_cache              3     40     96    1    1    1
+blkdev_requests       64     80     96    2    2    1
+dnotify cache          0      0     20    0    0    1
+file lock cache        1     40     96    1    1    1
+fasync cache           0      0     16    0    0    1
+uid_cache              0      0     32    0    0    1
+skbuff_head_cache    701    720    160   30   30    1
+sock                  28     35    768    6    7    1
+sigqueue               0     29    132    0    1    1
+cdev_cache            11     59     64    1    1    1
+bdev_cache             1     59     64    1    1    1
+mnt_cache              9     59     64    1    1    1
+inode_cache          226    232    480   29   29    1
+dentry_cache         280    300    128   10   10    1
+filp                 132    150    128    5    5    1
+names_cache            0      3   4096    0    3    1
+buffer_head          424    440     96   11   11    1
+mm_struct             20     30    128    1    1    1
+vm_area_struct       299    360     96    8    9    1
+fs_cache              19    113     32    1    1    1
+files_cache           19     27    416    3    3    1
+signal_act            21     24   4128   21   24    2
+size-131072(DMA)       0      0 131072    0    0   32
+size-131072            0      1 131072    0    1   32
+size-65536(DMA)        0      0  65536    0    0   16
+size-65536             1      1  65536    1    1   16
+size-32768(DMA)        0      0  32768    0    0    8
+size-32768             0      0  32768    0    0    8
+size-16384(DMA)        0      0  16384    0    0    4
+size-16384             1      1  16384    1    1    4
+size-8192(DMA)         0      0   8192    0    0    2
+size-8192             11     12   8192   11   12    2
+size-4096(DMA)         0      0   4096    0    0    1
+size-4096             14     16   4096   14   16    1
+size-2048(DMA)         0      0   2048    0    0    1
+size-2048            447    512   2048  224  256    1
+size-1024(DMA)         0      0   1024    0    0    1
+size-1024             14     32   1024    4    8    1
+size-512(DMA)          0      0    512    0    0    1
+size-512              22     56    512    3    7    1
+size-256(DMA)          0      0    256    0    0    1
+size-256              10     30    256    1    2    1
+size-128(DMA)          0      0    128    0    0    1
+size-128             559    570    128   19   19    1
+size-64(DMA)           0      0     64    0    0    1
+size-64              381    413     64    7    7    1
+size-32(DMA)           0      0     32    0    0    1
+size-32              422    565     32    4    5    1
+
+
+# cat pci
+PCI devices found:
+  Bus  0, device   1, function  0:
+    Class 0280: PCI device 14e4:4320 (rev 3).
+      IRQ 32.
+      Non-prefetchable 32 bit memory at 0x9000000 [0x9001fff].
+
+
+# cat mtd
+dev:    size   erasesize  name
+mtd0: 0022a000 00002000 "Physically mapped flash"
+
+# cat mounts
+/dev/root / cramfs ro 0 0
+/proc /proc proc rw 0 0
+tmpfs /var tmpfs rw 0 0
+
+
+
+# cat interrupts
+           CPU0
+  7:  417795842            MIPS  timer
+ 10:          0            MIPS  brcm_10
+ 12:    7524432            MIPS  brcm_12
+ 13:   15718533            MIPS  brcm_13
+ 28:          0            MIPS  brcm_28
+ 30:    5497259            MIPS  brcm_30
+ 32:   34809382            MIPS  brcm_32
+ 33:          0            MIPS  brcm_33
+ERR:          0
+
+
+# cat iomem
+00000000-00000f9f : System RAM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

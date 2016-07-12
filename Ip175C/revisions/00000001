@@ -1,0 +1,11 @@
+=ICPlus IP715C=
+
+The ICPlus IP715C is a 5 port ethernet switch.  It is used in the Routerboard RB192 board, and possibly in some of the RB4xx series boards.
+
+The current kernel (2.6.25 at the time of writing, the support seems to have been added to 2.6 at 2.6.23) has PHYLIB support for the IP175C, but the adm5120sw driver does not know that it is attached to its port 5 (which is the port without a standard PHY built in), and so does not pass on commands to it to reconfigure it to provide fully fledged ethernet ports.
+
+Documentation for the IP175C can be found at www.icplus.com.tw/Data/Datasheet/ IP175Cx-DS-R15-20080529.pdf
+
+By default the ports on the IP175C will come up in its default mode, which is a simple bridge of all the ports to the switch.  So for the RB192 it is as though a passive switch has been added to port eth5.
+
+Changes will be needed to amd5120sw.c to enable full operation with the extra ports exposed as though they were normal network ports.

@@ -1,0 +1,27 @@
+= Cellvision CAS-630 =
+
+The Cellvision CAS-630 IP camera is a Linux based IP camera. It comes in two flavours: wired and wired/wireless.
+
+== Technical specifications ==
+
+ADMtek 5120 CPU
+
+== Known models ==
+
+Cellvision does not directly sell to customers, but acts purely as an ODM company.
+Known models are:
+
+  * NeuFusion NCS-630/NCS-630W
+  * Digitus DN-16021/DN-16021
+
+== Picture ==
+
+On one side of the board there is the CPU, wireless card and audio connector (bottom left).
+
+attachment:cas-630-1.png
+
+The more interesting parts can be found on the other side of the board.
+
+attachment:cas-630-2.png
+
+As you can see there are UART and USB connectors.

@@ -1,0 +1,20 @@
+Bootloader : Bootbase
+
+Serial Pinout :
+
+
+ VCC  TX   RX        GND
+  x    x    x    ()   x       LEDS
+
+
+Services :
+
+ Password for services : 1234
+
+ Telnet
+ FTP (root/1234)
+ WEB
+ IDENT
+
+
+It is not possible to login via the web interface when you are logged by console, and probably vice versa.

@@ -1,0 +1,7 @@
+= Chipset =
+
+The Sitecom WL-153 is based on the RDC 3211 x86 compatible chip.
+
+= Serial =
+labeled T1, near the leds.
+vcc, rx, gnd, tx

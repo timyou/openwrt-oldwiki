@@ -1,0 +1,15 @@
+= Netgear WGR614 v8 =
+the WGR614 v8 is based on an Atheros System on a Chip (Soc). It has an ??? MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+== Hardware Versions ==
+
+there appear to be multiple versions of several Netgear routers. the one described on this page is the following:
+
+{{{
+Hardware Version  	V8
+Firmware Version 	V1.0.17_1.0.17NA
+}}}
+
+This information can be found at the top of the 'router status page' in the web interface.
+
+It can also be found via the telnet hack (see below)

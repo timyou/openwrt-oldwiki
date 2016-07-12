@@ -1,0 +1,41 @@
+Index: package/broadcom-diag/src/diag.c
+===================================================================
+--- package/broadcom-diag/src/diag.c	(revision 12384)
++++ package/broadcom-diag/src/diag.c	(working copy)
+@@ -60,6 +60,7 @@
+ 	WRT54G,
+ 	WRTSL54GS,
+ 	WRT54G3G,
++	WRT160N,
+ 	WRT350N,
+ 	WRT600N,
+ 	WRT600NV11,
+@@ -228,6 +229,18 @@
+ 			{ .name = "3g_blink",	.gpio = 1 << 5, .polarity = NORMAL },
+ 		},
+ 	},
++	[WRT160N] = {
++		.name           = "Linksys WRT160N",
++		.buttons        = {
++			{ .name = "reset",      .gpio = 1 << 6 },
++			{ .name = "ses",        .gpio = 1 << 4 },
++		},
++		.leds           = {
++			{ .name = "power",      .gpio = 1 << 1, .polarity = NORMAL },
++			{ .name = "ses_blue",   .gpio = 1 << 5, .polarity = REVERSE },
++			{ .name = "ses_orange", .gpio = 1 << 3, .polarity = REVERSE },
++		},
++	},
+ 	[WRT350N] = {
+ 		.name		= "Linksys WRT350N",
+ 		.buttons	= {
+@@ -811,6 +824,9 @@
+ 			if (!strcmp(getvar("et1phyaddr"),"5") && !strcmp(getvar("et1mdcport"), "1"))
+ 				return &platforms[WRTSL54GS];
+ 
++			if (!strcmp(boardtype, "0x0472"))
++				return &platforms[WRT160N];
++
+ 			/* default to WRT54G */
+ 			return &platforms[WRT54G];
+ 		}

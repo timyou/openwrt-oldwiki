@@ -1,0 +1,1423 @@
+#pragma section-numbers off
+||<tablebgcolor="#f1f1ed" tablewidth="40%" tablestyle="margin: 0pt 0pt 1em 1em; float: right; font-size: 0.9em;"style="padding: 0.5em;">[[TableOfContents]]||
+
+= Linksys AG310 =
+The AG310 has the same specifications as the [:OpenWrtDocs/Hardware/Linksys/AG300:AG300], but mostly different construction.  It is primarily marketed in Australia and Canada and averages AU$120.  Its distinguishing features are the AR7 chipset and a Sipura SIP316FF providing VoIP functionality.  Although not yet fully analyzed, the factory firmware seems to communicate with the Sipura as a discrete system over the 6th switch port.
+
+== Specifications ==
+Switch 4-Port ADSL2+ Router with Firewall/QoS Control and VoIP/SIP functionality
+
+ * Power: 12v @ 1.5A
+ * Bootloader: ["PSPBoot"]
+ * CPU: Texas Instruments AR7 MIPS-based, [http://focus.ti.com/lit/ml/spat013a/spat013a.pdf TNETD7200ZDW]
+  * Flash: 8MB Intel JS28F640J3D75
+  * SDRAM: 32MB Mira P2V56S40BTP [http://www.deutron.com.tw/data_sheets/sdram/p2v56s_0btp11_07024.pdf (4-BANK x 4,194,304-WORD x 16-BIT)]
+ * Switch: 6-port Infineon [http://www.infineon.com/dgdl/Samurai_Product_Introduction_Presentation_2May05.pdf?folderId=db3a304412b407950112b412e2791a7a&fileId=db3a304412b407950112b412e2a31a7b ADM6996I] 
+  * Pin-compatible with ADM6996LC: extra functions IGMP, QOS.
+  * External ports: 4
+ * Wireless: NONE
+ * Annex A ADSL2+
+ * Ethernet transformer: LANKom LF-H4002X-1
+ * VoIP: Sipura SIP316FF (FXO + FXS)
+  * Flash: 2MB Macronix [http://www.macronix.com/QuickPlace/hq/PageLibrary48256F5500439ED0.nsf/h_CE4C9490FDF4280B48256F550043C6D8/7F9AFF543602ACAB48256FCD0002EA5C/$File/MX29LV400C-800C-160CT-B-2.1.pdf?OpenElement MX29LV160CBTC-70G]
+  * SDRAM: 8MB, Hynix [http://www.hynix.com/datasheet/pdf/dram/HY57V641620E(L_S)T(P)%20Series(Rev1.0).pdf HY57V641620ETP-H]
+== PCB image ==
+attachment:ag310-notated.png
+
+= Default firmware information =
+== CPU ==
+{{{
+# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 211.35
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+== RAM ==
+{{{
+# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  30486528  9830400 20656128        0  1138688  3547136
+Swap:        0        0        0
+MemTotal:        29772 kB
+MemFree:         20172 kB
+MemShared:           0 kB
+Buffers:          1112 kB
+Cached:           3464 kB
+SwapCached:          0 kB
+Active:           2180 kB
+Inactive:         3712 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        29772 kB
+LowFree:         20172 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+}}}
+== /proc/ticfg/env ==
+{{{
+# cat /proc/ticfg/env
+BUILD_OPS       0x1
+bootloaderVersion       1.3.6.14
+ProductID       AR7WRD
+HWRevision      Unknown
+SerialNumber    none
+MAC_PORT        0
+SwRev   0.22.40
+MEMSZ   0x2000000
+FLASHSZ 0x800000
+MODETTY0        38400,n,8,1,hw
+MODETTY1        38400,n,8,1,hw
+CPUFREQ 211968000
+MIPSFREQ        211968000
+SYSFREQ 125000000
+PROMPT  (psbl)
+mtd0    0x900e0000,0x907c0000
+mtd1    0x90020000,0x907c0000
+mtd2    0x90000000,0x90020000
+mtd3    0x907e0000,0x90800000
+mtd4    0x907c0000,0x907e0000
+pair_selection  0
+multi_lang      1
+modulation      MMODE
+eoc_vendor_id   4c696e6b73797300
+eoc_vendor_revision     0
+wan_autoresult  0:-1 0:-1 0:-1 0:-1 0:-1 0:-1 0:-1 0:-1
+HWA_0   00:1A:70:7F:94:7E
+eoc_vendor_serialnum    CQB01G300271
+IPA     192.168.1.1
+BOOTCFG m:f:"mtd1"
+}}}
+== Console log ==
+{{{
+free space start: 0xb0020000
+free space end: 0xb07e0000
+
+Basic POST completed...     Success.
+Last reset cause: Hardware reset (Power-on reset)
+
+PSPBoot1.3 rev: 0.22.40.5
+CyberTAN rev: 0.22.40
+(c) Copyright 2002-2005 Texas Instruments, Inc. All Rights Reserved.
+
+FlashType:Intel 28F640J3 4Mx16
+
+mac_init(): Find mac [00:1A:70:7F:94:7E] in location 0
+Find mac [00:1A:70:7F:94:7E] in location 0
+mac_value: 00:1A:70:7F:94:7E
+Press ESC for monitor... 1
+
+(psbl)
+
+Booting...
+Launching kernel decompressor.
+Starting LZMA Uncompression Algorithm.
+Copyright (C) 2003 Texas Instruments Incorporated; Copyright (C) 1999-2003 Igor Pavlov.
+Compressed file is LZMA format.
+Kernel decompressor was successful ... launching kernel.
+
+LINUX started...
+Config serial console: ttyS0,38400
+Auto Detection OHIO chip
+This SOC has MDIX cababilities on chip.
+WLAN 1350 chip configured.
+CONFIG_AVALANCHE_VLYNQ_POLARITY_LOW
+Failed to initialize the vlynq @ 0xa8611800.
+The error msg: Error in configuring clocks..
+FlashType: Intel 28F640J3 4Mx16
+CPU revision is: 00018448
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 8kb, linesize 16 bytes (4 ways)
+Number of TLB entries 16.
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc version 2.95.3 20010315 (release/MontaVista)) #31 Wed Aug 29 11:33:25 CST 2007
+Determined physical RAM map:
+ memory: 14000000 @ 00000000 (reserved)
+ memory: 00020000 @ 14000000 (ROM data)
+ memory: 01fe0000 @ 14020000 (usable)
+On node 0 totalpages: 8192
+zone(0): 8192 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line:
+calculating r4koff... 00102c00(1059840)
+CPU frequency 211.97 MHz
+Calibrating delay loop... 211.35 BogoMIPS
+Freeing Adam2 reserved memory [0x14001000,0x0001f000]
+Memory: 29708k/32768k available (2114k kernel code, 3060k reserved, 147k data, 64k init)
+Dentry-cache hash table entries: 4096 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+TI Optimizations: Allocating TI-Cached Memory Pool.
+Warning: Number of buffers is not configured.Setting default to 512
+Using 512 Buffers for TI-Cached Memory Pool.
+DEBUG: Using Hybrid Mode.
+NSP Optimizations: Succesfully allocated TI-Cached Memory Pool.
+Initializing RT netlink socket
+Starting kswapd
+Disabling the Out Of Memory Killer
+devfs: v1.7 (20011216) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 32 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0xa8610e00 (irq = 15) is a 16550A
+block: 64 slots per queue, batch=16
+Loading ADM6996I device driver...
+reset_adm6996I!
+set port1(addr:0x3) 0x800f
+set port2(addr:0x5) 0x800f
+set port3(addr:0x7) 0x800f
+set port4(addr:0x8) 0x800f
+set port5(addr:0x9) 0x800f
+set port0(addr:0x1) 0x800b
+CPMAC Auto Detect Enabled: detected external PHY and external switch as well..
+Error getting CPMAC Configuration params for instance:0
+Environment Variable:MACCFG_A not set in bootloader
+Setting Default configuration params for CPMAC instance:0
+Default Asymmetric MTU for eth0 1500
+TI CPMAC Linux DDA version 1.8 - CPMAC DDC version 0.2
+Cpmac: Installed 1 instances.
+Cpmac driver is allocating buffer memory at init time.
+PPP generic driver version 2.4.1
+avalanche flash device: 0x800000 at 0x10000000.
+Physically mapped flash: Found 1 x16 devices at 0x0 in 16-bit mode
+Looking for mtd device :mtd0:
+Found a mtd0 image (0xe0000), with size (0x6e0000).
+Looking for mtd device :mtd1:
+Found a mtd1 image (0x20000), with size (0x7a0000).
+Looking for mtd device :mtd2:
+Found a mtd2 image (0x0), with size (0x20000).
+Looking for mtd device :mtd3:
+Found a mtd3 image (0x7e0000), with size (0x20000).
+Looking for mtd device :mtd4:
+Found a mtd4 image (0x7c0000), with size (0x20000).
+Looking for mtd device :mtd5:
+Creating 5 MTD partitions on "Physically mapped flash":
+0x000e0000-0x007c0000 : "mtd0"
+0x00020000-0x007c0000 : "mtd1"
+0x00000000-0x00020000 : "mtd2"
+0x007e0000-0x00800000 : "mtd3"
+0x007c0000-0x007e0000 : "mtd4"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 2048)
+IPv4 over IPv4 tunneling driver
+Default Asymmetric MTU for tunl0 1480
+GRE over IPv4 tunneling driver
+Default Asymmetric MTU for gre0 1476
+Linux IP multicast router 0.06 plus PIM-SM
+klips_info:ipsec_init: KLIPS startup, FreeS/WAN IPSec version: super-freeswan-1.99.8
+Default Asymmetric MTU for ipsec0 0
+Default Asymmetric MTU for ipsec1 0
+Default Asymmetric MTU for ipsec2 0
+Default Asymmetric MTU for ipsec3 0
+Default Asymmetric MTU for ipsec4 0
+klips_info:ipsec_alg_init: KLIPS alg v=0.8.1-0 (EALG_MAX=255, AALG_MAX=15)
+klips_info:ipsec_alg_init: calling ipsec_alg_static_init()
+ipsec_1des_init(alg_type=15 alg_id=2 name=1des): ret=0
+You should NOT load 1DES support except for testing purposes !
+ipsec_null_init(alg_type=15 alg_id=11 name=null): ret=0
+ip_conntrack version 2.0 (256 buckets, 2048 max) - 392 bytes per conntrack
+ip_tables: (c)2000 Netfilter core team
+netfilter PSD loaded - (c) astaro AG
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+IPv6 v0.8 for NET4.0
+IPv6 over IPv4 tunneling driver
+Default Asymmetric MTU for sit0 1480
+NET4: Ethernet Bridge 008 for NET4.0
+Initializing the WAN Bridge.
+Please set the MAC Address for the WAN Bridge.
+Set the Environment variable 'wan_br_mac'.
+MAC Address should be in the following format: xx.xx.xx.xx.xx.xx
+802.1Q VLAN Support v1.6  Ben Greear <greearb@candelatech.com>
+vlan Initialization complete.
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 64k freed
+Firmware Version: 1.00.04
+ret = -1
+www -> /www
+mount: Invalid argument
+Hit enter to continue...killall: httpd: no process killed
+
+ Configured 19 states
+now insmod tiatm
+Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/drivers/atm/tiatm.o
+name=[eth0] lan_ifname=[br0]
+=====> set br0 hwaddr to eth0
+Lan Ipaddr: 255.255.255.0 Netmask: 255.255.255.0................
+255.255.255.0 255.255.255.0
+cannot create /proc/Cybertan/dhcp_mapping: No such file or directory
+.............list  ..............
+[HTTPD Starting on /www]
+tftp server started
+tftpd: standalone socket
+HTTPD start,  port 80
+Create dhcpd conf files for dev: br0
+.............list  ..............
+udhcp server (v0.9.8) started
+name = dsldevice     ipaddr = 721a8c0
+dnsmasq: bind failed: Cannot assign requested address
+Jan  1 00:00:06 : 1nDHCP:DHCP server started.
+start_dhcpd_dev()  done
+Now Start syslog.........................!!zebra disabled
+killall: adslpolling: no process killed
+Jan  1 00:00:06 : 5bUpnpd-igd-v010 start!!!
+
+IDLE
+Hit enter to continue...wan def hwaddr 00:1A:70:7F:94:7F
+polling now .......
+upnpd-igd:current select wan connection:0
+upnp_content_num_0 = 14
+killall: begin_now: no process killed
+killall: dnsmasq: no process killed
+}}}
+== /proc/avalanche ==
+{{{
+/proc/avalanche/avsar_bit_allocation_table:
+
+AR7 DSL Modem US Bit Allocation:
+
+AR7 DSL Modem DS Bit Allocation:
+
+/proc/avalanche/avsar_channels:
+Chan  Inuse   ChanID   VPI     VCI
+------------------------------------------------------------------
+ 00    00000   00000   00000   00000
+ 01    00000   00000   00000   00000
+ 02    00000   00000   00000   00000
+ 03    00000   00000   00000   00000
+ 04    00000   00000   00000   00000
+ 05    00000   00000   00000   00000
+ 06    00000   00000   00000   00000
+ 07    00000   00000   00000   00000
+ 08    00000   00000   00000   00000
+ 09    00000   00000   00000   00000
+ 10    00000   00000   00000   00000
+ 11    00000   00000   00000   00000
+ 12    00000   00000   00000   00000
+ 13    00000   00000   00000   00000
+ 14    00000   00000   00000   00000
+ 15    00001   00015   00000   00030
+ 16    00000   00000   00000   00000
+------------------------------------------------------------------
+
+/proc/avalanche/avsar_dsl_modulation_schemes:
+NO_MODE                 0x0
+ADSL_G.dmt                      0x3
+ADSL_G.lite                     0x4
+ADSL_G.dmt.bis                  0x8
+ADSL_G.dmt.bis_DELT                     0x9
+ADSL_2plus                      0x10
+ADSL_2plus_DELT                 0x11
+ADSL_re-adsl                    0x20
+ADSL_re-adsl_DELT                       0x21
+ADSL_ANSI_T1.413                        0x2
+MULTI_MODE                      0x1
+ADSL_G.dmt.bis_AnxI                     0x0
+ADSL_G.dmt.bis_AnxJ                     0x0
+ADSL_G.dmt.bis_AnxM                     0x400
+ADSL_2plus_AnxI                 0x0
+ADSL_2plus_AnxJ                 0x0
+ADSL_2plus_AnxM                 0x2000
+G.shdsl                 0x0
+IDSL                    0x0
+HDSL                    0x0
+SDSL                    0x0
+VDSL                    0x0
+
+/proc/avalanche/avsar_modem_stats:
+
+AR7 DSL Modem Statistics:
+--------------------------------
+[DSL Modem Stats]
+        US Connection Rate:     0       DS Connection Rate:     0
+        DS Line Attenuation:    0       DS Margin:              0
+        US Line Attenuation:    0       US Margin:              0
+        US Payload :            0       DS Payload:             0
+        US Superframe Cnt :     0       DS Superframe Cnt:      0
+        US Transmit Power :     0       DS Transmit Power:      0
+        LOS errors:             0       SEF errors:             0
+        Errored Seconds:        0       Severely Err Secs:      0
+        Frame mode:             0       Max Frame mode:         0
+        Trained Path:           1       US Peak Cell Rate:      0
+        Trained Mode:           0       Selected Mode:          1
+        ATUC Vendor Code:       FFFFFFFF        ATUC Revision:  0
+        Hybrid Selected:        0       Trellis:                1
+        Showtime Count:         0       DS Max Attainable Bit Rate: 4294967264 kbps
+        BitSwap:                1       US Max Attainable Bit Rate:     n/a
+        Annex:                  Unknown psd_mask_qualifier: 0x0000
+        Power Management Status: L0     DS HLINSC: 0
+        US ACTPSD:              0       DS ACTPSD: 0
+        Total init. errors:     0       Total init. timeouts: 0
+        Showtime init. errors:  0       Showtime init. timeouts: 0
+        Last showtime init. errors: 0   Last showtime init. timeouts: 0
+        ATUC ghsVid:  91 9b 82 92 f0 e0 16 1c
+        T1413Vid: 00 00         T1413Rev: 00            VendorRev: 00
+        ATUR ghsVid:  4c 69 6e 6b 73 79 73 00
+        T1413Vid: 00 00 T1413Rev: 00    VendorRev: 00
+
+        [Upstream (TX) Interleave path]
+        CRC:    0       FEC:    0       NCD:    0
+        LCD:    0       HEC:    0
+
+        [Downstream (RX) Interleave path]
+        CRC:    0       FEC:    0       NCD:    0
+        LCD:    0       HEC:    0
+
+        [Upstream (TX) Fast path]
+        CRC:    0       FEC:    0       NCD:    0
+        LCD:    0       HEC:    0
+
+        [Downstream (RX) Fast path]
+        CRC:    0       FEC:    0       NCD:    0
+        LCD:    0       HEC:    0
+
+[ATM Stats]
+        [Upstream/TX]
+        Good Cell Cnt:  0
+        Idle Cell Cnt:  0
+
+        Tx Packets Dropped Count:       0
+        Tx Bad Packets Count:   0
+
+        [Downstream/RX)]
+        Good Cell Cnt:  0
+        Idle Cell Cnt:  0
+        Bad Hec Cell Cnt:       0
+        Overflow Dropped Cell Cnt:      0
+        Rx Packets Dropped Count:       0
+        Rx Bad Packets Count:   0
+
+
+[SAR AAL5 Stats]
+        Tx PDU's:       0
+        Rx PDU's:       0
+        Tx Total Bytes: 0
+        Rx Total Bytes: 0
+        Tx Total Error Counts:  0
+        Rx Total Error Counts:  0
+
+
+[OAM Stats]
+        Near End F5 Loop Back Count:    0
+        Near End F4 Loop Back Count:    0
+        Far End F5 Loop Back Count:     0
+        Far End F4 Loop Back Count:     0
+        SAR OAM Ping Response Drop Count=0
+
+/proc/avalanche/avsar_modem_training:
+IDLE
+1
+failTrains=0
+
+/proc/avalanche/avsar_oam_ping:
+3
+
+/proc/avalanche/avsar_private:
+
+Private Data Structure(TI Avalanche SAR):
+----------------------------------------
+priv:  0x95dbf000
+next:  0x00000000       dev:   0x95f74860
+tx_irq: 23rx_irq: 31
+/proc/avalanche/avsar_pvc_table
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+
+/proc/avalanche/avsar_qos_enable:
+
+EnableQoS = 0
+
+/proc/avalanche/avsar_rxsnr0:
+
+AR7 DSL Modem Rx SNR Per Bin for Bin0 :
+
+/proc/avalanche/avsar_rxsnr1:
+
+AR7 DSL Modem Rx SNR Per Bin for Bin1 :
+
+/proc/avalanche/avsar_rxsnr2:
+
+AR7 DSL Modem Rx SNR Per Bin for Bin2 :
+
+/proc/avalanche/avsar_sarhal_stats:
+SAR HAL Statistics
+Channel 15:
+Crc Errors: 0;
+Len Errors: 0;
+Abort Errors: 0;
+Starv Errors: 0;
+
+DmaLenErrors: 0;
+TxMisQCnt: 0;
+RxMisQCnt: 0;
+TxEOQCnt: 0;
+
+RxEOQCnt: 0;
+RxPacketsServiced: 0;
+TxPacketsServiced: 0;
+
+RxMaxServiced: 0;
+TxMaxServiced: 0;
+RxTotal: 0;
+TxTotal: 0;
+
+RcbPool: 0x0;
+RxActQueueCount: 0;
+RxActQueueHead: 0x95c420c0;
+
+RxActQueueTail: 0x95c42000;
+RxActive: 1;
+RcbStart: 0x95c42000;
+
+RxTeardownPending: 0;
+TcbPool: 0x95c430f0;
+TxActQueueCount: 0;
+
+TxActQueueHead: 0x0;
+TxActQueueTail: 0x0;
+TxActive: 0;
+
+TcbStart: 0x95c43060;
+TxTeardownPending: 0;
+RxBufSize: 256;
+
+RxBufferOffset: 0;
+RxNumBuffers: 4;
+RxServiceMax: 2;
+TxNumBuffers: 4;
+
+TxNumQueues: 1;
+TxServiceMax: 2;
+CpcsUU: 0;
+Gfc: 0;
+Clp: 0;
+
+Pti: 0;
+DaMask: 1;
+Priority: 0;
+PktType: 3;
+Vci: 30;
+
+Vpi: 0;
+CellRate: 12500;
+QosType: 2;
+Mbs: 8;
+Pcr: 1;
+
+
+/proc/avalanche/avsar_ver:
+ATM Driver version:[7.02.01.00]
+DSL HAL version: [7.02.01.00]
+DSP Datapump version: [7.02.03.00] Annex A
+SAR HAL version: [01.07.2c]
+PDSP Firmware version:[0.54]
+Chipset ID: [Ohio250(7200/7100A2)]
+
+/proc/avalanche/clear_eoc_stats:
+
+Clear EOC Channel:
+
+  Enabled:      0
+  TxBuf[0]:     0x00000000
+  TxBuf[1]:     0x00000000
+  TxBuf[2]:     0x00000000
+  TxBuf[3]:     0x00000000
+  RxBuf[0]:     0x00000000
+  RxBuf[1]:     0x00000000
+  RxBuf[2]:     0x00000000
+  RxBuf[3]:     0x00000000
+  txRdIndex:    0
+  txWrIndex:    0
+  rxRdIndex:    0
+  rxWrIndex:    0
+
+  TotalTxPkts:  0
+  TotalRxPkts:  0
+  TotalTxBytes: 0
+  TotalRxBytes: 0
+
+  ErrBufFull:   0
+  ErrBufIndx:   0
+  ErrBufMax:    0
+  ErrMsgMax:    0
+  ErrTxHDLC:    0
+  ErrRxHDLC:    0
+  ErrRxSnmp:    0
+  ErrRxPush:    0
+
+
+/proc/avalanche/cpmac_config:
+CPMAC devices = 1
+
+CPMAC Driver Internal Config Info for Unit 0
+vlanEnable         = 0
+rxBufSize          = 1528
+rxBufOffset        = 2
+instId             = 0
+numTxChannels      = 1
+numRxChannels      = 1
+cpmacBusFrequency  = 62500000
+baseAddress        = A8610000
+intrLine           = 19
+resetLine          = 17
+mdioBaseAddress    = A8611E00
+mdioResetLine      = 22
+mdioIntrLine       = 0
+PhyMask            = 80000000
+MLinkMask          = 00000000
+MdioBusFrequency   = 62500000
+MdioClockFrequency = 2200000
+MdioTickMSec       = 10
+phyMode            = 1024
+passCRC            = 0
+qosEnable          = 0
+noBufferChaining   = 0
+copyMACCntrlFrsEne = 0
+copyShortFramesEn  = 0
+copyErrorFramesEn  = 0
+promiscousEnable   = 1
+promiscousChannel  = 0
+broadcastEnable    = 1
+broadcastChannel   = 0
+multicastEnable    = 1
+multicastChannel   = 0
+maxRxPktLength     = 1526
+bufferOffset       = 0
+pType              = 1
+txShortGapEnable   = 0
+gigaBitEnable      = 0
+txPacingEnable     = 0
+miiEnable          = 1
+txFlowEnable       = 0
+rxFlowEnable       = 0
+loopbackEnable     = 0
+fullDuplexEnable   = 1
+
+/proc/avalanche/cpmac_link:
+CPMAC devices = 1
+eth0: Link State: UP    Phy -1, Speed = 100, Duplex = Full
+
+/proc/avalanche/cpmac_stats:
+
+Cpmac 1, Address a8610000
+ Transmit Stats
+   Tx Valid Bytes Sent        :19234
+   Good Tx Frames (Hardware)  :54
+   Good Tx Frames (Software)  :40
+   Good Tx Broadcast Frames   :3
+   Good Tx Multicast Frames   :51
+   Pause Frames Sent          :0
+   Collisions                 :0
+   Tx Error Frames            :0
+   Carrier Sense Errors       :0
+
+
+Cpmac 1, Address a8610000
+ Receive Stats
+   Rx Valid Bytes Received    :1586
+   Good Rx Frames (Hardware)  :7
+   Good Rx Frames (Software)  :7
+   Good Rx Broadcast Frames   :7
+   Good Rx Multicast Frames   :0
+   Pause Frames Received      :0
+   Rx CRC Errors              :0
+   Rx Align/Code Errors       :0
+   Rx Jabbers                 :0
+   Rx Filtered Frames         :1
+   Rx Fragments               :0
+   Rx Undersized Frames       :0
+   Rx Overruns                :0
+
+/proc/avalanche/cpmac_ver:
+Texas Instruments : CPMAC Linux DDA version 1.8
+Texas Instruments : CPMAC DDC version 0.2
+
+/proc/avalanche/developers:
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Salt Lake City Kernel Developement team (1999-2000)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell            - Kernel ports, ADSL driver
+Brady Brown             - filesystem, kernel port
+Mike Hassler            - filesystem, timers
+Victor Wells            - Ram disk image, EMAC driver
+Kevin Mcdonald          - f/s, ramdisk compression
+Rosemary Rogers         - kitchen gnomes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Germantown Kernel Developement team (2001- )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Jeff Harrell            - Kernel ports, ADSL driver
+Victor Wells            - VMAC driver
+James Beaulieu          - VMAC driver, PCI
+Hari Krishna            - USB driver
+Boris Marenkov          - USB driver
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+India Kernel Development Team (2002-)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Nitin Dhingra           - Intc, Avalanche
+Suraj Iyer                      - Intc, SEAD2, AR7 Port (2.4.17)
+Suraj Iyer                      - CPMAC (2.4.17)
+Sharath Kumar           - SEAD2, AR7 Port (2.4.17)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+/proc/avalanche/eth0_rfc2665_stats:
+ifSpeed                            : 100000000
+dot3StatsDuplexStatus              : 3
+ifAdminStatus                      : 1
+ifOperStatus                       : 1
+ifLastChange                       : 801
+ifInDiscards                       : 0
+ifInErrors                         : 0
+ifOutDiscards                      : 0
+ifOutErrors                        : 0
+ifInGoodFrames                     : 7
+ifInBroadcasts                     : 7
+ifInMulticasts                     : 0
+ifInPauseFrames                    : 0
+ifInCRCErrors                      : 0
+ifInAlignCodeErrors                : 0
+ifInOversizedFrames                : 0
+ifInJabberFrames                   : 0
+ifInUndersizedFrames               : 0
+ifInFragments                      : 0
+ifInFilteredFrames                 : 1
+ifInQosFilteredFrames              : 0
+ifInOctets                         : 1586
+ifOutGoodFrames                    : 54
+ifOutBroadcasts                    : 3
+ifOutMulticasts                    : 51
+ifOutPauseFrames                   : 0
+ifDeferredTransmissions            : 0
+ifCollisionFrames                  : 0
+ifSingleCollisionFrames            : 0
+ifMultipleCollisionFrames          : 0
+ifExcessiveCollisionFrames         : 0
+ifLateCollisions                   : 0
+ifOutUnderrun                      : 0
+ifCarrierSenseErrors               : 0
+ifOutOctets                        : 19234
+if64OctetFrames                    : 4
+if65To127POctetFrames              : 1
+if128To255OctetFrames              : 0
+if256To511OctetFrames              : 54
+if512To1023OctetFrames             : 2
+if1024ToUpOctetFrames              : 0
+ifNetOctets                        : 21026
+ifRxSofOverruns                    : 0
+ifRxMofOverruns                    : 0
+ifRxDMAOverruns                    : 0
+
+/proc/avalanche/led_cfg:
+
+Module:adsl
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED OFF
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_FLASH
+
+            gpio: 33
+
+            param1: 200
+
+            param2: 200
+
+        State: 3
+
+            mode: LED_ON
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+        State: 4
+
+            mode: LED_ON
+
+            gpio: 33
+
+            param1: 0
+
+            param2: 0
+
+Module:cpmac
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 15
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 15
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 15
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 15
+
+            param1: 100
+
+            param2: 0
+
+Module:usb
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 12
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 12
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 12
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 12
+
+            param1: 100
+
+            param2: 0
+
+Module:pppoe
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 13
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 13
+
+            param1: 0
+
+            param2: 0
+
+Module:wlan
+
+    Instance:0
+
+        State: 0
+
+            mode: LED OFF
+
+            gpio: 6
+
+            param1: 0
+
+            param2: 0
+
+        State: 1
+
+            mode: LED_ON
+
+            gpio: 6
+
+            param1: 0
+
+            param2: 0
+
+        State: 2
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 6
+
+            param1: 100
+
+            param2: 0
+
+        State: 3
+
+            mode: LED_ONESHOT_OFF
+
+            gpio: 6
+
+            param1: 100
+
+            param2: 0
+
+/proc/avalanche/led_ver:
+
+TI Linux LED Driver Version 0.1
+
+/proc/avalanche/psp_version:
+
+Linux OS DSL-PSP version 4.6.1.9 on BasePSP Version 7.1.0.8 Aug 29 2007 11:38:06 Avalanche SOC Version: 0x10002b operating in cached, write back, write allocate mode Cpu Frequency:211 MHZ System Bus frequencyZ
+
+
+/proc/avalanche/wan_bridge:
+0
+}}}
+== /proc/Cybertan ==
+{{{
+/proc/Cybertan/adm6996_reg:
+reg:0      value:800b
+reg:1      value:800b
+reg:2      value:800f
+reg:3      value:800f
+reg:4      value:800f
+reg:5      value:800f
+reg:6      value:800f
+reg:7      value:800f
+reg:8      value:800f
+reg:9      value:800f
+reg:a      value:8001
+reg:b      value:8001
+reg:c      value:0000
+reg:d      value:0000
+reg:e      value:fa50
+reg:f      value:fa50
+reg:10      value:e300
+reg:11      value:e300
+reg:12      value:0101
+reg:13      value:0101
+reg:14      value:01d5
+reg:15      value:01d5
+reg:16      value:01d5
+reg:17      value:01d5
+reg:18      value:ffd5
+reg:19      value:ffd5
+reg:1a      value:ffd5
+reg:1b      value:ffd5
+reg:1c      value:ffd5
+reg:1d      value:ffd5
+reg:1e      value:ffd5
+reg:1f      value:ffd5
+reg:20      value:ffd5
+reg:21      value:ffd5
+reg:22      value:0000
+reg:23      value:0000
+reg:24      value:1000
+reg:25      value:1000
+reg:26      value:1000
+reg:27      value:1000
+reg:28      value:0000
+reg:29      value:0000
+reg:2a      value:0000
+reg:2b      value:0000
+reg:2c      value:4442
+reg:2d      value:4442
+reg:2e      value:0000
+reg:2f      value:0000
+reg:30      value:0000
+reg:31      value:0000
+reg:32      value:0000
+reg:33      value:0000
+reg:34      value:0000
+reg:35      value:0000
+reg:36      value:0000
+reg:37      value:0000
+reg:38      value:0000
+reg:39      value:0000
+reg:3a      value:0000
+reg:3b      value:0000
+reg:3c      value:00fd
+reg:3d      value:00fd
+reg:3e      value:0000
+reg:3f      value:0000
+reg:40      value:8001
+reg:41      value:8001
+reg:42      value:8001
+reg:43      value:8001
+reg:44      value:8001
+reg:45      value:8001
+reg:46      value:8001
+reg:47      value:8001
+reg:48      value:8001
+reg:49      value:8001
+reg:4a      value:8001
+reg:4b      value:8001
+reg:4c      value:8001
+reg:4d      value:8001
+reg:4e      value:8001
+reg:4f      value:8001
+reg:50      value:8001
+reg:51      value:8001
+reg:52      value:8001
+reg:53      value:8001
+reg:54      value:8001
+reg:55      value:8001
+reg:56      value:8001
+reg:57      value:8001
+reg:58      value:8001
+reg:59      value:8001
+reg:5a      value:8001
+reg:5b      value:8001
+reg:5c      value:8001
+reg:5d      value:8001
+reg:5e      value:8001
+reg:5f      value:8001
+reg:60      value:0000
+reg:61      value:0000
+reg:62      value:0000
+reg:63      value:0000
+reg:64      value:0000
+reg:65      value:0000
+reg:66      value:0000
+reg:67      value:0000
+reg:68      value:0000
+reg:69      value:0000
+reg:6a      value:0000
+reg:6b      value:0000
+reg:6c      value:0000
+reg:6d      value:0000
+reg:6e      value:0000
+reg:6f      value:0000
+reg:70      value:0000
+reg:71      value:0000
+reg:72      value:0000
+reg:73      value:0000
+reg:74      value:0000
+reg:75      value:0000
+reg:76      value:0000
+reg:77      value:0000
+reg:78      value:0000
+reg:79      value:0000
+reg:7a      value:0000
+reg:7b      value:0000
+reg:7c      value:0000
+reg:7d      value:0000
+reg:7e      value:0000
+reg:7f      value:0000
+reg:80      value:0000
+reg:81      value:0000
+reg:82      value:0000
+reg:83      value:0000
+reg:84      value:0000
+reg:85      value:0000
+reg:86      value:0000
+reg:87      value:0000
+reg:88      value:0000
+reg:89      value:0000
+reg:8a      value:0000
+reg:8b      value:0000
+reg:8c      value:0000
+reg:8d      value:0000
+reg:8e      value:0000
+reg:8f      value:0000
+reg:90      value:0000
+reg:91      value:0000
+reg:92      value:0000
+reg:93      value:0000
+reg:94      value:0000
+reg:95      value:0000
+reg:96      value:0000
+reg:97      value:0000
+reg:98      value:0000
+reg:99      value:0000
+reg:9a      value:0000
+reg:9b      value:0000
+reg:9c      value:0000
+reg:9d      value:0000
+reg:9e      value:0000
+reg:9f      value:0000
+reg:a0      value:0000
+reg:a1      value:0000
+reg:a2      value:0000
+reg:a3      value:0000
+reg:a4      value:0000
+reg:a5      value:0000
+reg:a6      value:0000
+reg:a7      value:0000
+reg:a8      value:0000
+reg:a9      value:0000
+reg:aa      value:0000
+reg:ab      value:0000
+reg:ac      value:0000
+reg:ad      value:0000
+reg:ae      value:0000
+reg:af      value:0000
+reg:b0      value:0000
+reg:b1      value:0000
+reg:b2      value:0000
+reg:b3      value:0000
+reg:b4      value:0000
+reg:b5      value:0000
+reg:b6      value:0000
+reg:b7      value:0000
+reg:b8      value:0000
+reg:b9      value:0000
+reg:ba      value:0000
+reg:bb      value:0000
+reg:bc      value:0000
+reg:bd      value:0000
+reg:be      value:0000
+reg:bf      value:0000
+reg:c0      value:0000
+reg:c1      value:0000
+reg:c2      value:0000
+reg:c3      value:0000
+reg:c4      value:0000
+reg:c5      value:0000
+reg:c6      value:0000
+reg:c7      value:0000
+reg:c8      value:0000
+reg:c9      value:0000
+reg:ca      value:0000
+reg:cb      value:0000
+reg:cc      value:0000
+reg:cd      value:0000
+reg:ce      value:0000
+reg:cf      value:0000
+reg:d0      value:0000
+reg:d1      value:0000
+reg:d2      value:0000
+reg:d3      value:0000
+reg:d4      value:0000
+reg:d5      value:0000
+reg:d6      value:0000
+reg:d7      value:0000
+reg:d8      value:0000
+reg:d9      value:0000
+reg:da      value:0000
+reg:db      value:0000
+reg:dc      value:0000
+reg:dd      value:0000
+reg:de      value:0000
+reg:df      value:0000
+reg:e0      value:0000
+reg:e1      value:0000
+reg:e2      value:0000
+reg:e3      value:0000
+reg:e4      value:0000
+reg:e5      value:0000
+reg:e6      value:0000
+reg:e7      value:0000
+reg:e8      value:0000
+reg:e9      value:0000
+reg:ea      value:0000
+reg:eb      value:0000
+reg:ec      value:0000
+reg:ed      value:0000
+reg:ee      value:0000
+reg:ef      value:0000
+reg:f0      value:0000
+reg:f1      value:0000
+reg:f2      value:0000
+reg:f3      value:0000
+reg:f4      value:0000
+reg:f5      value:0000
+reg:f6      value:0000
+reg:f7      value:0000
+reg:f8      value:0000
+reg:f9      value:0000
+reg:fa      value:0000
+reg:fb      value:0000
+reg:fc      value:0000
+reg:fd      value:0000
+reg:fe      value:0000
+reg:ff      value:0000
+User defined signal 1
+
+/proc/Cybertan/bridge_only_enable:
+Disabled (use echo "1(0)" to enable or disbable)
+
+/proc/Cybertan/cloud_enable:
+Disabled (use echo "1(0)" to enable or disbable)
+
+/proc/Cybertan/eeprom:
+
+/proc/Cybertan/ethernet_wan_en:
+0
+
+/proc/Cybertan/half_bridge_enable:
+Disabled (use echo "1(0)" to enable or disbable)
+
+/proc/Cybertan/heavy_traffic:
+0
+
+/proc/Cybertan/igmp_channel_name:
+NULL
+
+/proc/Cybertan/igmp_ipoe_type:
+00000000
+
+/proc/Cybertan/igmp_proxy_version:
+00000003
+
+/proc/Cybertan/lan_ip_addr:
+00000000
+
+/proc/Cybertan/lan_mac_addr:
+00:00:00:00:00:00
+
+/proc/Cybertan/lan_netmask:
+ffffff00
+
+/proc/Cybertan/local_lan_mac_addr:
+00:00:00:00:00:00
+
+/proc/Cybertan/pppoe_pass:
+Enabled (use echo "1(0)" to enable or disbable)
+
+/proc/Cybertan/pvc_mapping:
+0
+
+/proc/Cybertan/replay_en:
+1
+
+/proc/Cybertan/sip_info:
+NULL
+
+/proc/Cybertan/stb_enabled:
+Disabled (use echo "1(0)" to enable or disbable)
+
+/proc/Cybertan/stb_info:
+There is not any stb dev
+
+/proc/Cybertan/stb_netmask:
+00000000 00000000 00000000 00000000
+
+/proc/Cybertan/stb_network:
+00000000 00000000 00000000 00000000
+
+/proc/Cybertan/stb_wangw:
+00000000 00000000 00000000 00000000
+
+/proc/Cybertan/stb_wanif:
+Down Down Down Down
+
+/proc/Cybertan/vlanTrunk_WANIF:
+0
+
+/proc/Cybertan/voice_phonenum_info:
+NULL
+
+/proc/Cybertan/vrrp_info:
+0#00000000#00:00:00:00:00:00#00:00:00:00:00:00
+
+/proc/Cybertan/wan_ip_addr:
+00000000
+
+/proc/Cybertan/wl_management:
+00000000:1
+}}}
+== misc ==
+{{{
+/proc/version:
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc version 2.95.3 20010315 (release/MontaVista)) #31 Wed Aug 29 11:33:25 CST 2007
+
+/proc/modules:
+tiatm                 126752   0 (unused)
+
+/proc/devices:
+Character devices:
+  1 mem
+  2 pty/m%d
+  3 pty/s%d
+  4 tts/%d
+  5 cua/%d
+ 10 misc
+ 36 netlink
+ 90 mtd
+108 ppp
+128 ptm
+136 pts/%d
+162 raw
+253 gpio
+254 nvram
+
+Block devices:
+ 31 mtdblock
+
+/proc/partitions:
+major minor  #blocks  name
+
+  31     0       7040 mtdblocka
+  31     1       7808 mtdblockb
+  31     2        128 mtdblockc
+  31     3        128 mtdblockd
+  31     4        128 mtdblocke
+
+/proc/interrupts:
+  7:    36069   R4000 timer/counter [MIPS interrupt]
+  8:        0   unified secondary [hw0 (Avalanche Primary)]
+ 15:     2358   serial [hw0 (Avalanche Primary)]
+ 23:        0 + SAR  [hw0 (Avalanche Primary)]
+ 27:        6 + Cpmac Driver [hw0 (Avalanche Primary)]
+ 31:        5 + DSL  [hw0 (Avalanche Primary)]
+
+/proc/filesystems:
+nodev   rootfs
+nodev   bdev
+nodev   proc
+nodev   sockfs
+nodev   tmpfs
+nodev   shm
+nodev   pipefs
+nodev   ramfs
+nodev   devfs
+        squashfs
+
+/proc/dma:
+ 4: cascade
+
+/proc/ioports:
+
+/proc/iomem:
+00000000-13ffffff : reserved
+14000000-1401ffff : System RAM
+14020000-15ffffff : System RAM
+  14020000-14230b87 : Kernel code
+  14242300-14266fff : Kernel data
+a8610000-a86107ff : eth0
+
+/proc/execdomains:
+0-0     Linux                   [kernel]
+
+/proc/mounts:
+/dev/mtdblock/0 / squashfs ro 0 0
+none /dev devfs rw 0 0
+proc /proc proc rw 0 0
+ramfs /tmp ramfs rw 0 0
+
+/proc/mtd:
+dev:    size   erasesize  name
+mtd0: 006e0000 00020000 "mtd0"
+mtd1: 007a0000 00020000 "mtd1"
+mtd2: 00020000 00020000 "mtd2"
+mtd3: 00020000 00020000 "mtd3"
+mtd4: 00020000 00020000 "mtd4"
+}}}
+= Management =
+== HTTP console ==
+Typical Linksys web interface with HTTP-AUTH. Default user 'admin', password 'admin'.  Configuration for VoIP is through this interface, but rather obviously proxied or from a different source.  The extended VoIP configuration features are not documented in the Linksys user guide, but the [http://www.sipura.com/Documents/SipuraSPAUserGuidev2.0.9.pdf Sipura ATA guide] covers the additional portions.
+
+== Serial console ==
+See picture above for pinout (bottom right corner).  Settings are 38400/8/n/1, software and hardware flow control off.
+
+== Telnet/SSH ==
+This router supports both telnet and ssh, but the 'admin' user's shell is /bin/configurator, a custom shell reminiscent of Cisco CLIs.  It is reasonably featureful, but does not offer any way to control the VoIP functionality.  The version in firmware 1.00.4 is much better than previous iterations.
+
+== Power Switch ==
+There is a momentary action SPST switch at the bottom left hand corner. Pressing it performs an immediate power-down of the system.
+
+Different from the [:OpenWrtDocs/Hardware/Linksys/AG300:AG300], the AG310 defaults to a powered state, and the power switch only serves to turn it off
+
+== IVR ==
+The Sipura chipset contains a minimal IVR interface for setting and checking basic network configurations (system-wide, not itself), as well as reboot and reset the system to factory defaults. 
+
+= OpenWRT firmware =
+This unit has been booted from an AR7 build of SVN revision 10950, but the switch and Sipura are not yet supported.  The web interface refuses non-Linksys firmware (possibly due to date or other version checking), but TFTP to the bootloader works fine.
+== Version pattern ==
+Note that this model seems to take the extended (addpattern -b -r 1.0) pattern.
+||'''HW revision'''||'''Serial Prefix'''||'''Magic'''||
+||1.0              ||CQB01G3            ||AV2A       ||
+
+----
+ . ["CategoryAR7Device"]

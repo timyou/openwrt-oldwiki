@@ -1,0 +1,40 @@
+== D-Link DWL-3150 ==
+
+=== Hardware ===
+
+{{{
+Bootloader: CFE
+System-On-Chip:  Broadcom 5352
+CPU Speed: 200 Mhz
+Flash size: 4 MB
+RAM: 16 MB
+Wireless: in CPU
+Ethernet: 1x LAN
+USB: none
+Serial: yes
+JTAG: no
+}}}
+
+Serial pinout:
+
+{{{
+Ethernet port
+
+ o VCC
+ o GND
+ o TX
+ o RX
+
+LEDs
+}}}
+
+
+The BCM5352 is nothing more than  BCM3302 CPU with on-chip BCM4318 Wi-Fi microcontroller. See http://www.broadcom.com/products/Wireless-LAN/802.11-Wireless-LAN-Solutions/BCM5352EL
+
+=== Flashing ===
+
+OpenWrt Kamikaze runs fine on it either using brcm-2.4 or brcm47xx-2.6. You can flash a '.trx' using CFE by issuing the following command :
+
+{{{
+flash -noheader <TFTP server IP address>:openwrt-brcm-2.4-squashfs.trx flash1.trx
+}}}

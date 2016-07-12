@@ -1,0 +1,18 @@
+=== Sitecom WL-105 ===
+
+The Sitecom WL-105 is a 54 Mbit wireless access point. There are two types which are completely different. Both are Linux
+based. The older "b" version is based on a Broadcom 4702 chipset. The two units look very different. In the picture you can see
+the WL-105b.
+
+attachment:wl-105b-casing.jpg
+
+
+=== Opening the WL-105b ===
+
+Underneath the little rubber feet there are four screws that need to be removed to be able to open the unit.
+
+=== The board ===
+
+On the board there is one mini-PCI card, which is 802.11g. There is room for another mini-PCI card. This device is also sold by other companies,
+which market it specifically as a machine that can do both 802.11a and 802.11b or 802.11g. The other mini-PCI slot is used for the 802.11a card.
+Searching on the Internet for WX-5520A gives a few results. Apparently both Gemtek and GenuineKorea sell the same device as Sitecom.

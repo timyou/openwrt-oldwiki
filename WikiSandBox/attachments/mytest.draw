@@ -1,0 +1,5 @@
+
+    CH.ifa.draw.standard.StandardDrawing "no_attributes" 3 
+        CH.ifa.draw.figures.RectangleFigure "no_attributes" 123 73 57 80  
+        CH.ifa.draw.figures.EllipseFigure "no_attributes" 158 127 103 102  
+        CH.ifa.draw.figures.RoundRectangleFigure "no_attributes" 233 64 123 88 8 8   

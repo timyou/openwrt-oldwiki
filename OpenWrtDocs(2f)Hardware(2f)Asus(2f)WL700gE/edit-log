@@ -1,0 +1,26 @@
+1153310270000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		
+1153310295000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		
+1153313319000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		
+1153313678000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		
+1153341341000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		
+1153396065000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		added more detailed hw info + photos
+1153401892000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		
+1158559304000000	00000008	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		
+1159198164000000	00000009	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	213.46.3.9	d3009.upc-d.chello.nl	1159197942.25.54932		Link to Installing a Serial Console http://www.tiedyedfreaks.org/eric/WL-700gE/
+1164233947000000	00000010	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	87.66.122.195	195.122-66-87.adsl-dyn.isp.belgacom.be	1164233246.16.15611		Be more specific about the wireless chip and the memory
+1165999799000000	00000011	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	211.21.54.214	sun.iadea.com	1142542204.33.2639		
+1168801005000000	00000012	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		
+1168801484000000	00000013	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	88.112.59.196	a88-112-59-196.elisa-laajakaista.fi	1135673555.87.30402		add gpios, add nvram dump, add link to forum post with latest progress info
+1168805531000000	00000014	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		rtc
+1168862084000000	00000015	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		
+1169371578000000	00000016	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.136.12.35	c.ncc.fi	1135673555.87.30402		
+1175743986000000	00000017	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	194.134.193.16	cache.wanadoo.nl	1175743732.5.36778		
+1193036849000000	00000018	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	87.230.125.206	scorpio.isys-software.de	1193036275.4.56610		
+1193037029000000	00000019	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	87.230.125.206	scorpio.isys-software.de	1193036275.4.56610		
+1195138409000000	00000020	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	91.66.129.166	91.66.129.166	1173010621.05.21249		
+1196731729000000	00000021	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	66.102.80.212	cbl-66-102-80-212.wtccommunications.ca	1193787179.04.52585		precompiled version of OpenWRT Kamikaze 7.09 (Broadcom, 2.4 kernel) is [http...
+1196779767000000	00000022	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	66.102.80.212	cbl-66-102-80-212.wtccommunications.ca	1193787179.04.52585		base set of driverws
+1196801056000000	00000023	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	66.102.80.212	cbl-66-102-80-212.wtccommunications.ca	1193787179.04.52585		quite limited -> initially quite limited, 2M flash but desktop-sized HDD 
+1202608419000000	00000024	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	210.84.32.10	210-84-32-10.dyn.iinet.net.au	1202607751.93.60685		Added links to OpenWrt config and init script
+1209717534000000	00000025	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	213.84.119.166	gpm.stappers.nl	1157296667.5.54289		to page about flash
+1228448767000000	00000026	SAVE	OpenWrtDocs(2f)Hardware(2f)Asus(2f)WL700gE	206.248.153.37	206-248-153-37.dsl.teksavvy.com	1228403409.47.13295		

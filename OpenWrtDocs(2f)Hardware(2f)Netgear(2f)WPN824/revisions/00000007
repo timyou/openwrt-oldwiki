@@ -1,0 +1,37 @@
+Serial port is JP1, pinout as follows:
+
+{{{
+      1
+      o o - VCC
+ RX - o o
+      o o
+      o o
+ TX - o o
+GND - o o
+      JP1
+}}}
+[http://www.dslreports.com/forum/remark,14001273 Description of serial port on WPN824]
+
+[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Netgear/TelnetConsole Telnet access on WPN824]
+
+----
+ CategoryModel
+
+== 824v2 ==
+Hardware (opening enclosure): *  		16MB serial Flash by macronix, typ MX25L1605 or MX25L1605A ([http://www.macronix.com/QuickPlace/hq/PageLibrary48256F55002C90A5.nsf/h_Toc/B9F4CC53671F91C148256F55004206F9/?OpenDocument Marconix])
+ * Marvell Commercial Grade  88E6060 - 6-Port Fast Ethernet Switch ([http://www.marvell.com/products/switching/linkstreet/index.jsp Marvell])
+ *  		16-BIT Transparent D-type Latch 74LVCH16373A ([http://www.digchip.com/datasheets/parts/datasheet/222/74LVCH16373A.php via Digichip])
+ *  		SAMSUNG K4S281632I-UC75 16Mo RAM
+ *  		cpu is covered
+OS:
+VxWorks (for Netgear WPN824v2) version VxWorks5.4.2.
+Kernel: WIND version 2.5.
+Made on Oct  2 2006, 19:10:19.
+wlan:
+Atheros Access Point Rev 4.0.0.167
+AP software 4.0.0.167
+wlan0 -> get hardware
+wlan0 revisions: mac 11.0 phy 4.8 analog 7.0
+PCI Vendor ID: 0x168c, Device ID: 0x13
+Sub Vendor ID: 0x168c, Sub Device ID: 0x13
+chip is AR5315

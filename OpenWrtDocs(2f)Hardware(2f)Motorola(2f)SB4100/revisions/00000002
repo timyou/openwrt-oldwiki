@@ -1,0 +1,85 @@
+The Motorola '''SB4100''' is cable modem based on Broadcom BCM3350 chip. Ethernet and USB ports are provided. The modem is compatible with DOCSIS and EuroDOCSIS standards(?). 
+
+= Hardware =
+
+ * Main Chip: Broadcom QAMLink® BCM3350KPB
+ * Ram: 8 MB SDRAM (HYUNDAI KOREA HY57V653220B A TC-7)
+ * Flash: 2 MB (Intel TE28F160)
+
+== Connectors ==
+
+On back-side, in top-down order:
+
+ * RJ45
+ * USB
+ * Cable Coax
+ * Power
+
+== Leds ==
+
+In front panel. Green, unless otherwise stated. In top-down order:
+
+ * Power
+ * Receive
+ * Send
+ * Online
+ * Activity
+
+= Accessing SB4100 =
+
+== Opening the Case ==
+
+Six annoying screws (not flatblade or phillips). Two clips in the bottom under an adhesive label. In addition, the labeling of the LEDS is adhesively attached. You may either cut the adhesive or remove them (I used the latter alternative). 
+
+== Ethernet Access ==
+
+Standard firmware provides configuration interface using HTTP.
+
+== Picture ==
+
+http://imagebin.ca.tbcdn.com/img/y9K_u4Yi.jpg
+
+*** Top center chip ***
+intel
+TE28F160
+C3TA90
+U1270613B
+FLASH
+
+*** Topmost Enclosure ***
+***** Large square chip *****
+BROADCOM
+QAMLink
+BCM3350KPB
+TN0109 P20
+55251
+
+***** To its right *****
+HYUNDAI KOREA
+HY57V653220B A
+0125A TC-7
+
+*** Coax enclosue ***
+***** Silver thing *****
+4.0AKSSOKT
+
+*** Silver thing between right two encosures ***
+TXC
+24.0y57F
+
+*** Bottom-right Enclosure on green ***
+***** Chip inside sub-enclosure *****
+LA7786
+1NN7
+
+***** Chip outside sub-enclosure *****
+ARA1400
+3108AA
+
+*** Board label (bottom-right of green board) ***
+MOTOROLA SB4100 469855-001-99 REV A 04-MAY-00
+
+NOTE: My SB4100 was pre-modded by TCNiSO adding a serial cable
+----
+
+CategoryModel CategoryCableModem

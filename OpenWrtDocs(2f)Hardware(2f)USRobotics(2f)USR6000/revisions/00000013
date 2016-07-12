@@ -1,0 +1,22 @@
+USRobotics USR6000 is a cable modem.
+
+== Details ==
+||'''CPU'''||BCM3350||
+||'''Bootloader'''||?||
+||'''OS'''||?||
+||'''Flash'''||[http://www.alldatasheet.co.kr/datasheet-pdf/pdf_kor/74527/MCNIX/MX29LV160BTC-90.html 16Mbit MX29LV160BTC-90]||
+||'''RAM'''||[http://www.datasheetcatalog.com/datasheets_pdf/K/4/S/6/K4S641632F-TC60.shtml 64Mbit Samsung K4S641632F-TC60]||
+||'''WLAN'''||no||
+||'''USB'''||yes||
+||'''Serial'''||yes||
+||'''JTAG'''||no||
+
+== Ethernet Access ==
+Cable modem can be accessed by 192.168.100.1 with login '''cablemodem''' and password '''robotics'''.
+
+== Links ==
+* http://www.usr.com/support/product-template.asp?prod=6000
+
+----
+
+CategoryModel CategoryCableModem

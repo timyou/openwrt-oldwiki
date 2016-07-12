@@ -1,0 +1,460 @@
+serial port an settings:
+
+--5---4---3---2---1
++---+---+---+---+---+
+| o | o | o | o | o |
++ + + + + + + + + + +
+| o | o | o | o | o |
++---+---+---+---+---+
+-10---9---8---7---6
+---------- front side ---------------
+
+Connect the 3 wires as follows:
+3:TX 
+2:RX 
+5:GND 
+
+orginal firmware bootlog:
+
+===========================================================
+ TI ADSL AR7300 Loader 0.69c.4 build Aug  1 2005 13:50:49
+                 Broad Net Technology, INC.
+===========================================================
+INTEL TE28F160C3-B bottom boot 16-bit mode found
+
+Copying boot params.....DONE
+
+Press any key to enter command mode ...
+Flash Checking  Passed.
+
+Unzipping  web at 0x95ef0000 ... [ZIP 3] [ZIP 2] done
+Unzipping code at 0x94000000 ... [ZIP 3] [ZIP 2] done
+In C_Entry() function ...
+install_exception 
+sys_irq_init() ...
+Set GPIO
+Reset USB, PCI and VP140 module ...
+vpReset(0)
+vpReset(1)
+PciPortal.start 40000000
+##### _ftext      = 0x94000000
+##### _fdata      = 0x94381050
+##### __bss_start = 0x943E1D4C
+##### end         = 0x9576697C
+##### Backup Data from 0x94381050 to 0x9578697C~0x957E7678 len 396540
+vlynq_config_init: HW Reset Bypass!
+inside reset callbackreset assert
+inside reset callbackreset deassert
+inside reset callbackLink Estab
+inside reset callbackinit ok
+Checking for Vlynq Link...
+VLYNQ0 @ base 0xa8611800 is properly enumerated.
+
+Resetting PCI
+Setting up PCIC registers
+Lock out access to PCI interface (currently=3c00)
+Setting up PCIC_SLAVE_BASE_ADDR_XLAT_REG
+Enabling arbiter and base0
+Setting up PCIC_MASTER_MEM_SPACE_ADDR_XLAT_REG
+Done with PCI configuration
+Delaying for PCI cards to reset
+Enumerating devices
+Enumerating PCI device 0
+Assigning resources to PCI device #0IntPin 1
+
+ BaseAddress @ 0x00000010 after writing 0xFFFFFFFF = 0xfc000008
+Device requires 67108864 bytes of memory space.
+ ERROR: Could not allocate resources for this device.
+ BaseAddress @ 0x00000014 after writing 0xFFFFFFFF = 0xfc000000
+Device requires 67108864 bytes of memory space.
+ ERROR: Could not allocate resources for this device.
+ BaseAddress @ 0x0000001c after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000020 after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000024 after writing 0xFFFFFFFF = 0x00000000Device 0 : base 0 reg fc000008
+
+Enumerating PCI device 1
+Assigning resources to PCI device #1IntPin 1
+
+ BaseAddress @ 0x00000010 after writing 0xFFFFFFFF = 0xffff0000
+Device requires 65536 bytes of memory space.
+ Usable base address located! Memory range allocated = 0x40000000 - 0x4000ffff
+Enumerating PCI device 2
+Assigning resources to PCI device #2IntPin 1
+
+ BaseAddress @ 0x00000010 after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000014 after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000018 after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x0000001c after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000020 after writing 0xFFFFFFFF = 0xffffffe1
+Device requires 32 bytes of memory space.
+ Usable base address located! IO range allocated = 0x60000000 - 0x6000001f
+Enumerating PCI device 3
+Assigning resources to PCI device #3IntPin 2
+
+ BaseAddress @ 0x00000010 after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000014 after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000018 after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x0000001c after writing 0xFFFFFFFF = 0x00000000
+ BaseAddress @ 0x00000020 after writing 0xFFFFFFFF = 0xffffffe1
+Device requires 32 bytes of memory space.
+ Usable base address located! IO range allocated = 0x60000020 - 0x6000003f
+Enumerating PCI device 4
+Assigning resources to PCI device #4IntPin 3
+
+ BaseAddress @ 0x00000010 after writing 0xFFFFFFFF = 0xffffff00
+Device requires 256 bytes of memory space.
+ Usable base address located! Memory range allocated = 0x40010000 - 0x400100ff
+Enumerating PCI device 5
+PCI: Slot=0, ID=TI VLYNQ2PCI , Index=0, MemBase=0x00000000, Int=00
+0x00: 0xa10a104c 0x22100007 0x00000000 0x00002004
+0x10: 0xfc000008 0xfc000000 0x00000001 0x00000000
+0x20: 0x00000000 0x00000000 0x00000000 0x00000000
+0x30: 0x00000000 0x00000040 0x00000000 0x02010100
+0x40: 0x00020001 0x00000000
+PCI: Slot=1, ID=Atheros AR5212 , Index=0, MemBase=0x40000000, Int=00
+0x00: 0x0013168c 0x02900006 0x02000001 0x00002004
+0x10: 0x40000000 0x00000000 0x00000000 0x00000000
+0x20: 0x00000000 0x00000000 0x00005001 0x44121113
+0x30: 0x00000000 0x00000044 0x00000000 0x1c0a0100
+0x40: 0x00000000 0x01c20001
+PCI: Slot=2, ID=VIA VT6212 , Index=0, MemBase=0x60000000, Int=00
+0x00: 0x30381106 0x02100007 0x0c030061 0x00802004
+0x10: 0x00000000 0x00000000 0x00000000 0x00000000
+0x20: 0x60000001 0x00000000 0x00000000 0x30381106
+0x30: 0x00000000 0x00000080 0x00000000 0x00000100
+0x40: 0x00031040 0x00000000
+PCI: Slot=3, ID=VIA VT6212 , Index=1, MemBase=0x60000020, Int=00
+0x00: 0x30381106 0x02100007 0x0c030061 0x00802004
+0x10: 0x00000000 0x00000000 0x00000000 0x00000000
+0x20: 0x60000021 0x00000000 0x00000000 0x30381106
+0x30: 0x00000000 0x00000080 0x00000000 0x00000200
+0x40: 0x00031040 0x00000000
+PCI: Slot=4, Vendor:DeviceID=0x1106:0x3104, Index=0, MemBase=0x40010000, Int=00
+0x00: 0x31041106 0x02100007 0x0c032063 0x00802004
+0x10: 0x40010000 0x00000000 0x00000000 0x00000000
+0x20: 0x00000000 0x00000000 0x00000000 0x31041106
+0x30: 0x00000000 0x00000080 0x00000000 0x00000300
+0x40: 0x000b0000 0x00000000
+PCI: Slot=5, --- No device present ---
+[INIT] System Log Pool startup ...
+[INIT] MTinitialize ..
+userclk_init() ...
+Runtime code version: 1.30n
+System startup...
+[INIT] Memory COLOR 0, 1500000 bytes ..
+[INIT] Memory COLOR 1, 1048576 bytes ..
+[INIT] Memory COLOR 2, 1900000 bytes ..
+DSL HAL Version: 06.00.04.107
+Die ID : 0x9D0D1303 - 6819937D
+Sangam detected, rev 0x25
+set dspfreq 250Mhz
+Sangam clock boost 250
+REG_VSERCLKSELR<-0x01
+Enable Analog PLL 
+
+SAR_FREQUNCY = 62500000Hz
+
+manu_id=0089 chip_id=88C3
+v1=0001 v2=0001
+INTEL TE28F160C3-B bottom boot 16-bit mode found
+Set flash memory layout to Boot Parameters found !!!
+Bootcode version: 0.69c.4
+Serial number: J535365409
+Hardware version: 01
+sizeof(struct III_Config_t) is 107512
+
+manu_id=0089 chip_id=88C3
+v1=0001 v2=0001
+INTEL TE28F160C3-B bottom boot 16-bit mode found
+!!! Invalid wireless channel range 0 ~ 0
+!!! Use default value 1 ~ 13
+default route: 0.0.0.0
+BufferInit:
+BUF_HDR_SZ=64 BUF_ALIGN_SZ=12 BUFFER_OFFSET=128
+BUF_BUFSZ0=384 BUF_BUFSZ1=3264
+NUM_OF_B0=0 NUM_OF_B1=1200
+BUF_POOL0_SZ=0 BUF_POOL1_SZ=3993600
+sizeof(BUFFER0)=448,sizeof(BUFFER1)=3328
+*BUF0=0x95308e74 *BUF1=0x94f39e64
+Altgn *BUF0=0x95308e80 *BUF1=0x94f39e70
+End at BUF0:0x95308e80, BUF1:0x95308e70
+
+BUF0[0]=0x95308e80 BUF1[0]=0x94f39e70
+
+buffer0 pointer init OK!
+buffer1 pointer init OK!
+[qm_lnk_init] CLOCKHZ=1000 ...
+[qm_lnk_init] add if 3 into QM link 0
+[qm_cbq_enable] no QM attached
+[qm_cbq_detach] no QM is attached at link 0
+f=0/100000, ns_per_byte=65536000/100000
+New cls: id=0, bw=8080 ns/byte, maxd=0 ms,
+         maxb=32, minb=2, avgpktsz=250, maxpktsz=1802,
+         offtime=40, parent=0, borrow=0
+         pri=0, maxidle=31, minidle=-29123,
+         maxq=48, clsfg=17
+f=0/100000, ns_per_byte=4247781376/100000
+New cls: id=1, bw=808080 ns/byte, maxd=0 ms,
+         maxb=16, minb=1, avgpktsz=1802, maxpktsz=1802,
+         offtime=1441745, parent=9567f52c, borrow=9567f52c
+         pri=7, maxidle=384166, minidle=-2912323,
+         maxq=48, clsfg=21
+qm_cbq_attach(): cbqp->cbq_res=48
+f=0/100000, ns_per_byte=245104640/100000
+New cls: id=2, bw=8162 ns/byte, maxd=0 ms,
+         maxb=32, minb=4, avgpktsz=250, maxpktsz=1802,
+         offtime=166, parent=9567f52c, borrow=9567f52c
+         pri=0, maxidle=31, minidle=-29417,
+         maxq=48, clsfg=21
+f=0/100000, ns_per_byte=0/100000
+[qm_cbq_newcls] warning: bandwidth of the class may be low enough to cause INT overflow
+New cls: id=3, bw=1191722 ns/byte, maxd=0 ms,
+         maxb=16, minb=4, avgpktsz=250, maxpktsz=1802,
+         offtime=1212204, parent=9567df2c, borrow=9567df2c
+         pri=0, maxidle=0, minidle=-4294966,
+         maxq=48, clsfg=21
+f=0/100000, ns_per_byte=0/100000
+[qm_cbq_newcls] warning: bandwidth of the class may be low enough to cause INT overflow
+New cls: id=4, bw=1191722 ns/byte, maxd=0 ms,
+         maxb=16, minb=4, avgpktsz=250, maxpktsz=1802,
+         offtime=1212204, parent=9567df2c, borrow=9567df2c
+         pri=2, maxidle=0, minidle=-4294966,
+         maxq=48, clsfg=23
+f=0/100000, ns_per_byte=0/100000
+[qm_cbq_newcls] warning: bandwidth of the class may be low enough to cause INT overflow
+New cls: id=5, bw=1191722 ns/byte, maxd=0 ms,
+         maxb=16, minb=4, avgpktsz=250, maxpktsz=1802,
+         offtime=1212204, parent=9567df2c, borrow=9567df2c
+         pri=3, maxidle=0, minidle=-4294966,
+         maxq=48, clsfg=23
+f=0/100000, ns_per_byte=0/100000
+[qm_cbq_newcls] warning: bandwidth of the class may be low enough to cause INT overflow
+New cls: id=6, bw=1191722 ns/byte, maxd=0 ms,
+         maxb=16, minb=4, avgpktsz=250, maxpktsz=1802,
+         offtime=1212204, parent=9567df2c, borrow=9567df2c
+         pri=4, maxidle=0, minidle=-4294966,
+         maxq=48, clsfg=23
+f=0/100000, ns_per_byte=0/100000
+[qm_cbq_newcls] warning: bandwidth of the class may be low enough to cause INT overflow
+New cls: id=7, bw=1191722 ns/byte, maxd=0 ms,
+         maxb=16, minb=4, avgpktsz=250, maxpktsz=1802,
+         offtime=1212204, parent=9567df2c, borrow=9567df2c
+         pri=5, maxidle=0, minidle=-4294966,
+         maxq=48, clsfg=23
+f=0/100000, ns_per_byte=245104640/100000
+New cls: id=8, bw=8162 ns/byte, maxd=0 ms,
+         maxb=16, minb=4, avgpktsz=250, maxpktsz=1802,
+         offtime=166, parent=9567df2c, borrow=9567df2c
+         pri=7, maxidle=31, minidle=-29417,
+         maxq=48, clsfg=20
+CLOCKHZ=1000
+gConfig.Interface[0].IP_Addr = 127.0.0.1
+gConfig.Interface[0].Subnet_Mask = 255.255.255.255
+time = 08/01/2003, 00:00:00
+TRAP(linkUp) : send ok!
+Interface 0 ip = 127.0.0.1
+
+gConfig.Interface[1].IP_Addr = 192.168.2.100
+gConfig.Interface[1].Subnet_Mask = 255.255.255.0
+MAC Address: 00:01:e3:58:0a:4c
+Memory request 2072 left 297928 ptr 9465C28C
+Call tn7sar_malloc_dma_xfer() addr:B465C28C size:2072
+before Call ResetMarvellPhy
+after Call ResetMarvellPhy
+MAC1 [RX=128 TX=1]: TI External PHY
+time = 08/01/2003, 00:00:00
+TRAP(linkUp) : send ok!
+Interface 1 ip = 192.168.2.100
+
+gConfig.Interface[2].IP_Addr = 0.0.0.0
+gConfig.Interface[2].Subnet_Mask = 0.0.0.0
+[HWLAN] ifno=2 irno=7 port=0x00000000
+[PCI] devtag=00000800 probe=940a1264
+[HWLAN] devtag = 00000800
+[HWLAN] Vendor ID 0x168c
+[HWLAN] Device ID 0x13
+[HWLAN] Base Addr 0xa4001400
+[HWLAN] SVendor ID 0x1113
+[HWLAN] SDevice ID 0x4412
+[HWLAN] Revision ID 0x1
+[HWLAN] interrupt vector 0x1
+INTTYPR1 00000004 INTPOLR1 00000004, GPIOEN f3f4bff0
+apCfgRadioDefaultSet> gSetting.channel=6, pRadio->channel=5260, pRadio->freqSpec=1
+[HWLAN] pRadio->abolt = 00000000
+apCfgRadioDefaultSet> gSetting.channel=6, pRadio->channel=2437, pRadio->freqSpec=8
+Auto Scan in dynamic Turbo mode !!!!!
+[HWLAN] pRadio->abolt = 000000b3
+[HWLAN] gSetting.BasicRate=85 
+[HWLAN] apCfgDefaultSet : prepare to set WDS.. 
+apInit: Initialize Access Point.
+[HWLAN] ar5hwcCreatePhy : ifno:2 pdevInfo=94bc3804, devno=1
+[HWLAN] devno 1 pdevInfo 94bc3804
+[HWLAN] Base address = a4001400, irq 1
+Attach AR5212 0x13 0x94bc3804
+[HWLAN] DOMAIN 00008114
+[HWLAN] Set HWLAN MAC as LAN MAC .. 
+[HWLAN] MAC Address=00-01-E3=58-0A-4E 
+[HWLAN] wlan1 revisions: mac 7.9 phy 4.5 analog 5.6 eeprom 5.2
+[apCfgRadioCheck] nRadio=1
+[apCfgRadioCheck] wmode=28, pRadio1->freqSpec=8
+[ar5hwcCreatePhy]  devno=1, opModes=8
+[wlanInitChannelList] wireless_selection=0x8
+[HWLAN] country code = 00000114
+wlanInitChannelList -- country: DE, mode: 8 11g
+
+[HWLAN] wlanInitChannelList -- 13 channels
+[HWLAN]  2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472
+[wlanGetChannelPtr] channel=2437, modeSelect=8, pCList->listSize=13[wlanGetChannelPtr] pCList->cha0
+[wlanGetChannelPtr] pCList->chanArray[1].channelFlags=0x5400, modeTable[3].channelFlags=0x1400
+[wlanGetChannelPtr] pCList->chanArray[2].channelFlags=0x5400, modeTable[3].channelFlags=0x1400
+[wlanGetChannelPtr] pCList->chanArray[3].channelFlags=0x5400, modeTable[3].channelFlags=0x1400
+[wlanGetChannelPtr] pCList->chanArray[4].channelFlags=0x5400, modeTable[3].channelFlags=0x1400
+[wlanGetChannelPtr] pCList->chanArray[5].channelFlags=0x5400, modeTable[3].channelFlags=0x1400
+[HWLAN] phwChannel 2437, channelFlags 00005400
+[HWLAN] size of ATHEROS_DESC hardware part 32
+[HWLAN] CACHE_LINE_SIZE 16, AR_DESC_SIZE 128
+[HWLAN] AR_HEADER_SIZE 96, AR_BUF_SIZE 3196numDescriptors = 704
+[HWLAN] wlan1: pDmaBuf=B43E2E90
+[HWLAN] pMemBuf b43e2e90 pdevInfo->pDmaBuf b43e2e90
+[HWLAN] ar5hwcQueueCreate: semaphore id 94623410
+[HWLAN] ar5hwcQueueCreate: semaphore id 94623424
+[HWLAN] ar5hwcQueueCreate: semaphore id 94623438
+[HWLAN] ar5hwcQueueCreate: semaphore id 9462344c
+[HWLAN] pMemBuf b43fee90, pdevInfo->pDmaBuf + pdevInfo->dmaBufSize b4430eb0
+[HWLAN] muxDevLoad is called for vportNum 10000, loadfn 940c0014, vportStr 16: 0: 1
+[HWLAN] ioctl CMD=0xb
+[HWLAN] bridgePortAdd : vp, 10000
+[HWLAN] bridgePortAdd (base BSS) succeeded for vp1
+wlan1 added STA: 00:01:e3:58:0a:4e (0)
+[HWLAN] ifno=2 after call apInit() : .... bg 1 , a 0 .... 
+wlan_timer_init() ...
+Wireless Init Success
+inside isr callback for reporting vlynq events.Reg=1000001
+inside isr callback for reporting vlynq events.Reg=1000003
+ISR not installed for vlynq vector:3
+ISR not installed for vlynq vector:4
+ISR not installed for vlynq vector:5
+time = 08/01/2003, 00:00:00
+TRAP(linkUp) : send ok!
+[HWLAN] hwlan_ioctl() .. 
+Interface 2 ip = 192.168.2.100
+
+[HWLAN] hwlan_ioctl() .. 
+gConfig.Interface[3].IP_Addr = 0.0.0.0
+gConfig.Interface[3].Subnet_Mask = 0.0.0.0
+pppInit> set (PPPShutdownRequest[ifno] = 0)
+Init SAR ifno:3 chan:0 VPI/VCI:1/32
+Init PDSP ...
+Init PDSP done.
+Memory request 552 left 297376 ptr 9465CAA4
+Call tn7sar_malloc() addr:B465CAA4 size:552
+[aal5->os]2.IsrRegister(OsDev:943e21ec, halIsr:941b885c, Interrupt:15)
+[aal5]halControl(HalDev:955d1318, Key:OamMode, Action:Set, Value:9578683c)
+[aal5]halChannelSetup(HalDev:955d1318, HalCh:95786780, OsSetup:00000000)
+  [aal5 Inst 0, Ch 0] Config Dump:
+    TxNumBuffers  :00000128, TxNumQueues :00000002
+    RxNumBuffers  :00000128, RxBufSize   :00001582
+    TxServiceMax  :00000032, RxServiceMax:00000016
+    RxBufferOffset:00000000, DaMask      :00000001
+    CpcsUU        :00000000, Gfc         :00000000
+    Clp           :00000000, Pti         :00000000
+    Priority      :00000002, PktType     :00000000
+    Vci           :00000032, Vpi         :00000001
+    TxVc_CellRate :00015625, TxVc_QosType:00000002
+    TxVc_Mbs      :00015625, TxVc_Pcr    :00015625
+    TxVc_AtmHeader:01049088
+InitTcb(CH:0): tcbsize:48 allsize:6160 num:128
+Memory request 6160 left 291216 ptr 9465CCCC
+Call tn7sar_malloc_dma_xfer() addr:B465CCCC size:6160
+Memory request 6160 left 285056 ptr 9465E4DC
+Call tn7sar_malloc_dma_xfer() addr:B465E4DC size:6160
+InitRcb(CH:0): rcbsize:64 allsize:8208 num:128
+Memory request 8208 left 276848 ptr 9465FCEC
+Call tn7sar_malloc_dma_xfer() addr:B465FCEC size:8208
+Call halChannelSetup(), Ch:0
+(HalCh->TxVc_VpOffset)=00000000
+(HalCh->RxVc_VpOffset)=00000000
+Install SAR handler ...
+MAC Address: 00:01:e3:58:0a:4d
+Interface 3 ip = 0.0.0.0
+
+gConfig.Interface[11].IP_Addr = 0.0.0.0
+gConfig.Interface[11].Subnet_Mask = 0.0.0.0
+IFLNK_PPPOE init : (Linkp)ifno = 11 idx = 2
+IFLNK_PPPOE init : (Driverp)ifno = 11 idx = 3
+pppInit> set (PPPShutdownRequest[ifno] = 0)
+Interface 11 ip = 0.0.0.0
+
+ruleCheck()> Group: 0,  Error: Useless rule index will be truncated
+ruleCheck()> Group: 1,  Error: Useless rule index will be truncated
+ruleCheck()> Group: 2,  Error: Useless rule index will be truncated
+CBAC rule format check succeed !!
+reqCBACBuf()> init match pool, Have: 1000
+Memory Address: 0x9561cba4 ~ 0x95623920
+reqCBACBuf()> init timeGap pool, Have: 10000
+Memory Address: 0x95623920 ~ 0x95654674
+reqCBACBuf()> init sameHost pool, Have: 2000
+Memory Address: 0x95654674 ~ 0x95664094
+CBAC rule pool initialized !!
+Init NAT data structure
+RUNTASK id=2 if_task if0...
+RUNTASK id=3 if_task if1...
+RUNTASK id=4 if_task if2...
+RUNTASK id=5 if_task if3...
+RUNTASK id=6 timer_task...
+RUNTASK id=7 conn_mgr...
+RUNTASK id=8 main_8021x...
+RUNTASK id=9 UsbSysInitTask ...
+RUNTASK id=11 period_task...
+
+========== ADSL Modem initialization OK ! ======
+
+RUNTASK id=12 telnetd_main...
+Unzipping from B0040000 to 95D00000 ... done
+Uncompressed size = 2925052
+drive start addr[0]=95d00000, [1]=95fca200
+[HTTPD] flash_init: failed!!
+httpd: listen at 192.168.2.100:80
+HTTPD TIMER_RESOURCE:5, FS_RESOURCE:6
+RUNTASK httpd...
+RUNTASK id=15 dnsproxy...
+RUNTASK id=16 rip...
+RUNTASK id=17 ripout...
+RUNTASK id=18 nbios_main...
+RUNTASK id=19 padmin_task_entry...
+UPnP is enabled
+UPNP Device initialize success! slot=20
+Starting Multitask...
+[wlanInitChannelList] wireless_selection=0x50
+[HWLAN] country code = 00000114
+wlanInitChannelList -- country: DE, mode: 10 108g
+
+[HWLAN] wlanInitChannelList -- 1 channels
+[HWLAN]  2437
+
+Adjust prime channel 2437 -60
+wlanFindChannel - Initialize channel costs
+2412 -35  2417 -30  2422 -30  2427 -30  2432 -30  2437 -60  2442 -35
+2447 -30  2452 -30  2457 -30  2462 -30  2467 -30  2472 -35  
+
+wlanFindChannel - Setup normal mode BSS value costs
+2412   0  2417   0  2422   0  2427   0  2432   0  2437   0  2442   0
+2447   0  2452   0  2457   0  2462   0  2467   0  2472   0  
+
+wlanFindChannel - Initial values, BSS RSSI maxes and multiple interferers added together
+2412 -35  2417 -30  2422 -30  2427 -30  2432 -30  2437 -60  2442 -35
+2447 -30  2452 -30  2457 -30  2462 -30  2467 -30  2472 -35  
+
+wlanFindChannel Cost Histogram: higher values indicate more interference
+2442   0  2437   0  2432   5  2472  25  2412  25  2417  30  2467  30
+2447  30  2462  35  2422  35  2427  35  2452  35  2457  35  
+
+Auto Channel Scan selected 2437 MHz, channel 6
+[HWLAN] Ready
+
+
+
+
+
+device is based on ar7, has a via vt6212l chip, behind it a usb 2.0 and mini-pci slot, atheros ar5212 wifi card attached.
+manucator seems to be accton.

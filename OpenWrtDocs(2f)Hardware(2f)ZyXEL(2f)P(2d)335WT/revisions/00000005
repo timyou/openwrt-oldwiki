@@ -1,0 +1,50 @@
+Bootloader : Bootbase
+
+Serial Pinout :
+
+
+{{{
+ VCC  TX   RX        GND
+  x    x    x    ()   x       LEDS
+}}}
+
+9600 8n1
+
+Services :
+
+ Password for services : 1234
+
+ Telnet
+ FTP (root/1234)
+ WEB
+ IDENT
+
+
+It is not possible to login via the web interface when you are logged by console, and probably vice versa.
+
+= Hacking the ZyXEL P-335WT =
+
+This device uses Bootbase as bootloader and ZynOS as Operating system. It runs in Big-endian mode (adm5120eb-2.6 target).
+
+Here are several useful informations :
+
+Entering advanced debug mode :
+
+ATEN1,<code>
+
+MAC Address
+of LAN port	Password y for ATENx,y
+...0 or ...8	10F0A563
+...1 or ...9	887852B1
+...2 or ...A	C43C2958
+...3 or ...B	621E14AC
+...4 or ...C	310F0A56
+...5 or ...D	1887852B
+...6 or ...E	8C43C295
+...7 or ... F	C621E14A
+
+Loading an image via Xmodem :
+
+ATUP<load address>,<size in bytes>
+----
+CategoryModel ["CategoryADM5120Device"]

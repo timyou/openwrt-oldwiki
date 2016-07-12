@@ -1,0 +1,4 @@
+== Gateway ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''boot_wait''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Status''' ||
+||[http://products.gateway.com/products/GConfig/prodDetails.asp?system_id=gtwy7001_g_wap&seg=sb 7001] ||802.11g ||[http://www.intel.com/design/network/products/npfamily/ixp422.htm Intel IXP422] @ 266MHz ||8MB ||32MB ||Atheros (mini-PCI) ||None ||N/A ||Yes ||Yes ||None ||[:OpenWrtDocs/Hardware/Gateway/7001:Kamikaze] ||
+||[http://products.gateway.com/products/GConfig/prodDetails.asp?system_id=gtwy7001_ag_wap&seg=sb 7001] ||802.11a+g ||[http://www.intel.com/design/network/products/npfamily/ixp422.htm Intel IXP422] @ 266MHz ||8MB ||32MB ||2x Atheros (mini-PCI) ||None ||N/A ||Yes ||Yes ||None ||[:OpenWrtDocs/Hardware/Gateway/7001:Kamikaze] ||

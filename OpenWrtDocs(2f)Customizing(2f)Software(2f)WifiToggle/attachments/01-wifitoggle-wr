@@ -1,0 +1,27 @@
+. /lib/config/uci.sh
+. /etc/functions.sh
+
+config_load "wifitoggle"
+local section="cfg1"
+config_get "BUTTON_NAME" "$section" "button"
+
+toggle_radio() {
+        local section="$1"
+        WIFI_RADIOSTATUS=$(nvram get wl0_radio)
+        case "$WIFI_RADIOSTATUS" in
+                0|"")
+                        nvram set wl0_radio=1
+                        wifi
+                ;;
+                1)
+                        nvram set wl0_radio=0
+                        wifi
+                ;;
+        esac
+}
+
+if [ "$BUTTON" = "$BUTTON_NAME" ] && [ $SEEN != "0" ] ; then
+        if [ "$ACTION" = "pressed" ] ; then
+                toggle_radio
+        fi
+fi

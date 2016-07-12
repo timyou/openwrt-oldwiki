@@ -1,0 +1,284 @@
+= Comtrend CT-5621 =
+
+== General Information ==
+
+This is an ADSL2+ Modem + 4-port Switch with USB.  It is manufactured by Comtrend who, as best I can determine from there voice prompts for assistance, only sell their equipment to ISP's and Telcos, thus bypassing regular users as customer and receivers of source code.
+
+== Specifications ==
+
+=== Chipset ===
+
+This is based on the Broadcom BCM96348
+
+=== System Type ===
+
+96348GW-10
+
+=== CPU ===
+
+BCM6348 V0.7
+256 MHz
+Bus: 128 MHz
+Ref: 32 MHz
+
+{{{
+/proc/cpuinfo
+
+system type		: 96348GW-10
+processor		: 0
+cpu model		: BCM6348 V0.7
+BogoMIPS		: 255.59
+wait instruction	: no
+microsecond timers	: yes
+tlb_entries		: 32
+extra interrupt vector	: no
+hardware watchpoint	: no
+VCED exceptions		: not available
+VCEI exceptions		: not available
+}}}
+
+=== RAM ===
+
+16 MiB RAM
+
+=== Flash ===
+
+4 MiB 
+
+== Messages ==
+
+=== Boot Log ===
+{{{
+CFE version 1.0.37-5.17 for BCM96348 (32bit,SP,BE)
+Build Date: Tue, 19 Oct 2004 12:02:54 +0800 (root@junhon_linux)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena.
+Initializing Devices.
+Auto-negotiation timed-out
+CPU type 0x29107: 256MHz, Bus: 128MHz, Ref: 32MHz
+
+Total memory used by CFE:  0x80401000 - 0x80521DF0 (1183216)
+Initialized Data:          0x8041C740 - 0x8041E1B0 (6768)
+BSS Area:                  0x8041E1B0 - 0x8041FDF0 (7232)
+Local Heap:                0x8041FDF0 - 0x8051FDF0 (1048576)
+Stack Area:                0x8051FDF0 - 0x80521DF0 (8192)
+Text (code) segment:       0x80401000 - 0x8041C73C (112444)
+Boot area (physical):      0x00522000 - 0x00562000
+Relocation Factor:         I:00000000 - D:00000000
+
+Board IP address                : 192.168.1.1:ffffff00  
+Host IP address                 : 192.168.2.2  
+Gateway IP address              : 192.168.1.3  
+Run from flash/host (f/h)       : f  
+Default host run file name      : vmlinux  
+Default host flash file name    : bcm963xx_fs_kernel  
+Boot delay (0-9 seconds)        : 5  
+Board Id Name                   : 96348GW-10  
+Psi size in KB                  : 24
+Number of MAC Addresses (1-32)  : 11  
+Base MAC Address                : 00:30:da:47:bd:b4  
+Ethernet PHY Type               : Internal
+Memory size in MB               : 16
+
+*** Press any key to stop auto run (5 seconds) ***
+Auto run second count down: 5544
+Code Address: 0x80010000, Entry Address: 0x8001046c
+Decompression OK!
+Entry at 0x8001046c
+Closing network.
+Starting program at 0x8001046c
+Total Flash size: 4096K with 71 sectors
+Scratch pad is not used for this flash part.
+96348GW-10 prom init
+CPU revision is: 00029107
+Primary instruction cache 16kb, linesize 16 bytes (2 ways)
+Primary data cache 8kb, linesize 16 bytes (2 ways)
+Linux version 2.4.17 (root@max-redhat) (gcc version 3.1) #1 ¥| 12¤ë 2 04:34:28 CST 2004
+Determined physical RAM map:
+ memory: 00fa0000 @ 00000000 (usable)
+On node 0 totalpages: 4000
+zone(0): 4000 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock0 ro
+bcm_console_setup
+Calibrating delay loop... 255.59 BogoMIPS
+Memory: 14236k/16000k available (1144k kernel code, 1764k reserved, 80k data, 48k init, 0k highmem)
+Dentry-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+mpi: No Card is in the PCMCIA slot
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+brcmboard: brcm_board_init entry
+Module bcm63xx_cons.c v1.1 Dec  2 2004 04:34:57
+block: 64 slots per queue, batch=16
+PPP generic driver version 2.4.1
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+Linux IP multicast router 0.06 plus PIM-SM
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+Ebtables v2.0 registered<6>NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.6  Ben Greear <greearb@candelatech.com>
+vlan Initialization complete.
+VFS: Mounted root (cramfs filesystem) readonly.
+Freeing unused kernel memory: 48k freed
+init started:  BusyBox v0.60.4 (2004.12.01-20:44+0000) multi-call binary
+Algorithmics/MIPS FPU Emulator v1.5
+
+
+BusyBox v0.60.4 (2004.12.01-20:44+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+
+Loading drivers and kernel modules... 
+
+atmapi: init_module entry 0xc0006060
+blaadd: blaa_detect entry
+adsl: adsl_init entry
+var 1.0 initialised
+Broadcom BCM6348A2 Ethernet Network Device v0.1 Dec  2 2004 04:40:06 Internal PHY
+BCM63xx_ENET: Auto-negotiation timed-out
+BCM63xx_ENET: 10 MB Half-Duplex (assumed)
+eth0: MAC Address: 00:30:DA:47:BD:B4
+Broadcom BCM6348A2 Ethernet Network Device v0.1 Dec  2 2004 04:40:06 External Switch Reverse MII (SPI Device 1)
+eth1: MAC Address: 00:30:DA:47:BD:B5
+Broadcom BCM6348A2 USB Network Device v0.3 Dec  2 2004 04:40:08
+usb0: MAC Address: 00 30 DA 47 BD B6
+usb0: Host MAC Address: 00 30 DA 47 BD B7
+insmod: init_module: wl: No such device
+BcmAdsl_Initialize=0xC0018418, g_pFnNotifyCallback=0xC002CCB0
+AdslCoreHwReset: AdslOemDataAddr = 0xA0FE4D5C
+
+==>   Bcm963xx Software Version: A101-221CTL-C01_R04.A2pB017f.d15   <==
+
+device usb0 entered promiscuous mode
+br0: port 1(usb0) entering listening state
+br0: port 1(usb0) entering learning state
+br0: port 1(usb0) entering forwarding state
+br0: topology change detected, propagating
+device eth0 entered promiscuous mode
+br0: port 2(eth0) entering listening state
+br0: port 2(eth0) entering learning state
+br0: port 2(eth0) entering forwarding state
+br0: topology change detected, propagating
+device eth1 entered promiscuous mode
+br0: port 3(eth1) entering listening state
+br0: port 3(eth1) entering learning state
+br0: port 3(eth1) entering forwarding state
+br0: topology change detected, propagating
+pvc2684d: Interface "nas_0_35" created sucessfully
+
+atm_connect (TX: cl 1,bw 0-0,sdu 1524; RX: cl 1,bw 0-0,sdu 1524,AAL 5)
+pvc2684d: Communicating over ATM 0.0.35, encapsulation: LLC
+
+device nas_0_35 entered promiscuous mode
+br0: port 4(nas_0_35) entering listening state
+br0: port 4(nas_0_35) entering learning state
+br0: port 4(nas_0_35) entering forwarding state
+br0: topology change detected, propagating
+eth1 Link UP.
+br0: port 1(usb0) entering disabled state
+device usb0 left promiscuous mode
+device usb0 entered promiscuous mode
+br0: port 1(usb0) entering listening state
+br0: port 1(usb0) entering learning state
+br0: port 1(usb0) entering forwarding state
+br0: topology change detected, propagating
+br0: port 2(eth0) entering disabled state
+device eth0 left promiscuous mode
+device eth0 entered promiscuous mode
+br0: port 2(eth0) entering listening state
+br0: port 2(eth0) entering learning state
+br0: port 2(eth0) entering forwarding state
+br0: topology change detected, propagating
+br0: port 3(eth1) entering disabled state
+device eth1 left promiscuous mode
+device eth1 entered promiscuous mode
+br0: port 3(eth1) entering listening state
+br0: port 3(eth1) entering learning state
+br0: port 3(eth1) entering forwarding state
+br0: topology change detected, propagating
+
+Message from syslogd@router at Jan 18 06:05:03 ...
+ BCM96345 started: BusyBox v0.60.4 (2004.12.01-20:44+0000)
+sntp: host not found
+
+Message from syslogd@router at Jan 18 06:05:03 ...
+ klogd: 802.1Q VLAN Support v1.6  Ben Greear reearb@candelatech.com>
+br0: port 2(eth0) entering disabled state
+br0: port 1(usb0) entering disabled state
+ADSL G.994 training
+ADSL G.992 started
+ADSL G.992 channel analysis
+ADSL G.992 message exchange
+ADSL link up, interleaved, us=800, ds=6016
+PPP: PPP0_35_1 Start to connect ...
+PPP: PPP0_35_1 Connection Up.
+Primary DNS server = 216.183.128.10
+Secondary DNS server = 216.183.128.4
+}}}
+
+=== CFE (Bootloader) Information ===
+{{{
+CFE> web info: Waiting for connection on socket 0.[J
+CFE> 
+CFE> c
+Press:  <enter> to use current value
+        '-' to go previous parameter
+        '.' to clear the current value
+        'x' to exit this command
+Board IP address                :  192.168.1.1:ffffff00  
+Host IP address                 :  192.168.1.100
+Gateway IP address              :  
+Run from flash/host (f/h)       :  f  
+Default host run file name      :  vmlinux  
+Default host flash file name    :  bcm963xx_fs_kernel  
+Boot delay (0-9 seconds)        :  5  
+*** command status = 0
+CFE> b
+Press:  <enter> to use current value
+        '-' to go previous parameter
+        '.' to clear the current value
+        'x' to exit this command
+Board Id Name (0-5)
+96348R           -------- 0
+96348LV          -------- 1
+96348GW          -------- 2
+96348GW-10       -------- 3
+96348GW-11       -------- 4
+96348SV          -------- 5     :  3  
+Number of MAC Addresses (1-32)  :  11  
+Base MAC Address                :  00:40:dd:37:ad:e4  
+}}}
+
+== Accessing the Device ==
+
+* You can get shell prompt by using telnet or ssh (if they are enabled in the web interface) and typing sh at the menu prompt.  ls is missing but cat * works.
+
+* Using a serial cable is recommended
+
+== Serial Console Pinout ==
+
+{{{
+RJ45 connector
+
+3: Receive Data
+4: Transmit Data
+7: Ground
+1,2,5,6,8: Not Connected
+}}}
+
+== Status ==
+
+Untested (I am compiling).  May work with the new changeset for BMC96xx

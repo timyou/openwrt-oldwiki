@@ -1,0 +1,134 @@
+#pragma section-numbers off
+[[TableOfContents]]
+
+= SMT-G3220 =
+The Samsung SMT-G3220 is a ADSL2+ CPE featuring 64MB RAM, 16MB flash, USB 2.0 Host, Atheros 802.11b/g WiFi, 4-port switch, 3 analogue and 1 S0 phone lines and 1 S0 phone line as backup.
+
+It is part of a model family from Samsung. Featurematrix (from: http://www.samsung.com/global/business/telecommunication/productDetailDown.do?b2b_down_file=2200)
+
+== Model Matrix ==
+{{{
+Model              SMT     SMT      SMT    SMT   SMT     SMT
+                -G3000  -G3200   -G3010 -G3020 -G3210 -G3220
+Modem Router        Y       Y        Y      Y      Y      Y
+LAN Ports           1       2        4      4      4      4
+WLAN                -       Y        -      -      Y      Y
+USB                 -       -        Y      Y      Y      Y
+Trunk (PSTN or ISDN)-       -        -      Y      -      Y
+VoIP                -       -        Y      Y      Y      Y
+S0                  -       -        Y      Y      Y      Y
+}}}
+
+== Status ==
+
+
+== Hardware Info ==
+
+The hardware seems to be centered around Infineons reference design for an xDSL gateway (see page 9 of http://solution.eccn.com/pdf/Infineon_063141w.pdf)
+
+=== Photos ===
+
+=== Disassembly notes ===
+
+There are four clearly visible screws on the backside of the device. Once they are removed, the two halves of the case can be taken apart easily.
+
+The WiFi antenna is connected via a standard U.FL connector. Simply unplug it.
+
+On the inside, there is one stacked SLIC PCB which is fixed with one further screw. If you remove it, you can remove the stacked PCB. Removal is quite hard, since the connectors fit very tightly. Make sure to notice there are two stacking connectors!
+
+The miniPCI card is glued into the socket, and also glued with an adhesive pad to the PCB below. With a bit of force, it can be removed from the adhesive pad.
+
+=== Major components ===
+
+==== mainboard ====
+
+ * Infineon PSB50505
+  * AMAZON Family highly integrated single-chip solution for ADSL2/2+ Modems
+  * 32-bit MIPS 4KEc RISC processor running at 235 MHz
+  * no public documentation 
+ * 2x Infineon PEB 3332 HT V2.1
+  * VINETIC-CPE Voice over IP Processor for CPE
+  * RTP packetization
+  * Voice compression G.711, G.732.1, G.726, G.729, iLBC
+  * T.38 Fax Relay support
+  * DTMF + Caller-ID rx/tx
+  * Line-Echo-Cancellation up to 128ms
+  * Parallel and SPI interface to host
+  * 2-channel CODEC with voice processing DSP
+  * SLIC interface
+  * http://www.infineon.com/dgdl/VINETIC_CPE_PB_Rev1.0.pdf?folderId=db3a304412b407950112b408e8c90004&fileId=db3a304412b407950112b40a89da05f2 
+ * VIA VT6212L
+  * 4-port USB2.0 host controller 
+ * Infineon ADM6996I
+  * 6port 10/100Mb/s single chip ethernet switch controller 
+ * Delta LFE8731
+  * magnetics for ethernet 
+ * 2x Hynix HY57V561620FTP-H
+  * 4 banks x 4M x 16Bit SDRAM
+  * http://download.siliconexpert.com/pdfs/dram_chip/hyn/hy57v561620(l)t.pdf 
+ * 1x Infineon PEB3086F ISAC-SX V1.4 und 1x Infineon PEB3186F V1.4
+  * ISDN subscriber access controller
+  * http://www.ortodoxism.ro/datasheets/infineon/1-issx_13d.pdf 
+ * Xilinx XC9536XL 
+  * http://www.xilinx.com/support/documentation/data_sheets/ds058.pdf
+
+==== stacked PCB ====
+
+ * 3x Infineon PEF4268 T V1.2
+  * advanced ringing SLIC with DC/DC converter 
+
+==== miniPCI slot ====
+
+ * Atheros AR2414A-001
+  * 802.11b/g chipset 
+
+=== Serial Port ===
+Serial Console
+
+At connector P1:
+{{{
+ 1   2   3   4
+xxx TxD RxD GND
+}}}
+running at 3.3 Volt; 115200 Baud, 8N1
+
+=== JTAG XILINX CPLD ===
+
+Right of connector P1:
+{{{
+ 6   5   4   3   2   1
+Vcc GND TCK TDO TDI TMS
+
+}}}
+The successful dump from the cpld.
+http://ting.ip-phone-forum.de/attachment.php?attachmentid=25944&d=1214415436
+
+The post of xorshadow in the forum.
+http://ting.ip-phone-forum.de/showpost.php?s=d1195b6a5aff9d8feada1a9fb86dfed4&p=1121038&postcount=55
+
+=== JTAG Board ===
+
+On the bottom of the PCB, there are testpads close to P1. The test pads are labelled TDI TDO TMS and TCK. TRST is pin1 of P1
+
+== PCB Photographs ==
+
+== Bootloader ==
+
+== Firmware ==
+
+=== Original ===
+
+ * ftp://ftp0.freenet.de/pub/hardware/Firmware/Samsung/SMT-G3220/
+
+=== Source ===
+
+ * http://www.samsung.com/global/business/telecomm/product/download/SMT-G3220_opensrc.tbz 
+
+== Links ==
+
+Original information on Samsungs homepage:
+
+http://www.samsung.com/global/business/telecommunication/productInfo.do?ctgry_group=14&ctgry_type=32&b2b_prd_id=219
+
+----
+ . CategoryModel 

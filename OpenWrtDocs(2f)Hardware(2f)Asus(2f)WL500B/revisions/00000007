@@ -1,0 +1,25 @@
+'''Asus WL-500B'''
+
+Version 1 of the device is supported in OpenWrt 1.0 (White Russian) and later. You need to install the openwrt-brcm-2.4-<type>.trx firmware images. Version 2 is unsupported, see [:Donations].
+
+{{{
+Bootloader: unknown
+System-On-Chip:  Broadcom 4710 
+CPU Speed: 125 Mhz
+Flash size: 4 MB
+RAM: 16 MB
+Wireless: Mini-PCI Broadcom
+Ethernet: Robo switch BCM5325
+USB: 1xUSB 1.1  
+LPT: yes
+Serial: yes, with external UART  
+JTAG: no
+}}}
+
+The boot_wait NVRAM variable is '''on''' by default. Resetting to factory defaults via reset button or mtd erase nvram is '''not safe''' on this unit.
+
+The version 1 units have a Broadcom wireless card, version 2 has a Ralink.
+There is version 2 with Ralink Wireless PCI Adapter RT2400 / RT2460, PCI device 1814:0101.
+
+----
+CategoryModel

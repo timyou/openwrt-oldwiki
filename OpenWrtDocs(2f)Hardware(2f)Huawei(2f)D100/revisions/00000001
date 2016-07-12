@@ -1,0 +1,19 @@
+= Huawei D100 3G USB WiFi Router =
+
+[[Anchor(hardware)]] [[Anchor(Hardware)]]
+
+== Hardware ==
+=== Info ===
+||'''Architecture''' ||MIPS ||
+||'''Vendor''' ||Broadcom ||
+||'''Bootloader''' ||CFE ||
+||'''System-On-Chip''' ||Broadcom BCM5354 ||
+||'''CPU Speed''' ||240 Mhz ||
+||'''Flash size''' ||4Mbyte (Spansion S29GL032A 2M x 16) ||
+||'''RAM''' ||32Mbyte (Hynix HY5DU561622ETP 16M x 16 DDR SDRAM) ||
+||'''Wireless''' ||Integrated Broadcom 802.11b/g Wireless LAN Controller ||
+||'''Ethernet''' ||Integrated Robo switch BCM5325 ||
+||'''USB''' ||2x USB 2.0 ||
+||'''Serial''' ||Unknown ||
+||'''JTAG''' ||Unknown ||
+[[Anchor(serial)]] [[Anchor(Serial)]]

@@ -1,0 +1,161 @@
+Files uuu/ecos-2.0/packages/hal/mips/ap51/current/cdl/.hal_mips_ap51.cdl.swp and ecos-2.0/packages/hal/mips/ap51/current/cdl/.hal_mips_ap51.cdl.swp differ
+diff -Nrwu uuu/ecos-2.0/packages/hal/mips/ap51/current/include/pkgconf/mlt_mips_rom.ldi ecos-2.0/packages/hal/mips/ap51/current/include/pkgconf/mlt_mips_rom.ldi
+--- uuu/ecos-2.0/packages/hal/mips/ap51/current/include/pkgconf/mlt_mips_rom.ldi	2007-10-31 16:31:43.000000000 -0400
++++ ecos-2.0/packages/hal/mips/ap51/current/include/pkgconf/mlt_mips_rom.ldi	2007-10-31 17:51:33.000000000 -0400
+@@ -19,18 +19,18 @@
+     SECTION_fini (ram, ALIGN (0x40), LMA_EQ_VMA)
+     SECTION_rodata (ram, ALIGN (0x40), LMA_EQ_VMA)
+     SECTION_rodata1 (ram, ALIGN (0x40), LMA_EQ_VMA)
+-    SECTION_data (ram, ALIGN (0x40), FOLLOWING (.rodata1))
+-    SECTION_data1 (ram, ALIGN (0x40), FOLLOWING (.data))
+-    SECTION_eh_frame (ram, ALIGN (0x40), FOLLOWING (.data1))
+-    SECTION_gcc_except_table (ram, ALIGN (0x40), FOLLOWING (.eh_frame))
+-    SECTION_ctors (ram, ALIGN (0x40), FOLLOWING (.gcc_except_table))
+-    SECTION_dtors (ram, ALIGN (0x40), FOLLOWING (.ctors))
+-    SECTION_devtab (ram, ALIGN (0x40), FOLLOWING (.dtors))
+-    SECTION_got (ram, ALIGN (0x40), FOLLOWING (.devtab))
+-    SECTION_dynamic (ram, ALIGN (0x40), FOLLOWING (.got))
+-    SECTION_sdata (ram, ALIGN (0x40), FOLLOWING (.dynamic))
+-    SECTION_lit8 (ram, ALIGN (0x40), FOLLOWING (.sdata))
+-    SECTION_lit4 (ram, ALIGN (0x40), FOLLOWING (.lit8))
++    SECTION_data (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_data1 (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_eh_frame (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_gcc_except_table (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_ctors (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_dtors (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_devtab (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_got (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_dynamic (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_sdata (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_lit8 (ram, ALIGN (0x40), LMA_EQ_VMA)
++    SECTION_lit4 (ram, ALIGN (0x40), LMA_EQ_VMA)
+     SECTION_sbss (ram, ALIGN (0x40), LMA_EQ_VMA)
+     SECTION_bss (ram, ALIGN (0x40), LMA_EQ_VMA)
+     CYG_LABEL_DEFN(__heap1) = ALIGN (0x8);
+diff -Nrwu uuu/ecos-2.0/packages/hal/mips/ar2316/current/include/platform.inc ecos-2.0/packages/hal/mips/ar2316/current/include/platform.inc
+--- uuu/ecos-2.0/packages/hal/mips/ar2316/current/include/platform.inc	2006-04-06 05:53:45.000000000 -0400
++++ ecos-2.0/packages/hal/mips/ar2316/current/include/platform.inc	2007-11-01 10:26:20.000000000 -0400
+@@ -421,17 +421,17 @@
+ 	.macro	hal_memc_init
+ 	/* Turn ON TEST LED GPIO 3 and Turn OFF Reset GPIO 5 add by alfa */
+ 	
+-	li a2, K1BASE | AR2316_GPIO_DO 
++#	li a2, K1BASE | AR2316_GPIO_DO 
+ #	li t0, 0x0028
+-	li t0, 0x0008
+-	sw	t0, 0(a2)
+-	sync
+-	
+-	li a2, K1BASE | AR2316_GPIO_CR 
++##	li t0, 0x0008
++#	sw	t0, 0(a2)
++#	sync
++#	
++#	li a2, K1BASE | AR2316_GPIO_CR 
+ #	li t0, 0x0028
+-	li t0, 0x0008
+-	sw	t0, 0(a2)
+-	sync
++##	li t0, 0x0008
++#	sw	t0, 0(a2)
++#	sync
+ 	/*
+ 	 *  Setup Memory for 2-2-2 configuration
+ 	 */
+diff -Nrwu uuu/ecos-2.0/packages/hal/mips/ar2316/current/src/plf_misc.c ecos-2.0/packages/hal/mips/ar2316/current/src/plf_misc.c
+--- uuu/ecos-2.0/packages/hal/mips/ar2316/current/src/plf_misc.c	2007-10-31 16:44:50.000000000 -0400
++++ ecos-2.0/packages/hal/mips/ar2316/current/src/plf_misc.c	2007-11-19 08:06:27.000000000 -0500
+@@ -224,10 +224,10 @@
+      * at a time until we find non-0xffffffff.
+      */
+     ar531x_flash_data_found = 0;
+-    //for (ar531x_radio_configuration = ar531x_board_configuration + 0xf8; /* modify by alfa */
+-    for (ar531x_radio_configuration = ar531x_board_configuration + 0x1000;
+-        // ar531x_radio_configuration < (char *)0xbffff000;/* modify by alfa */
+-         ar531x_radio_configuration < (char *)(CYGNUM_FLASH_BASE + CYGNUM_FLASH_SIZE - 0x1000);
++    for (ar531x_radio_configuration = ar531x_board_configuration + 0xf8; /* modify by alfa */
++    //for (ar531x_radio_configuration = ar531x_board_configuration + 0x1000;
++         ar531x_radio_configuration < (char *)0xbffff000;/* modify by alfa */
++         //ar531x_radio_configuration < (char *)(CYGNUM_FLASH_BASE + CYGNUM_FLASH_SIZE - 0x1000);
+          ar531x_radio_configuration += 0x1000) {
+         if (*(int *)ar531x_radio_configuration != 0xffffffff) {
+             ar531x_flash_data_found = 1;
+@@ -248,6 +248,12 @@
+ unsigned char *
+ enet_mac_address_get(int unit)
+ {
++#if 1
++    if(unit == 0)
++        return (unsigned char *)(CYGNUM_FLASH_BASE + 0x40);
++    else
++        return NULL;
++#else
+     struct ar531x_boarddata *board_config_data =
+         (struct ar531x_boarddata *)ar531x_board_configuration;
+     unsigned char *mac_addr = NULL;
+@@ -269,6 +275,7 @@
+     }
+ 
+     return NULL;
++#endif
+ }
+ 
+ /*------------------------------------------------------------------------*/
+diff -Nrwu uuu/ecos-2.0/packages/hal/mips/arch/v2_0/src/vectors.S ecos-2.0/packages/hal/mips/arch/v2_0/src/vectors.S
+--- uuu/ecos-2.0/packages/hal/mips/arch/v2_0/src/vectors.S	2002-05-23 19:03:23.000000000 -0400
++++ ecos-2.0/packages/hal/mips/arch/v2_0/src/vectors.S	2007-11-19 08:10:55.000000000 -0500
+@@ -81,32 +81,32 @@
+ 
+ #ifndef CYG_HAL_STARTUP_RAM
+ #  if defined(CYGPKG_HAL_RESET_VECTOR_FIRST_CODE)
+-	hal_reset_vector_first_code
++#	hal_reset_vector_first_code
+ #  endif
+ #  if defined(CYGPKG_HAL_EARLY_INIT)
+-	hal_early_init
++#	hal_early_init
+ #  endif
+ 	# Decide whether this is an NMI, cold or warm boot.
+ 
+-	mfc0	k0,status		# get status reg
+-	lui	k1,0x0008		# isolate NMI bit
+-	and	k1,k1,k0		
+-	beqz	k1,1f			# skip if zero
+-	nop
+-
+-	lar	k1,__nmi_entry		# jump to ROM nmi code
+-	jalr	k1
+-	nop
+-1:
+-	lui	k1,0x0010		# isolate soft reset bit
+-	and	k1,k1,k0		
+-	beqz	k1,2f			# skip if zero
+-	nop
+-
+-	lar	k1,__warm_start		# jump to ROM warm_start code
+-	jr	k1
+-	nop
+-2:
++#	mfc0	k0,status		# get status reg
++#	lui	k1,0x0008		# isolate NMI bit
++#	and	k1,k1,k0		
++#	beqz	k1,1f			# skip if zero
++#	nop
++
++#	lar	k1,__nmi_entry		# jump to ROM nmi code
++#        jalr	k1
++#	nop
++#1:
++#	lui	k1,0x0010		# isolate soft reset bit
++#	and	k1,k1,k0		
++#	beqz	k1,2f			# skip if zero
++#	nop
++#
++#	lar	k1,__warm_start		# jump to ROM warm_start code
++#	jr	k1
++#	nop
++#2:
+ 	la	k0,INITIAL_CONFIG0	# Set up config0 register
+ 	mtc0	k0,config0		# to disable cache
+ #endif	

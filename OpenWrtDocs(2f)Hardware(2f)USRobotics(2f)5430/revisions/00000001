@@ -1,0 +1,9 @@
+= USRobotics 5430
+
+Runs linux on broadcom chipset, don't know which SoC exactly:
+
+== Sources
+
+http://www.usr.com/support/gpl/5430_v3.51.21.0.3_rel1_0.tar.gz
+http://www.usr.com/support/gpl/805430_v3.51.21.0.4_rel1_0.tar.gz
+http://www.usr.com/support/gpl/linux_tools_src.tar.gz

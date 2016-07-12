@@ -1,0 +1,10 @@
+'''Asus WL-520G'''
+
+The WL-520G is based on the Broadcom 5350 board. It has a 200MHz CPU, 2Mb flash and 8Mb RAM. The wireless NIC is integrated. In china, it's also marketed as "Asus WL-500G-X".
+
+10 nov 2006: Kire: The normal version of openwrt is too big, too allow the passwd, to write to /etc/passwd (no jffs partition) therefore the system should be stripped down. I started from SVN revision 5473. I mainly removed the wlan-stuff to free some space. and some unnecessary modules. And then: IT WORKS. I left the status at WiP, because it does not function out of the box.
+
+16 Dec 2006 Jek(YauhenKharuzhy): Kamikadze works after customization. There are issues with small amount of memory.
+
+----
+ . CategoryModel

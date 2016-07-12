@@ -1,0 +1,135 @@
+= The Asus WL-500W is supported from kamikaze (partially) quite well. =
+N mode wireless is not functional at this time as far as I could ascertain (802.11n laptop connects at only 54 Mbit/s). Stock images will also not work. In order for you to use this device you will need to compile your own image from source. You will need to edit the broadcom.sh file and the network config as illustrated below. If you are not comfortable with building from source on your own here are some basic instructions:
+
+__'''!!!Disclaimer!!!'''__ I am in no way responsible for the safety of you, your router, or your computer. These instructions worked for me. They may not for you.  If they don't you may end up with a $100 paperweight, and that's your problem not mine. That said...these should in all reality not cause any dangers, and if you brick your router you can most likely flash back to regular asus firmware and try again. That's a hint BTW...go download a regular copy of the asus firmware esp. If you are relying on this router for internet!
+
+== Building from Source ==
+'''1.''' On the local computer install the needed base packages:
+
+{{{
+sudo aptitude install build-essential gawk binutils flex bison autoconf gettext texinfo sharutils subversion libncurses5-dev ncurses-term zlib1g-dev unzip}}}
+(I use ubuntu fiesty, if you use another distro that doesn't use apt-get or aptitude...you're on your own to figure out the command).
+
+'''2.'''
+
+ * Checkout the source for Kamikaze and the packages:
+{{{
+cd ~
+svn co https://svn.openwrt.org/openwrt/trunk/ kamikaze
+svn co https://svn.openwrt.org/openwrt/packages packages
+ln -s packages/*/* kamikaze/package/}}}
+ * '''Optional step''' - Include the web interface packages (Webif²). These still have many problems so use at your own risk.
+{{{
+cd ~/kamikaze/package
+svn co http://svn.berlios.de/svnroot/repos/xwrt/trunk/package/webif/}}}
+ * Bring up the configuration menu screen:
+{{{
+cd ~/kamikaze
+make package/symlinks
+make menuconfig}}}
+'''3.''' On your own for a little... choose the packages you want. Make sure you also set:
+
+ * Target System > Broadcom 2.4
+ * Target Profile > Asus wl-500g Premium
+ * Target Images > squashfs and jffs2
+ * Kernel modules > Proprietary BCM43xx-WiFi-driver > include the kmod-brcm-wl-mimo module
+ * Administration > select the webif package if you choose to check it out above
+ . Or, if you don't want to be bothered, download this [attachment:config_file config file] and copy it to:
+{{{
+~/kamikaze/.config
+}}}
+'''4.''' Make
+
+{{{
+make
+}}}
+Get some food, come back in 10min-1hr. Anything error out?  If not continue on...if so, well, fix it.''' '''
+
+'''5.'''
+
+{{{
+cd build_dir/mipsel
+cp -rp root-brcm-2.4 /tmp/root
+cd /tmp/root/etc/config/
+vi network
+}}}
+You can of course substitute your favourite text editor for vi. The network file is new and will be '''empty'''. Make it look like this:
+
+{{{
+#### VLAN configuration
+config switch eth0
+   option vlan0    "0 1 2 3 4 5u"
+#### Loopback configuration
+config interface loopback
+   option ifname   "lo"
+   option proto    static
+   option ipaddr   127.0.0.1
+   option netmask  255.0.0.0
+#### LAN configuration
+config interface lan
+   option type     bridge
+   option ifname   "eth0 wl0"
+   option proto    static
+   option ipaddr   192.168.1.1
+   option netmask  255.255.255.0
+#### WAN configuration
+config interface wan
+   option ifname   "eth1"
+   option proto    dhcp
+}}}
+{{{
+cd ../../lib/wifi
+vi broadcom.sh}}}
+There is a line way down. You need to change it to be:
+
+{{{
+channel ${channel:-5}
+}}}
+instead of:
+
+{{{
+${channel:+channel $channel}
+}}}
+'''6.'''  Phewww if you're still with me and never compiled a openwrt image I salute you.  Now time to make that new image and the squashfs
+
+{{{
+cd ~/kamikaze
+staging_dir/host/bin/mksquashfs-lzma /tmp/root /tmp/squashfs -nopad -noappend -root-owned -le
+staging_dir/host/bin/trx  -o ~/wl500w-openwrt.trx \
+                -f build_dir/linux-brcm-2.4/loader.gz \
+                -f build_dir/linux-brcm-2.4/vmlinux.lzma -a 1024 \
+                -f /tmp/squashfs}}}
+If all is well in the world (ie you didn't make any typos) you should now have a new custom made wl500w image sitting in your home directory waiting for you.
+
+'''7.''' Use the web interface or tftp to load the new image on the router. For tftp: Unplug router, replug it in while holding in the black reset button. Watch for a slowly blinking power light. The remainder of the TFTP process is described here: OpenWrtViaTftp
+
+'''8.'''  Make a kamikaze, drink, enjoy.
+
+== Shell script to automate the above procedure - unattended builds from svn repository ==
+Script can be downloaded from http://marjancinober.googlepages.com/wl500-index.htm. Tested on Ubuntu fiesty, kamikaze svn revisions 7880, 7910, 8199, 8221, 8241, 8343. The only manual intervention was to find a couple of source packages as they were not available on their default servers or servers were down, and saving them in local disk cache kamikaze_dl directory for current compile and latter reuse. Script holds local bzip2-d image of the latest SVN and a copy of package sources on a local disk to minimize network traffic. Almost full config compile takes 2h45min on DELL Latitude 820 2Gb ram, with downloads in local disk cache.
+
+If you get in trouble it might be good to know that I (cinober) personally managed to reflash the original ASUS firmware and checked that it replies to pings again.
+
+On first boot run
+
+{{{
+# mtd -r erase $(cat /proc/mtd | sed -n -e 's/^\([^:]*\):.*"rootfs_data"/\1/p' )}}}
+Command reboots the router after filesystem gets erased. After that set root password as described to enable ssh.The image is now working for cinober and Smint. Thanks Smith for his latest "mtd erase" contribution.
+
+== FAQ ==
+=== About the Network Interfaces: ===
+WL-500W from linux point of view has three interfaces, eth0, eth1, eth2 where:
+
+ * eth0 - internally connected to port 5 of the switch
+ * eth1 - WAN interface
+ * eth2 - Wi-Fi interface
+You should configure the switch to have no VLANs, but current Kamikaze version unable to do this. Thus, you must configure the switch to have all ports untagged and placed to same VLAN (VLAN0 for instance). See NetworkInterfaces and KamikazeConfiguration for more detailed network configuration information.
+
+=== Why must a 2.4 Kernel be used? ===
+There's an option in the Kamikaze to use proprietary broadcom wl driver (and utilities). This option is only available with 2.4.x kernel, because only binaries compiled for a 2.4 kernel for broadcom wl driver are available. So you MUST use a 2.4.x kernel to be able to use the broadcom wl driver. This proprietary broadcom wl driver was taken from some Linksys router firmware and was used (in Linksys) with different models of wifi cards (controllers). As I know WL-500 W/B/G has different wifi cards, but I think broadcom proprietary wl driwer will work with any of them.
+
+=== How does the reflash procedure looks like for WL500w? ===
+While holding in the black reset button apply the power. Then release the reset button. The Power Led should blink. Initiate tftp transfer from windows/linux and wait about 3-4 sek (100Mb/s). Do not disconnect power for at least 6 min (copied from WL500g page) after you get successful tftp copy status report. After bricking one router earlier I use to wait more than 30min. Then I HAVE TO pull out the power cable, wait 20 seconds and reapply the power. Router boots the kamikaze for the first time. Boot sequence begins with Power LED on for a couple of seconds, then off for the whole boot time (about 30s) and at the end it goes permanently on. You can log in with telnet as root without the password if it's the first reflash. Run "mtd -r erase ..." as described above. That reboots the router for the second time. Then set root password and you will be able to login as root over ssh from then on. If you later repeat reflashing with newer kamikaze release, your settings as password, net configuration,... are preserved (were for me this - my first time).  This is the approximate sequence as I remember it from the day before. It will get checked exactly and optionally corrected the next time through.
+
+----
+ . CategoryModel CategoryModel

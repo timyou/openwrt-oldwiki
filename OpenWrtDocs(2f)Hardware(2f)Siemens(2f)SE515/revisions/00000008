@@ -1,0 +1,57 @@
+The SE515 hardware is the same as the Dynalink RTA770W. In fact it is sometimes referred to be RTA770BW where B stands for Annex B but the ADSL modem can handle both Annex A and B. This just depends on the flashed firmware.
+
+'''There is no running OpenWrt up to now!'''
+
+But now the complete sources can be downloaded at the Siemens Homepage:<br>
+ * General: [http://gigaset.siemens.com/shc/0,1935,hq_en_0_162673_rArNrNrNrN,00.html]
+ * Sources (about 44 MB): [http://shc-download.siemens.com/repository/1627/162742/SE515_v2.14_src.tar.gz]
+ * Tools (about 33 MB): [http://shc-download.siemens.com/repository/1627/162743/SE515_v2.14_tools.tar.gz]
+
+__From the README:
+{{{This release contains all of the files needed to build a SE515 DSL Router image.  To build an image, enter:
+# make PROFILE=<program_name>}}}
+
+Here can be found some [http://tobias.schroepf.de/doku/doku.php?id=hardware:siemens_se515_router_firmware hints] how to compile and use it (in german language)
+
+
+[http://delta-9-thc.czuby.net/~yans/openwrt/photos/se515_med.jpg]
+
+==== Serial interface ====
+
+Below the reset button/on the left of the switch processor (BCM5325...)
+
+Going top-down
+
+serial connector J304
+
+{{{
+       |---|
+front  | o | 3.3V
+ of    | o   GND
+ the   | o   Tx
+board  | o | Rx
+       |---|}}}
+Console is active after login.
+
+==== Jtag interface ====
+In the bottom left corner. Soldered on the picture. Typical 12 pin header
+
+Pin one is in the very bottom down part of the header.  Jtag is fully operational.
+
+==== Links ====
+
+For more information see ["OpenWrtDocs/Hardware/Dynalink/RTA770W"]
+
+["OpenWrtDocs/Hardware/Dynalink/RTA770W"]
+
+[http://mcbachmann.de/] with some basic patches [http://mcbachmann.de/projects/openwrt/]
+
+[http://heinz.hippenstiel.org/familie/hp/hobby/se515/gigaset_se515dsl.html] (in German)
+
+[http://se515-firmware.j0t.de/ Firmware archive]
+
+[http://k0.j0t.de/ Forum mostly dedicated to Siemens routers] (German and English)
+
+[http://gigaset.siemens.com/shc/0,1935,hq_en_0_122542_rArNrNrNrN,00.html Siemens GPL Sources]
+
+Note. Don't be afraid of the German language - just use [http://babelfish.altavista.com/ babelfish] or any similar service.

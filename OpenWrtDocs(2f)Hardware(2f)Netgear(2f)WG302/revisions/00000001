@@ -1,0 +1,23 @@
+==Installation==
+*Prepare TFTP Server
+*Connect PC to wg302 with serial cable
+*Start termianl emulator (Hyperterm, cu, etc..) with 9600 8n1
+*Wait for message 
+ == Executing boot script in 10.000 seconds - enter ^C to abort
+*Interrupt boot with Control-C
+*Clear flash with 
+ RedBoot> fis init -f
+*configure own IP and IP of tftp server
+ RedBoot> ip_address -l <local_ip_address> -h <server_address>
+*load kernel from tftp server
+*write kernel to flash
+ fis write rootfs
+*load root filesystem  from tftp server
+*write root filesystem to flash
+ fis write rootfs
+*change boot script with fconfig (list fconfig setting with "fconfig -l")
+ Boot script:
+ .. fis load -b 0x01600000 kernel
+ .. exec 0x01600000
+*Reboot
+ RedBoot> reset

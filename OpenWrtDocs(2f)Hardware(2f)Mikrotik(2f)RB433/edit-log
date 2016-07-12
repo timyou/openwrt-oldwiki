@@ -1,0 +1,6 @@
+1226329534000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)Mikrotik(2f)RB433	78.48.253.63	f048253063.adsl.alicedsl.de	1168469342.9.28610		started
+1226331791000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)Mikrotik(2f)RB433	78.48.253.63	f048253063.adsl.alicedsl.de	1168469342.9.28610		
+1226331852000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)Mikrotik(2f)RB433	78.48.253.63	f048253063.adsl.alicedsl.de	1168469342.9.28610		
+1226332539000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)Mikrotik(2f)RB433	78.48.253.63	f048253063.adsl.alicedsl.de	1168469342.9.28610		added switch setup and port info
+1226501709000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)Mikrotik(2f)RB433	78.49.22.191	f049022191.adsl.alicedsl.de	1168469342.9.28610		added permanent installation chapter
+1236027304000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)Mikrotik(2f)RB433	216.195.183.186	bb-216-195-183-186.gwi.net	1235512496.99.41276		added necessary first uci set command

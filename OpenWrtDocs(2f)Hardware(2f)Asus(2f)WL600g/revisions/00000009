@@ -1,0 +1,47 @@
+= Asus WL600g =
+== Hardware ==
+
+This router is very similar to other devices using the same Broadcom 96348 hardware (ADSL2+, 802.11g), like:
+
+ * USR 9107/9108
+ * Hitachi SpeedWeb
+ * Linksys WAG54GX2
+ * Telsey "Alice W-Gate" and Pirelli "Alice-W-Gate+" rented by "Telecom Italia" to ADSL customers (also found, cheap, sold on many radio-rally).
+
+
+
+
+'''''Image of the top of the motherboard'''''
+ . http://users.on.net/~anthrox/photo/wl600g/top.jpg ''' '''
+
+
+
+
+'' Image of the bottom of the motherboard''
+ . http://users.on.net/~anthrox/photo/wl600g/bottom.jpg
+
+
+
+== Software ==
+This device runs Linux. A firmware upgrade is available on the [http://support.asus.com/download/download.aspx?SLanguage=en-us&model=WL-600g Asus Site]. It is a squashed [http://blueangel.us/wl600g/squash filesystem] with some other data appended to it - a kernel? The squashfs is 2.0 and uses an LZMA Broadcom-flavour compression method so, normally, only file listing is possible.
+
+{{{
+$ file squash squash: Squashfs filesystem, big endian, version 2.0, 2664561 bytes, 678 inodes, blocksize: 65536 bytes, created: Thu Jul 20 10:32:10 2006
+}}}
+Tryng to read files gives the following error in syslog:
+
+{{{
+SQUASHFS error: lzma returned unexpected result 0x1
+}}}
+You can find here a patched squashfs-LZMA kernel module that correctly mounts the Broadcom filesystem (used to extract the italian Telsey firmware):
+
+http://www.piccato.it/wikies/openwgate/modulo_squashfs (Italian language)
+
+Asus, like other, now has correctly put online the GPL source code:
+
+http://support.asus.com/download/download_item.aspx?model=WL-600g&type=Map&SLanguage=en-us
+
+The stock firmware runs a 2.6.8.1 kernel and a bunch of other binary modules are in /lib. See the [http://blueangel.us/wl600g/wl600g.files File Listing] for details.
+
+----
+CategoryModel ["CategoryBCM63xx"]

@@ -1,0 +1,358 @@
+Netgear FVX 538
+
+ * Intel IXP425 based (533MHz)
+ * 2 WAN
+ * 8 ports switch (10/100 Mbps)
+ * 1 Gb port
+ * up to 200 ipsec VPN (source: Netgear)
+ * 2 hardware versions:
+  || ||v1||v2||
+  ||Flash||16MB||32MB||
+  ||RAM||32MB||64MB||
+
+= Boot log =
+{{{
+Initiating BCM5380 ... ok
++starting api entry
+Ethernet eth0: MAC address 00:14:6c:cb:xx:xx
+IP: 192.168.16.244/255.255.255.0, Gateway: 0.0.0.0
+Default server: 192.168.16.1, DNS server IP: 0.0.0.0
+
+RedBoot(tm) bootstrap and debug environment [ROM]
+Red Hat certified release, version 1.92p1 - built 19:39:46, Dec 11 2004
+
+Platform: NetGear FVX538 (XScale)
+Copyright (C) 2000, 2001, 2002, Red Hat, Inc.
+
+RAM: 0x00000000-0x02000000, 0x0001e758-0x01fdd000 available
+FLASH: 0x50000000 - 0x51000000, 128 blocks of 0x00020000 bytes each.
+RedBoot> boot
+
+Partition    Priority Firm/Cfg-Ver   BuildTime                FileName
+
+appimg1(V)          3 2.0.1-5/1.0   Tue Nov 21 14:24:47 2006 fvx538_v2.0.1-5.img
+appimg2(V)          4 2.0.1-5/1.0   Tue Nov 21 14:24:47 2006 fvx538_v2.0.1-5.img
+
+Booting application image from partition appimg2 ...
+Downloading Image to RAM location 0x1600000 ...
+Transfering control to downloading Image at address 0x160024c ...
+powering down the PHYs
+Uncompressing Linux............................................................................................................. done, booting the kernel.
+Linux version 2.6.10_mvl401 (build@TeamF1 Copyright (c) 2006, TeamF1, Inc.) (gcc version 3.4.3 (MontaVista 3.4.3-25.0.30.0501131 2005-07-23)) #164 Tue Nov 21 14:24:29 IST 2006
+CPU: XScale-IXP42x Family [690541c1] revision 1 (ARMv5TE)
+CPU0: D VIVT undefined 5 cache
+CPU0: I cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+CPU0: D cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+Machine: Netgear FVX538
+Memory policy: ECC disabled, Data cache writeback
+Built 1 zonelists
+Kernel command line: console=ttyS0,115200
+PID hash table entries: 256 (order: 8, 4096 bytes)
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 32MB = 32MB total
+Memory: 28672KB available (1612K code, 454K data, 1668K init)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+CPU: Testing write buffer coherency: ok
+spawn_desched_task(00000000)
+desched cpu_callback 3/00000000
+ksoftirqd started up.
+desched cpu_callback 2/00000000
+desched thread 0 started up.
+NET: Registered protocol family 16
+PCI: IXP4xx is host
+PCI: IXP4xx Using direct access for memory space
+PCI: bus0: Fast back to back transfers enabled
+dmabounce: registered device 0000:00:01.0 on pci bus
+dmabounce: registered device 0000:00:0f.0 on pci bus
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+ttyS0 at MMIO 0xc8001000 (irq = 13) is a XScale
+io scheduler noop registered
+io scheduler anticipatory registered
+io scheduler deadline registered
+io scheduler cfq registered
+RAMDISK driver initialized: 16 RAM disks of 8192K size 1024 blocksize
+loop: loaded (max 8 devices)
+PPP generic driver version 2.4.2
+PPP BSD Compression module registered
+NET: Registered protocol family 24
+r8169 Gigabit Ethernet driver 1.2 loaded
+eth0: RTL8169 at 0xc280e000, 00:14:6c:cb:xx:xx, IRQ 7
+elevator: using anticipatory as default io scheduler
+IXP4XX-Flash0: Found 1 x16 devices at 0x0 in 16-bit bank
+ Intel/Sharp Extended Query Table at 0x0031
+Using buffer write method
+cfi_cmdset_0001: Erase suspend on write enabled
+Searching for RedBoot partition table in IXP4XX-Flash0 at offset 0xfe0000
+6 RedBoot partitions found on MTD device IXP4XX-Flash0
+Creating 6 MTD partitions on "IXP4XX-Flash0":
+0x00000000-0x00040000 : "RedBoot"
+0x00040000-0x007c0000 : "appimg1"
+0x007c0000-0x00f40000 : "appimg2"
+0x00f40000-0x00fc0000 : "igwpri"
+0x00fc0000-0x00fc1000 : "RedBoot config"
+0x00fe0000-0x01000000 : "FIS directory"
+NET: Registered protocol family 2
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 4096)
+ip_conntrack version 2.1 (256 buckets, 2048 max) - 360 bytes per conntrack
+ip_conntrack_rtsp v0.01 loading
+ip_nat_rtsp v0.01 loading
+ip_tables: (C) 2000-2002 Netfilter core team
+netfilter PSD loaded - (c) astaro AG
+ipt_account 0.1.7 : Piotr Gasid³o <quaker@barbara.eu.org>, http://www.barbara.eu.org/~quaker/ipt_account/
+ipt_time loading
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+Freeing init memory: 1668K
+
+Booting XScale UserSpace
+Linux (none) 2.6.10_mvl401 #164 Tue Nov 21 14:24:29 IST 2006 armv5teb unknown
+Starting system...
+Mounting /proc: done.
+Mounting '/' read-write: done.
+Brining up loopback interface: done.
+Mounting /tmp: mount: Mounting /tmpfs on /tmp failed: Invalid argument
+done.
+Starting portmap: done.
+Setting Hostname: done.
+Running ixpInit
+ixp400_eth: Initializing IXP400 NPE Ethernet driver software v. 1.5.1
+ixp400_eth: CPU clock speed (approx) = 532 MHz
+ixp400_eth: ixp0 is using NPEB and the PHY at address 4
+ixp400_eth: ixp1 is using NPEC and the PHY at address 12
+ixp400_eth: Use default MAC address 00:02:b3:01:xx:xx for port 0
+ixp400_eth: Use default MAC address 00:02:b3:02:xx:xx for port 1
+done.
+Running usrInit
+Enabling Quite Boot...Done
+Initializing interfaces...Done
+Loading Modules...Done
+Creating devices...Done
+Enabling Cavium...Done
+Enabling Forwarding...Done
+Setting hostname as FVX538...Done
+Initializing System Files...Done
+Starting DNS Proxy...Done
+Starting Cron...Done
+Starting Inetd...Done
+Starting HTTP Daemon...Done
+Starting WAN daemon...Done
+Starting Lan Scanner...Done
+Starting Factory Reset Daemon...Done
+Starting IKE Daemon...Done
+Resetting Configuration...Done
+Loading Configuration...Done
+Copyright (c) 2006, TeamF1, Inc.
+done.
+System started.
+
+FVX538 login: exovii
+Password:
+
+********************************************************************************
+               Welcome To The Netgear FVX538 Command Line Interface
+********************************************************************************
+
+FVX538$
+}}}
+
+= Redboot =
+
+== help ==
+{{{
+RedBoot> help
+Downloads and boots the primary image from flash. If partition name is specified image from that partition will be booted. If -n option is used network iinterface is stopped before booting
+   Boot [-n] [-p <partition name>]
+Initializes the flash and creates default Redboot and Appl Image partitions.
+   FlashInit
+Displays status of application images in flash.
+   DispImageStatus
+Downloads the application image from TFTP server, validates it and fuses it in Flash. If Flash paritition name is given then image will be fused in that parition, otherwise the image is fused in appropriate partition having the secondary image.
+   FuseImage [-p <partition name>] [-h <host ipaddr>] <file name>
+Erases the image in the given flash partiton.
+   EraseImage <partition name>
+Sets the MAC address in to the bootloader configuration in flash.
+   SetMacAddr [ -p <port number> ] <mac address in dotted notation>
+Manage aliases kept in FLASH memory
+   alias name [value]
+Set/Query the system console baud rate
+   baudrate [-b <rate>]
+Check broadcom 53xx
+   bcmtest
+Manage machine caches
+   cache [ON | OFF]
+Display/switch console channel
+   channel [-1|<channel number>]
+Compute a 32bit checksum [POSIX algorithm] for a range of memory
+   cksum -b <location> -l <length>
+Display (hex dump) a range of memory
+   dump -b <location> [-l <length>] [-s] [-1|2|4]
+Execute an image - with MMU off
+   exec [-w timeout] [-b <load addr> [-l <length>]]
+        [-r <ramdisk addr> [-s <ramdisk length>]]
+        [-c "kernel command line"] [<entry_point>]
+Manage FLASH images
+   fis {cmds}
+Manage configuration kept in FLASH memory
+   fconfig [-i] [-l] [-n] [-f] [-d] | [-d] nickname [value]
+Test the factory reset button on the FVX538 board
+polling the status of reset button around 5 seconds
+   frtest
+Restart autonegotiation of Giga port
+   giga
+Execute code at a location
+   go [-w <timeout>] [-n] [entry]
+Help about help?
+   help [<topic>]
+Set/change IP addresses
+   ip_address [-l <local_ip_address>] [-h <server_address>]
+Test LEDs on the FVX538 board
+LED number 0: LAN port DMZ LED
+           1: RTL8110S Internet connection LED
+           2: AC101L Internet connection LED
+           3: System test LED
+A comprehensive test is performed if no parameter is specified
+   ledtest [-g <LED number (0-3)>]
+Load a file
+   load [-r] [-v] [-h <host>] [-m <varies>] [-c <channel_number>]
+        [-b <base_address>] <file_name>
+Compare two blocks of memory
+   mcmp -s <location> -d <location> -l <length> [-1|-2|-4]
+Copy memory
+   mcopy -s <location> -d <location> -l <length> [-1|-2|-4]
+Set/Fill memory location(s)
+   mem [-b <location>] [-l <length>] [-1|2|4] [-w] <data>
+Apply data bus test, address bus test, and device test on RAM
+   memtest
+Fill a block of memory with a pattern
+   mfill -b <location> -l <length> -p <pattern> [-1|-2|-4]
+Scans PCI devices and reports findings
+   pciscan
+Converts a virtual to a physical address
+   physaddr <virtual address>
+Network connectivity test
+   ping [-v] [-n <count>] [-l <length>] [-t <timeout>] [-r <rate>]
+        [-i <IP_addr>] -h <IP_addr>
+Print information about the current settings within the main processor
+   processor
+Reset the system
+   reset
+Show register status related with giga port
+   showgiga
+Display RedBoot version information
+   version
+Converts a physical to a virtual address
+   virtaddr <physical address>
+Display (hex dump) a range of memory
+   x -b <location> [-l <length>] [-s] [-1|2|4]
+}}}
+
+== fis list ==
+{{{
+RedBoot> fis list
+Name              FLASH addr  Mem addr    Length      Entry point
+RedBoot           0x50000000  0x50000000  0x00040000  0x00000000
+RedBoot config    0x50FC0000  0x50FC0000  0x00001000  0x00000000
+FIS directory     0x50FE0000  0x50FE0000  0x00020000  0x00000000
+appimg1           0x50040000  0x50040000  0x00780000  0x00000000
+appimg2           0x507C0000  0x507C0000  0x00780000  0x00000000
+igwpri            0x50F40000  0x50F40000  0x00080000  0x00000000
+}}}
+
+== fconfig -l ==
+{{{
+RedBoot> fconfig -l
+Run script at boot: true
+Boot script:
+.. boot
+
+Boot script timeout (1000ms resolution): 1
+Use BOOTP for network configuration: false
+Gateway IP address: 0.0.0.0
+Local IP address: 192.168.16.244
+Local IP address mask: 255.255.255.0
+Product Info: FVX538
+Default server IP address: 192.168.16.1
+Version Info: 1.0a
+Console baud rate: 115200
+DNS server IP address: 0.0.0.0
+GDB connection port: 9000
+Force console for special debug messages: false
+Network debug at boot time: false
+Default network device: npe_eth0
+Network hardware address [MAC] for NPE eth0: 0x00:0x14:0x6C:0xCB:0xXX:0xXX
+Network hardware address [MAC] for NPE eth1: 0x00:0x14:0x6C:0xCB:0xXX:0xXX
+Network hardware address [MAC] for RTL 8169: 0x00:0x14:0x6C:0xCB:0xXX:0xXX
+}}}
+
+== processor ==
+{{{
+RedBoot> processor
+Processor: Intel StrongARM V5TE XScale Core Rev: 0
+   IXP4XX 533MHz B0 step
+   ID = 690541C1   (ex. IXP4XX A0 step = 690541C0)
+BIG-ENDIAN operation
+Branch Target Buffer ENABLED
+Instruction Cache ENABLED
+Data Cache ENABLED
+MMU ENABLED
+Mini-Cache = Write back, Read Allocate
+Write Buffer Coalescing ENABLED
+}}}
+
+== pciscan ==
+{{{
+RedBoot> pciscan
+========== Scanning initialized devices
+Found device on bus 0, devfn 0x00:
+ Note that board is active. Probed sizes and CPU addresses invalid!
+ Vendor    0x8086
+ Device    0x8500
+ Command   0x0006, Status 0x02a0
+ Class/Rev 0x0b400001
+ Header 0x00
+ SubVendor 0x0000, Sub ID 0x0000
+ BAR[0]    0x00000008 / probed size 0x00000000 / CPU addr 0x00000000
+ BAR[1]    0x01000008 / probed size 0x00000000 / CPU addr 0x01000000
+ BAR[2]    0x02000008 / probed size 0x00000000 / CPU addr 0x02000000
+ BAR[3]    0x03000008 / probed size 0x00000000 / CPU addr 0x03000000
+ BAR[4]    0x80000008 / probed size 0x00000000 / CPU addr 0x80000000
+ BAR[5]    0x90000001 / probed size 0x00000000 / CPU addr 0x90000000
+ Wired to HAL vector 7
+Found device on bus 0, devfn 0x38:
+ Note that board is active. Probed sizes and CPU addresses invalid!
+ Vendor    0x10ec
+ Device    0x8169
+ Command   0x0147, Status 0x02b0
+ Class/Rev 0x02000010
+ Header 0x00
+ SubVendor 0x10ec, Sub ID 0x8169
+ BAR[0]    0x00001801 / probed size 0x00000000 / CPU addr 0x00001800
+ BAR[1]    0x48020000 / probed size 0x00000000 / CPU addr 0x48020000
+ BAR[2]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ BAR[3]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ BAR[4]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ BAR[5]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ Wired to HAL vector 7
+Found device on bus 0, devfn 0xa8:
+ Note that board is active. Probed sizes and CPU addresses invalid!
+ Vendor    0x177d
+ Device    0x0003
+ Command   0x0145, Status 0x02b0
+ Class/Rev 0x10000000
+ Header 0x00
+ SubVendor 0x177d, Sub ID 0x0001
+ BAR[0]    0x00001001 / probed size 0x00000000 / CPU addr 0x00001000
+ BAR[1]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ BAR[2]    0x00001401 / probed size 0x00000000 / CPU addr 0xffffffff
+ BAR[3]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ BAR[4]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ BAR[5]    0x00000000 / probed size 0x00000000 / CPU addr 0xffffffff
+ Wired to HAL vector 7
+}}}
+
+= Links =
+[http://www.netgear.com/Products/VPNandSSL/WiredVPNFirewallRouters/FVX538.aspx Product page]

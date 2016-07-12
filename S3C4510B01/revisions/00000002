@@ -1,0 +1,41 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:CategoryTemplate
+##master-date:Unknown-Date
+#format wiki
+#language en
+
+INSIDE WAP11 Hardware v2.2:
+SAMSUNG S3C4510B01-QERO-230B EMBEDDED PROCESSOR
+
+Samsung's S3C4510B 16/32-bit RISC microcontroller is a cost-effective, high-performance microcontroller
+solution for Ethernet-based systems. An integrated Ethernet controller, the S3C4510B, is designed for use in
+managed communication hubs and routers.
+The S3C4510B is built around an outstanding CPU core: the 16/32-bit ARM7TDMI RISC processor designed by
+Advanced RISC Machines, Ltd. The ARM7TDMI core is a low-power, general purpose microprocessor macro-cell
+that was developed for use in application-specific and custom-specific integrated circuits. Its simple, elegant, and
+fully static design is particularly suitable for cost-sensitive and power-sensitive applications.
+The S3C4510B offers a configurable 8K-byte unified cache/SRAM and Ethernet controller which reduces total
+system cost. Most of the on-chip function blocks have been designed using an HDL synthesizer and the
+S3C4510B has been fully verified in Samsung's state-of-the-art ASIC test environment.
+Important peripheral functions include two HDLC channels with buffer descriptor, two UART channels, 2-channel
+GDMA, two 32-bit timers, and 18 programmable I/O ports. On-board logic includes an interrupt controller, DRAM/
+SDRAM controller, and a controller for ROM/SRAM and flash memory. The System Manager includes an internal
+32-bit system bus arbiter and an external memory controller.
+The following integrated on-chip functions are described in detail in this user's manual:
+— 8K-byte unified cache/SRAM
+— I2C interface
+— Ethernet controller
+— HDLC
+— GDMA
+— UART
+— Timers
+— Programmable I/O ports
+— Interrupt controller
+
+'''List of pages in this category:'''
+
+[[FullSearch()]]
+
+----
+CategoryCategory

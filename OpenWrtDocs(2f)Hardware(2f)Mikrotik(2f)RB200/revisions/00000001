@@ -1,0 +1,19 @@
+=== Hardware ===
+http://routerboard.com/img/rb230.jpg
+
+These boards come with a x86 based 266 Mhz NSC SC1100 system on a chip CPU (Pentium MMX architecture)
+
+There are currently 2 boards in this range:-
+
+ 1. 220 One mini-pci, One SoDIMM memory slot, serial port, one ethernet, CF
+ 1. 230 One mini-pci, One PCI, Two PCMCIA/CardBUS, One SoDIMM memory slot, serial port, two ethernet, CF
+
+=== Installation ===
+Unknown
+
+=== Building OpenWrt for RB2xx ===
+
+Unknown
+
+----
+ CategoryModel ["Categoryx86Device"]

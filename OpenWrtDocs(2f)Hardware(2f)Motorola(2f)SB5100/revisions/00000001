@@ -1,0 +1,103 @@
+= Motorola SB5100 =
+
+{{{
+CPU : BCM3348A1
+RAM : 8Mb
+Flash : 2Mb
+DOCSIS and EuroDOCSIS compatible
+}}}
+
+== Serial pinout ==
+
+There is an unpopulated U12 connector, here is the pinout :
+
+{{{
+
+  ---  --- VCC
+  ---  ---
+  ---  --- GND
+  ---  ---
+  ---  ---
+  ---  --- TX
+  ---  ---
+RX---  ---
+}}}
+
+== JTAG pinout ==
+
+The 10-pin JTAG pinout is as follow :
+
+{{{
+Ethernet connector
+
+TCK  TMS  TDO  TDI  TRST
+GND  GND  GND  GND  GND
+
+USB connector
+}}}
+
+
+== Serial bootlog ==
+
+{{{
+Detected CPU .............. BCM3348A1
+Ebi Initialized .....................000002020000001C
+Sdram Initialized....................
+Icache Size: ....................2000
+Icache Linesize:.................0010
+Dcache Size: ....................2000
+Dcache Linesize:.................0010
+Sdram access OK......................
+Compressed Bootloader detected.......
+ImageCSize: ...................0062D3
+ImageLoc: ...................81F80000
+Decompression Status: .......00000000
+Dcompressed Image Size:......00011005
+BSS Initialized......................
+TMP Stack initialized................
+Perm Stack initialized...............
+MemSize: ......................... 8M
+Flash detected @0xbe000000
+
+Signature: 3348
+
+
+Broadcom BootLoader Version: 2.1.4b
+Build Date: Jul 05 2002
+Build Time: 13:55:24
+
+Image 1 Program Header:
+   Signature: 3348
+     Control: 0000
+   Major Rev: 0002
+   Minor Rev: 0002
+  Build Time: 2004/12/21 19:17:36 Z
+ File Length: 739076 bytes
+Load Address: 80500000
+    Filename: SB5100-2.3.2.4-SCM00-NOSH.bin
+         HCS: 1115
+         CRC: ea9cdc4d
+
+
+HCS failed on Image 2 Program Header
+
+
+Enter '1', '2', or 'p' within 2 seconds or take default...
+. .
+
+Performing CRC on Image 1...
+Loading Image 1...
+
+Executing Image 1...
+
+
+
+Piggyback LZMA decompression 1.0.2
+
+Detected LZMA compressed image... decompressing...
+Target Address: 0x80010000
+...............
+Decompressed length: 3932683
+
+3348
+}}}

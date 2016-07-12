@@ -1,0 +1,12 @@
+1185033726000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		initial version
+1185033955000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		Added minipci wlan to hw list too
+1185034176000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		minor tweaks (capitalization & articles & missing parenthesis).
+1185034292000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		JTAG is J3 (forgot to mention that earlier)
+1185034568000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		Added unknown stuff section & antenna info
+1185038830000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		Ram datasheet (had to link from archive.org, winbond has already dropped the ds)
+1185039396000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		Found also BCM3348 product brief from archive.org
+1185106452000000	00000008	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	88.192.70.35	dsl-hkibras1-ff46c000-35.dhcp.inet.fi	1180469790.83.10726		nmap & snmp enabled tftp fetch
+1206872384000000	00000009	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	89.178.50.157	89-178-50-157.broadband.corbina.ru	1200568707.71.56574		
+1208406421000000	00000010	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	78.107.234.104	lemenkov.dialup.corbina.ru	1200568707.71.56574		
+1212552668000000	00000011	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	68.13.109.226	ip68-13-109-226.om.om.cox.net	1210810293.29.63632		
+1212562182000000	00000012	SAVE	OpenWrtDocs(2f)Hardware(2f)Motorola(2f)SBG900E	68.13.109.226	ip68-13-109-226.om.om.cox.net	1210810293.29.63632		

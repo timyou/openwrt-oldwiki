@@ -1,0 +1,19 @@
+= Netgear DG834G v1 =
+= Netgear DG834G v2 =
+== Serial Console ==
+{{{
+
+|                                       led
+|         Pin 4: RX      ----> ()       |
+|         Pin 3: NC      ----> ()       |
+|         Pin 2: TX      ----> ()       |
+|         Pin 1: GND     ----> []  tick led     Front of DG834G
+|                           JP603       |
+|                                 power led
+|                                       |
+|______________________________________/
+}}}
+The console is located roughly behind the tick led on the front left of the board, just off the edge of the MiniPCI connector. It was half hidden by the MAC
+address sticker on my unit. It's the only header I could find; only 4 pins and wasn't soldered up at all. I took a voltage tap of an adjacent 74xx chip to power my MAX232. Settings are 115200,8,N,1.
+----
+CategoryModel ["CategoryAR7Device"]

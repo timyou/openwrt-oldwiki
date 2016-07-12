@@ -1,0 +1,329 @@
+== Specs ==
+
+(Most of the info is from http://forum.openwrt.org/viewtopic.php?id=354)
+
+ * CPU: Renesas SH7751R running at 240MHz (6417751R)
+ * Flash: 4Mb (AMD 29LV320DB)
+ * Memory: 16Mb (2x IC42S16400-6T - 2x8Mb)
+ * Ethernet: 2x Realtek RTL8100BL - 2x 10/100 Ethernet (CPU->WAN, CPU->Switch)
+ * Switch: Realtek RTL8305SB - 5 port switch (supports vlan!)
+ * PCCard controller: Texas Instruments PCI1410APGE
+ * Wireless: GN-WMAG PCCard - Atheros 5002G chipset
+ * Bootloader: SH IPL+g 1.03
+
+== Serial ==
+
+Serial console is located near the LEDs on a 2x2 pin header. Pinout as follows:
+
+{{{
+  GND o o TX
+   RX o o VCC    o  o  o  o  o
+        1        (LEDs)
+}}}
+
+... to be continued
+
+== boot.log ==
+
+{{{
+=========================================================================
+===                    SH IPL+g version 1.03 - 16M                    ===
+=========================================================================
+
+
+Booting from flash!
+Setup Linux Kernel Parameters!
+mem=16M sh_mv=MN75XX console=ttySC0,115200 root=/dev/mtdblock3 ro 
+Copy Linux Kernel & File System from flash to dram
+Uncompressing Linux... Ok, booting the kernel.
+Linux version 2.4.20 (cuh@NPCD94) (gcc version 3.0.4) #97 Wed Dec 1 16:38:26 CST 2004
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: mem=16M sh_mv=MN75XX console=ttySC0,115200 root=/dev/mtdblock3 ro 
+Setting GDB trap vector to 0x80000100
+SH RTC: invalid value, resetting to 1 Jan 2000
+CPU clock: 240.01MHz
+Bus clock: 120.00MHz
+Module clock: 60.00MHz
+Interval = 150010
+Calibrating delay loop... 239.20 BogoMIPS
+Memory: 13904k/16384k available (1217k kernel code, 2480k reserved, 186k data, 48k init)
+Dentry cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+CPU: SH7750/SH7751
+POSIX conformance testing by UNIFIX
+PCI: Using configuration type 1
+SH7751 PCI: Finished initialization of the PCI controller
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 256 Unix98 ptys configured
+SuperH SCI(F) driver initialized
+ttySC0 at 0xffe00000 is a SCI
+ttySC1 at 0xffe80000 is a SCIF
+RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
+PPP generic driver version 2.4.2
+PPP Deflate Compression module registered
+PPP BSD Compression module registered
+8139too Fast Ethernet driver 0.9.26
+PCI: Enabling device Realtek Semiconductor Co., Ltd. RTL-8139/8139C/8139C+ (0000 -> 0003)
+PCI: Setting latency timer of device Realtek Semiconductor Co., Ltd. RTL-8139/8139C/8139C+ to 64
+eth0: RealTek RTL8139 Fast Ethernet at 0xbd000000, 00:20:ed:07:b0:29, IRQ 2
+PCI: Enabling device Realtek Semiconductor Co., Ltd. RTL-8139/8139C/8139C+ (#2) (0000 -> 0003)
+PCI: Setting latency timer of device Realtek Semiconductor Co., Ltd. RTL-8139/8139C/8139C+ (#2) to 64
+eth1: RealTek RTL8139 Fast Ethernet at 0xbd000100, 00:20:ed:07:b0:28, IRQ 5
+Cronyx Ltd, Synchronous PPP and CISCO HDLC (c) 1994
+Linux port (c) 1998 Building Number Three Ltd & Jan "Yenya" Kasprzak.
+HDLC support module revision 1.02 for Linux 2.4
+physmap flash device: 4000000 at 8000000
+CFI: Found no Physically mapped flash device at location zero
+Probing for flash chips at 0x00000000:
+Found: AMD AM29LV320DB
+number of JEDEC chips: 1
+7751RGN : Flash at 0x00000000
+Using configured partition at 0x00008000.
+Creating 5 MTD partitions on "7751RGN FLASH":
+0x00000000-0x00008000 : "flash_boot"
+0x00008000-0x00010000 : "data_setting"
+0x00010000-0x00100000 : "kernel"
+0x00100000-0x003f0000 : "file_system"
+0x003f0000-0x00400000 : "default_mac"
+Reset BRW404 Configure Data Button Driver version 1.0 
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 1024 bind 2048)
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 292 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+RAMDISK: Couldn't find valid RAM disk image starting at 0.
+Freeing initrd memory: 640k freed
+VFS: Mounted root (cramfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 48k freed
+mount -t proc none /proc
+echo 1 > /proc/sys/net/ipv4/ip_forward
+expand /img/ramdisk.img /dev/rd/0
+mount /dev/rd/0 /ramdisk
+mountdatasetting -m -r -d
+mountdatasetting: umount /romdisk > /dev/null 2>&1 (nResult=256)
+mountdatasetting: mount -t cramfs /dev/mtdblock/1 /romdisk > /dev/null 2>&1 (nResult=0)
+cp /romdisk/* /ramdisk/etc -f
+umount /dev/mtdblock/1
+gethwtype > /dev/null 2>&1
+loadregioninfo > /dev/null 2>&1
+tar xf /img/htdocs.tar -C /ramdisk/htdocs
+About.htm
+AddFirewall.htm
+AddVPN.htm
+BackUpRestore.htm
+BasicDynamicIPAddress.htm
+BasicLANSetup.htm
+BasicPPPoE.htm
+BasicPPPoELan.htm
+BasicStaticIPAddress.htm
+BasicWANSel.htm
+BasicWizSetComp.htm
+ChangeMAC.htm
+ChangePassword.htm
+DNSConfiguration.htm
+DNSReplay.htm
+DynamicIPAddress.htm
+EditFirewall.htm
+EditURLBlocking.htm
+EditVPN.htm
+FileFormatError.htm
+Firewall1.htm
+Firewall2.htm
+Firewall3.htm
+Initialization.htm
+InternalError.htm
+Layer3ForwardDesc.xml
+Log1.htm
+Log2.htm
+Log3.htm
+Logout.htm
+MACcontrol11a.htm
+MACcontrol11b.htm
+MACcontrol11g.htm
+MemoryLow.htm
+NetworkSetup1.htm
+NetworkSetup2.htm
+NetworkSetup3.htm
+OSInfoDesc.xml
+PPPMonitor.htm
+PPPoE.htm
+PPPoELan.htm
+Ping.htm
+Reboot.htm
+Restarting.htm
+RootDeviceDesc.xml
+Save.htm
+SmartSetup.htm
+SmartSetupDynamicIPAddress.htm
+StaticIPAddress.htm
+StaticRouting.htm
+URLBlocking.htm
+UpgradeFirmware.htm
+Upgrading.htm
+UpnpStatus.htm
+VPN.htm
+VirtualServer1.htm
+VirtualServer2.htm
+VirtualServer3.htm
+WANComIfConfDesc.xml
+WANEtherLinkConfDesc.xml
+WANPPPConnectDesc.xml
+WANSel.htm
+WANTypeDel.htm
+WAN_LINK_DOWN.htm
+WDSa.htm
+WDSb.htm
+WDSg.htm
+Welcome.htm
+WirelessSetup1.htm
+WirelessSetup2B.htm
+WirelessSetup2G.htm
+WirelessSetup3a.htm
+WirelessSetup3b.htm
+WirelessSetup3g.htm
+WirelessSetupNoMiniPCI.htm
+WirelessSetupNoPCMCIA.htm
+banner.htm
+detecting.htm
+index.htm
+index_pnpsetup.htm
+p.htm
+status.htm
+style.css
+bringup_atheros > /dev/null 2>&1
+/etc/pcmcia/rc.pcmcia start > /dev/null 2>&1 &
+sleep 3
+Linux PCMCIA Card Services 3.2.1
+  kernel build: 2.4.19 #205 Thu Oct 17 10:18:23 CST 2002
+  options:  [pci] [cardbus]
+Intel ISA/PCI/CardBus PCIC probe:
+PCI: Enabling device Texas Instruments PCI1410 PC card Cardbus Controller (0000 -> 0002)
+  TI 1410 rev 02 PCI-to-CardBus at slot 00:0a, mem 0xfd001000
+    host opts [0]: [serial pci & irq] [pci irq 8] [lat 168/176] [bus 1/4]
+    PCI card interrupts, polling interval = 1000 ms
+cs: cb_alloc(bus 1): vendor 0x168c, device 0x0013
+gbt_ar5k: init_module, Atheros AR5K 802.11a PCI/CardBus WLAN registering pci device.
+cs: cb_config(bus 1)
+  fn 0 bar 1: mem 0xfd110000-0xfd11ffff
+  irq 8
+gbt_ar5k: gbt_atheros_attach(device 01:00.0)
+gbt_ar5k: ATTENTION, AP start up without file system supported!
+H/W_probe Set wlan0 radio frequency 0
+rxQueue phy addr : 0CB4C000
+gbt_ar5k: gbt_atheros_probe register_netdev [wlan1]
+wirelesspageconfig > /dev/null 2>&1
+versionchk -d
+versionchk: szVersionInRootfs: 1.25
+versionchk: szDateInRootfs: Wed, 01 Dec 2004 08:41:22 +0000
+versionchk: szDataVersionInRootfs: gbtbrw.001
+versionchk: szVersionInFlash: 1.25
+versionchk: szDateInFlash: Wed, 01 Dec 2004 08:41:22 +0000
+versionchk: szDataVersionInFlash: gbtbrw.001
+genhtpasswd -o /wwwroot/htdocs/.htpasswd
+gn_sub -s
+file input error
+mn_resolv
+start=====
+wan_type_group=0
+session_info=0
+session_selected[0]=0
+session_selected[1]=0
+session_selected[2]=0
+session_selected[3]=0
+session_select_valur[0]=0
+session_select_valur[1]=0
+session_select_valur[2]=0
+session_select_valur[3]=0
+DynamicDNSCofigure > /dev/null &
+networkrestart > /dev/null 2>&1
+eth1: Setting 100mbps full-duplex based on auto-negotiated partner ability 45e1.
+eth1: Promiscuous mode enabled.
+device eth1 entered promiscuous mode
+Reading Configuration File "/var/apcfg_cb".
+gbt_ar5k: ar5k module starts wlan0.
+gbt_ar5k: ar5k module multiDomainCapEnabled TRUE
+gbt_ar5k: swRadioDisable = 0, calibrationTime = 30
+gbt_ar5k: wlan0 athCalibrationTask
+gbt_ar5k: tApHouseKeeping alive.
+gbt_ar5k: tApListKeeping alive.
+gbt_ar5k: 802.1x built
+gbt_ar5k: wlan0 pdevInfo @ 0x8cd20000 BSS start
+wireless access point starting...
+wlan0 Ready
+Ready
+device wlan1 entered promiscuous mode
+br0: port 2(wlan1) entering listening state
+br0: port 1(eth1) entering listening state
+updatehtml -f ALL
+smart_setup eth0 > /dev/null &
+SecurityServ &###########################################
+###
+###   Build Version: 1.25
+###   Data Version: gbtbrw.001
+###   Build Date: Wed, 01 Dec 2004 08:41:22 +0000
+###
+###########################################
+
+
+BusyBox v0.60.3 (2004.12.01-08:39+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+# Security server up(1.15)---
+SecurityServ: open socket3!!
+SecurityServ: bind success!!
+SecurityServ: listen ok!!
+SecurityServ: waiting for data on port TCP 1500
+SecurityServ: cliLen=16
+
+# uname -a
+Linux (none) 2.4.20 #97 Wed Dec 1 16:38:26 CST 2004 sh4 unknown
+# cat /proc/cpuinfo
+cpu family: SH-4
+cache size: 8K-byte/16K-byte
+bogomips: 239.20
+
+Machine: Gigabyte 7751Rgn
+CPU clock: 240.01MHz
+Bus clock: 120.00MHz
+Peripheral module clock: 60.00MHz
+
+# cat /proc/pci
+PCI devices found:
+  Bus  0, device   8, function  0:
+    Ethernet controller: Realtek Semiconductor Co., Ltd. RTL-8139/8139C/8139C+ (rev 16).
+      IRQ 2.
+      Master Capable.  Latency=64.  Min Gnt=32.Max Lat=64.
+      I/O at 0x4000 [0x40ff].
+      Non-prefetchable 32 bit memory at 0xfd000000 [0xfd0000ff].
+  Bus  0, device   9, function  0:
+    Ethernet controller: Realtek Semiconductor Co., Ltd. RTL-8139/8139C/8139C+ (#2) (rev 16).
+      IRQ 5.
+      Master Capable.  Latency=64.  Min Gnt=32.Max Lat=64.
+      I/O at 0x4400 [0x44ff].
+      Non-prefetchable 32 bit memory at 0xfd000100 [0xfd0001ff].
+  Bus  0, device  10, function  0:
+    CardBus bridge: Texas Instruments PCI1410 PC card Cardbus Controller (rev 2).
+      IRQ 8.
+      Master Capable.  Latency=168.  
+      Non-prefetchable 32 bit memory at 0xfd001000 [0xfd001fff].
+  Bus  1, device   0, function  0:
+    Ethernet controller:  (rev 1).
+      IRQ 8.
+      Master Capable.  Latency=64.  Min Gnt=10.Max Lat=28.
+
+}}}

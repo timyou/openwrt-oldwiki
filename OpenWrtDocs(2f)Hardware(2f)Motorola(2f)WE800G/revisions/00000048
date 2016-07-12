@@ -1,0 +1,198 @@
+= Motorola WE800G =
+[[TableOfContents]]
+= Hardware versions =
+The WE800G has two different versions - v1 and v2.
+
+== WE800G v1 ==
+The WE800G v1 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is a mini-PCI card. The mini-PCI card is BCM94306MP and if you happen to brick the box itself then at least it is reusable in your laptop.
+
+{{{
+root@OpenWrt:/# cat /proc/cpuinfo
+system type             : Broadcom BCM947XX
+processor               : 0
+cpu model               : BCM4710 V0.0
+BogoMIPS                : 82.94
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+root@OpenWrt:/#  free
+              total         used         free       shared      buffers
+  Mem:        14360         6960         7400            0            0
+ Swap:            0            0            0
+Total:        14360         6960         7400
+root@OpenWrt:/# df
+Filesystem           1k-blocks      Used Available Use% Mounted on
+/dev/root                 3264      1628      1636  50% /
+none                      7180         8      7172   0% /tmp
+root@OpenWrt:/#
+}}}
+
+== WE800G v2 ==
+It is supposed to have the integrated wireless NIC, less memory and less flash, but I haven't seen one to comment.
+
+I think I have the version 2.   I cannot see any different outside and inside.  It also has the same mini-PCI card; however, It only has 2Mb flash and 8Mb SDRAM. It is not that useful even using the micro version of OpenWRT. [goodnewscd added on 2006-04-10]
+
+{{{
+root@OpenWrt:/proc# cat cpuinfo
+system type             : Broadcom BCM947XX
+processor               : 0
+cpu model               : BCM4710 V0.0
+BogoMIPS                : 82.94
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+root@OpenWrt:/proc# free
+              total         used         free       shared      buffers
+  Mem:         6244         6008          236            0          360
+ Swap:            0            0            0
+Total:         6244         6008          236
+root@OpenWrt:/proc# df
+Filesystem           1k-blocks      Used Available Use% Mounted on
+/dev/root                  832       832         0 100% /rom
+/dev/mtdblock/4            448       360        88  80% /
+none                      3120        12      3108   0% /tmp
+}}}
+
+= Obtaining Official Motorola Firmware =
+Motorola does not have any official firmware releases available on their website and will not provide you one even if you ask for it.
+
+ * [http://broadband.motorola.com/consumers/products/we800g/ WE800G product page]
+ * [http://broadband.motorola.com/consumers/support/default.asp?SupportSection=HomeNetworking Motorola's Support Site]
+ * [http://broadband.motorola.com/consumers/support/gpl_codes.asp Source Code] [http://broadband.motorola.com/consumers/support/GPL/WE800G_V4.04_GPL.tgz partial source of 4.04]
+
+= Flashing to OpenWRT =
+Imre Kaloz added WE800G and WA800G support to pre-RC5 and this has found it's way into the RC5 as well.
+
+ * http://downloads.openwrt.org/whiterussian/rc5/
+
+Note: The WE800G v1 has plenty of flash and memory and it is capable of accepting firmware of the "bin" directory. Check the firmware [:OpenWrtDocs/Installing: installing] page for firmware image differences.
+
+The web upgrade likely does not work (even if to rename the .bin to .trx), but TFTP [OpenWrtViaTftp] will upload it just fine.
+
+ * Set your computer into the same IP subnet (WE800G default IP address is 192.168.30.1 and netmask is 255.255.255.0);
+ * Enable boot_wait on WE800G with web browser in /frame_debug.asp page by entering "nvram set boot_wait=on; nvram commit; nvram get boot_wait" into the command slot and press ENTER or click APPLY button;
+
+Note: If you see "on" then the boot_wait was set successfully. If not the repeat the procedure.
+
+Note: If you are using Windows then for the next step place a switch between your computer and your WE800G.
+
+ * Start pinging the WE800G on one command prompt window (under Windows: "ping 192.168.30.1 -t");
+ * Type the TFTP upload command to the next command prompt window (under Windows: "tftp -i 192.168.30.1 put openwrt-we800g-jffs2.bin" or "tftp -i 192.168.30.1 put openwrt-we800g-squashfs.bin");
+ * Unplug/replug the WE800G power;
+ * As soon as you see the ping response from the WE800G, hit ENTER for the TFTP upload command;
+ * If the upload went fine then you'll see "Transfer successful" message;
+ * If you get "timed out" message then repeat the process;
+
+Note: After successful flashing the IP address of WE800G will be set to 192.168.1.1/24 and the box should start answering to pings on that address.
+
+ * After successful flashing wait for some minutes to let the OpenWRT to finish all it's upgrade procedures;
+ * Unplug/replug the power of the WE800G or you get wierd permission or other type of errors when you try to change the configuration of this WE800G;
+ * Telnet into the box to verify that the OpenWRT is up and running and then unplug/replug the power of the box again;
+ * Now you can telnet into it again to set the system password (passwd command) or use your browser to do it;
+
+Note: After you set the password you'll not be able to telnet into the WE800G again, you have to use ssh or browser.
+
+= Upgrade from previous versions of OpenWRT =
+Web based upgrade from pre-RC5 to RC5 failed for me with this message:
+
+{{{
+Firmware Upgrade
+
+Bad trx header
+If this is a firmware in bin format, like some of the
+original firmware files are, use following command to convert to trx:
+dd if=firmware.bin of=firmware.trx bs=32 skip=1
+TRX check failed!
+done.
+}}}
+
+And still failed after making the proposed .bin to .trx conversation.
+
+Only way to upgrade the firmware is the TFTP based upgrade as was described above.
+
+Note: The WEB based firmware upgrade does not work even after the upgrade to RC5. https://dev.openwrt.org/ticket/447
+
+= The Failsafe Mode and other interesting stuff =
+
+General instructions how to recover or repair your OpenWRT box are available over the [:OpenWrtDocs/Troubleshooting:troubleshooting] page.
+
+= Port layout =
+The WE800G has 3 LAN ports and a bridge port. The eth0 has no physical connector and is a dummy port, the eth1 is the LAN RJ45 port and the eth2 is wireless card port. The br0 is a bridge port.
+
+= Client Mode =
+Out of box the WE800G is set to client mode, but it does not work - you can ping the box from both sides just fine, but it does not let any of these packet to travel over the defined bridge. More of it below.
+
+== Routed Client Mode ==
+To put the WE800G into the routed client mode you have to remove WLAN from LAN and WLAN port bridge, add separate wifi device and put the radio into STA mode.
+
+ * nvram set lan_ifnames="eth1"
+ * nvram set lan_ifname=br0
+ * nvram set wifi_ifname=eth2
+ * nvram set wl0_ssid="MY_AP"
+ * nvram set wl0_mode=sta
+
+ * nvram commit
+ * reboot
+
+Note: There is no WAN interface, use WIFI instead. You may need to set wifi_proto, wifi_ipaddr, wifi_netmask, wifi_gateway, ... [:OpenWrtNVRAM:variables].
+
+== Bridged Client Mode ==
+To put the WE800G into the bridged client mode you have to bridge LAN and WLAN port, disable separate wifi device and put the radio into WET mode. http://woz.gs/wifi/openwrtbridge.html http://forum.openwrt.org/viewtopic.php?pid=6246#p6246
+
+ * nvram set lan_ifnames="eth1 eth2"
+ * nvram set lan_ifname=br0
+ * nvram set wifi_ifname=none
+ * nvram set wl0_ssid="MY_AP"
+ * nvram set wl0_wet=1
+ * nvram set wl0_mode=wet
+
+ * nvram commit
+ * reboot
+
+Note1: Somehow I didn't get this mode going before I installed and then removed the WL package. I wonder why?
+
+Note2: There is no WAN interface, only LAN is in use. You may need to set lan_proto, lan_ipaddr, lan_netmask, lan_gateway, ... [:OpenWrtNVRAM:variables].
+
+Note3: The "nvram set wl0_wet=1" does prove helpful in client mode, but do not leave it is for other modes as this will make the box unstable, use "nvram unset wl0_wet".
+
+= AP Mode =
+Freshly updated WE800G should go into AP mode (bridged) just by setting the AP mode (nvram set wl0_mode=ap; nvram commit; reboot).
+
+== Routed AP Mode ==
+To put the WE800G into the routed AP mode you have to remove WLAN from LAN and WLAN port bridge, add separate wifi device and put the radio into AP mode.
+
+ * nvram set lan_ifnames="eth1"
+ * nvram set lan_ifname=br0
+ * nvram set wifi_ifname=eth2
+ * nvram set wl0_ssid="MY_AP"
+ * nvram set wl0_mode=ap
+
+ * nvram commit
+ * reboot
+
+Note: There is no WAN interface, use WIFI instead. You may need to set wifi_proto, wifi_ipaddr, wifi_netmask, wifi_gateway, ... [:OpenWrtNVRAM:variables].
+
+== Bridged AP Mode ==
+To put the WE800G into the bridged AP mode you have to bridge LAN and WLAN port, disable separate wifi device and put the radio into AP mode.
+
+ * nvram set lan_ifnames="eth1 eth2"
+ * nvram set lan_ifname=br0
+ * nvram set wifi_ifname=none
+ * nvram set wl0_ssid="MY_AP"
+ * nvram set wl0_mode=ap
+
+ * nvram commit
+ * reboot
+
+Note: There is no WAN interface, only LAN is in use. You may need to set lan_proto, lan_ipaddr, lan_netmask, lan_gateway, ... [:OpenWrtNVRAM:variables].
+
+----
+CategoryModel

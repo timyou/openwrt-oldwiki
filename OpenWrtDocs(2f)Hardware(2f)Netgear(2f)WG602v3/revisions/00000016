@@ -1,0 +1,233 @@
+'''Netgear WG602 v3'''
+
+The WG602 v3 is based on the Broadcom 4712 board. It has a 200MHz CPU, 2Mb flash and 8Mb RAM, and a detachable antenna.
+
+ * Flash: Intel TE 28F160C3 BDBD70 ([http://download.intel.com/design/flcomp/datashts/29064523.pdf datasheet], [http://download.intel.com/design/flcomp/specupdt/29793814.pdf update]): 16 Mbit
+
+ * RAM: !EtronTech EM638425TS-6 ([http://etron.com/img/pdf/SDRAM/64Mb/2Mx32/Em638325(Rev%200.8).pdf datasheet]): 64Mbit (2M x 32) 6 ns (166 MHz) SDRAM
+
+It has a populated UART1 connector, and un-populated UART0 and JTAG.The wireless NIC is integrated on the board. Does not appear to use boot wait. Instead the following procedure worked for recovering a dead unit and may be useful in putting new firmware on the unit:
+
+== Recovery procedure ==
+How to upload a firmware via TFTP:
+
+ 1. Download the latest firmware from Netgear. Currently (2 April 2006) it is version [ftp://downloads.netgear.com/files/wg602v3_1_0_8.trx 1.0.8-rc3].
+
+ 1. Reboot the wg602v3: power off the device and power on while depressing the reset button for 5 seconds.
+
+ 1. tftp to the box, set binary mode, and upload the firmare file as {{{image.idts334}}} . You have a very limited time to do this, so it may actually work better to first issue the tftp command, and then reboot the wg602v3.
+
+ 1. If the upload is successful, the wg602v3 will program the flash and load the new firmware.
+
+Eg. (linux)
+
+ . {{{
+$ tftp -m binary -c put wg602v3_1_0_8.trx image.idts334 
+Sent 1634304 bytes in 5.8 seconds
+}}}
+
+Eg. (windows)
+
+ . {{{
+C:\...\> tftp -i 192.168.0.227 put wg602v3_1_0_8.trx image.idts334 
+Transfer successful: 1634304 bytes in 11 seconds, 148573 bytes/s
+}}}
+
+== Netgear Firmware ==
+Binary firmare releases:
+
+ * [ftp://downloads.netgear.com/files/wg602v3_V1_0_4.trx 1.0.4]
+ * [ftp://downloads.netgear.com/files/wg602v3_v1_0_5.zip 1.0.5]
+ * [ftp://downloads.netgear.com/files/wg602v3_1_0_8.trx 1.0.8 rc3]
+
+GPL source code releases:
+
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-GPL.tar.gz 1.0.4]
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-GPL-v1.0.5.tgz 1.0.5]
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-GPL-v1.0.6.tgz 1.0.6]
+ * [ftp://downloads.netgear.com/files/GPL/wg602v3-V1.0.8RC3-GPL.tar.gz 1.0.8 rc3]
+
+Some models shipped with a binary version of the 1.0.6 firmware, but such version is not available for download from Netgear support site.
+
+== OpenWRT ==
+
+=== Serial console ===
+This AP uses by default UART1 (/dev/ttyS1) as the console, while OpenWRT is usually configured to use UART0 (/dev/ttyS0). If you want to use the serial console on /dev/ttyS1, you need to modify the OpenWRT configuration accordingly, and rebuild.
+The serial port is used for two independent purposes: displaying the kernel boot messages and providing shell access to your box. 
+
+The kernel console configuration is provided by its command line arguments, defined at configuraion time in the CONFIG_CMDLINE config variable.
+For White Russian, the file to modify is `target/linux/linux-2.4/config/brcm`, while for Kamikaze 2.4 it is `target/linux/brcm-2.4/config`. In both, you need to change
+{{{
+...
+CONFIG_CMDLINE="root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noinitrd console=ttyS0,115200"
+...
+}}}
+into
+{{{
+...
+CONFIG_CMDLINE="root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noinitrd console=ttyS1,115200"
+...
+}}}
+
+Console access to the AP can be enabled both on ttyS0 and ttyS1. The shell is started by `/sbin/init` after the kernel has booted, as configured in `/etc/inittab`. The file to modify for Kamikaze is `package/base-files/default/etc/inittab`. Change
+{{{
+::sysinit:/etc/init.d/rcS
+::shutdown:/sbin/halt
+tts/0::askfirst:/bin/ash --login
+#tts/1::askfirst:/bin/ash --login
+}}}
+into
+{{{
+::sysinit:/etc/init.d/rcS
+::shutdown:/sbin/halt
+#tts/0::askfirst:/bin/ash --login
+tts/1::askfirst:/bin/ash --login
+}}}
+You can leave both entries uncommented, if for any reason you want console access on both ports.
+
+If you have already built your firmware once, you can just edit `build_mipsel/root/etc/inittab` and do a `make target/install`. These changes however will be lost if you do a full rebuild.
+
+=== White Russian RC5 ===
+
+The CFE bootloader used in the wg602v3 has a size of 192k bytes instead of 256k bytes.
+The flash layout used in White Russian is not compatible with it - it won't even boot into the kernel:
+
+ . {{{
+***************************
+****  MAC Client V1.0  ****
+***************************
+MAC exist at least one
+system ethernet mac exist and not default....
+Skip mac client process.....
+Loading: .. 3732 bytes read
+Entry at 0x80001000
+Closing network.
+Starting program at 0x80001000
+}}}
+
+And here it gets stuck.
+
+=== Kamikaze ===
+
+Kamikaze works better, and gets into the kernel, but then gets a bus error/segmentation fault running ifconfig:
+ . {{{
+***************************
+****  MAC Client V1.0  ****
+***************************
+MAC exist at least one
+system ethernet mac exist and not default....
+Skip mac client process.....
+Loading: .. 3732 bytes read
+Entry at 0x80001000
+Closing network.
+Starting program at 0x80001000
+CPU revision is: 00029008
+Primary instruction cache 16kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 8kB, 2-way, linesize 16 bytes.
+Linux version 2.4.32 (fwyzard@grid006.fi.infn.it) (gcc version 3.4.4 (OpenWrt-2.0)) #2 Sun Apr 2 03:32:01 CEST 2006
+Setting the PFC to its default value
+Determined physical RAM map:
+ memory: 00800000 @ 00000000 (usable)
+On node 0 totalpages: 2048
+zone(0): 2048 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noinitrd console=ttyS1,115200
+CPU: BCM5350 rev 0 at 200 MHz
+Using 100.000 MHz high precision timer.
+Calibrating delay loop... 199.47 BogoMIPS
+Memory: 6148k/8192k available (1421k kernel code, 2044k reserved, 100k data, 88k init, 0k highmem)
+Dentry cache hash table entries: 1024 (order: 1, 8192 bytes)
+Inode cache hash table entries: 512 (order: 0, 4096 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+PCI: Disabled
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xb8000300 (irq = 2) is a 16550A
+ttyS01 at 0xb8000400 (irq = 2) is a 16550A
+b44.c:v0.93 (Mar, 2004)
+eth0: Broadcom 47xx 10/100BaseT Ethernet 00:14:6c:38:da:e7
+cfi_cmdset_0001: Erase suspend on write enabled
+Using word write method
+Flash device: 0x200000 at 0x1c000000
+bootloader size: 196608
+Creating 5 MTD partitions on "Physically mapped flash":
+0x00000000-0x00030000 : "cfe"
+0x00030000-0x001f0000 : "linux"
+0x000ac800-0x00199000 : "rootfs"
+mtd: partition "rootfs" doesn't start on an erase block boundary -- force read-only
+0x001f0000-0x00200000 : "nvram"
+0x001a0000-0x001f0000 : "OpenWrt"
+sflash: found no supported devices
+Initializing Cryptographic API
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+ip_conntrack version 2.1 (5953 buckets, 5953 max) - 360 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 88k freed
+Algorithmics/MIPS FPU Emulator v1.5
+diag boardtype: 00000456
+Unlocking OpenWrt ...
+pivot_root: pivot_root: No such file or directory
+mount: Mounting none on /proc failed: Device or resource busy
+mount: Mounting none on /dev failed: Device or resource busy
+umount: Couldn't umount /rom/proc: No such file or directory
+umount: Couldn't umount /rom/dev: No such file or directory
+firstboot has already been run
+jffs2 partition is mounted, only resetting files
+creating directories... done
+setting up symlinks... done
+init started:  BusyBox v1.1.0 (2006.04.02-01:25+0000) multi-call binary
+jffs2.bbc: SIZE compression mode activated.
+Probing device eth0: found!
+Probing device eth0: found!
+Oops in traps.c::do_be, line 385:
+$0 : 00000000 1000fc00 00060000 000f3800 b8001428 00068db9 80000000 00000064
+$8 : 00000000 00000001 00000001 80196e50 00000301 1000fc00 00000000 00000001
+$16: 80763d60 00000100 80763c00 80763d60 803a1eb0 00000000 00000000 00008914
+$24: ba2e8ba3 801a25d4                   803a0000 803a1da0 7fff7c88 800aba90
+Hi : 00000000
+Lo : 00000000
+epc   : 800ab9b4    Not tainted
+Status: 1000fc02
+Cause : 0000801c
+PrId  : 00029008
+Process ifconfig (pid: 525, stackpage=803a0000)
+Stack:    800c5f94 00000000 00000001 00000000 00000001 00008914 800ad47c
+ 80763d60 80150000 80763d60 80763c00 00000000 80763c00 800ad720 00000000
+ 00008914 00000001 80763d60 80763d60 00000000 80763c00 00000000 803a1eb0
+ 800ad870 00000099 80028300 80763d60 00000000 80763d60 00000000 80763d60
+ 800adfa4 00000004 00499ddc 803e9d20 801f80e4 80763c00 00499ddc 80763c00
+ 00000000 ...
+Call Trace:   [<800c5f94>] [<800ad47c>] [<80150000>] [<800ad720>] [<800ad870>]
+ [<80028300>] [<800adfa4>] [<800ca820>] [<800cc044>] [<8010c2a0>] [<80048f78>]
+ [<800c2f64>] [<80008a60>] [<8005b79c>]
+
+Code: 00452021  3c020006  34458db9 <8c820000> 11200005  00461024  1040000f  00000000  0802ae77
+}}}
+
+However, you should get a running serial console to fiddle around.
+
+----
+ . CategoryModel      

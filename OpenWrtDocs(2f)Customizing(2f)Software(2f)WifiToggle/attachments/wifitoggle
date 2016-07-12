@@ -1,0 +1,2 @@
+config wifitoggle
+        option button 'reset'

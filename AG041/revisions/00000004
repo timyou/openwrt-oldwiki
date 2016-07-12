@@ -1,0 +1,11 @@
+Crappy but cheap (as in free) linksys DSL router
+
+[http://www.samsung.com/Products/Semiconductor/SystemLSI/Networks/PersonalNTASSP/CommunicationProcessor/S3C2510A/um_s3c2510a_rev1.pdf  s3c2510a] userguide from Samsung
+
+= Console stuff =
+["WAG54G"] shows the serial console output, except we use 115200 baud
+
+with a working console, press a key to get available commands
+
+"mread 0 10" displays reset, abort & SWI exception handler locations.
+SWI is hooked to reset switch. use "mwrite 8 <location>" to hook this handler.

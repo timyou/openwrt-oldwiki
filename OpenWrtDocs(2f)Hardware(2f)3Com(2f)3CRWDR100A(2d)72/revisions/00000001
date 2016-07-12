@@ -1,0 +1,35 @@
+= 3Com 3CRWDR100A-72 =
+
+The device is based on Texas Instrument AR7, so you need the [:AR7Port]
+in OpenWrt trunk.
+
+= Serial console =
+A serial console can be conneced to J4.
+
+The serial signals are at a 3.3V level, so you need to use a level convertor, see ["OpenWrtDocs/Customizing/Hardware/Serial Console"]
+
+The serial signal itself is 115200 baud, 8 databits, 1 stopbit, no parity (8N1).
+
+The pinout for the serial is
+
+||'''pin''' ||'''signal''' ||
+||1 ||Not Connected ||
+||2 ||Not Connected ||
+||3 ||RX ||
+||4 ||Not Connected ||
+||5 ||TX ||
+||6 ||Not Connected ||
+||7 ||Not Connected ||
+||8 ||Not Connected ||
+||9 ||GND ||
+||10 ||VCC +3.3V ||
+
+Disposition on the board:
+
+||9 ||7 ||5 ||3 ||1 ||
+||10 ||8 ||6 ||4 ||2 ||
+
+= OpenWRT status =
+Untested
+
+CategoryModel ["CategoryAR7Device"]

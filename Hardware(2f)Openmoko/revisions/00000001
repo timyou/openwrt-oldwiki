@@ -1,0 +1,4 @@
+== Openmoko ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Bluetooth''' ||'''GSM''' ||'''Accelerometer''' ||'''Display''' ||'''SD''' ||'''GPS''' ||'''Status''' ||
+||[http://openmoko.com/product.html GTA01 "Neo 1973"] ||? ||[http://www.samsung.com/global/business/semiconductor/productInfo.do?fmly_id=229&partnum=S3C2410 Samsung S3C2410]@266mhz ||128MB ||64MB ||None ||None ||3 (but used) ||Yes ||1.1 (client/host) ||yes ||yes ||2 ||VGA (touchscreen) ||microSD ||yes ||Untested ||
+||[http://openmoko.com/product.html GTA02 "Freerunner"] ||>=A5 ||[http://www.samsung.com/global/business/semiconductor/productInfo.do?fmly_id=229&partnum=SC32442 Samsung SC32442B]@400mhz ||256MB ||64MB ||Atheros AR6001GZ ||None ||3 (but used) ||Yes ||1.1 (client/host) ||yes ||yes ||no ||VGA (touchscreen) ||microSD ||yes ||[:Openmoko:WiP] ||

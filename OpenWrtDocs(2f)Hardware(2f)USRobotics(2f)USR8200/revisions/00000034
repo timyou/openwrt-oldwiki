@@ -1,0 +1,353 @@
+#pragma section-numbers off
+[[TableOfContents]]
+== Hardware ==
+http://www.usr.com/products/networking/router-product.asp?sku=USR8200
+
+The USR8200 is a non-wireless router, advertised as a Firewall/VPN. This single board network processor consists of an Intel® IXP422 XScale®  processor operating at 266MHz, 64Mbytes of SDRAM, and 16Mbytes of Flash. Peripherals include one 10/100 Base-TX Ethernet "WAN" port with crypto acceleration, and 4 10/100 Base-Tx Ethernet ports on a Marvell switch. The router also has a FireWire port, 2 USB2.0 ports and internally, an RS-232 serial port (full voltage) and a JTAG port.
+
+=== Features ===
+ 1. Intel® XScale® IXP422 266MHz Processor
+ 1. 64Mbytes SDRAM
+ 1. 16Mbytes Flash
+ 1. 10/100 Base-TX Ethernet "WAN" Port
+ 1. 10/100 Base-TX 4-port switch
+ 1. IEEE1394 FireWire port
+ 1. 1 RS-232 Serial Port (internal)
+ 1. Battery Powered Real Time Clock
+ 1. Dual Type A USB 2.0 Host Ports
+
+== Machine ID ==
+Machine ID 1762 has been registered for this board. 
+== Software ==
+The installed bootloader is "OpenRG", written by Jungo, but despite being covered by the GPL, complete sources are not easy to get hold of.
+=== RedBoot ===
+A custom version of !RedBoot has been built and can be loaded with the instructions on the [http://wiki.openwrt.org/OpenWrtDocs/Hardware/Actiontec/MI424-WR MI424-WR] page. The custom version for the USR8200 is attachment:redboot.bin. The source for this is the Intel !RedBoot sources plus this attachment:usr8200.epk package. Once !RedBoot is installed as the bootloader, and configured, you can then install the linux kernel and rootfs image from !OpenWrt.
+
+This version detects PHYs on both Ethernet ports, but !RedBoot only uses one, eth0, which maps onto the WAN port of the USR8200.
+=== Installing OpenWRT ===
+This is a skeleton of the procedure... where 192.168.10.2 is the address of the machine which has a tftp server, and the necessary files in the right location.
+From the Jungo prompt:
+ 1. USR8200> load -u tftp://192.168.10.2/redboot.bin -r 0 
+[[BR]]''Once that finishes, you can type reboot or press reset.'' 
+[[BR]]''Connect ethernet to the WAN port.''
+[[BR]]From within RedBoot:
+ 1. RedBoot> fconfig -i
+ 1. RedBoot> fis init
+ 1. RedBoot> load -r -b %{FREEMEMLO} -h 192.168.10.2 /openwrt-ixp4xx-zImage 
+ 1. RedBoot> fis create linux 
+ 1. RedBoot> load -r -b %{FREEMEMLO} -h 192.168.10.2 /openwrt-ixp4xx-squashfs.img 
+ 1. RedBoot> fis create rootfs 
+ 1. RedBoot> reset 
+
+Plug a pc into LAN port '''4''' otherwise the Marvel 88E6060 switch will not detect any machines connected on the lan side. This is a quirk of the switch at present. There is full support for this switch coming. Should start making appearances in the 2.6.28.x kernels. See [http://forum.openwrt.org/viewtopic.php?pid=74209#74209 Lennert Buytenh's patch announcement] for details. Open a browser to http://192.168.1.1 and enjoy.
+
+=== Restoring Factory Firmware ===
+Restoring factory firmware has been done with this unit.
+
+1. You will need a either one of these types of server already setup - tftp, http, ftp.
+For this example, I have setup my tftp server on ip address 192.168.10.2 The tftp serverthat came with my distro,
+Knoppix 5.3.1, left a lot to be desired. I could not get it to work. [https://sourceforge.net/projects/tftp-server/ This one did.] If you wish to use http instead, add -m HTTP to the command. It must be capitalized. Same goes for FTP. Generally speaking, it helps to have a few ip addresses on the server machine, it will answer to requests for. On my server, I plugged in a second network card. Makes accessing the internet and serving files to a temporary subnet easier. This command makes the second card respond on either 192.168.10.x and 192.168.11.x subnets. It comes in handy when testing Lan and Wan connections. 
+
+ 1. ip addr add 192.168.10.2/24 dev eth1 
+ 1. ip addr add 192.168.11.2/24 dev eth1 
+
+2. You will need to get a special redboot, one that has been built to run from RAM.
+That can be downloaded at attachment:redboot-RAM.img. It is named redboot-RAM.img to distinguish it from the ROM version.
+
+3. The backup image, here, will be named jungo-image.bin I used 
+[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Actiontec/MI424-WR MI424-WR]  Jose Vasconcellos' jungo-image.py to create my backup. It can do quite a bit more than just make the backup... but at the time, my tftp server was not responding to anything. It is now in svn, and Jose has improved it alot. Now it will create a backup image that has the mac address in the name. Just make sure you have a working connection to and from the router, and then invoke it from the same directory as RedBoot is in.[[BR]]
+You can leave off the -w to go through dry runs, as without -w it will not attempt to write anything.[[BR]]
+You should be able to get the latest version here: [https://dev.openwrt.org/browser/trunk/scripts][[BR]]
+There are early version jungo-image.py attachments on this page... we'd prefer you don't use.
+Jose's latest can backup the firmware, and install RedBoot without needing a tftp server at all! Once Redboot is installed, you will still need to have some kind of server in place. Http, Ftp, Tftp, Xmodem, Zmodem, Ymodem :)
+Here is the jungo-image.py help screen. Although, the last time I tested it... it needed far less parameters.
+I could invoke it like so:[[BR]]
+./jungo-image.py -p admin 192.168.10.1 /var/www/redboot.bin[[BR]]
+where 192.168.10.1 was the address assigned to the USR8200's Lan port... ie what ip jungo-image.py should contact. -p was the default password that comes with it, admin. 
+{{{
+Usage: %s [options] <IP_address> [redboot.bin]
+Valid options:
+-h | --help: usage statement
+-d | --no-dump: don't create a flash dump
+-f | --file: use <filename> to store dump contents
+-u | --user: provide username (default admin)
+-p | --pass: provide password (default password1)
+-P | --proto: set transfer protocol (default tftp)
+-s | --server: IP address of tftp server
+-w | --write: initiate loading of redboot (default no modification to flash)
+-v | --verbose: display additional information
+-V | --version: display version information
+}}}
+
+4. There are 2 steps to restoring the factory firmware. 
+ 1. First, install the redboot that runs from RAM. 
+ 1. Once running from ram, it becomes safe to program at any address on the flash chip. 
+
+==== Load redboot-RAM.img ====
+ 1. Connect your server to the USR8200's WAN port
+ 1. load -h 192.168.10.2 /redboot-RAM.img 
+ 1. go[[BR]]
+''Once it loads you should check for '''RAM''' in the version command.'' 
+ 1. version [[BR]]
+''Make sure this new RedBoot instance also has network access with a ping command.'' 
+ 1. ping -h 192.168.10.2
+
+==== Restore Factory Firmware ====
+load -h 192.168.10.2 -r -b %{FREEMEMLO} /jungo-image.bin 
+ 
+fis unlock -f 0x50000000 -l 0x1000000 
+ 
+fis write -b %{FREEMEMLO} -l 0x1000000 -f 0x50000000 
+
+Some output. 
+ 
+* CAUTION * about to program FLASH 
+            at 0x50000000..0x50ffffff from 0x00161400 - continue (y/n)? y 
+... Erase from 0x50000000-0x51000000: 
+... Program from 0x00161400-0x01161400 at 0x50000000: 
+
+== Hardware Hacking ==
+Although this router has no wireless support, there is tracking and pads on the circuit board for a mini-PCI card, which may allow a wireless card to be added. Work is in progress to determine if this is feasible.
+=== USR8200 GPIO assignments ===
+|| GPIO[0] || USB-1 LED || OUTPUT ||
+|| GPIO[1] || USB-2 LED  ||  OUTPUT ||
+|| GPIO[2] || IEEE1394 LED || OUTPUT ||
+|| GPIO[3] || LAN PORT 1 LED || OUTPUT ||
+|| GPIO[4] || Yet Unknown || Configured as INPUT ||
+|| GPIO[5] || Yet Unknown || Configured as INPUT ||
+|| GPIO[6] || Yet Unknown || Configured as INPUT ||
+|| GPIO[7] || Possibly the mini-pci || Configured as INPUT ||
+|| GPIO[8] || to VIA VT6307 IEEE1394 Chip || Configured as INPUT ||
+|| GPIO[9] || to VIA VT6202 USB Chip || Configured as INPUT ||
+|| GPIO[10] || to VIA VT6202 USB Chip || Configured as INPUT ||
+|| GPIO[11] || to VIA VT6202 USB Chip || Configured as INPUT ||
+|| GPIO[12] || Reset button  || INPUT ||
+|| GPIO[13] || PCI enable || OUTPUT ||
+jw... I think. :)
+[[BR]]Based upon... the factory firmware bootloader initializes GPOER to 0x1FF0, and GPOUTR to 0x600F
+This can be accomplished in Redboot with the following commands... in this order.
+[[BR]]mfill -b 0xc8004004 -l 4 -p 0x1ff0 -4
+[[BR]]mfill -b 0xc8004000 -l 4 -p 0x600f -4
+
+== More Info / Pictures ==
+There are extensive pictures of this device at [http://home.comcast.net/~johnrw/], along with a [http://home.comcast.net/~johnrw/image/USR8200_notes.txt set of notes] on some of the investigations that the photographer did.
+
+ 1. Uses a Altima 101L chip for the WAN PHY.
+ 1. Uses a Marvell 88E6060 switch.
+ 1. Uses a Epson 7301 chip for Real Time clock.
+ 1. CS1 may in fact not be used.
+ 1. CS2 is wired to the Epson 7301 rtc.
+
+== Bugs to squash ==
+On my unit...{{{
+root@OpenWrt:/# lspci -v
+00:0f.0 FireWire (IEEE 1394): VIA Technologies, Inc. IEEE 1394 Host Controller (rev 80) (prog-if 10 [OHCI])
+        Flags: bus master, stepping, medium devsel, latency 0, IRQ 25
+        Memory at 48000000 (32-bit, non-prefetchable) [size=2K]
+        I/O ports at 1000 [size=128]
+        Capabilities: [50] Power Management version 1
+        Kernel driver in use: ohci1394
+
+00:10.0 USB Controller: VIA Technologies, Inc. VT82xxxxx UHCI USB 1.1 Controller (rev 61) (prog-if 00 [UHCI])
+        Subsystem: VIA Technologies, Inc. VT82xxxxx UHCI USB 1.1 Controller
+        Flags: bus master, medium devsel, latency 22, IRQ 28
+        I/O ports at 1080 [size=32]
+        Capabilities: [80] Power Management version 2
+        Kernel driver in use: uhci_hcd
+
+00:10.1 USB Controller: VIA Technologies, Inc. VT82xxxxx UHCI USB 1.1 Controller (rev 61) (prog-if 00 [UHCI])
+        Subsystem: VIA Technologies, Inc. VT82xxxxx UHCI USB 1.1 Controller
+        Flags: bus master, medium devsel, latency 22, IRQ 27
+        I/O ports at 10a0 [size=32]
+        Capabilities: [80] Power Management version 2
+        Kernel driver in use: uhci_hcd
+
+00:10.2 USB Controller: VIA Technologies, Inc. USB 2.0 (rev 63) (prog-if 20 [EHCI])
+        Subsystem: VIA Technologies, Inc. USB 2.0
+        Flags: bus master, medium devsel, latency 22, IRQ 26
+        Memory at 48000800 (32-bit, non-prefetchable) [size=256]
+        Capabilities: [80] Power Management version 2
+        Kernel driver in use: ehci_hcd
+}}}
+latency 0, 22,22,22 is probably from something unitialized.
+== Kernel Output (preliminary) ==
+{{{
+RedBoot> fis load linux
+RedBoot> exec
+Using base address 0x00161400 and length 0x000ea8fc
+Uncompressing Linux................................................................ done, booting the kernel.
+Linux version 2.6.26.8 (knoppix@Knoppix) (gcc version 4.1.2) #5 Sun Nov 23 22:50:00 EST 2008
+CPU: XScale-IXP42x Family [690541f1] revision 1 (ARMv5TE), cr=000039ff
+Machine: USRobotics USR8200
+Memory policy: ECC disabled, Data cache writeback
+CPU0: D VIVT undefined 5 cache
+CPU0: I cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+CPU0: D cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 16256
+Kernel command line: root=/dev/mtdblock2 rootfstype=squashfs,jffs2 noinitrd console=ttyS0,115200 init=/etc/preinit
+PID hash table entries: 256 (order: 8, 1024 bytes)
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 64MB = 64MB total
+Memory: 62860KB available (1788K code, 141K data, 84K init)
+SLUB: Genslabs=12, HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+Mount-cache hash table entries: 512
+CPU: Testing write buffer coherency: ok
+net_namespace: 480 bytes
+NET: Registered protocol family 16
+IXP4xx: Using 16MiB expansion bus window size
+PCI: IXP4xx is host
+PCI: IXP4xx Using direct access for memory space
+PCI: bus0: Fast back to back transfers disabled
+dmabounce: registered device 0000:00:0f.0 on pci bus
+dmabounce: registered device 0000:00:10.0 on pci bus
+dmabounce: registered device 0000:00:10.1 on pci bus
+dmabounce: registered device 0000:00:10.2 on pci bus
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
+TCP: Hash tables configured (established 2048 bind 2048)
+TCP reno registered
+NET: Registered protocol family 1
+IXP4xx Queue Manager initialized.
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+Registering mini_fo version $Id$
+JFFS2 version 2.2. (NAND) (SUMMARY)  Â© 2001-2006 Red Hat, Inc.
+msgmni has been set to 122
+io scheduler noop registered
+io scheduler deadline registered (default)
+Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing disabled
+serial8250.0: ttyS0 at MMIO 0xc8001000 (irq = 13) is a XScale
+console [ttyS0] enabled
+serial8250.0: ttyS1 at MMIO 0xc8000000 (irq = 15) is a XScale
+eth0: MII PHY 16 on NPE-C
+eth1: MII PHY 9 on NPE-B
+IXP4XX-Flash.0: Found 1 x16 devices at 0x0 in 16-bit bank
+ Intel/Sharp Extended Query Table at 0x0031
+Using buffer write method
+cfi_cmdset_0001: Erase suspend on write enabled
+Searching for RedBoot partition table in IXP4XX-Flash.0 at offset 0xfe0000
+5 RedBoot partitions found on MTD device IXP4XX-Flash.0
+Creating 5 MTD partitions on "IXP4XX-Flash.0":
+0x00000000-0x00060000 : "RedBoot"
+0x00060000-0x00160000 : "linux"
+0x00160000-0x00fe0000 : "rootfs"
+mtd: partition "rootfs" set to be root filesystem
+mtd: partition "rootfs_data" created automatically, ofs=740000, len=8A0000
+0x00740000-0x00fe0000 : "rootfs_data"
+0x00fe0000-0x00fff000 : "FIS directory"
+0x00fff000-0x01000000 : "RedBoot config"
+i2c /dev entries driver
+i2c-gpio: probe failed: -19
+IXP4xx Watchdog Timer: heartbeat 60 sec
+TCP westwood registered
+NET: Registered protocol family 17
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+XScale DSP coprocessor detected.
+drivers/rtc/hctosys.c: unable to open rtc device (rtc0)
+VFS: Mounted root (squashfs filesystem) readonly.
+Freeing init memory: 84K
+Please be patient, while OpenWrt loads ...
+- preinit -
+Press CTRL-C for failsafe
+switching to jffs2
+mini_fo: using base directory: /
+mini_fo: using storage directory: /jffs
+- init -
+
+Please press Enter to activate this console. firmware: requesting NPE-C
+NPE-C: firmware's license can be found in /usr/share/doc/LICENSE.IPL
+NPE-C: firmware functionality 0x5, revision 0x2:1
+eth0: link down
+br-lan: Dropping NETIF_F_UFO since no NETIF_F_HW_CSUM feature.
+device eth0 entered promiscuous mode
+ieee80211: 802.11 data/management/control stack, git-1.1.13
+ieee80211: Copyright (C) 2004-2005 Intel Corporation <jketreno@linux.intel.com>
+eth0: link up, 100Mbps, full-duplex, lpa 0x41E1
+br-lan: port 1(eth0) entering learning state
+br-lan: topology change detected, propagating
+br-lan: port 1(eth0) entering forwarding state
+SCSI subsystem initialized
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+PPP generic driver version 2.4.2
+usbcore: registered new interface driver prism54usb
+ip_tables: (C) 2000-2006 Netfilter Core Team
+Driver 'sd' needs updating - please use bus_type methods
+PCI: enabling device 0000:00:10.2 (0140 -> 0142)
+ehci_hcd 0000:00:10.2: EHCI Host Controller
+ehci_hcd 0000:00:10.2: new USB bus registered, assigned bus number 1
+ehci_hcd 0000:00:10.2: irq 26, io mem 0x48000800
+ehci_hcd 0000:00:10.2: USB 2.0 started, EHCI 1.00, driver 10 Dec 2004
+usb usb1: configuration #1 chosen from 1 choice
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 4 ports detected
+nf_conntrack version 0.5.0 (1024 buckets, 4096 max)
+usb 1-1: new high speed USB device using ehci_hcd and address 2
+usb 1-1: configuration #1 chosen from 1 choice
+IPP2P v0.8.1_rc1 loading
+IMQ driver loaded successfully.
+        Hooking IMQ before NAT on PREROUTING.
+        Hooking IMQ after NAT on POSTROUTING.
+ipt_time loading
+PCI: enabling device 0000:00:0f.0 (01c0 -> 01c3)
+ohci1394: fw-host0: OHCI-1394 1.1 (PCI): IRQ=[25]  MMIO=[48000000-480007ff]  Max Packet=[65536]  IR/IT contexts=[4/4]
+USB Universal Host Controller Interface driver v3.0
+PCI: enabling device 0000:00:10.0 (0140 -> 0141)
+uhci_hcd 0000:00:10.0: UHCI Host Controller
+uhci_hcd 0000:00:10.0: new USB bus registered, assigned bus number 2
+uhci_hcd 0000:00:10.0: irq 28, io base 0x00001080
+usb usb2: configuration #1 chosen from 1 choice
+hub 2-0:1.0: USB hub found
+hub 2-0:1.0: 2 ports detected
+PCI: enabling device 0000:00:10.1 (0140 -> 0141)
+uhci_hcd 0000:00:10.1: UHCI Host Controller
+uhci_hcd 0000:00:10.1: new USB bus registered, assigned bus number 3
+uhci_hcd 0000:00:10.1: irq 27, io base 0x000010a0
+usb usb3: configuration #1 chosen from 1 choice
+hub 3-0:1.0: USB hub found
+hub 3-0:1.0: 2 ports detected
+Loaded prism54 driver, version 1.2
+Initializing USB Mass Storage driver...
+scsi0 : SCSI emulation for USB Mass Storage devices
+usbcore: registered new interface driver usb-storage
+USB Mass Storage support registered.
+fuse init (API version 7.9)
+scsi 0:0:0:0: Direct-Access     PNY      Attache 2.0      4.70 PQ: 0 ANSI: 0 CCS
+sd 0:0:0:0: [sda] 239872 512-byte hardware sectors (123 MB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+sd 0:0:0:0: [sda] 239872 512-byte hardware sectors (123 MB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+ sda: sda1
+sd 0:0:0:0: [sda] Attached SCSI removable disk
+sd 0:0:0:0: Attached scsi generic sg0 type 0
+EXT2-fs warning: mounting unchecked fs, running e2fsck is recommended
+
+
+
+BusyBox v1.11.3 (2008-11-22 18:03:39 EST) built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r13311) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:/#
+}}}
+== Attachments ==
+Here is a list of all the files provided so far.[[AttachList]] 
+----
+ . CategoryModel ["CategoryIXP4xxDevice"]
+----
+["CategoryIXP4xxDevice"]

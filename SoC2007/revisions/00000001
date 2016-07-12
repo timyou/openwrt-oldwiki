@@ -1,0 +1,24 @@
+Please make sure you've read [http://code.google.com/p/google-summer-of-code/wiki/AdviceforMentors Advice for Mentors] directives before contributing ideas...
+
+= Ideas =
+
+== Complete AR7Port ==
+
+Take a step forward on [:AR7Port] by booting a linux kernel on [:OpenWrtDocs/Hardware/ZyXEL/Prestige_660HW-61]. The findings on this platform will be useful for other AR7-based router brands.
+
+Most work around this device has been done using [http://www.ixo.de/info/zyxel_uclinux/ uCLinux], but now it's time to get OpenWRT working on it and get its main hardware components
+supported:
+
+ * Filesystem mountpoints
+ * ADSL
+ * ACX100 WIFI
+
+In addition, firmware flashing scripts are needed for this router series: CRC signatures used by the device's web firmware flasher have already been identified. These scripts will avoid the
+need to build a cable to flash the firmware.
+
+Again, all these findings should be useful for several other similar brands using the same chip, not just for this particular device.
+
+Skills required: 
+ * Basic electronics (needed to build a serial cable with a TTL level inverter)
+ * Knowledge about MIPS architecture
+ * Good level at C and MIPS assembly

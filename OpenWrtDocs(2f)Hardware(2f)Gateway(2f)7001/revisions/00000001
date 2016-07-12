@@ -1,0 +1,148 @@
+'''Gateway 7001 Series'''
+
+{{{
+Bootloader: RedBoot
+CPU: Intel IXP422
+CPU Speed: 266 Mhz
+Flash size: 8 MB
+RAM: 32 MB
+Wireless: 1 or 2 Atheros mini-PCI cards (single/dualband)
+Ethernet: 2 port connected to the CPU
+USB: none
+Serial: yes
+JTAG: yes (standard 20 pin ARM JTAG)
+}}}
+
+Serial port (labeled JP1, @115200bps):
+
+{{{
+RX  o
+    o
+VCC o
+GND o
+TX  o
+
+LAN ports
+}}}
+
+Factory dmesg (won't be last too long ;) ):
+{{{
++Ethernet eth0: MAC address 00:00:83:38:50:02
+IP: 0.0.0.0/255.255.255.0, Gateway: 0.0.0.0
+Default server: 0.0.0.0, DNS server IP: 0.0.0.0
+
+RedBoot(tm) bootstrap and debug environment [ROM]
+Red Hat certified release, version 1.92 - built 17:26:35, Dec  4 2003
+
+Platform: Gateway 7001 AP Platform (XScale) 
+Copyright (C) 2000, 2001, 2002, Red Hat, Inc.
+
+RAM: 0x00000000-0x02000000, 0x0001c238-0x01fd1000 available
+FLASH: 0x50000000 - 0x50800000, 64 blocks of 0x00020000 bytes each.
+== Executing boot script in 1.000 seconds - enter ^C to abort
+RedBoot> fis load kernel
+RedBoot> exec
+Using base address 0x01600000 and length 0x00100000
+Uncompressing Linux......................................... done, booting the kernel.
+Linux version 2.4.20 (carter@oink) (gcc version 3.2.1) #2 Fri Mar 5 15:59:24 PST 2004
+CPU: Intel XScale-IXP425/IXC1100 revision 1
+Machine: Gateway 7001 Access Point
+alloc_bootmem_low
+memtable_init
+Security risk: creating user accessible mapping for 0x60000000 at 0xff00f000
+Security risk: creating user accessible mapping for 0x51000000 at 0xf1000000
+Security risk: creating user accessible mapping for 0x55000000 at 0xf5000000
+On node 0 totalpages: 8192
+zone(0): 8192 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: console=ttyS0,115200 root=/dev/mtdblock2 rootfstype=cramfs ro ip=off mem=32M@0x00000000
+Calibrating delay loop... 263.78 BogoMIPS
+Memory: 32MB = 32MB total
+Memory: 30992KB available (1055K code, 260K data, 72K init)
+XScale Cache/TLB Locking Copyright(c) 2001 MontaVista Software, Inc.
+Dentry cache hash table entries: 4096 (order: 3, 32768 bytes)
+Inode cache hash table entries: 2048 (order: 2, 16384 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
+POSIX conformance testing by UNIFIX
+PCI Autoconfig: Found Bus 0, Device 1, Function 0
+PCI Autoconfig: BAR 0, Mem, size=0x10000, address=0x4bff0000
+PCI: bus0: Fast back to back transfers enabled
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0xff001003 (irq = 13) is a XScale UART
+Software Watchdog Timer: 0.05, timer margin: 60 sec
+RAMDISK driver initialized: 16 RAM disks of 8096K size 1024 blocksize
+loop: loaded (max 8 devices)
+Creating 8 MTD partitions on "IXP425 Flash":
+0x00000000-0x00040000 : "RedBoot"
+0x00040000-0x00140000 : "kernel"
+0x00140000-0x004c0000 : "rootfs"
+0x004c0000-0x00500000 : "default"
+0x00500000-0x00600000 : "config"
+0x00600000-0x007c0000 : "unallocated space"
+0x007c0000-0x007c1000 : "RedBoot config"
+mtd: partition "RedBoot config" doesn't end on an erase block -- force read-only
+0x007e0000-0x00800000 : "FIS directory"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 4096)
+ip_conntrack version 2.1 (256 buckets, 2048 max) - 320 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+Bridge firewalling registered
+802.1Q VLAN Support v1.7 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+NetWinder Floating Point Emulator V0.95 (c) 1998-1999 Rebel.com
+VFS: Mounted root (cramfs filesystem) readonly.
+Freeing init memory: 72K
+
+init started:  BusyBox v0.60.1 (2004.03.05-23:52+0000) multi-call binary
+
+Please press Enter to activate this console. 
+Can't open /dev/tty0 - skipping
+Module init.
+ixp425_eth: 
+Initializing IXP425 NPE Ethernet driver software v. 0.1.9 (patch 20040129) (1_4)
+ixp425_eth: CPU clock speed (approx) = 0 MHz
+ixp425_eth: Found PHY 0 at 1
+ixp425_eth: Found PHY 1 at 2
+ixp425_eth: eth0 is using the PHY at address 1
+ixp425_eth: eth1 is using the PHY at address 2
+1 <6>ar5211.c : Atheros AR5211 driver v0.0
+Attach AR5212 0x13 0xc1a32920
+wlan0 revisions: mac 5.9 phy 4.3 analog 4.6 eeprom 4.8
+ar5211 hwaddr: 00:E0:B8:76:24:9A
+ar5211 wlan0.11: Device at 0x4bff0000, IRQ 28
+cramfs: wrong magic
+apconfd: Debug level is now 0.
+connect: Connection refused
+device wlan0 is already a member of a bridge; can't enslave it to bridge br0.
+SIOCGIFFLAGS: No such device
+SIOCSIFADDR: No such device
+SIOCGIFFLAGS: No such device
+SIOCGIFFLAGS: No such device
+SIOCGIFFLAGS: No such device
+SIOCGIFFLAGS: No such device
+SIOCGIFFLAGS: No such device
+connect: Connection refused
+device wlan0 is already a member of a bridge; can't enslave it to bridge br0.
+device eth0 is already a member of a bridge; can't enslave it to bridge br0.
+device wlan0 is already a member of a bridge; can't enslave it to bridge br0.
+bridge brguest doesn't exist!
+bridge brguest doesn't exist!
+SIOCADDRT: Network is unreachable
+apconfd: Initialization complete.
+SIOCDELRT: No such process
+apconfd: dhcpc: Interface br0 obtained lease on 192.168.1.116.
+SIOCDELRT: No such process
+}}}

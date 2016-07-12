@@ -1,0 +1,18 @@
+
+'''Belkin F5D8231-4 N1'''
+
+The hardware in this router is almost identical to the Gateworks/Avila boards (same processor and ethernet hardware), and support for that should work on this board with only minor changes. 
+
+=== Serial Port ===
+
+This is a Marvell board, and its serial pins are identical to the [:OpenWrtDocs/Hardware/Airlink101/AR525W:AR525W]. 
+
+Serial connection parameters are : 112500,8N1
+
+=== Linux ===
+
+This is one of the first routers to run Linux 2.6 out of the box.  This has Linux 2.6.10 with IXP patches (which has full support in Kamikaze), using uClibc 0.98, using uboot as the bootloader.  The Atheros N wifi card is supported by MadWifi (possibly a modified version).
+
+=== Sources ===
+
+Belkin don't appear to offer sources for this model at this time.

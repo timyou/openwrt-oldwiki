@@ -1,0 +1,7 @@
+== Fon (Accton Manufactured) ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''boot_wait''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Other''' ||'''Status''' ||
+||[https://shop.fon.com/FonShop/shop/US/ShopController?view=product&product=PRD-001 La Fonera] ||FON2100 ||[http://www.atheros.com/pt/bulletins/AR5006AP_GBulletin.pdf Atheros AR2315] @ 180MHz ||8MB ||16MB ||Atheros SoC ||None ||Redboot* ||Yes ||Yes ||No ||N/A ||[:OpenWrtDocs/Hardware/Fon/Fonera:Kamikaze] ||
+||[https://shop.fon.com/FonShop/shop/US/ShopController?view=product&product=PRD-018 La Fonera] ||FON2200 ||[http://www.atheros.com/pt/bulletins/AR5006AP_GBulletin.pdf Atheros AR2315] @ 180MHz ||8MB ||16MB ||Atheros SoC ||None ||Redboot* ||Yes ||Yes ||No ||N/A ||[:OpenWrtDocs/Hardware/Fon/Fonera:Kamikaze] ||
+||[https://shop.fon.com/FonShop/shop/US/ShopController?view=product&product=PRD-018 Fonera+] ||FON2201 ||[http://www.atheros.com/pt/bulletins/AR5006AP_GBulletin.pdf Atheros AR2315] @ 180MHz ||8MB ||16MB ||Atheros SoC ||Marvell 88E6060 ||Redboot* ||Yes ||Yes ||No ||N/A ||[:OpenWrtDocs/Hardware/Fon/Fonera+:Kamikaze] ||
+||La Fonera 2.0 ||FON2202 ||[http://www.atheros.com/pt/bulletins/AR5006AP_GBulletin.pdf Atheros AR2315] @ 180MHz ||8MB ||32MB ||Atheros SoC ||Marvell 88E6060 ||Redboot* ||Yes ||Yes ||Yes ||N/A ||[:OpenWrtDocs/Hardware/Fon/Fonera2:Kamikaze] ||
+*Redboot provides a boot wait option.

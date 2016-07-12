@@ -1,0 +1,92 @@
+= Table of Contents =
+
+[[TableOfContents(2)]]
+
+= Siemens Gigaset SX551 =
+
+The Siemens Gigaset SX551 is an WLAN DSL Router. This device is also distibuted with a modified firmware by the Dutch provider KPN as the first generation Experia box (silver version). This is the version I have.
+
+== Basic hardware info ==
+The device has the following connectors on the rear (left to right).
+ * Auxiliary antenna.
+ * Telephone 1 connector (POTS).
+ * Telephone 2 connector (POTS).
+ * Line connector (Fallback).
+ * ADSL input connector.
+ * 4 numbered RJ45 10/100 MBit connectors.
+ * One USB 2.0 Port (2nd can be added with soldering).
+ *  Reset button.
+ * Large On/Off button.
+ * Power connector (12V 1.2A).
+ * Main antenna.
+
+It supports ADSL/ADSL2/ADSL2+ connections, WEP/WPA.
+Standard the USB port can be used for a fileserver (FAT only) or a very small number of printers.
+
+== Opening the casing ==
+First remove the 4 screws on the bottom site (inside the U shaped anti-skid pads).
+Around the device there are 5 clips, to click them open you must pull the underside outward.
+The clips are:
+ * Rear.
+  * Above the reset button.
+ * Sides.
+  * Centered.
+ * Front.
+  * Around OK LED.
+  * Around Tel1 LED.
+
+== Extended hardware information ==
+=== Main processor ===
+The main processor is an [http://www.ti.com Texas Instruments] [http://focus.ti.com.cn/pdfs/bcg/ar7wi_fact_sheet.pdf TNETD7300AZDW] Processor, covered by a soldered in place cooler, an AR7 that should work with the [:AR7Port] of openWRT (yet untested).
+
+=== Memory ===
+Onboard is a [http://www.psc.com.tw/english/index.jsp PSC] [http://www.zentel.com.tw/datasheet/256SD(3)PSC_V14-1.pdf A2V46S40BTP] 256Mbit (32MiB) SDRAM Memory chip.
+
+=== Flash ===
+The flash chip is an [http://www.excelsemi.com/ Excelsemi] [http://www.excelsemi.com/newsub_2_2.htm ES29LV160DB-70RTG] 16Mbit (2MiB) 3.0V Flash memory, hopefully this is enough for OpenWRT.
+
+=== USB 2.0 Controller ===
+The device probably will not have any USB problems since the USB controller is a seperate chip.
+The controller is a [http://www.via.com.tw/ VIA] [http://www.via.com.tw/en/products/peripherals/usb/vt6212l/ VT6212L]. A 4-port USB 2.0 Host controller.
+Unfortunatly only one port is external by default, but this can be expanded to 2 ports by adding some components and a larger connector, as soon as this works it will be posted here.
+
+=== VoIP Controller ===
+VoIP is done by a VoicePump VP101X12DQC Chip (located at the bottom side of the PCB). This chip is not yet supported.
+An [http://www.legerity.com/ LegerIty] [http://www.legerity.com/products.php?cid=&sid=13&bpid=46 Le9502BTC] Provides a ringing interface circuit.
+Some other inferfacing is done by a [http://www.clare.com/Products/LITELINK.htm LiteLink] [http://www.clare.com/Products/LITELINK.htm CPC5621A] Phone Line Interface IC
+Both seem to connect to the VoicePump.
+
+=== Switch chip ===
+The internal switch is a [http://www.marvell.com/ Marvell] [http://www.marvell.com/products/switching/linkstreet/LinkStreet_88E6060.pdf 88E6060-RCJ1] 6-port (4 external, 1 to the router itself, 1 unused) 10/100 switch with autosensing.
+
+=== Wireless card ===
+Chipset yet unknown (hidden under a soldered on metal casing). It is an mini-pci wlan card with 2 antenna's. 
+
+=== Hardware with unknown function ===
+[http://www.ti.com/ Texas Instruments] TNETV100PZ, probably some sort of companion chip of the AR7.
+
+== Pinouts ==
+I'm still figuring out pinouts. Most headers are useless and only used to glue the wireless wires to.
+
+Userless headers:
+ * P1 - Next to the wlan card.
+ * P2 - At the far side of the wlan card.
+ * P3 - At an slight angle nest to the 4-port RJ45 block.
+ * P4 - In the corner of the auxilery antenna.
+ * P5 - Between the USB 2.0 controller and the main processor.
+
+JP4 - 4 Pin, directly connects to the Line port on the rear of the modem.
+J4 - 10 Pin. Probably jtag and/or serial.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Yet unknown.
+ 1. Gnd.
+ 1. +3.3V.
+
+== OpenWRT status ==
+Untested

@@ -1,0 +1,13 @@
+1171330217000000	00000001	SAVENEW	OpenWrtDocs(2f)IPTables	66.66.129.249	cpe-66-66-129-249.rochester.res.rr.com	1171329193.37.24458		
+1171339007000000	00000002	SAVE	OpenWrtDocs(2f)IPTables	66.66.129.249	cpe-66-66-129-249.rochester.res.rr.com	1171329193.37.24458		
+1171339735000000	00000003	SAVE	OpenWrtDocs(2f)IPTables	66.66.129.249	cpe-66-66-129-249.rochester.res.rr.com	1171329193.37.24458		
+1171373797000000	00000004	SAVE	OpenWrtDocs(2f)IPTables	129.21.95.9	henryjackson78.cims.rit.edu	1171329193.37.24458		not done yet
+1171374077000000	00000005	SAVE	OpenWrtDocs(2f)IPTables	129.21.95.9	henryjackson78.cims.rit.edu	1171329193.37.24458		wording changes in introduction
+1171385810000000	00000006	SAVE	OpenWrtDocs(2f)IPTables	129.21.95.9	henryjackson78.cims.rit.edu	1171329193.37.24458		
+1171385954000000	00000007	SAVE	OpenWrtDocs(2f)IPTables	129.21.95.9	henryjackson78.cims.rit.edu	1171329193.37.24458		
+1171389691000000	00000008	SAVE	OpenWrtDocs(2f)IPTables	129.21.95.9	henryjackson78.cims.rit.edu	1171329193.37.24458		improved example redirection table to include limits
+1197368068000000	00000009	SAVE	OpenWrtDocs(2f)IPTables	76.246.27.215	adsl-76-246-27-215.dsl.lsan03.sbcglobal.net	1176696464.68.26723		Typo and punctuation corrections.
+1197368128000000	00000010	SAVE	OpenWrtDocs(2f)IPTables	76.246.27.215	adsl-76-246-27-215.dsl.lsan03.sbcglobal.net	1176696464.68.26723		
+1207041644000000	00000011	SAVE	OpenWrtDocs(2f)IPTables	81.4.245.148	81.4.245.148	1184930000.8.16716		
+1237661438000000	00000012	SAVE	OpenWrtDocs(2f)IPTables	206.47.37.39	cpu1808.adsl.bellglobal.com	1237660238.39.36779		clarified use of forwarding_wan
+1237665035000000	00000013	SAVE	OpenWrtDocs(2f)IPTables	206.47.37.39	cpu1808.adsl.bellglobal.com	1237660238.39.36779		

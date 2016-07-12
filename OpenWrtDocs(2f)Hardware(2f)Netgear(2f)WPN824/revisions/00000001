@@ -1,0 +1,11 @@
+Serial port is JP1, pinout as follows:
+
+{{{
+      1
+      o o - VCC
+ RX - o o
+      o o
+ TX - o o
+GND - o o
+      JP1
+}}}

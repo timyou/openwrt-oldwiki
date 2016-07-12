@@ -1,0 +1,6 @@
+#acl Known:read,write All:read
+'''Buffalo hardware notes'''
+
+ * [:OpenWrtDocs/Hardware/Buffalo/WBR-G54: WBR-G54]
+ * [:OpenWrtDocs/Hardware/Buffalo/WBR2-G54: WBR2-G54]
+ * [:OpenWrtDocs/Hardware/Buffalo/WLA-G54: WLA-G54]

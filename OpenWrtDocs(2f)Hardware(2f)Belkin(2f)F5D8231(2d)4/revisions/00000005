@@ -1,0 +1,113 @@
+'''Belkin F5D8231-4 N1'''
+
+The comments below apply to revision 1 of this router.  The revision two of this board appears (unconfirmed) much more like to the [:OpenWrtDocs/Hardware/Netgear/WNR854:Netgear WNR854] and [:OpenWrtDocs/Hardware/Airlink101/AR625W:Airlink AR625W].
+
+The hardware in this router is almost identical to the Gateworks/Avila boards (same processor and ethernet hardware), and support for that should work on this board with only minor changes.
+
+=== Serial Port ===
+This is a Marvell board, and its serial pins are identical to the ["OpenWrtDocs/Hardware/Airlink101/AR525W"].
+
+Serial connection parameters are : 112500,8N1
+
+=== Linux ===
+This is one of the first routers to run Linux 2.6 out of the box.  This has Linux 2.6.10 with IXP patches (which has full support in Kamikaze), using uClibc 0.98, using uboot as the bootloader.  The Atheros N wifi card is supported by MadWifi (possibly a modified version).
+
+Boot log:
+
+{{{
+Linux version 2.6.10_dev-ixdp42x-arm_xscale_be (tom@localhost) (gcc version 3.4.3 (MontaVista 3.4.3-25
+.0.30.0501131 2005-07-23)) #58 Mon May 22 04:52:54 EDT 2006
+CPU: XScale-IXP42x Family [690541d1] revision 1 (ARMv5TE)
+CPU0: D VIVT undefined 5 cache
+CPU0: I cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+CPU0: D cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+Machine: ADI Engineering Coyote
+Memory policy: ECC disabled, Data cache writeback
+On node 0 totalpages: 8192
+  DMA zone: 8192 pages, LIFO batch:2
+  Normal zone: 0 pages, LIFO batch:1
+  HighMem zone: 0 pages, LIFO batch:1
+Built 1 zonelists
+Kernel command line: console=ttyS0,115200 root=/dev/mtdblock2 noinitrd mem=32M@0x0
+PID hash table entries: 256 (order: 8, 4096 bytes)
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 32MB = 32MB total
+Memory: 30208KB available (1614K code, 302K data, 284K init)
+Calibrating delay loop... 399.76 BogoMIPS (lpj=1998848)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+CPU: Testing write buffer coherency: ok
+spawn_desched_task(00000000)
+desched cpu_callback 3/00000000
+ksoftirqd started up.
+desched cpu_callback 2/00000000
+desched thread 0 started up.
+NET: Registered protocol family 16
+PCI: IXP4xx is host
+PCI: IXP4xx Using direct access for memory space
+PCI: bus0: Fast back to back transfers enabled
+dmabounce: registered device 0000:00:01.0 on pci bus
+NetWinder Floating Point Emulator V0.97 (double precision)
+Squashfs 2.2-r2 (released 2005/09/08) (C) 2002-2005 Phillip Lougher
+devfs: 2004-01-31 Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+Initializing Cryptographic API
+IXP4xx Watchdog Timer: heartbeat 60 sec
+Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing disabled
+ttyS0 at MMIO 0xc8001000 (irq = 13) is a XScale
+io scheduler noop registered
+loop: loaded (max 8 devices)
+PPP generic driver version 2.4.2
+PPP Deflate Compression module registered
+NET: Registered protocol family 24
+elevator: using noop as default io scheduler
+IXP4XX-Flash0: Found 1 x16 devices at 0x0 in 16-bit bank
+ Amd/Fujitsu Extended Query Table at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+RedBoot partition parsing not available
+cmdlinepart partition parsing not available
+Using static MTD partitions.
+Creating 6 MTD partitions on "IXP4XX-Flash0":
+0x00000000-0x00040000 : "redboot"
+0x00040000-0x003a0000 : "kernel"
+0x00160000-0x003a0000 : "romfs"
+0x003a0000-0x003c0000 : "nvram"
+0x003c0000-0x003e0000 : "rbconf"
+0x003e0000-0x00400000 : "rbfis"
+u32 classifier
+    OLD policer on
+NET: Registered protocol family 2
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 4096)
+IPv4 over IPv4 tunneling driver
+GRE over IPv4 tunneling driver
+ip_conntrack version 2.1 (131072 buckets, 131072 max) - 260 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing init memory: 284K
+gpio_pin: module license 'unspecified' taints kernel.
+ixp400: Module init.
+ixp400_eth: Initializing IXP400 NPE Ethernet driver software v. 1.4A
+ixp400_eth: CPU clock speed (approx) = 399 MHz
+[warning] Warning: the NPE A component you specified does not exist
+ixEthMiiPhyId[0]=02430d80
+ixEthMiiPhyId[1]=02430d80
+ixEthMiiPhyId[2]=02430d80
+ixEthMiiPhyId[3]=02430d80
+ixEthMiiPhyId[4]=02430d80
+ixEthMiiPhyId[5]=31003100
+[error] ixEthMiiPhyScan : unexpected Mii PHY ID 31003100
+ixp400_eth: ixp0 is using NPEB and the PHY at address 0
+ixp400_eth: ixp1 is using NPEC and the PHY at address 4
+ixp400_eth: Use default MAC address 00:02:b3:01:01:01 for port 0
+ixp400_eth: Use default MAC address 00:02:b3:02:02:02 for port 1
+}}}
+=== Sources ===
+http://www.belkin.com/uk/support/article/?lid=enu&pid=F5D8231-uk4&aid=9126&scid=0
+
+Category80211nDevice
+Category100baseTDevice

@@ -1,0 +1,13 @@
+1132172757000000	00000001	SAVENEW	PackagesOnExternalMediaHowTo	66.133.216.136	user-118bm48.cable.mindspring.com	1130879525.7.35920		
+1132172841000000	00000002	SAVE	PackagesOnExternalMediaHowTo	66.133.216.136	user-118bm48.cable.mindspring.com	1130879525.7.35920		
+1132261475000000	00000003	SAVE	PackagesOnExternalMediaHowTo	66.215.181.109	66-215-181-109.dhcp.rvsd.ca.charter.com	1130879525.7.35920		
+1143702357000000	00000004	SAVE	PackagesOnExternalMediaHowTo	71.131.79.132	adsl-71-131-79-132.dsl.sntc01.pacbell.net	1143702176.17.16365		init scripts will not run without the executable bit set
+1143714920000000	00000005	SAVE	PackagesOnExternalMediaHowTo	84.145.86.63	p5491563F.dip.t-dialin.net	1117454370.53.3153		use the backports repository
+1165095570000000	00000006	SAVE	PackagesOnExternalMediaHowTo	62.214.203.207	i3ED6CBCF.versanet.de	1165082323.96.56457		/etc/init.d/S20externalmount changed to S60 bec. S20 doesn't always work
+1179861566000000	00000007	SAVE	PackagesOnExternalMediaHowTo	74.117.14.200	CPE001731baec0d-CM0013718cd510.cpe.net.cable.rogers.com	1179450513.73.50110		fixed filename error
+1194210512000000	00000008	SAVE	PackagesOnExternalMediaHowTo	66.102.80.243	cbl-66-102-80-243.wtccommunications.ca	1193787179.04.52585		flash vs. hdd
+1194210737000000	00000009	SAVE	PackagesOnExternalMediaHowTo	66.102.80.243	cbl-66-102-80-243.wtccommunications.ca	1193787179.04.52585		
+1194210976000000	00000010	SAVE	PackagesOnExternalMediaHowTo	66.102.80.243	cbl-66-102-80-243.wtccommunications.ca	1193787179.04.52585		+optware
+1199309620000000	00000011	SAVE	PackagesOnExternalMediaHowTo	83.171.152.218	DSL01.83.171.152.218.ip-pool.NEFkom.net	1199218473.85.59160		start-script
+1199311296000000	00000012	SAVE	PackagesOnExternalMediaHowTo	83.171.152.218	DSL01.83.171.152.218.ip-pool.NEFkom.net	1199218473.85.59160		
+1221518377000000	00000013	SAVE	PackagesOnExternalMediaHowTo	83.27.90.1	axe1.neoplus.adsl.tpnet.pl	1221518173.49.8914		fixed file name

@@ -1,0 +1,291 @@
+= Description =
+Broadcom 2-port router with Wi-Fi (WDS compatible with Linksys WRT's) running Linux 2.6.x.x
+
+ * 1 pseudo-FXO
+ * 1 FXS
+ * 5 Wireless DECT Ports
+ * ADSL Modem
+ * 2-port hub
+
+= Clones =
+
+* BT Home Hub v1.0 - v1.1 ?
+* Speedtouch 790
+
+== Similar ==
+
+* Speedtouch 7G
+
+= Circuit Board =
+
+http://www.homehubhacks.co.uk/uploads/HHH/circuit_back.jpg
+http://www.homehubhacks.co.uk/uploads/HHH/circuit_broadcom.jpg
+http://www.homehubhacks.co.uk/uploads/HHH/circuit_front.jpg
+
+= Original Firmware =
+Runs Linux
+http://forums.modem-help.co.uk/viewtopic.php?t=1014
+
+= GPL'ed Source Code =
+[http://www.btyahoo.com/broadband/adhoc_pages/gplcode.html BT Home Hub GPL Sources]
+
+= Flashing modified original firmwares =
+http://www.the-scream.co.uk/forums/t22917-11.html?
+
+
+= dmesg =
+
+{{{Username : admin
+Password : **********
+------------------------------------------------------------------------
+
+                             ______  Thomson TG790
+                         ___/_____/\
+                        /         /\\  6.2.W.1
+                  _____/__       /  \\
+                _/       /\_____/___ \  Copyright (c) 1999-2007, THOMSON
+               //       /  \       /\ \
+       _______//_______/    \     / _\/______
+      /      / \       \    /    / /        /\
+   __/      /   \       \  /    / /        / _\__
+  / /      /     \_______\/    / /        / /   /\
+ /_/______/___________________/ /________/ /___/  \
+ \ \      \    ___________    \ \        \ \   \  /
+  \_\      \  /          /\    \ \        \ \___\/
+     \      \/          /  \    \ \        \  /
+      \_____/          /    \    \ \________\/
+           /__________/      \    \  /
+           \   _____  \      /_____\/
+            \ /    /\  \    /___\/
+             /____/  \  \  /
+             \    \  /___\/
+              \____\/
+
+------------------------------------------------------------------------
+_{admin}=>debug dmesg
+Linux version 2.6.8.1 (rosan@cplx136.edegem.eu.thmulti.com) (gcc version 3.4.2) #1 Thu Aug 30 10:50:42 CEST 2007
+CPU revision is: 00029107
+Determined physical RAM map:
+ memory: 01f7d000 @ 00002000 (usable)
+On node 0 totalpages: 8063
+  DMA zone: 4096 pages, LIFO batch:1
+  Normal zone: 3967 pages, LIFO batch:1
+  HighMem zone: 0 pages, LIFO batch:1
+Built 1 zonelists
+Kernel command line: root=/dev/mtdblock1 rootfstype=squashfs
+brcm mips: enabling icache and dcache...
+Primary instruction cache 16kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 8kB 2-way, linesize 16 bytes.
+PID hash table entries: 128 (order 7: 1024 bytes)
+Using 128.000 MHz high precision timer.
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 29656k/32244k available (1467k kernel code, 2544k reserved, 544k data, 72k init, 0k highmem)
+Calibrating delay loop... 251.39 BogoMIPS
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Checking for 'wait' instruction...  unavailable.
+NET: Registered protocol family 16
+usbcore: registered new driver usbfs
+usbcore: registered new driver hub
+Bluetooth: Core ver 2.6
+NET: Registered protocol family 31
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+Squashfs 2.1 (released 2004/12/10) (C) 2002-2004 Phillip Lougher
+Unofficial version with LZMA compression. Some squashfs filesystems might not work!
+JFFS2 version 2.2. (C) 2001-2003 Red Hat, Inc.
+bcm963xx_serial driver v2.0
+Using noop io scheduler
+Thomson BCM963xx flash mapping for BTHub
+flash: Found 1 x16 devices at 0x0 in 16-bit bank
+ Amd/Fujitsu Extended Query Table at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+flash mapping initialized
+Creating 3 MTD partitions on "flash":
+0x00040000-0x00100000 : "user"
+0x001b0000-0x00800000 : "rootfs"
+0x00100010-0x001b0000 : "kernel"
+mtd: partition "kernel" doesn't start on an erase block boundary -- force read-only
+Bluetooth: HCI UART driver ver 2.1
+Bluetooth: HCI H4 protocol initialized
+Bluetooth: HCI BCSP protocol initialized
+brcmboard: brcm_board_init entry
+ERROR - Invalid number of MAC addresses (1007714320) is configured.
+NET: Registered protocol family 2
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 4096)
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+NET: Registered protocol family 15
+VFS: Mounted root (squashfs filesystem) readonly.
+Freeing unused kernel memory: 72k freed
+Algorithmics/MIPS FPU Emulator v1.5
+nmon: module license 'unspecified' taints kernel.
+Button: Character device registered successfully.
+ *** OH G997Init: txIdle set to TRUE
+pSdramPHY=0xA1FFFFF8, 0x52D0E 0xDEADBEEF
+[BCM ADSL] Firmware load : 444712 444712 LMEM=(0xFFF00000, 53772) SDRAM=(0xA1FA0000, 390932)
+AdslCoreHwReset: AdslOemDataAddr = 0xA1FFDE24
+ADSL PHY version is A2pBT009j.d18
+b6w_init
+mpi: No Card is in the PCMCIA slot
+mpi: device 0x4318 found in PCI slot 1, function 0
+wl: srom not detected, using main memory mapped srom info (wombo board)
+wl0: wlc_attach: using main broad MAC address base in NVRAM (wombo board srom: 6 )
+wl0 MAC Address: 00:1D:68:4C:8C:F9
+NET: Registered protocol family 3
+NET: Registered protocol family 9
+NET: Registered protocol family 4
+NET: Registered protocol family 5
+NET: Registered protocol family 18
+NET: Registered protocol family 25
+ohci_hcd: 2004 Feb 02 USB 1.1 'Open' Host Controller (OHCI) Driver (PCI)
+ohci_hcd: block sizes: ed 64 td 64
+PCI: Enabling device 0000:00:09.0 (0000 -> 0002)
+ohci_hcd 0000:00:09.0: PCI device 14e4:6300 (Broadcom Corporation)
+PCI: Setting latency timer of device 0000:00:09.0 to 64
+ohci_hcd 0000:00:09.0: irq 20, pci mem c022db00
+ohci_hcd 0000:00:09.0: new USB bus registered, assigned bus number 1
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 2 ports detected
+usblp: falsely claims to have parameter proto_bias
+usbcore: registered new driver usblp
+drivers/usb/class/usblp.c: v0.13: USB Printer Device Class driver
+SCSI subsystem initialized
+Initializing USB Mass Storage driver...
+usbcore: registered new driver usb-storage
+USB Mass Storage support registered.
+krtp ver 2.8 softdsp-vad-multiline-wb (Aug 30 2007 11:01:52)
+usage: insmod tty_spi spi_cs=N
+CS=0 date: Aug 30 2007 time: 11:02:26, speed 1
+[adsl] trace = 5 0
+krtp_add_session : udp_fd : 80
+krtp_add_session : udp_sock : 81b5db80
+krtp_add_session : destination address is blank => force receive only
+udp sock allocation : d0
+changed to : 20
+krtp_add_session : g711
+sco_frames_per_pkt = 2
+krtp_tone_start
+FREQ= 8000
+SCO
+ 1  TONE = no tone
+
+ 2  TONE = no tone
+krtp_add_session : max frames in input buffer : 40
+krtp_add_session : max udp socket length : 3780 Bytes
+krtp_add_session : work buffers allocation
+---------->add LINE 1...  (d00)
+SCO
+ 1  TONE = dial tone
+
+ 2  TONE = no tone
+krtp_del_session
+---------->delete LINE 1
+krtp_tone_stop
+No krtp session left.
+*
+STATS: Packets sent = 0
+STATS: Octets sent = 0
+STATS: Packets received = 0
+STATS: Octets received = 0
+STATS: Packets Lost = 0
+STATS: Jitter = 0
+*
+krtp_add_session : udp_fd : 85
+krtp_add_session : udp_sock : 81b5d340
+krtp_add_session : destination address is blank => force receive only
+udp sock allocation : d0
+changed to : 20
+krtp_add_session : g711
+sco_frames_per_pkt = 2
+krtp_tone_start
+FREQ= 8000
+SCO
+ 1  TONE = no tone
+
+ 2  TONE = no tone
+krtp_add_session : max frames in input buffer : 40
+krtp_add_session : max udp socket length : 3780 Bytes
+krtp_add_session : work buffers allocation
+---------->add LINE 1...  (d00)
+SCO
+ 1  TONE = dial tone
+
+ 2  TONE = no tone
+krtp_del_session
+---------->delete LINE 1
+krtp_tone_stop
+No krtp session left.
+*
+STATS: Packets sent = 0
+STATS: Octets sent = 0
+STATS: Packets received = 0
+STATS: Octets received = 0
+STATS: Packets Lost = 0
+STATS: Jitter = 0
+*
+krtp_add_session : udp_fd : 85
+krtp_add_session : udp_sock : 81b5d4a0
+krtp_add_session : destination address is blank => force receive only
+udp sock allocation : d0
+changed to : 20
+krtp_add_session : g711
+sco_frames_per_pkt = 2
+krtp_tone_start
+FREQ= 8000
+SCO
+ 1  TONE = no tone
+
+ 2  TONE = no tone
+krtp_add_session : max frames in input buffer : 40
+krtp_add_session : max udp socket length : 3780 Bytes
+krtp_add_session : work buffers allocation
+---------->add LINE 1...  (d00)
+SCO
+ 1  TONE = dial tone
+
+ 2  TONE = no tone
+krtp_del_session
+---------->delete LINE 1
+krtp_tone_stop
+No krtp session left.
+*
+STATS: Packets sent = 0
+STATS: Octets sent = 0
+STATS: Packets received = 0
+STATS: Octets received = 0
+STATS: Packets Lost = 0
+STATS: Jitter = 0
+*
+krtp_add_session : udp_fd : 85
+krtp_add_session : udp_sock : 81b5d1e0
+krtp_add_session : destination address is blank => force receive only
+udp sock allocation : d0
+changed to : 20
+krtp_add_session : g711
+sco_frames_per_pkt = 2
+krtp_tone_start
+FREQ= 8000
+SCO
+ 1  TONE = no tone
+
+ 2  TONE = no tone
+krtp_add_session : max frames in input buffer : 40
+krtp_add_session : max udp socket length : 3780 Bytes
+krtp_add_session : work buffers allocation
+---------->add LINE 1...  (d00)
+krtp_del_session
+---------->delete LINE 1
+krtp_tone_stop
+No krtp session left.
+*
+STATS: Packets sent = 0
+STATS: Octets sent = 0
+STATS: Packets received = 0
+STATS: Octets received = 0
+STATS: Packets Lost = 0
+STATS: Jitter = 0
+*
+{admin}=>}}}

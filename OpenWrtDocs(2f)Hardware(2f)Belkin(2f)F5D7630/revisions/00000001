@@ -1,0 +1,185 @@
+##language:en
+== Overview ==
+The Belkin F5D7630 is a router with integrated adsl / adsl 2+ based on the Belkin F5D7230-4 router.  There is interest in having an open firmware running on this platform.  As OpenWRT is the starting point for most new Broadcom customers, and as OpenWRT's FAQ links to this page, hopefully, information can be provided here to those who have purchased Belkin's as well as those wanting to contribute to opening this platform.
+
+This router is also sold in Europe in 2006 and 2007 under the brand Micradigital, with the revision F5D7630ec4. See http://www.micradigital.com/Product.aspx?id=216719.
+
+== Similar Models ==
+The same electronic is also sold rebranded and the following models are firmware compatible.
+
+ 1. SMC Barricade SMC7904WBRA.
+ 1. Micradigital F5D7630.
+ 1. Phillips SNA 6500-005.
+== Specifications ==
+==== Router Specifications ====
+IP Sharing Method       NAT (Network Address Translation).
+
+ * Firewall     NAT, SPI.
+ * Clients Supported    253 Total.
+ * Wireless Clients Supported   64 Total.
+ * DHCP Server  Supported, User Defeatable.
+ * User Interface       HTTP/Through Web Browser.
+ * RJ11 : 1 WAN (for connection to the DSL modem).
+ * RJ45 : Ports   4 LAN (For connection to local clients) auto-uplinking.
+ * Wired Network Standards WAN: 802.3 10Base-T. LAN: 802.3u 10/100Base-T.
+ * Protocols Supported : TCP/IP, UDP, CSMA/DCD, DHCP, AppleTalk®
+ * ISP Protocols Supported :
+  * Static
+  * Dynamic
+  * PPPoE
+  * PPPoA Multiple Protocol over ATM
+ * Power Consumption    12V/1A
+==== Modem Specifications ====
+ * Standards
+  * ITU G.dmt      (Downstream 8 mbps, Upstream 640kbps).
+  * ITU G.Lite     (Downstream 1.5 mbps, Upstream 512kbps).
+  * ITU G.Handshake.
+  * ITU T.413 issue 2 - ADSL full rate.
+  * Annex A (Annex B Available).
+==== Radio Specifications ====
+Wireless Standard       802.11g Radio technology        Direct Sequence Spread Spectrum (DSSS) Encryption
+
+ * 64- or 128-bit WEP (Wired Equivalent Privacy)
+ * WPA (WiFi Protected Access) Data Encryption with TKIP and AES
+ * Media Access Protocol   CSMA/CA (Collision Avoidance) with ACK
+ * Frequency Band  ISM Band 2400-2483.5MHz
+ * Antenna Type    Dual dipole antenna Output Power      +13dBm-20dBm (50mW) (max.)
+ * Modulation Type         QPSK, BPSK, CCK
+ * RF Channels     1-11 Channels (USA, Mexico, Canada), 1-13 (UK)
+ * Data Rates Supported    1, 2, 5.5, 6, 9, 11, 12, 24, 36, 48 & 54 Mbps
+ * Max Operating Range (ft/Meters)
+  * Outdoors        1800 ft (550m)
+  * Indoors         300 ft (90m)
+  * Reciever Sensitivity      -80 dBm
+ * LED Indicators 8 LEDs  Power, SYN, Data, WAN, LAN (1,2,34)
+ * Operating System
+  * Support Windows® 95, 98, 98SE, Me, 2000, NT, XP, Linux, Mac OS®
+==== Environmental Specifications ====
+||<tablewidth="200px" tablealign="">
+||Temperature ||Humidity ||
+||Operating ||(-10 to 50  degress C) ||10% - 95% (non-condensing) ||
+||Storage ||(-40 to 70  degrees C) ||  10% - 95% (non-condensing) ||
+
+
+==== Package Contents ====
+ * 802.11g Wireless ADSL Modem Router
+ * Power Supply
+ * User Manual
+ * Quick Installation Guide
+ * RJ45 Networking Cable
+ * RJ11 Phone cable
+ * ADSL Filter
+ * CD
+=== Installation of OpenWRT ===
+NOTE: Use the tftp installation method. Web interface upload is problematic since Belkin use a firmware header like linksys, but OpenWRT doesn't provide firmware images for belkin. The standard openwrt-brcm-2.4-<type>.trx images get rejected by the device. Belkin's customisations to the firmware add the ability to specify nvram settings as a footer section to the firmware. It should be possible to create a Belkin specific firmware that can uploaded via the Belkin web interface by following a method similar to that in this paper http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4.pdf
+
+Credit to:
+
+The OpenWRT community for making OpenWRT.
+
+Belkin for making a nice, cheap router.
+
+== Links ==
+There are a number of public forums and web sites where the installation of open source firmware for the Belkin F5D7630 is being discussed and published.
+
+=== Forums ===
+ 1. http://www.expansys.com/f.aspx?i=108159 :: Expansys forum dedicated to the F5D7630
+ 1. http://www.seattlewireless.net/index.cgi/Belkin_20F5D7230_2d4 :: Seattle Wireless "Belkin F5D7230-4"
+ 1. http://www.openwrt.org/forum/viewtopic.php?t=546 :: OpenWRT "General Discussion"
+## 4. http://www.chupa.nl/forum/showthread.php?t=601 :: Chupa Forum
+ 5. http://www.broadbandreports.com/forum/remark,10837191~mode=flat~days=9999 :: Broad Band Reports "Belkin Firmware Image Header"
+=== Development Pages ===
+ 1. http://www.sat.dundee.ac.uk/arb/belkinadsl/ :: Interresting page with technical data and comprehensive links.
+=== Serial Pages ===
+ 1. http://www.rwhitby.net/wrt54gs/serial.html :: Rod Whitby's "Linksys WRT54G / WRT54GS Dual Serial Port Mod"
+ 1. http://melbourne.wireless.vic.asn.au/wiki/?minitar :: Melbourne Wireless - Old Site
+ 1. http://www.compsys1.com/workbench/On_top_of_the_Bench/Max233_Adapter/max233_adapter.html :: Comp Sys MAX232 Adapters
+ 1. http://www.theforestnetworking.com/sveasoft/serial.php :: WRT54G & WRT54GS Serial Adaptor
+ 1. http://hamburg.freifunk.net/twiki/bin/view/Technisches/BasteleienUndBausaetze Serial mods. (german)
+=== Hardware Pages ===
+ 1. http://www.broadcom.com/products/product.php?product_id=BCM94712&category_id= :: Broadcom Corporation – BM94712 – 802.11b/54g™ Integrated Wireless AP/Router Reference Design
+ 1. http://www.wi-fiplanet.com/news/article.php/2238881 :: Broadcom Intros New Integrated 11g Processor
+ 1. http://rage.against.org/LinksysWRT54G :: Moi Meme - LinksysWRT54G
+ 1. http://www.askey.com.tw/eportal/globalweb/browseCatDispatcher.jsp?catOid=-715&menuCatOid=-91 :: Equivalent Askey  Hardware
+=== Software Pages ===
+ 1. http://web.belkin.com/support/gpl.asp :: Belkin GPL Code
+ 1. http://www.linksys.com/support/gpl.asp :: Linksys GPL Code
+ 1. http://www.asus.com.tw/support/download/item.aspx?ModelName=WL-500g :: Asus GPL Code
+ 1. http://belkin.com/support/download/download.asp?download=F5D7230-4 :: Belkin Firmware
+=== Official Firmware ===
+ 1. http://web.belkin.com/support/download/downloaddetails.asp?download=1486&lang=9 :: French Belkin firmware page
+ 1. http://web.belkin.com/support/download/download.asp?download=F5D7630uk4A&lang=1&mode= :: Model F5D7630uk4A
+ 1. http://web.belkin.com/support/download/download.asp?download=F5D7630au4A&lang=1&mode= :: Model F5D7630au4A
+=== Other Firmware Pages (that may yield useful firmware) ===
+ 1. http://openwrt.ksilebo.net/ :: Another link for OpenWRT
+ 1. http://sourceforge.net/projects/wifi-box/ :: Wi Fi Box
+ 1. http://sourceforge.net/projects/newbroadcom/ :: New-Broadcom Project
+ 1. http://www.portless.net/ewrt/ :: EWRT
+ 1. http://www.hyperdrive.be/hyperwrt/ :: HyperWRT
+=== Other Pages (that may yield useful information) ===
+ 1. http://www.linksysinfo.org :: Linksys WRT Information (similar/same platform as Belkin)
+== Documentation ==
+A good deal of documentation has been published in the public domain, regarding the Belkin F5D7230-4.  Most of this has been in the forums (above), but some has been collated in the documents below.
+
+If you have done something that you think might help someone else, write it up and post a link here!
+
+=== Understanding the Belkin extended firmware for OpenWRT development ===
+{{{
+    In this paper the Belkin F5D7630 is explored for
+    its availability as a fully integrated wireless
+    firewall router and VPN end-point. This work must
+    be done in order to achieve a best-practice
+    security solution in the Small Office / Home Office
+    (SOHO) price-point. Where, while almost all of the
+    casual risks are equivalent to those experienced
+    by large enterprise, no mitigation technologies
+    are available at an appropriate cost. By collating
+    a mass of publicly available information, the paper
+    concludes by providing a root shell into the
+    device, and a number of Linux-based reports on the
+    hardware make-up of the router. It is hoped that
+    this information can be used to adapt the OpenWRT
+    embedded Linux distribution, for this Belkin router.
+}}}
+Document URL;
+
+ . http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4.pdf
+=== Attaining console access via the native Belkin serial port for OpenWRT development ===
+{{{
+    By collating a mass of publicly available
+    information, and experimenting with a single unit,
+    the paper concludes by providing a physical
+    console into the device, providing local root user
+    level access, and a schematic diagram for a solder-
+    less project that will allow individuals to try
+    this experiment for themselves. It is hoped that
+    this information can be used to debug open source
+    firmware and to then adapt the OpenWRT, and
+    Sveasoft, embedded Linux distributions for this
+    Belkin router.
+}}}
+Document URL;
+
+ . http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4%20-%20Serial%20Console.pdf
+=== Compiling and Installing the GPL Broadcom Reference Firmware ===
+{{{
+    Belkin published the Broadcom reference firmware;
+    a small Linux distribution, designed to act as a
+    proof-of-concept and development environment for
+    the Belkin engineers. To minimize the amount of
+    experimentation required to adapt the OpenWRT and
+    Sveasoft firmware for use on the Belkin, the
+    published Broadcom reference firmware was compiled
+    to see if it was functional, and able to provide
+    driver and configuration information for the open
+    source distributions.
+    ...
+    Furthermore, this process was developed rapidly
+    due to the excellent work performed by Rick
+    Bronson.
+}}}
+Document URL;
+
+ . http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4%20%20-%20Broadcom%20Firmware.pdf
+----
+ . CategoryModel

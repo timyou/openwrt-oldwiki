@@ -1,0 +1,6 @@
+= Netgear DG834v3 =
+== Status ==
+The unit comes with crippled ADAM2 bootloader that has all the network and console input channels disabled. As a result it is not possible to use ethernet device under OpenWRT with stock bootloader. The only way to overcome it is to flash PSPBoot bootloader.
+||<tablewidth="400px" tablealign=""> ||Ethernet||ATM (xDSL)||
+||ADAM 0.22.02|| || ||
+|| || || ||

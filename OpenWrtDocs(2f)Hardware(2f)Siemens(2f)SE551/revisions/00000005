@@ -1,0 +1,54 @@
+Describe OpenWrtDocs/Hardware/Siemens/SE551 here.
+
+= General =
+
+Currently it seems, that boot_wait is turned off, as the device does not respond to tftp after reboot.[[BR]]
+initially it is bound to 192.168.2.1.[[BR]]
+It is also not possible to upload openwrt image via web interface. This aborts with an error.[[BR]]
+Up to now i would consider SE551 as unsupported as there is no possibility to upload firmware to the device.[[BR]]
+
+= Product infos =
+
+... can be found here: [http://gigaset.siemens.com/shc/0,1935,hq_en_0_89729_rArNrNrNrN,00.html][[BR]]
+Siemens open source software repository is located here: [http://now-portal.c-lab.de/projects/gigaset/]
+
+= Hardware found in device =
+
+It seems, that flash memory is integrated into CPU. [[BR]]
+CPU is covered by a soldered in heat sink, so I can not find out cpu version.
+
+VIA Vectro VT6212L[[BR]]
+USB 2.0 Controller
+
+ALTERA EPM3032ATC-44 7/144-10[[BR]]
+
+Butterfly Ant Type3
+
+LFE8623
+
+TXC 25.0MHz Xtal
+
+TXC 24.0MHz Xtal
+
+APL1117[[BR]]
+Voltage Regulator
+
+SI IC42S16800[[BR]]
+16MB RAM
+
+APW34063[[BR]]
+DC/DC Converter Controlling IC
+
+APM9435[[BR]]
+P-Channel Enhancement Mode MOSFET
+
+10Pin Connector (JTag ? Serial ?)
+
+||Function||Pin#||Pin#||Function||
+||Connected 0V||1||2||NC||
+||Connected 3.1V||3||4||NC||
+||Connected 3.4V||5||6||NC||
+||NC||7||8||NC||
+||GND||9||10||+3.4V||
+Connected means, I get a signal here with the given voltage or I measured current to GND.[[BR]]
+Pin 5 toggles in the last stage of bootup. This might be serial TxD.

@@ -1,0 +1,63 @@
+= Motorola WE800G =
+
+[[TableOfContents]]
+
+= Hardware versions =
+
+The WE800G has three different versions (v1, v2, v3).
+
+== WE800G v1 ==
+The WE800G v1 is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb SDRAM. The wireless NIC is a mini-PCI card. The mini-PCI card is BCM94306MP and if you happen to brick the box itself then at least it is reusable in your laptop.
+{{{
+root@OpenWrt:/# cat /proc/cpuinfo
+system type             : Broadcom BCM947XX
+processor               : 0
+cpu model               : BCM4710 V0.0
+BogoMIPS                : 82.94
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+root@OpenWrt:/#  free
+              total         used         free       shared      buffers
+  Mem:        14360         6960         7400            0            0
+ Swap:            0            0            0
+Total:        14360         6960         7400
+root@OpenWrt:/# df
+Filesystem           1k-blocks      Used Available Use% Mounted on
+/dev/root                 3264      1628      1636  50% /
+none                      7180         8      7172   0% /tmp
+root@OpenWrt:/#
+}}}
+
+== WE800G v2 ==
+It is supposed to have the integrated wireless NIC, less memory and less flash, but I haven't seen one to comment.
+
+= Obtaining Official Motorola Firmware =
+Motorola does not have any official firmware releases available on their website and will not provide you one even if you ask for it.
+ * [http://broadband.motorola.com/consumers/products/we800g/ WE800G product page]
+ * [http://broadband.motorola.com/consumers/support/default.asp?SupportSection=HomeNetworking Motorola's Support Site]
+ * [http://broadband.motorola.com/consumers/support/gpl_codes.asp Source Code] 
+[http://broadband.motorola.com/consumers/support/GPL/WE800G_V4.04_GPL.tgz 4.04]
+
+=Flashing to OpenWRT=
+Imre Kaloz has made a test [http://downloads.openwrt.org/people/kaloz/openwrt-we800g.bin image] of WHITE RUSSIAN (RC4).
+The web upgrade likely does not work (even if to rename the .bin to .trx), but TFTP will upload it just fine.
+* Enable boot_wait on WE800G with web browser in /frame_debug.asp page by entering "nvram set boot_wait=on; nvram commit" into the command slot and press [ENTER]
+* Set your computer into the same IP subnet (WE800G default IP address is 192.168.30.1 and netmask is 255.255.255.0)
+* Start pinging the WE800G on one command prompt window (ping 192.168.30.1 -t)
+* Type the TFTP upload command to the next command prompt window (tftp -i 192.168.30.1 put openwrt-we800g.bin)
+* Unplug/replug the WE800G power
+* As soon as you see the ping response from the WE800G, hit [ENTER] for the TFTP upload command
+* If the upload went fine then you'll see "Transfer successful" message
+* If you get "timed out" message then repeat the process
+* After successful flashing wait for some minutes to let the OpenWRT to finish it's upgrade procedures
+
+=Port layout=
+The WE800G has 3 LAN ports. The eth0 has no physical connector and is dummy port, the eth1 is the LAN RJ45 port and the eth2 is wireless card port.
+Out of box the WE800G is set to client mode, but it does not work - you can ping the box from both sides just fine, but it does not let any of these packet to travel over the defined bridge. At the same time if you set the device into the AP mode ("nvram set wl0_mode=ap; nvram commit") then the bridge will work just fine and you have a working AP with no time.
+----
+CategoryModel

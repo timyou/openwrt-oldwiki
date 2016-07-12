@@ -1,0 +1,352 @@
+1103875112000000	00000001	SAVENEW	OpenWrtDocs(2f)Configuration	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1104911822000000	00000002	SAVE	OpenWrtDocs(2f)Configuration	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1105141014000000	00000003	SAVE	OpenWrtDocs(2f)Configuration	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1105149897000000	00000004	SAVE	OpenWrtDocs(2f)Configuration	84.160.243.126	p54A0F37E.dip.t-dialin.net	1105149506.45.34331		Add example for more than 2 VLANs
+1105846060000000	00000005	SAVE	OpenWrtDocs(2f)Configuration	216.212.68.131	host68-131.birch.net	1105845315.3.63554		Single nvram params should not be enclosed in quotes.
+1106338239000000	00000006	SAVE	OpenWrtDocs(2f)Configuration	131.191.55.120	00121740ec3a.click-network.com	1106337239.03.21973		Added QoS with wondershaper (basic configuration)
+1106338452000000	00000007	SAVE	OpenWrtDocs(2f)Configuration	131.191.55.120	00121740ec3a.click-network.com	1106337239.03.21973		link to firewall page
+1106374011000000	00000008	SAVE	OpenWrtDocs(2f)Configuration	68.165.170.95	h-68-165-170-95.snvacaid.dynamic.covad.net	1106373440.46.23058		WRT54GS 1.1 displays the same behavior as the previous model
+1106378019000000	00000009	SAVE	OpenWrtDocs(2f)Configuration	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		wondershaper is a package and therefore not subject to this page
+1106379944000000	00000010	SAVE	OpenWrtDocs(2f)Configuration	24.247.171.106	24.247.171.106.bay.mi.chartermi.net	1096303201.7.12400		
+1109374466000000	00000011	SAVE	OpenWrtDocs(2f)Configuration	80.58.41.170	80.58.41.170.proxycache.rima-tde.net	1109372069.73.41760		Added "client mode" HOWTO.
+1109377318000000	00000012	SAVE	OpenWrtDocs(2f)Configuration	80.58.41.170	80.58.41.170.proxycache.rima-tde.net	1109372069.73.41760		Finish client mode HOWTO 
+1109530512000000	00000013	SAVE	OpenWrtDocs(2f)Configuration	80.58.41.170	80.58.41.170.proxycache.rima-tde.net	1109372069.73.41760		Client mode section moved to a new HOWTO
+1109530863000000	00000014	SAVE	OpenWrtDocs(2f)Configuration	80.58.41.170	80.58.41.170.proxycache.rima-tde.net	1109372069.73.41760		Added reference to the client mode howto
+1109531172000000	00000015	SAVE	OpenWrtDocs(2f)Configuration	80.58.41.170	80.58.41.170.proxycache.rima-tde.net	1109372069.73.41760		Changed the link to the client howto so that it does not appear in frontpage.
+1111876204000000	00000016	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1111874317.57.11261		
+1113139598000000	00000017	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1113138976.67.1123		ASUS WL-500g network ports update
+1113145515000000	00000018	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1113072784.29.27408		link to nvram options
+1113228132000000	00000019	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1112031480.12.1255		added "OpenWRT wireless bridge" - work in progress!
+1114418550000000	00000020	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1114418261.07.2740		
+1116604687000000	00000021	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1116604072.04.48744		I verified my WRT54G v3 has the same interface mapping as listed for 2.x
+1117454566000000	00000022	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1117454370.53.3153		
+1118578451000000	00000023	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1118421298.55.2232		
+1118579412000000	00000024	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1118421298.55.2232		
+1118687485000000	00000025	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1104929839.08.29390		
+1118910637000000	00000026	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1118421298.55.2232		
+1119163499000000	00000027	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1117454370.53.3153		
+1119167552000000	00000028	SAVE	OpenWrtDocs(2f)Configuration	208.185.247.160	rackable1.simpli.biz	1117454370.53.3153		
+1119319620000000	00000029	SAVE	OpenWrtDocs(2f)Configuration	80.73.100.107	80.73.100.107	1115146442.75.35291		WL-500g Deluxe device explanation is OK!
+1119902870000000	00000030	SAVE	OpenWrtDocs(2f)Configuration	62.3.107.125	dsl-62-3-107-125.zen.co.uk	1119902764.88.22366		
+1119903039000000	00000031	SAVE	OpenWrtDocs(2f)Configuration	62.3.107.125	dsl-62-3-107-125.zen.co.uk	1119902764.88.22366		
+1119936618000000	00000032	SAVE	OpenWrtDocs(2f)Configuration	24.127.183.241	c-24-127-183-241.hsd1.ca.comcast.net	1119936276.54.9142		add note about wl0_crypto; it caught me out
+1120033713000000	00000033	SAVE	OpenWrtDocs(2f)Configuration	213.69.232.60	213.69.232.60	1120033462.62.13731		
+1120033959000000	00000034	SAVE	OpenWrtDocs(2f)Configuration	213.69.232.60	213.69.232.60	1120033462.62.13731		
+1120382866000000	00000035	SAVE	OpenWrtDocs(2f)Configuration	213.103.53.39	d213-103-53-39.cust.tele2.fr	1104929839.08.29390		
+1120536105000000	00000036	SAVE	OpenWrtDocs(2f)Configuration	24.1.29.255	c-24-1-29-255.hsd1.tx.comcast.net	1114908278.49.36917		typo correction
+1120707259000000	00000037	SAVE	OpenWrtDocs(2f)Configuration	65.13.17.198	adsl-065-013-017-198.sip.asm.bellsouth.net	1120706718.75.41701		
+1120851888000000	00000038	SAVE	OpenWrtDocs(2f)Configuration	217.80.65.15	pD950410F.dip0.t-ipconnect.de	1120851247.45.29076		Link to faq for PPPOE Setup
+1120941574000000	00000039	SAVE	OpenWrtDocs(2f)Configuration	64.230.85.160	HSE-Ottawa-ppp239631.sympatico.ca	1120940981.64.18454		
+1121006365000000	00000040	SAVE	OpenWrtDocs(2f)Configuration	83.131.72.214	83-131-72-214.adsl.net.t-com.hr	1116138317.82.21842		
+1121006581000000	00000041	SAVE	OpenWrtDocs(2f)Configuration	83.131.72.214	83-131-72-214.adsl.net.t-com.hr	1116138317.82.21842		
+1121006715000000	00000042	SAVE	OpenWrtDocs(2f)Configuration	83.131.72.214	83-131-72-214.adsl.net.t-com.hr	1116138317.82.21842		
+1121007008000000	00000043	SAVE	OpenWrtDocs(2f)Configuration	83.131.72.214	83-131-72-214.adsl.net.t-com.hr	1116138317.82.21842		
+1121007716000000	00000044	SAVE	OpenWrtDocs(2f)Configuration	83.131.72.214	83-131-72-214.adsl.net.t-com.hr	1116138317.82.21842		
+1121007952000000	00000045	SAVE	OpenWrtDocs(2f)Configuration	83.131.72.214	83-131-72-214.adsl.net.t-com.hr	1116138317.82.21842		
+1121008055000000	00000046	SAVE	OpenWrtDocs(2f)Configuration	83.131.72.214	83-131-72-214.adsl.net.t-com.hr	1116138317.82.21842		
+1121103098000000	00000047	SAVE	OpenWrtDocs(2f)Configuration	84.145.41.251	p549129FB.dip0.t-ipconnect.de	1117454370.53.3153		
+1121103281000000	00000048	SAVE	OpenWrtDocs(2f)Configuration	84.145.41.251	p549129FB.dip0.t-ipconnect.de	1117454370.53.3153		
+1121104483000000	00000049	SAVE	OpenWrtDocs(2f)Configuration	84.145.41.251	p549129FB.dip0.t-ipconnect.de	1117454370.53.3153		Timezone for Berlin, Germany added
+1121104768000000	00000050	SAVE	OpenWrtDocs(2f)Configuration	84.145.41.251	p549129FB.dip0.t-ipconnect.de	1117454370.53.3153		
+1121221214000000	00000051	SAVE	OpenWrtDocs(2f)Configuration	72.43.17.50	rrcs-72-43-17-50.nys.biz.rr.com	1107030256.99.53037		spelling corections.
+1121335741000000	00000052	SAVE	OpenWrtDocs(2f)Configuration	85.72.54.136	H3688.h.pppool.de	1121330915.65.22986		Added Siemens SE505 LAN/WAN/WIFI Config
+1121609801000000	00000053	SAVE	OpenWrtDocs(2f)Configuration	84.144.75.134	p54904B86.dip.t-dialin.net	1111285795.34.48630		
+1121610173000000	00000054	SAVE	OpenWrtDocs(2f)Configuration	84.144.75.134	p54904B86.dip.t-dialin.net	1111285795.34.48630		
+1121616491000000	00000055	SAVE	OpenWrtDocs(2f)Configuration	202.72.149.28	dsl-202-72-149-28.wa.westnet.com.au	1121613936.02.60965		Additional info on bridging
+1121818620000000	00000056	SAVE	OpenWrtDocs(2f)Configuration	24.1.29.255	c-24-1-29-255.hsd1.tx.comcast.net	1114908278.49.36917		added typical USA & Canada time zone settings
+1122149204000000	00000057	SAVE	OpenWrtDocs(2f)Configuration	83.94.159.10	0x535e9f0a.kd4nxx12.adsl-dhcp.tele.dk	1122149020.33.54438		Added timezone for Copenhagen, Denmark - same as Berlin, Germany (CET).
+1122351074000000	00000058	SAVE	OpenWrtDocs(2f)Configuration	80.109.94.112	chello080109094112.10.15.vie.surfer.at	1122283814.05.8455		Added Radius nvram settings to 3.3
+1122367656000000	00000059	SAVE	OpenWrtDocs(2f)Configuration	84.145.33.37	p54912125.dip0.t-ipconnect.de	1117454370.53.3153		
+1122480412000000	00000060	SAVE	OpenWrtDocs(2f)Configuration	213.106.249.220	213.106.249.220	1122479408.97.21733		Added WLA-G54 to net if section
+1122480462000000	00000061	SAVE	OpenWrtDocs(2f)Configuration	213.106.249.220	213.106.249.220	1122479408.97.21733		
+1122629183000000	00000062	SAVE	OpenWrtDocs(2f)Configuration	212.254.166.108	adsl-166-108-fixip.tiscali.ch	1122628998.3.14423		Cost me some hours to find S41wpa only accepts "aes+tkip" and not "tkip+aes"
+1122714349000000	00000063	SAVE	OpenWrtDocs(2f)Configuration	84.145.5.168	p549105A8.dip0.t-ipconnect.de	1117454370.53.3153		
+1122727703000000	00000064	SAVE	OpenWrtDocs(2f)Configuration	84.145.5.168	p549105A8.dip0.t-ipconnect.de	1117454370.53.3153		
+1123112332000000	00000065	SAVE	OpenWrtDocs(2f)Configuration	82.231.159.75	bur91-2-82-231-159-75.fbx.proxad.net	1123032757.47.26112		
+1123207172000000	00000066	SAVE	OpenWrtDocs(2f)Configuration	70.176.29.226	ip70-176-29-226.ph.ph.cox.net	1123207070.8.16719		
+1123352599000000	00000067	SAVE	OpenWrtDocs(2f)Configuration	212.183.45.76	M2507P012.adsl.highway.telekom.at	1123352481.4.1655		correct wl500g wan + lan
+1123414366000000	00000068	SAVE	OpenWrtDocs(2f)Configuration	83.131.29.173	83-131-29-173.adsl.net.t-com.hr	1116138317.82.21842		
+1123414475000000	00000069	SAVE	OpenWrtDocs(2f)Configuration	83.131.29.173	83-131-29-173.adsl.net.t-com.hr	1116138317.82.21842		
+1123414544000000	00000070	SAVE	OpenWrtDocs(2f)Configuration	83.131.29.173	83-131-29-173.adsl.net.t-com.hr	1116138317.82.21842		
+1123885990000000	00000071	SAVE	OpenWrtDocs(2f)Configuration	194.212.75.131	131.75.212.194.contactel.net	1123884628.85.6186		
+1123968866000000	00000072	SAVE	OpenWrtDocs(2f)Configuration	66.211.200.4	66-211-200-4.velocity.net	1123968764.53.56682		make wrt54gs 2.0 match 1.x since it does (on my router at least)
+1124021989000000	00000073	SAVE	OpenWrtDocs(2f)Configuration	194.46.227.236	host-194-46-227-236.dsl-ie.utvinternet.net	1122294409.98.45682		
+1124093245000000	00000074	SAVE	OpenWrtDocs(2f)Configuration	84.145.41.211	p549129D3.dip0.t-ipconnect.de	1117454370.53.3153		Fixed the layout of the Time Zone table
+1124216449000000	00000075	SAVE	OpenWrtDocs(2f)Configuration	84.104.155.141	84-104-155-141.cable.quicknet.nl	1124216136.89.2416		Fixed a typo
+1124266348000000	00000076	SAVE	OpenWrtDocs(2f)Configuration	193.251.28.106	ARouen-106-1-1-106.w193-251.abo.wanadoo.fr	1124266075.11.7603		
+1124728030000000	00000077	SAVE	OpenWrtDocs(2f)Configuration	82.231.159.75	bur91-2-82-231-159-75.fbx.proxad.net	1123032757.47.26112		Diagram
+1124907339000000	00000078	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		Client Mode
+1124907460000000	00000079	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		
+1124911887000000	00000080	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		WDS Easy Steps
+1124912025000000	00000081	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		
+1124912108000000	00000082	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		
+1124912594000000	00000083	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		Damn formatting :-)
+1124912916000000	00000084	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		
+1124913127000000	00000085	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		
+1124913315000000	00000086	SAVE	OpenWrtDocs(2f)Configuration	84.57.133.240	dsl-084-057-133-240.arcor-ip.net	1124404739.04.56879		
+1125123607000000	00000087	SAVE	OpenWrtDocs(2f)Configuration	213.216.199.2	Torik16-P1.suomi.net	1124222377.74.45179		VLANs on Buffalo WBR2-G54S
+1125242311000000	00000088	SAVE	OpenWrtDocs(2f)Configuration	83.240.12.68	r06s05p01.home.nbox.cz	1125242199.39.50037		add czech/prague time zone
+1125746692000000	00000089	SAVE	OpenWrtDocs(2f)Configuration	84.145.31.117	p54911F75.dip0.t-ipconnect.de	1117454370.53.3153		Added note that WEP key must be in hex format
+1125747018000000	00000090	SAVE	OpenWrtDocs(2f)Configuration	84.145.31.117	p54911F75.dip0.t-ipconnect.de	1117454370.53.3153		
+1125840006000000	00000091	SAVE	OpenWrtDocs(2f)Configuration	216.138.194.136	toronto-hs-216-138-194-136.s-ip.magma.ca	1125839171.09.64368		Added information about lan_ifnames to the Seperate LAN from WIFI section
+1125864309000000	00000092	SAVE	OpenWrtDocs(2f)Configuration	67.138.213.208	67-138-213-208.dsl1.nor.ny.frontiernet.net	1125864011.65.38145		
+1126196155000000	00000093	SAVE	OpenWrtDocs(2f)Configuration	84.159.238.166	p549FEEA6.dip.t-dialin.net	1126195462.46.54115		
+1126196416000000	00000094	SAVE	OpenWrtDocs(2f)Configuration	84.159.238.166	p549FEEA6.dip.t-dialin.net	1126195462.46.54115		
+1126196652000000	00000095	SAVE	OpenWrtDocs(2f)Configuration	84.159.238.166	p549FEEA6.dip.t-dialin.net	1126195462.46.54115		
+1126196720000000	00000096	SAVE	OpenWrtDocs(2f)Configuration	84.159.238.166	p549FEEA6.dip.t-dialin.net	1126195462.46.54115		
+1126214317000000	00000097	SAVE	OpenWrtDocs(2f)Configuration	84.159.254.104	p549FFE68.dip.t-dialin.net	1126195462.46.54115		
+1126367085000000	00000098	SAVE	OpenWrtDocs(2f)Configuration	65.13.29.145	adsl-065-013-029-145.sip.asm.bellsouth.net	1126366635.31.12740		
+1126561952000000	00000099	SAVE	OpenWrtDocs(2f)Configuration	82.67.205.67	nthill.dyndns.org	1104929839.08.29390		Add some TZ
+1126625442000000	00000100	SAVE	OpenWrtDocs(2f)Configuration	84.162.117.195	p54A275C3.dip.t-dialin.net	1126624995.67.10858		
+1126791160000000	00000101	SAVE	OpenWrtDocs(2f)Configuration	84.145.31.140	p54911F8C.dip0.t-ipconnect.de	1117454370.53.3153		
+1126791449000000	00000102	SAVE	OpenWrtDocs(2f)Configuration	84.145.31.140	p54911F8C.dip0.t-ipconnect.de	1117454370.53.3153		
+1126899001000000	00000103	SAVE	OpenWrtDocs(2f)Configuration	84.134.82.110	p5486526E.dip.t-dialin.net	1111285795.34.48630		
+1127172314000000	00000104	SAVE	OpenWrtDocs(2f)Configuration	38.114.24.106	38.114.24.106	1127169498.21.39249		
+1127172990000000	00000105	SAVE	OpenWrtDocs(2f)Configuration	168.103.54.221	kollasch.net	1120505591.8.16746		
+1127188724000000	00000106	SAVE	OpenWrtDocs(2f)Configuration	210.49.213.122	c210-49-213-122.eburwd6.vic.optusnet.com.au	1121043141.27.49032		Added Australian Timezones for other capital cities.
+1127191299000000	00000107	SAVE	OpenWrtDocs(2f)Configuration	210.49.213.122	c210-49-213-122.eburwd6.vic.optusnet.com.au	1121043141.27.49032		Added uPnP reference.
+1127335887000000	00000108	SAVE	OpenWrtDocs(2f)Configuration	213.54.179.111	p213.54.179.111.tisdip.tiscali.de	1127335789.98.60731		
+1127342163000000	00000109	SAVE	OpenWrtDocs(2f)Configuration	139.80.64.86	bofh.otago.ac.nz	1127341883.62.3766		
+1127348095000000	00000110	SAVE	OpenWrtDocs(2f)Configuration	139.80.64.86	bofh.otago.ac.nz	1127341883.62.3766		
+1127448768000000	00000111	SAVE	OpenWrtDocs(2f)Configuration	68.188.13.164	68-188-13-164.dhcp.stls.mo.charter.com	1127448615.6.50372		
+1127736591000000	00000112	SAVE	OpenWrtDocs(2f)Configuration	85.124.35.97	85-124-35-97.dynamic.xdsl-line.inode.at	1127735277.95.3118		add warning about WDS breaking when br0 is unavailable, this bit me hard :-P
+1127805811000000	00000113	SAVE	OpenWrtDocs(2f)Configuration	62.154.166.169	62.154.166.169	1127805493.56.18399		
+1128340797000000	00000114	SAVE	OpenWrtDocs(2f)Configuration	80.133.54.35	p50853623.dip0.t-ipconnect.de	1128340666.89.12697		added port info for rdate
+1128797418000000	00000115	SAVE	OpenWrtDocs(2f)Configuration	80.136.17.78	p5088114E.dip0.t-ipconnect.de	1128350453.16.5174		
+1128798177000000	00000116	SAVE	OpenWrtDocs(2f)Configuration	80.136.17.78	p5088114E.dip0.t-ipconnect.de	1128350453.16.5174		
+1128798370000000	00000117	SAVE	OpenWrtDocs(2f)Configuration	80.136.17.78	p5088114E.dip0.t-ipconnect.de	1128350453.16.5174		
+1129088544000000	00000118	SAVE	OpenWrtDocs(2f)Configuration	202.43.252.4	ip-252-4.mitra.net.id	1114766274.8.34297		
+1129540079000000	00000119	SAVE	OpenWrtDocs(2f)Configuration	84.63.2.220	dslb-084-063-002-220.pools.arcor-ip.net	1108641180.99.15726		
+1129540101000000	00000120	SAVE	OpenWrtDocs(2f)Configuration	84.63.2.220	dslb-084-063-002-220.pools.arcor-ip.net	1108641180.99.15726		
+1129568519000000	00000121	SAVE	OpenWrtDocs(2f)Configuration	212.17.85.16	chello212017085016.4.15.vie.surfer.at	1129568115.11.4309		
+1129625038000000	00000122	SAVE	OpenWrtDocs(2f)Configuration	81.173.203.114	81.173.203.114	1108641180.99.15726		
+1129793124000000	00000123	SAVE	OpenWrtDocs(2f)Configuration	203.12.97.104	proxy5.syd.pacific.net.au	1114052399.18.26057		
+1129793185000000	00000124	SAVE	OpenWrtDocs(2f)Configuration	203.12.97.104	proxy5.syd.pacific.net.au	1114052399.18.26057		
+1129793488000000	00000125	SAVE	OpenWrtDocs(2f)Configuration	203.12.97.104	proxy5.syd.pacific.net.au	1114052399.18.26057		
+1129793923000000	00000126	SAVE	OpenWrtDocs(2f)Configuration	203.12.97.104	proxy5.syd.pacific.net.au	1114052399.18.26057		
+1130092626000000	00000127	SAVE	OpenWrtDocs(2f)Configuration	213.146.121.19	213.146.121.19	1130091707.08.56896		Added 4.2.6 - Wake on LAN
+1130092752000000	00000128	SAVE	OpenWrtDocs(2f)Configuration	213.146.121.19	213.146.121.19	1130091707.08.56896		typo
+1130408119000000	00000129	SAVE	OpenWrtDocs(2f)Configuration	84.145.32.215	p549120D7.dip0.t-ipconnect.de	1117454370.53.3153		
+1130408204000000	00000130	SAVE	OpenWrtDocs(2f)Configuration	84.145.32.215	p549120D7.dip0.t-ipconnect.de	1117454370.53.3153		
+1130613843000000	00000131	SAVE	OpenWrtDocs(2f)Configuration	24.1.30.243	c-24-1-30-243.hsd1.tx.comcast.net	1114908278.49.36917		added Buffalo WBR2-G54 to NetworkInterfaceNames
+1130616042000000	00000132	SAVE	OpenWrtDocs(2f)Configuration	213.238.209.171	1-1-6-6a.sbi.sth.bostream.se	1130615229.69.45739		Added Buffalo WZR-RS-G54 network interface names (no vlan capability)
+1130665750000000	00000133	SAVE	OpenWrtDocs(2f)Configuration	83.98.248.135	fti.speedxs.nl	1130665583.79.62668		
+1130665840000000	00000134	SAVE	OpenWrtDocs(2f)Configuration	83.98.248.135	fti.speedxs.nl	1130665583.79.62668		typo fix
+1130666412000000	00000135	SAVE	OpenWrtDocs(2f)Configuration	83.98.248.135	fti.speedxs.nl	1130665583.79.62668		added some ='s and type fix
+1130725076000000	00000136	SAVE	OpenWrtDocs(2f)Configuration	64.142.49.218	64-142-49-218.dsl.static.sonic.net	1130724457.69.43543		Updated router architecture pics complements of http://voidmain.is-a-geek.net
+1130930036000000	00000137	SAVE	OpenWrtDocs(2f)Configuration	195.113.184.10	195.113.184.10	1123884628.85.6186		
+1130957210000000	00000138	SAVE	OpenWrtDocs(2f)Configuration	84.145.55.172	p549137AC.dip0.t-ipconnect.de	1117454370.53.3153		
+1130958039000000	00000139	SAVE	OpenWrtDocs(2f)Configuration	84.145.55.172	p549137AC.dip0.t-ipconnect.de	1117454370.53.3153		
+1131389880000000	00000140	SAVE	OpenWrtDocs(2f)Configuration	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131390052000000	00000141	SAVE	OpenWrtDocs(2f)Configuration	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131390116000000	00000142	SAVE	OpenWrtDocs(2f)Configuration	84.145.43.250	p54912BFA.dip0.t-ipconnect.de	1117454370.53.3153		
+1131818509000000	00000143	SAVE	OpenWrtDocs(2f)Configuration	84.145.8.33	p54910821.dip0.t-ipconnect.de	1117454370.53.3153		Updated
+1131819034000000	00000144	SAVE	OpenWrtDocs(2f)Configuration	84.145.8.33	p54910821.dip0.t-ipconnect.de	1117454370.53.3153		
+1131821359000000	00000145	SAVE	OpenWrtDocs(2f)Configuration	84.145.8.33	p54910821.dip0.t-ipconnect.de	1117454370.53.3153		
+1132234233000000	00000146	SAVE	OpenWrtDocs(2f)Configuration	84.145.52.168	p549134A8.dip0.t-ipconnect.de	1117454370.53.3153		Updated: 4.1.2. Time zone and NTP
+1132703548000000	00000147	SAVE	OpenWrtDocs(2f)Configuration	70.121.187.124	124.187.121.70.cfl.res.rr.com	1132703464.02.46410		Added anchor to link to etherent switch config directly
+1132803407000000	00000148	SAVE	OpenWrtDocs(2f)Configuration	84.63.10.130	dslb-084-063-010-130.pools.arcor-ip.net	1108641180.99.15726		
+1132845383000000	00000149	SAVE	OpenWrtDocs(2f)Configuration	80.132.114.119	p50847277.dip.t-dialin.net	1132845241.1.63960		Add an example for ntpclient.
+1132847000000000	00000150	SAVE	OpenWrtDocs(2f)Configuration	80.132.114.119	p50847277.dip.t-dialin.net	1132845241.1.63960		More accurately describe how ntpclient works.
+1132856229000000	00000151	SAVE	OpenWrtDocs(2f)Configuration	84.77.112.161	84.77.112.161	1132847594.06.39605		Minor typo
+1133153084000000	00000152	SAVE	OpenWrtDocs(2f)Configuration	200.216.93.244	200216093244.user.veloxzone.com.br	1133152726.93.29112		Included Brazilian Time Zone example
+1133153230000000	00000153	SAVE	OpenWrtDocs(2f)Configuration	200.216.93.244	200216093244.user.veloxzone.com.br	1133152726.93.29112		
+1133169658000000	00000154	SAVE	OpenWrtDocs(2f)Configuration	84.145.20.225	p549114E1.dip0.t-ipconnect.de	1117454370.53.3153		
+1133549980000000	00000155	SAVE	OpenWrtDocs(2f)Configuration	66.179.5.244	colo-gw.rgmadvisors.com	1133549910.74.58423		
+1133550011000000	00000156	SAVE	OpenWrtDocs(2f)Configuration	66.179.5.244	colo-gw.rgmadvisors.com	1133549910.74.58423		
+1133851447000000	00000157	SAVE	OpenWrtDocs(2f)Configuration	64.142.49.218	64-142-49-218.dsl.static.sonic.net	1130724457.69.43543		Updated network interfaces table to include latest Linksys WRT hardware versions
+1134145854000000	00000158	SAVE	OpenWrtDocs(2f)Configuration	81.86.116.102	81-86-116-102.dsl.pipex.com	1134145635.0.64852		Add note re splitting up bridge to use ad-hoc mode
+1134340043000000	00000159	SAVE	OpenWrtDocs(2f)Configuration	66.92.188.108	moose.dimebank.com	1134339941.41.20044		fixed missing verb in robocfg example
+1134450995000000	00000160	SAVE	OpenWrtDocs(2f)Configuration	69.121.11.58	ool-45790b3a.dyn.optonline.net	1134450634.3.58605		
+1134604637000000	00000161	SAVE	OpenWrtDocs(2f)Configuration	85.131.107.254	69-254.adsl.lpoy.dnainternet.fi	1122467653.83.51546		opening for mac filter configs
+1134605139000000	00000162	SAVE	OpenWrtDocs(2f)Configuration	85.131.107.254	69-254.adsl.lpoy.dnainternet.fi	1122467653.83.51546		
+1134605648000000	00000163	SAVE	OpenWrtDocs(2f)Configuration	85.131.107.254	69-254.adsl.lpoy.dnainternet.fi	1122467653.83.51546		
+1134733934000000	00000164	SAVE	OpenWrtDocs(2f)Configuration	193.234.219.2	n2.nomadiclab.com	1134733164.32.32545		robocfg: vconfig works with et0, not eth0
+1134734071000000	00000165	SAVE	OpenWrtDocs(2f)Configuration	193.234.219.2	n2.nomadiclab.com	1134733164.32.32545		robocfg: vconfig works with et0, not eth0
+1134738229000000	00000166	SAVE	OpenWrtDocs(2f)Configuration	193.234.219.2	n2.nomadiclab.com	1134733164.32.32545		typo: s/DHTP/DHCP
+1134738424000000	00000167	SAVE	OpenWrtDocs(2f)Configuration	193.234.219.2	n2.nomadiclab.com	1134733164.32.32545		2. Network configuration: <name>_hostname
+1134758162000000	00000168	SAVE	OpenWrtDocs(2f)Configuration	216.31.249.246	216-31-249-246.cust.telepacific.net	1096303201.7.12400		it's eth0, not et0
+1135249940000000	00000169	SAVE	OpenWrtDocs(2f)Configuration	134.102.71.31	nordcom-adsl-71-31.zfn.uni-bremen.de	1135249402.38.19057		Added IPSec Section
+1136235363000000	00000170	SAVE	OpenWrtDocs(2f)Configuration	84.177.248.1	p54B1F801.dip.t-dialin.net	1136154061.37.64302		typo
+1136295816000000	00000171	SAVE	OpenWrtDocs(2f)Configuration	71.56.142.125	c-71-56-142-125.hsd1.or.comcast.net	1135034504.05.59481		spelling fixes
+1136483812000000	00000172	SAVE	OpenWrtDocs(2f)Configuration	168.103.54.221	kollasch.net	1120505591.8.16746		interfaces on TM2300
+1136897567000000	00000173	SAVE	OpenWrtDocs(2f)Configuration	202.156.6.91	202-156-6-91.cache.maxonline.com.sg	1136897423.87.45533		Added TZ string for Singapore
+1137021212000000	00000174	SAVE	OpenWrtDocs(2f)Configuration	168.103.54.221	kollasch.net	1120505591.8.16746		note that SSIDs don't need to be the same for WDS to work
+1137111078000000	00000175	SAVE	OpenWrtDocs(2f)Configuration	195.131.85.163	ip85-163.dialup.wplus.net	1137110467.94.32811		I use this TZ on my QNX4 hosts for years.
+1137157539000000	00000176	SAVE	OpenWrtDocs(2f)Configuration	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Know these for sure too.
+1137277517000000	00000177	SAVE	OpenWrtDocs(2f)Configuration	84.145.108.42	p54916C2A.dip.t-dialin.net	1117454370.53.3153		update on VLAN configuration (robocfg and admcfg is obsolete)
+1137353663000000	00000178	SAVE	OpenWrtDocs(2f)Configuration	67.133.61.135	67.133.61.135	1134899934.21.50987		spelling correction
+1138020102000000	00000179	SAVE	OpenWrtDocs(2f)Configuration	84.145.99.162	p549163A2.dip.t-dialin.net	1117454370.53.3153		minor change
+1138335130000000	00000180	SAVE	OpenWrtDocs(2f)Configuration	24.77.160.235	S0106000f6636f4fc.wp.shawcable.net	1138334771.69.10619		nvram set wl0_maclist="xx:xx:xx:xx:xx xx:xx:xx:xx:xx"  - use quotes.
+1138567882000000	00000181	SAVE	OpenWrtDocs(2f)Configuration	145.120.11.164	145.120.early-registration.of.surfnet.nl	1138567687.76.64534		rdate should be started after the net is up. Some apps (ovpn) need correct time
+1138567965000000	00000182	SAVE	OpenWrtDocs(2f)Configuration	145.120.11.164	145.120.early-registration.of.surfnet.nl	1138567687.76.64534		forgot to change more references.
+1140295768000000	00000183	SAVE	OpenWrtDocs(2f)Configuration	193.216.18.210	193.216.18.210	1139779893.71.10985		
+1140492249000000	00000184	SAVE	OpenWrtDocs(2f)Configuration	24.41.63.173	user-0c2iftd.cable.earthlink.net	1139577359.22.62925		added wgt634u network if names to table
+1140903534000000	00000185	SAVE	OpenWrtDocs(2f)Configuration	64.230.81.93	HSE-Ottawa-ppp238548.sympatico.ca	1140898900.8.22417		
+1140926959000000	00000186	SAVE	OpenWrtDocs(2f)Configuration	213.148.4.46	MTMC-core-M9-as-1.comintern.net	1140926511.41.62390		
+1141069200000000	00000187	SAVE	OpenWrtDocs(2f)Configuration	190.48.33.196	190-48-33-196.speedy.com.ar	1141069029.42.58467		Added Argentina timezone
+1141153077000000	00000188	SAVE	OpenWrtDocs(2f)Configuration	24.232.131.65	OL65-131.fibertel.com.ar	1141069029.42.58467		Added wl0_key1 example. Reason: someone on IRC using wl0_key[1] instead.
+1141297477000000	00000189	SAVE	OpenWrtDocs(2f)Configuration	212.19.79.225	225-79-19-212-nlodge-t12-z1.wireless.as15758.net	1141297040.77.38152		
+1142406574000000	00000190	SAVE	OpenWrtDocs(2f)Configuration	216.27.184.29	bitstream.explosive.net	1142406285.51.63354		
+1142462759000000	00000191	SAVE	OpenWrtDocs(2f)Configuration	216.31.249.246	216-31-249-246.cust.telepacific.net	1096303201.7.12400		
+1142464152000000	00000192	SAVE	OpenWrtDocs(2f)Configuration	216.31.249.246	216-31-249-246.cust.telepacific.net	1096303201.7.12400		
+1142883651000000	00000193	SAVE	OpenWrtDocs(2f)Configuration	68.232.160.183	68-232-160-183.clvdoh.adelphia.net	1142881138.85.46304		
+1142884649000000	00000194	SAVE	OpenWrtDocs(2f)Configuration	68.232.160.183	68-232-160-183.clvdoh.adelphia.net	1142881138.85.46304		
+1143295524000000	00000195	SAVE	OpenWrtDocs(2f)Configuration	212.202.169.135	port-212-202-169-135.dynamic.qsc.de	1140982674.48.16933		
+1143295710000000	00000196	SAVE	OpenWrtDocs(2f)Configuration	212.202.169.135	port-212-202-169-135.dynamic.qsc.de	1140982674.48.16933		
+1143402157000000	00000197	SAVE	OpenWrtDocs(2f)Configuration	87.78.158.214	xdsl-87-78-158-214.netcologne.de	1108641180.99.15726		
+1143402823000000	00000198	SAVE	OpenWrtDocs(2f)Configuration	87.78.158.214	xdsl-87-78-158-214.netcologne.de	1108641180.99.15726		
+1143404258000000	00000199	SAVE	OpenWrtDocs(2f)Configuration	87.78.158.214	xdsl-87-78-158-214.netcologne.de	1108641180.99.15726		
+1143527375000000	00000200	SAVE	OpenWrtDocs(2f)Configuration	82.234.62.122	cug31-1-82-234-62-122.fbx.proxad.net	1112181182.91.49681		dropear key auth + string wep key format
+1143527439000000	00000201	SAVE	OpenWrtDocs(2f)Configuration	82.234.62.122	cug31-1-82-234-62-122.fbx.proxad.net	1112181182.91.49681		
+1143646910000000	00000202	SAVE	OpenWrtDocs(2f)Configuration	64.26.170.40	ottawa-hs-64-26-170-40.d-ip.magma.ca	1143646367.43.17760		fixed rowspan errors
+1143726830000000	00000203	SAVE	OpenWrtDocs(2f)Configuration	193.216.18.211	193.216.18.211	1139779893.71.10985		
+1143775160000000	00000204	SAVE	OpenWrtDocs(2f)Configuration	66.178.45.163	apoderado.ometepe.net	1143774748.58.8747		Added Central American time
+1143775435000000	00000205	SAVE	OpenWrtDocs(2f)Configuration	66.178.45.163	apoderado.ometepe.net	1143774748.58.8747		
+1144015911000000	00000206	SAVE	OpenWrtDocs(2f)Configuration	68.232.160.183	68-232-160-183.clvdoh.adelphia.net	1142881138.85.46304		
+1144097219000000	00000207	SAVE	OpenWrtDocs(2f)Configuration	84.62.176.41	dslb-084-062-176-041.pools.arcor-ip.net	1144095865.59.42901		
+1144111028000000	00000208	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		split time from time zone
+1144112259000000	00000209	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		
+1144112708000000	00000210	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		
+1144113226000000	00000211	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		keys do not need to be converted for RC5, add dropbear/syslog refs
+1144259032000000	00000212	SAVE	OpenWrtDocs(2f)Configuration	213.170.100.118	wst.quantum.ru	1137110467.94.32811		UI improvement
+1144259138000000	00000213	SAVE	OpenWrtDocs(2f)Configuration	213.170.100.118	wst.quantum.ru	1137110467.94.32811		
+1144294904000000	00000214	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		why UI improvement?
+1144339151000000	00000215	SAVE	OpenWrtDocs(2f)Configuration	213.170.100.118	wst.quantum.ru	1137110467.94.32811		CISCO button to control WiFi.
+1144339972000000	00000216	SAVE	OpenWrtDocs(2f)Configuration	213.170.100.118	wst.quantum.ru	1137110467.94.32811		
+1144340469000000	00000217	SAVE	OpenWrtDocs(2f)Configuration	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Wording fix.
+1144340961000000	00000218	SAVE	OpenWrtDocs(2f)Configuration	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Final tweak.
+1144364468000000	00000219	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		
+1144426071000000	00000220	SAVE	OpenWrtDocs(2f)Configuration	80.172.10.206	80.172.10.206	1143464674.36.40507		
+1144426190000000	00000221	SAVE	OpenWrtDocs(2f)Configuration	80.172.10.206	80.172.10.206	1143464674.36.40507		
+1144428381000000	00000222	SAVE	OpenWrtDocs(2f)Configuration	85.131.97.91	103-91.adsl.lpoy.dnainternet.fi	1122467653.83.51546		
+1144553292000000	00000223	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		add htpdate
+1144554531000000	00000224	SAVE	OpenWrtDocs(2f)Configuration	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		add openntpd
+1144575701000000	00000225	SAVE	OpenWrtDocs(2f)Configuration	80.172.10.131	80.172.10.131	1143464674.36.40507		
+1144616404000000	00000226	SAVE	OpenWrtDocs(2f)Configuration	134.102.69.142	nordcom-adsl-69-142.zfn.uni-bremen.de	1135249402.38.19057		nas has to be installed for wpa to be working!
+1144658687000000	00000227	SAVE	OpenWrtDocs(2f)Configuration	82.109.191.65	82.109.191.65	1140091389.39.21344		
+1145018713000000	00000228	SAVE	OpenWrtDocs(2f)Configuration	88.64.131.200	dslb-088-064-131-200.pools.arcor-ip.net	1145018358.68.32338		
+1145026762000000	00000229	SAVE	OpenWrtDocs(2f)Configuration	69.181.160.168	c-69-181-160-168.hsd1.ca.comcast.net	1096303201.7.12400		remove obsolete gpio scripts
+1145027209000000	00000230	SAVE	OpenWrtDocs(2f)Configuration	69.181.160.168	c-69-181-160-168.hsd1.ca.comcast.net	1096303201.7.12400		remove comments (please use forum for comments)
+1145242509000000	00000231	SAVE	OpenWrtDocs(2f)Configuration	8.6.36.150	8.6.36.150	1145236303.05.33591		Not really sure if this is correct, but its what I could determine by comparing 
+1145312635000000	00000232	SAVE	OpenWrtDocs(2f)Configuration	216.31.249.246	216-31-249-246.cust.telepacific.net	1096303201.7.12400		
+1145476928000000	00000233	SAVE	OpenWrtDocs(2f)Configuration	62.253.128.13	cmbg-cache-3.server.ntli.net	1142598076.06.46200		
+1145977920000000	00000234	SAVE	OpenWrtDocs(2f)Configuration	64.50.56.200	64.50.56.200.ptr.us.xo.net	1145976603.23.10451		
+1146434362000000	00000235	SAVE	OpenWrtDocs(2f)Configuration	66.93.152.180	pegasus.kazrak.com	1146434203.99.42417		Add Arizona time without DST.
+1146874615000000	00000236	SAVE	OpenWrtDocs(2f)Configuration	84.159.234.212	p549FEAD4.dip.t-dialin.net	1146874002.01.46514		
+1147064539000000	00000237	SAVE	OpenWrtDocs(2f)Configuration	221.126.121.211	221.126.121.211	1146634183.51.30048		
+1147066830000000	00000238	SAVE	OpenWrtDocs(2f)Configuration	205.206.225.4	d205-206-225-4.abhsia.telus.net	1137130105.06.15257		
+1147070604000000	00000239	SAVE	OpenWrtDocs(2f)Configuration	205.206.225.4	d205-206-225-4.abhsia.telus.net	1137130105.06.15257		I could never find these pages from the configuration page...
+1147574852000000	00000240	SAVE	OpenWrtDocs(2f)Configuration	71.135.191.134	adsl-71-135-191-134.dsl.pltn13.pacbell.net	1147573571.8.22119		
+1147575324000000	00000241	SAVE	OpenWrtDocs(2f)Configuration	71.135.191.134	adsl-71-135-191-134.dsl.pltn13.pacbell.net	1147573571.8.22119		
+1147822960000000	00000242	SAVE	OpenWrtDocs(2f)Configuration	141.84.69.20	eruessel.stusta.mhn.de	1147820785.45.6299		
+1148900871000000	00000243	SAVE	OpenWrtDocs(2f)Configuration	193.201.200.170	chiark.greenend.org.uk	1139937596.05.25185		fix sentence
+1149236711000000	00000244	SAVE	OpenWrtDocs(2f)Configuration	155.232.250.51	ten-cache1-vif-3.tenet.saix.net	1149155116.95.29440		
+1149239057000000	00000245	SAVE	OpenWrtDocs(2f)Configuration	212.213.178.10	cache-3.wall.soneralink.com	1149238664.77.36301		
+1149239377000000	00000246	SAVE	OpenWrtDocs(2f)Configuration	155.232.250.35	ten-cache1-vif-2.tenet.saix.net	1149155116.95.29440		
+1149239789000000	00000247	SAVE	OpenWrtDocs(2f)Configuration	212.213.178.10	cache-3.wall.soneralink.com	1149238664.77.36301		WRT54GL interface names checked - thanks for the correction of br0.
+1149240538000000	00000248	SAVE	OpenWrtDocs(2f)Configuration	155.232.250.19	ten-cache1-vif-1.tenet.saix.net	1149155116.95.29440		
+1149358878000000	00000249	SAVE	OpenWrtDocs(2f)Configuration	67.176.150.152	c-67-176-150-152.hsd1.il.comcast.net	1149357617.51.56000		
+1149563075000000	00000250	SAVE	OpenWrtDocs(2f)Configuration	69.140.75.188	c-69-140-75-188.hsd1.va.comcast.net	1149562858.09.51333		
+1149614187000000	00000251	SAVE	OpenWrtDocs(2f)Configuration	64.141.49.83	h64-141-49-83.bigpipeinc.com	1149354446.76.30246		Confirmed eth0 eth1 eth2 settings for whiterussian rc5 and linksys wrtsl54gs
+1149798931000000	00000252	SAVE	OpenWrtDocs(2f)Configuration	222.153.26.152	222-153-26-152.jetstream.xtra.co.nz	1105667594.24.36733		
+1150039833000000	00000253	SAVE	OpenWrtDocs(2f)Configuration	217.80.236.134	pD950EC86.dip.t-dialin.net	1147848043.09.17367		Added interface names of WL-500gP
+1150483994000000	00000254	SAVE	OpenWrtDocs(2f)Configuration	84.53.14.168	dsl-14-168.monet.no	1150483622.05.15679		
+1151065598000000	00000255	SAVE	OpenWrtDocs(2f)Configuration	216.64.116.146	216.64.116.146	1151065224.59.25104		
+1151259585000000	00000256	SAVE	OpenWrtDocs(2f)Configuration	80.132.160.174	p5084A0AE.dip0.t-ipconnect.de	1151258802.85.46552		Fixed table header; VLAN1 is the WAN interface on Asus WL-500G Premium 
+1151691489000000	00000257	SAVE	OpenWrtDocs(2f)Configuration	192.75.14.246	pc014246.iot.nrc.ca	1151690240.52.44170		
+1152918980000000	00000258	SAVE	OpenWrtDocs(2f)Configuration	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1152919043000000	00000259	SAVE	OpenWrtDocs(2f)Configuration	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1153053733000000	00000260	SAVE	OpenWrtDocs(2f)Configuration	80.61.87.81	ip503d5751.speed.planet.nl	1151827581.26.27512		
+1153080741000000	00000261	SAVE	OpenWrtDocs(2f)Configuration	132.216.93.210	vpn93210.VPN.McGill.CA	1153080442.9.8025		
+1153098640000000	00000262	SAVE	OpenWrtDocs(2f)Configuration	132.216.93.231	vpn93231.VPN.McGill.CA	1153080442.9.8025		
+1153146951000000	00000263	SAVE	OpenWrtDocs(2f)Configuration	201.51.40.19	20151040019.user.veloxzone.com.br	1153146809.77.46220		
+1153357495000000	00000264	SAVE	OpenWrtDocs(2f)Configuration	67.175.119.37	c-67-175-119-37.hsd1.il.comcast.net	1153357138.95.57713		Bring some stuff into line about what the wl0_wds vars actually do
+1154675074000000	00000265	SAVE	OpenWrtDocs(2f)Configuration	62.57.3.238	238.red-62-57-3.user.auna.net	1118334736.86.35460		
+1154987949000000	00000266	SAVE	OpenWrtDocs(2f)Configuration	67.160.247.250	c-67-160-247-250.hsd1.ca.comcast.net	1154987587.49.64285		add a hint w.r.t. WDS & a broken bridge
+1156652493000000	00000267	SAVE	OpenWrtDocs(2f)Configuration	60.234.156.244	60-234-156-244.bitstream.orcon.net.nz	1135131787.77.30161		WDS routed Networks
+1156653196000000	00000268	SAVE	OpenWrtDocs(2f)Configuration	60.234.156.244	60-234-156-244.bitstream.orcon.net.nz	1135131787.77.30161		
+1156653419000000	00000269	SAVE	OpenWrtDocs(2f)Configuration	60.234.156.244	60-234-156-244.bitstream.orcon.net.nz	1135131787.77.30161		
+1156673191000000	00000270	SAVE	OpenWrtDocs(2f)Configuration	83.124.8.2	2-8-124-83.dsl.3u.net	1156671930.75.51897		Previous title was too non-obvious of the wide scope of this section
+1156673276000000	00000271	SAVE	OpenWrtDocs(2f)Configuration	83.124.8.2	2-8-124-83.dsl.3u.net	1156671930.75.51897		That's better...
+1156746921000000	00000272	SAVE	OpenWrtDocs(2f)Configuration	60.234.156.244	60-234-156-244.bitstream.orcon.net.nz	1135131787.77.30161		
+1157212186000000	00000273	SAVE	OpenWrtDocs(2f)Configuration	217.159.162.79	217-159-162-79-dsl.trt.estpak.ee	1157211934.24.31006		Added time zone of Estonia
+1157770033000000	00000274	SAVE	OpenWrtDocs(2f)Configuration	71.241.238.202	pool-71-241-238-202.washdc.fios.verizon.net	1157769295.78.64822		
+1158600874000000	00000275	SAVE	OpenWrtDocs(2f)Configuration	69.17.28.131	noc.acetechgroup.com	1158600610.76.39256		
+1158617467000000	00000276	SAVE	OpenWrtDocs(2f)Configuration	84.164.174.218	p54A4AEDA.dip0.t-ipconnect.de	1158427662.5.53491		
+1159114017000000	00000277	SAVE	OpenWrtDocs(2f)Configuration	85.176.121.212	e176121212.adsl.alicedsl.de	1159101698.36.45950		correct entry for separating wifi and lan networks in the bridge - if eth1 is still included in the bridge, it won't be separated
+1159671688000000	00000278	SAVE	OpenWrtDocs(2f)Configuration	69.157.20.214	bas2-hamilton14-1167922390.dsl.bell.ca	1159571521.05.9292		Linked to WR850G for hardware specifics
+1161109729000000	00000279	SAVE	OpenWrtDocs(2f)Configuration	75.6.46.166	adsl-75-6-46-166.dsl.pltn13.sbcglobal.net	1096303201.7.12400		
+1161112019000000	00000280	SAVE	OpenWrtDocs(2f)Configuration	75.32.19.206	adsl-75-32-19-206.dsl.pltn13.sbcglobal.net	1096303201.7.12400		Additional cleanup
+1161647882000000	00000281	SAVE	OpenWrtDocs(2f)Configuration	81.174.128.52	81-174-128-52.force9.co.uk	1161618460.29.19008		
+1162144170000000	00000282	SAVE	OpenWrtDocs(2f)Configuration	66.57.40.219	cpe-066-057-040-219.nc.res.rr.com	1162144000.32.5886		
+1163946074000000	00000283	SAVE	OpenWrtDocs(2f)Configuration	85.10.2.225	cpe-85-10-2-225.dynamic.amis.net	1154119971.84.48724		Added description of ntpclient under 5.7 Basic system configuration and usage / Time
+1165070359000000	00000284	SAVE	OpenWrtDocs(2f)Configuration	84.137.108.78	p54896C4E.dip.t-dialin.net	1165069460.74.4845		Getting a working WAN connection on ASUS WL-500G Premium
+1165152152000000	00000285	SAVE	OpenWrtDocs(2f)Configuration	24.239.162.237	user-0cev8nd.cable.mindspring.com	1165151922.13.50602		
+1165712525000000	00000286	SAVE	OpenWrtDocs(2f)Configuration	87.194.38.51	87-194-38-51.bethere.co.uk	1161618460.29.19008		
+1166143835000000	00000287	SAVE	OpenWrtDocs(2f)Configuration	203.59.6.94	203-59-6-94.dyn.iinet.net.au	1166143632.65.33112		add perth timezone data for 2006/07 summer
+1166182654000000	00000288	SAVE	OpenWrtDocs(2f)Configuration	74.108.54.249	CPE0014bf10e271-CM000a7363ed98.cpe.net.cable.rogers.com	1166182222.54.26653		timezone info setup in RC6 for openNTPd.
+1166276259000000	00000289	SAVE	OpenWrtDocs(2f)Configuration	84.60.99.88	dslb-084-060-099-088.pools.arcor-ip.net	1166276112.52.41591		
+1166633155000000	00000290	SAVE	OpenWrtDocs(2f)Configuration	194.74.72.254	194.74.72.254	1166632960.02.35010		minor grammar/type now-->know
+1168080235000000	00000291	SAVE	OpenWrtDocs(2f)Configuration	62.224.103.118	p3EE06776.dip.t-dialin.net	1168080006.49.36314		
+1169104754000000	00000292	SAVE	OpenWrtDocs(2f)Configuration	209.89.191.133	d209-89-191-133.abhsia.telus.net	1167679634.69.23920		Add interface names for WRT300N v1
+1169225577000000	00000293	SAVE	OpenWrtDocs(2f)Configuration	82.35.75.183	82-35-75-183.cable.ubr02.dals.blueyonder.co.uk	1169222181.8.61417		
+1169226920000000	00000294	SAVE	OpenWrtDocs(2f)Configuration	82.35.75.183	82-35-75-183.cable.ubr02.dals.blueyonder.co.uk	1169222181.8.61417		
+1169370546000000	00000295	SAVE	OpenWrtDocs(2f)Configuration	24.68.77.44	S0106001617176035.gv.shawcable.net	1155141403.61.50624		minor translation bug.  Also made a guess at 'regalary'
+1169639638000000	00000296	SAVE	OpenWrtDocs(2f)Configuration	82.35.75.183	82-35-75-183.cable.ubr02.dals.blueyonder.co.uk	1169222181.8.61417		
+1170949202000000	00000297	SAVE	OpenWrtDocs(2f)Configuration	194.74.72.254	194.74.72.254	1166632960.02.35010		Added notes about not auto-negotiating privacy and encryption with wireless mode=sta
+1171214417000000	00000298	SAVE	OpenWrtDocs(2f)Configuration	84.220.161.32	host-84-220-161-32.cust-adsl.tiscali.it	1168533892.79.59115		
+1171214896000000	00000299	SAVE	OpenWrtDocs(2f)Configuration	84.220.161.32	host-84-220-161-32.cust-adsl.tiscali.it	1168533892.79.59115		
+1171386365000000	00000300	SAVE	OpenWrtDocs(2f)Configuration	129.21.95.9	henryjackson78.cims.rit.edu	1171329193.37.24458		
+1171718853000000	00000301	SAVE	OpenWrtDocs(2f)Configuration	85.113.184.179	tk3-179.ftth.inord.no	1150483622.05.15679		
+1172171680000000	00000302	SAVE	OpenWrtDocs(2f)Configuration	89.142.30.206	89.142.30.206	1172152197.92.41840		
+1172172208000000	00000303	SAVE	OpenWrtDocs(2f)Configuration	89.142.30.206	89.142.30.206	1172152197.92.41840		
+1172172444000000	00000304	SAVE	OpenWrtDocs(2f)Configuration	89.142.30.206	89.142.30.206	1172152197.92.41840		
+1172172564000000	00000305	SAVE	OpenWrtDocs(2f)Configuration	89.142.30.206	89.142.30.206	1172152197.92.41840		
+1172172612000000	00000306	SAVE	OpenWrtDocs(2f)Configuration	89.142.30.206	89.142.30.206	1172152197.92.41840		
+1172622830000000	00000307	SAVE	OpenWrtDocs(2f)Configuration	129.94.6.29	cache2.uwn.unsw.EDU.AU	1157619169.66.40274		rdate uses the time protocol (RFC868), not NTP - thus 'rdate -s pool.ntp.org' will not work
+1172623027000000	00000308	SAVE	OpenWrtDocs(2f)Configuration	129.94.6.29	cache2.uwn.unsw.EDU.AU	1157619169.66.40274		fixed URL
+1172780164000000	00000309	SAVE	OpenWrtDocs(2f)Configuration	87.160.228.167	p57A0E4A7.dip.t-dialin.net	1172525580.68.33789		Where <name> is either one of 'wl0', 'lan', or 'wan' for the wireless local area network or the wide area network respectively.  ( I recon at least!)
+1172780264000000	00000310	SAVE	OpenWrtDocs(2f)Configuration	87.160.228.167	p57A0E4A7.dip.t-dialin.net	1172525580.68.33789		Where <name> is either one of 'wl0', 'lan', or 'wan' for the wireless, local area network or the wide area network respectively.  (I still recon!)
+1172799474000000	00000311	SAVE	OpenWrtDocs(2f)Configuration	129.94.6.29	cache2.uwn.unsw.EDU.AU	1157619169.66.40274		Updated Australian timezones per Aust. Government site
+1173438824000000	00000312	SAVE	OpenWrtDocs(2f)Configuration	83.217.112.30	mende.windows.kizoom.com	1173434736.57.51545		
+1173487246000000	00000313	SAVE	OpenWrtDocs(2f)Configuration	142.163.96.61	stjhnf0111w-142163096061.pppoe-dynamic.nl.aliant.net	1151690240.52.44170		
+1173823357000000	00000314	SAVE	OpenWrtDocs(2f)Configuration	160.33.18.129	host-18-129.spde.net	1171599668.3.32030		
+1173833523000000	00000315	SAVE	OpenWrtDocs(2f)Configuration	160.33.18.129	host-18-129.spde.net	1171599668.3.32030		Flushed out new US DST, removed bad HI timezone info, fixed examples
+1174179427000000	00000316	SAVE	OpenWrtDocs(2f)Configuration	67.10.181.230	cpe-67-10-181-230.houston.res.rr.com	1174179222.93.41466		
+1174354750982539	99999999	ATTNEW	OpenWrtDocs(2f)Configuration	190.40.75.138	client-190.40.75.138.speedy.net.pe	1174352785.75.46261	package.zip	
+1174413959388317	99999999	ATTDEL	OpenWrtDocs(2f)Configuration	63.82.214.195	63.82.214.195	1096303201.7.12400	package.zip	
+1177377172000000	00000317	SAVE	OpenWrtDocs(2f)Configuration	86.146.43.207	host86-146-43-207.range86-146.btcentralplus.com	1177376045.2.53746		Minor grammar & typo corrections.
+1177377920000000	00000318	SAVE	OpenWrtDocs(2f)Configuration	86.146.43.207	host86-146-43-207.range86-146.btcentralplus.com	1177376045.2.53746		A few more typos corrected. 'Ethernet' and 'Linux' capitalised.
+1178676952000000	00000319	SAVE	OpenWrtDocs(2f)Configuration	69.108.216.127	adsl-69-108-216-127.dsl.pltn13.pacbell.net	1150779081.4.62318		Fixed minor formatting errors
+1178677067000000	00000320	SAVE	OpenWrtDocs(2f)Configuration	69.108.216.127	adsl-69-108-216-127.dsl.pltn13.pacbell.net	1150779081.4.62318		Removed outdated WR RC5/WL-500gP notes
+1179418855000000	00000321	SAVE	OpenWrtDocs(2f)Configuration	85.27.13.176	host-85-27-13-176.brutele.be	1179352010.2.14233		
+1179418922000000	00000322	SAVE	OpenWrtDocs(2f)Configuration	85.27.13.176	host-85-27-13-176.brutele.be	1179352010.2.14233		
+1179896977000000	00000323	SAVE	OpenWrtDocs(2f)Configuration	125.238.92.242	125-238-92-242.broadband-telecom.global-gateway.net.nz	1179896602.29.7568		
+1179897183000000	00000324	SAVE	OpenWrtDocs(2f)Configuration	125.238.92.242	125-238-92-242.broadband-telecom.global-gateway.net.nz	1179896602.29.7568		
+1180266178000000	00000325	SAVE	OpenWrtDocs(2f)Configuration	83.10.247.50	acqp50.neoplus.adsl.tpnet.pl	1180265532.52.23088		Timezone for Warsaw, Poland
+1180344144000000	00000326	SAVE	OpenWrtDocs(2f)Configuration	212.104.102.226	212-104-102-226.ddns.evrocom.net	1180335069.57.37223		Timezone added - Sofia, Bulgaria
+1181074198000000	00000327	SAVE	OpenWrtDocs(2f)Configuration	81.169.137.209	anonymizer.ccc.de	1181073382.17.43681		
+1182829549000000	00000328	SAVE	OpenWrtDocs(2f)Configuration	221.127.129.174	221.127.129.174	1182829199.35.44460		Added time zone information for Hong Kong
+1182897121000000	00000329	SAVE	OpenWrtDocs(2f)Configuration	166.70.240.220	mail.stoutner.org	1179379234.36.58710		Added information about loopback on port forwarding.
+1183230693000000	00000330	SAVE	OpenWrtDocs(2f)Configuration	84.190.89.86	p54BE5956.dip.t-dialin.net	1183061815.93.11892		stylistic: removed double quotes to make this line look as the others
+1183239570000000	00000331	SAVE	OpenWrtDocs(2f)Configuration	84.190.78.192	p54BE4EC0.dip.t-dialin.net	1183061815.93.11892		added tip to add iptables forward rule when separating LAN from WIFI
+1184511688000000	00000332	SAVE	OpenWrtDocs(2f)Configuration	90.157.156.97	cpe-90-157-156-97.dynamic.amis.net	1154119971.84.48724		
+1186090504000000	00000333	SAVE	OpenWrtDocs(2f)Configuration	71.195.226.101	c-71-195-226-101.hsd1.ma.comcast.net	1179379234.36.58710		Fixed port forward information for x-wrt
+1190054638000000	00000334	SAVE	OpenWrtDocs(2f)Configuration	217.119.145.2	217-119-145-2.sefanet.ch	1190054449.29.865		
+1191368709000000	00000335	SAVE	OpenWrtDocs(2f)Configuration	84.189.124.224	p54BD7CE0.dip.t-dialin.net	1168469342.9.28610		added WR850G v2 in the table of network interfaces
+1191524873000000	00000336	SAVE	OpenWrtDocs(2f)Configuration	152.3.25.194	gauss.cgtp.duke.edu	1162144000.32.5886		
+1195112989000000	00000337	SAVE	OpenWrtDocs(2f)Configuration	124.169.182.240	124-169-182-240.dyn.iinet.net.au	1166143632.65.33112		Fix /etc/TZ setting for Perth to reflect 2007 dst
+1197441558000000	00000338	SAVE	OpenWrtDocs(2f)Configuration	68.121.149.178	adsl-68-121-149-178.dsl.pltn13.pacbell.net	1150779081.4.62318		Fixed dnsmasq wiki link
+1199697379000000	00000339	SAVE	OpenWrtDocs(2f)Configuration	217.115.228.39	217.115.228.39	1199697113.52.42039		
+1200927946000000	00000340	SAVE	OpenWrtDocs(2f)Configuration	200.71.62.161	Static-IP-cr2007162161.cable.net.co	1193881144.21.17764		Colombia time zone
+1201996665000000	00000341	SAVE	OpenWrtDocs(2f)Configuration	81.107.33.164	cpc2-cmbg6-0-0-cust419.cmbg.cable.ntl.com	1201995147.65.32681		
+1201998677000000	00000342	SAVE	OpenWrtDocs(2f)Configuration	81.107.33.164	cpc2-cmbg6-0-0-cust419.cmbg.cable.ntl.com	1201995147.65.32681		Added WHR-HP-G54, hopefully correctly!
+1201998750000000	00000343	SAVE	OpenWrtDocs(2f)Configuration	81.107.33.164	cpc2-cmbg6-0-0-cust419.cmbg.cable.ntl.com	1201995147.65.32681		
+1201998863000000	00000344	SAVE	OpenWrtDocs(2f)Configuration	81.107.33.164	cpc2-cmbg6-0-0-cust419.cmbg.cable.ntl.com	1201995147.65.32681		Added WHR-HP-G54, hopefully correctly! (Previous edit broke on submission)
+1207106973000000	00000345	SAVE	OpenWrtDocs(2f)Configuration	210.56.228.5	210.56.228.5	1207106453.21.2984		
+1207107232000000	00000346	SAVE	OpenWrtDocs(2f)Configuration	210.56.228.5	210.56.228.5	1207106453.21.2984		
+1213217586000000	00000347	SAVE	OpenWrtDocs(2f)Configuration	200.93.158.126	corporat200-093158126.sta.etb.net.co	1213217399.53.16131		Modification about UTC in colombia an Argentina
+1213218982000000	00000348	SAVE	OpenWrtDocs(2f)Configuration	200.93.158.126	corporat200-093158126.sta.etb.net.co	1213217399.53.16131		
+1216233447000000	00000349	SAVE	OpenWrtDocs(2f)Configuration	171.71.36.241	printer-sj-4-3-171-71-36-241.cisco.com	1142361980.51.2341		
+1216245068000000	00000350	SAVE	OpenWrtDocs(2f)Configuration	171.71.36.241	printer-sj-4-3-171-71-36-241.cisco.com	1142361980.51.2341		

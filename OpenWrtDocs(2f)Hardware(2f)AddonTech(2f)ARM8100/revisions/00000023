@@ -1,0 +1,908 @@
+#pragma section-numbers off
+[[TableOfContents]]
+
+= Addon-Tech ARM8100 =
+
+The [http://www.addon-tech.com AddonTech] [http://www.addon-tech.com/arm8100.html ARM8100] is a TI AR7-based device. Thus ["AR7Port"] is compatible with these devices.
+
+The current status of this device is:
+
+||'''feature''' ||'''status''' ||'''notes''' ||
+||Booting kernel||Working|| ||
+||Ethernet||Working|| ||
+||ADSL||Working||only tested with PPPoA, PPPoE should work too||
+||Wireless||Not applicable||The ARM8100 does not have wireless networking||
+||USB||Untested||client only||
+
+So, the device is capable of functioning correctly as a router just fine!  I (Hydra, the primary author and maintainer of this page) am using OpenWRT on one of these boxes for my main internet connection as I write this!
+
+Areas that need more work are:
+
+* Automatic enabling of ADSL/wan/ppp0 after bootup.
+* DSL line fault detection and automatic reconnection - if you pull the dsl cable out the back you have to reboot before you can reconnect with pppd (but not always, sometimes just restarting pppd with ifdown wan and ifup wan works)
+* LEDs on the front of the unit do not show status of DSL line or PPP link
+* Getting more software onto the 2MB flash is a challenge, only a very minimal set of programs can currently be installed, otherwise the JFFS2 partition becomes full.  Also unable to use pure JFFS2 images due to the flash size and overhead of jffs2.
+
+== Background Information ==
+
+The Netcomm NB5Plus4 router appears to run very similar firmware,  there appear to be many Austrailian Netcomm customers with the NB5Plus4 hardware.
+
+Older versions of the NB5Plus4 router have the same web interface as the ARM8100 router owned by Hydra which has software versions as follows:
+
+{{{
+Gateway T340A.041109a1_03
+ATM Driver 4.02.04.00
+DSL HAL 3.00.06.00
+DSL Datapump 3.00.06.00
+PDSP Firmware 0.49
+Boot Loader 0.22.03
+}}}
+The Addon-Tech ARM8100 has an ADAM2 bootloader, (see below for logs, etc) which can be used to flash the onboard flash ram and perform other tasks.  For a great introduction and overview of ADAM2 read [http://www.seattlewireless.net/ADAM2 this page]
+
+== Hardware Info ==
+Uses TI AR7 chipset, no-onboard wireless lan, however there is space on the pcb for a mini-pci socket.
+
+8MB Ram, 2Mb Flash, 4x 10/100 RJ45 Ports, ADSL2 RJ45 connector, Reset button, 7 led's, serial and jtag ports - with pin headers! Requires 12v PSU.  Serial port has 3.3v output too which has no problems powering a MAX 3222 chip.
+
+=== Photos ===
+http://www.hydraservices.com/files/addontecharm8100/pcb.jpg
+
+http://www.hydraservices.com/files/addontecharm8100/case.jpg
+
+=== Serial Port ===
+Here's the general location of the serial port.
+
+{{{
+FLASH  RAM SoC           |
+                         |
+             1 2 3 4     |
+               JP900     |
+_________________________|
+       V T R G
+       C X X N
+       C     D
+}}}
+The serial port uses CMOS 3.3v levels.  I used a [http://www.maxim-ic.com/quick_view2.cfm/qv_pk/1068 Max 3222] chip which converts
+
+Here's a schematic of the circuit i used.
+
+http://www.hydraservices.com/files/addontecharm8100/router-serial-cable.png
+
+IMPORTANT!!!! - On that schematic I found after checking that pin 14 of the chip goes to pin 3 on the serial port and pin 15 of the chip goes to pin 2 of the serial port.  Also the table lists pin 15 twice, pin 16 is gnd, not pin 15. - Thanks to Freundschaft for making me check :D - Hydra
+
+== Original Firmware Info ==
+
+The original firmware on these devices has trouble keeping track of lots of connections, for example if you use something like The All Seeing Eye to ping a bunch of game servers eventually you won't be able to make any more new connections, existing tcp connections continue to function.  After a while it goes back to normal.  The DNS server actually stops working completly when this happens however.
+
+Additionally XBox Live reports the router as having "Moderate" NAT which means it's not very good for use with XBox Live.
+http://wiki.openwrt.org/OpenWrtDocs/Hardware/T-Com/SpeedportW701V?action=edit
+Edit "OpenWrtDocs/Hardware/T-Com/SpeedportW701V" - OpenWrt
+uPnP support appears to be non functional.  Enabling it doesn't do anything, it looks like libpthread is missing (attemping to manually start it results in an error message)
+
+=== Backing up original firmware ===
+
+You can telnet to the device, login as "root" with whatever password you used for the admin interface, or use the console via the serial port.
+
+You can then dump each mtd block to a file and download them via a web browser pointed to the router at port 1080 using the example below.
+
+{{{
+dd if=/dev/mtdblock/0 of=/var/tmp/mtd0-squashfs.bin
+dd if=/dev/mtdblock/1 of=/var/tmp/mtd1-kernel.bin
+dd if=/dev/mtdblock/2 of=/var/tmp/mtd2-adam2.bin
+dd if=/dev/mtdblock/3 of=/var/tmp/mtd3-adam2-nvram.bin
+/usr/sbin/thttpd -g -d /var -u root -p 1080
+}}}
+You'll probably have to do mtd0 seperately as there's not enough free ram to dump them all and download them at the same time.  I (Hydra) actually had to kill the admin web server and a couple of other running programs before there was enough free ram to allow thttp to open the file and transfer it after mtd0.bin had been created!
+
+=== Restoring Original Firmware ===
+
+use ftp to connect to the adam2 boot loader as described elsewhere on this page, then restore your backups as follows:
+
+{{{
+hydra@hydra02:~/arm8100$ ftp 192.168.100.1
+Connected to 192.168.100.1.
+220 ADAM2 FTP Server ready.
+Name (192.168.100.1:hydra): adam2
+331 Password required for adam2.
+Password:
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+ftp> binary
+200 Type set to I.
+ftp> quote MEDIA FLSH
+200 Media set to FLSH.
+ftp> put mtd0-squashfs.bin "mtd0-squashfs.bin mtd0"
+local: mtd0-squashfs.bin remote: mtd0-squashfs.bin mtd0
+200 Port command successful.
+150 Opening BINARY mode data connection for file transfer.
+226 Transfer complete.
+1441792 bytes sent in 13.03 secs (108.0 kB/s)
+ftp> put mtd1-kernel.bin "mtd1-kernel.bin mtd1"
+local: mtd1-kernel.bin remote: mtd1-kernel.bin mtd1
+200 Port command successful.
+150 Opening BINARY mode data connection for file transfer.
+226 Transfer complete.
+524288 bytes sent in 4.85 secs (105.6 kB/s)
+ftp> quote REBOOT
+221-Thank you for using the FTP service on ADAM2.
+221 Goodbye.
+ftp> bye
+hydra@hydra02:~/arm8100$
+}}}
+
+=== Boot log from old firmware ===
+{{{
+ADAM2 Revision 0.22.03
+(C) Copyright 1996-2003 Texas Instruments Inc. All Rights Reserved.
+(C) Copyright 2003 Telogy Networks, Inc.
+Usage: setmfreq [-d] [-s sys_freq, in MHz] [cpu_freq, in MHz]
+Memory optimization Complete!
+Adam2_AR7RD >
+Press any key to abort OS load, or wait 5 seconds for OS to boot...
+Launching kernel decompressor.
+Starting LZMA Uncompression Algorithm.
+Copyright (C) 2003 Texas Instruments Incorporated; Copyright (C) 1999-2003 Igor
+Pavlov.
+Compressed file is LZMA format.
+Kernel decompressor was successful ... launching kernel.
+LINUX started...
+Config serial console: ttyS0,38400
+CPU revision is: 00018448
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 16kb, linesize 16 bytes (4 ways)
+Number of TLB entries 16.
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc ve
+rsion 2.95.3 20010315 (release/MontaVista)) #1 Tue Nov 9 17:49:34 CST 2004
+Determined physical RAM map:
+ memory: 14000000 @ 00000000 (reserved)
+ memory: 00020000 @
+ memory: 007e0000 @ 14020000 (usable)
+On node 0 totalpages: 2048
+zone(0): 2048 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line:
+the pacing pre-scalar has been set as 600.
+calculating r4koff... 000b71b0(750000)
+CPU frequency 150.00 MHz
+Calibrating delay loop... 149.91 BogoMIPS
+Freeing Adam2 reserved memory [0x14001000,0x0001f000]
+Memory: 6344k/8192k available (1443k kernel code, 1848k reserved, 119k data, 60k
+ init)
+Dentry-cache hash table entries: 1024 (order: 1, 8192 bytes)
+Inode-cache hash table entries: 512 (order: 0, 4096 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+Disabling the Out Of Memory Killer
+devfs: v1.7 (20011216) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 32 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0xa8610e00 (irq = 15) is a 16550A
+ttyS01 at 0xa8610f00 (irq = 16) is a 16550A
+block: 64 slots per queue, batch=16
+PPP generic driver version 2.4.1
+avalanche flash device: 0x400000 at 0x10000000.
+Physically mapped flash: Found 1 x16 devices at 0x200000 in 16-bit mode
+ Amd/Fujitsu Extended Query Table v1.0 at 0x0040
+number of CFI chips: 2
+Looking for mtd device :mtd0:
+Found a mtd0 image (0x90000), with size (0x160000).
+Looking for mtd device :mtd1:
+Found a mtd1 image (0x10000), with size (0x80000).
+Looking for mtd device :mtd2:
+Found a mtd2 image (0x0), with size (0x10000).
+Looking for mtd device :mtd3:
+Found a mtd3 image (0x1f0000), with size (0x10000).
+Looking for mtd device :mtd4:
+Creating 4 MTD partitions on "Physically mapped flash":
+0x00090000-0x001f0000 : "mtd0"
+0x00010000-0x00090000 : "mtd1"
+0x00000000-0x00010000 : "m
+0x001f0000-0x00200000 : "mtd3"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 512)
+Linux IP multicast router 0.06 plus PIM-SM
+ip_conntrack version 2.0 (64 buckets, 512 max) - 364 bytes per conntrack
+ip_tables: (c)2000 Netfilter core team
+netfilter PSD loaded - (c) astaro AG
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+VFS: Mounted root (squashfs f
+Mounted devfs on /dev
+Freeing unused kernel memory: 60k freed
+serial console detected.  Disabling virtual terminals.
+console=/dev/tts/0
+init started:  BusyBox v0.61.pre (2004.11.09-09:44+0000) multi-call binary
+Starting pid 9, console /dev/tts/0: '/etc/init.d/rcS'
+ Standard Configuration File
+proc write:Calling Configuration
+Number of State module =  1
+STATE =  1
+STATE =  2
+STATE =  3
+module =  2
+STATE =  1
+STATE =  2
+module =  3
+STATE =  1
+STATE =  2
+STATE =  3
+module =  5
+STATE =  1
+STATE =  2
+STATE =  3
+module =  6
+STATE =  1
+STATE =  2
+STATE =  3
+Elements = 14
+Total Length = 116
+Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/drivers/net/avalanche_us
+b.o
+USB: Entering USB_init_module.
+USB: Error getting mac from Adam enviroment for usbrndis
+USB: Using default mac address: 00.E0.A6.66.41.EB
+USB: Use Adam2 command:
+USB:     setenv usb_board_mac xx.xx.xx.xx.xx.xx
+USB: to set mac address
+vid = 0x451
+pid = 0x6060
+No Serial Number String present.
+man = Texas Instruments
+prod = TI RNDIS Network Adapter
+USB: Entering USB_Init
+USB: Leaving USB_Init.
+USB: Leaving USB_init_module.
+Using /lib/modules/2.4.17_mvl21-malta-mips_fp_le/kernel/drivers/atm/tiatm.o
+registered device TI Avalanche SAR
+Initializing DSL interface
+size=10120
+size=38720
+size=46304
+size=45312
+Texas Instruments ATM driver: version:[4.02.04.00]
+Waiting for enter to start '/bin/sh' (pid 34, terminal /dev/tts/0)
+Please press Enter to activate this console. Sep  8 12:00:06 cm_monitor: Monitor
+ Starting
+Sep  8 12:00:07 cfgmgr(pppoa-102): Valid Configuration Tree
+SIOCGIFFLAGS: No such device
+Sep  8 12:00:07 cfgmgr(fdb): Firewall NAT service started
+Sep  8 12:00:07 cfgmgr(bridge): Bridge Created: br0
+device usbrndis entered promiscuous mode
+Sep  8 12:00:07 cfgmgr(bridge): Bridge Interface Added: usbrndis
+br0: port 1(usbrndis) entering learning state
+device eth0 entered promiscuous mode
+Sep  8 12:00:07 cfgmgr(bridge): Bridge Interface Added: eth0
+br0: port 2(eth0) entering learning state
+br0: port 1(usbrndis) entering forwarding state
+br0: topology change detected, propagating
+br0: port 2(eth0) entering forwarding state
+br0: topology change detected, propagating
+Sep  8 12:00:16 cfgmgr(sar): DSL Carrier is down
+}}}
+
+
+=== Output from various commands on the original firmware ===
+
+{{{
+# cat /proc/cpuinfo
+processor               : 0
+cpu model               : MIPS 4KEc V4.8
+BogoMIPS                : 149.91
+wait instruction        : no
+microsecond timers      : yes
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+VCED exceptions         : not available
+VCEI exceptions         : not available
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00160000 00010000 "mtd0"
+mtd1: 00080000 00010000 "mtd1"
+mtd2: 00010000 00008000 "mtd2"
+mtd3: 00010000 00010000 "mtd3"
+# cat /proc/ticfg/env
+memsize 0x00800000
+mtd2    0x90000000,0x90010000
+mtd1    0x90010000,0x90090000
+mtd0    0x90090000,0x901f0000
+mtd3    0x901f0000,0x90200000
+my_ipaddress    192.168.100.1
+maca    00:30:54:40:14:54
+macc    00:30:54:40:14:55
+usb_rndis_mac   00:30:54:40:14:56
+autoload        1
+autoload_timeout        5
+flashsize       0x00200000
+modetty0        38400,n,8,1,hw
+modetty1        38400,n,8,1,hw
+bootserport     tty0
+cpufrequency    150000000
+sysfrequency    125000000
+bootloaderVersion       0.22.03
+ProductID       AR7RD
+HWRevision      Unknown
+SerialNumber    none
+prompt  Adam2_AR7RD
+firstfreeaddress        0x9401d328
+req_fullrate_freq       125000000
+# cat /proc/version
+Linux version 2.4.17_mvl21-malta-mips_fp_le (root@localhost.localdomain) (gcc ve
+rsion 2.95.3 20010315 (release/MontaVista)) #1 Tue Nov 9 17:49:34 CST 2004
+# cat /proc/meminfo
+        total:    used:    free:  shared: buffers:  cached:
+Mem:   6557696  6008832   548864        0   856064  1363968
+Swap:        0        0        0
+MemTotal:         6404 kB
+MemFree:           536 kB
+MemShared:           0 kB
+Buffers:           836 kB
+Cached:           1332 kB
+SwapCached:          0 kB
+Active:           2468 kB
+Inactive:          956 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:         6404 kB
+LowFree:           536 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+# cat /proc/kmsg
+STATE =  3
+<4>USB: Entering USB_init_module.
+<4>USB: Error getting mac from Adam enviroment for usbrndis
+<4>USB: Using default mac address: 00.E0.A6.66.41.EB
+<4>USB: Use Adam2 command:
+<4>USB:     setenv usb_board_mac xx.xx.xx.xx.xx.xx
+<4>USB: to set mac address
+<4>vid = 0x451
+<4>pid = 0x6060
+<4>No Serial Number String present.
+<4>man = Texas Instruments
+<4>prod = TI RNDIS Network Adapter
+<4>USB: Entering USB_Init.
+<4>USB: Leaving USB_Init.
+<4>USB: Leaving USB_init_module.
+<4>registered device TI Avalanche SAR
+<4>Initializing DSL interface
+<4>size=10120
+<4>size=38720
+<4>size=46304
+<4>size=45312
+<4>Texas Instruments ATM driver: version:[4.02.04.00]
+<6>device eth0 entered promiscuous mode
+<6>br0: port 1(eth0) entering learning state
+<6>device usbrndis entered promiscuous mode
+<6>br0: port 2(usbrndis) entering learning state
+<6>br0: port 1(eth0) entering forwarding state
+<6>br0: topology change detected, propagating
+<6>br0: port 2(usbrndis) entering forwarding state
+<6>br0: topology change detected, propagating
+# cat /proc/iomem
+00000000-13ffffff : reserved
+14000000-1401ffff : System RAM
+14020000-147fffff : System RAM
+  14020000-14188f5f : Kernel code
+  14199300-141b6fff : Kernel data
+a8612800-a8612fff : eth0
+# cat /proc/modules
+tiatm                 121536   0 (unused)
+avalanche_usb          50984   1
+# cat /proc/avalanche/cpmac_ver
+Texas Instruments CPMAC driver version: 1.2
+}}}
+
+=== Output from various ADAM2 commands on original firmware ===
+
+{{{
+Adam2_AR7RD > printenv
+memsize               0x00800000
+mtd2                  0x90000000,0x90010000
+mtd1                  0x90010000,0x90090000
+mtd0                  0x90090000,0x901f0000
+mtd3                  0x901f0000,0x90200000
+my_ipaddress          192.168.100.1
+maca                  00:30:54:40:14:54
+macc                  00:30:54:40:14:55
+usb_rndis_mac         00:30:54:40:14:56
+autoload              1
+autoload_timeout      5
+flashsize             0x00200000
+modetty0              38400,n,8,1,hw
+modetty1              38400,n,8,1,hw
+bootserport           tty0
+cpufrequency          150000000
+sysfrequency          125000000
+bootloaderVersion     0.22.03
+ProductID             AR7RD
+HWRevision            Unknown
+SerialNumber          none
+prompt                Adam2_AR7RD
+firstfreeaddress      0x9401d328
+req_fullrate_freq     125000000
+Adam2_AR7RD > info
+Monitor Revision              0.22.03
+Monitor Compilation time      Aug 18 2004, 10:39:16
+Endianness                    Little
+External Memory rate          Full, 16 bit wide
+CPU Frequency                 150 MHz
+}}}
+
+=== Original Flash Map ===
+
+||'''partition''' ||'''start''' ||'''end''' ||'''size''' ||'''description''' ||
+||mtd0 ||{{{0x90090000}}} ||{{{0x901f0000}}} ||{{{0x160000}}} ||squashfs ||
+||mtd1 ||{{{0x90010000}}} ||{{{0x90090000}}} ||{{{0x080000}}} ||kernel ||
+||mtd2 ||{{{0x90000000}}} ||{{{0x90010000}}} ||{{{0x010000}}} ||ADAM2 ||
+||mtd3 ||{{{0x901f0000}}} ||{{{0x90200000}}} ||{{{0x010000}}} ||ADAM2 environment variables ||
+Physical order of partitions on flash chip is:
+
+mtd2,mtd1,mtd0,mtd3
+
+== Installing OpenWrt ==
+
+Looking at the output of the old firmware's {{{cat /proc/mtd file}}} we can see the erase size is 64k (0x10000):
+
+{{{
+mtd0: 00160000 00010000 "mtd0"
+mtd1: 00080000 00010000 "mtd1"
+}}}
+Next, by looking at the output of {{{cat /proc/ticfg/env}}} we can see the sizes of the mtd blocks that contain the kernel ({{{mtd0}}}) and the squashfs image ({{{mtd1}}})
+
+{{{
+mtd1    0x90010000,0x90090000
+mtd0    0x90090000,0x901f0000
+}}}
+We need to create a new mtd block {{{mtd4}}} that spans both the kernel and the filesystem: 0x90010000 - 0x901f0000.
+
+The size of this mtd block is 1,966,080 bytes - just under 2MB.  Not a lot of room!
+
+We check the output of {{{cat /proc/ticfg/env again}}} and see that {{{ my_ipaddress    192.168.100.1 }}} is set.  Reboot the router an within the 5 seconds connect to the ADAM2 ftp server on 192.168.100.1.  If you have a serial cable you can also reboot the router and press a key to get the router to wait in the ADAM2 console so that you have more time to connect via ftp to it.
+
+The login name and password for the ftp server is {{{adam2}}} (lower case).
+
+After connecting via FTP issue the command:
+
+{{{quote SETENV mtd4,0x90010000,0x901f0000}}}
+
+The router should respond with:
+
+{{{200 SETENV command successful}}}
+
+Now you can flash with the firmware of your choice.  I (Hydra) downloaded openwrt from the svn repos and built a stock flash image which was created by the build process as {{{trunk/bin/openwrt-ar7-2.4-squashfs.bin}}}  The JFFS images were also created but the filesize of them was greater than the size of the {{{mtd4}}} block so I decided not to risk it.  The JFFS image to use would be the one with the 64k erase size, e.g. {{{openwrt-ar7-2.4-jffs2-64k.bin}}}.
+
+I flashed the firmware by issue the following commands:
+
+{{{
+quote MEDIA FLSH
+binary
+put /home/hydra/openwrt/svn/trunk/bin/openwrt-ar7-2.4-squashfs.bin "openwrt-ar7-2.4-squashfs.bin mtd4"
+quote REBOOT
+bye
+}}}
+So the entire process looked like this
+
+{{{
+hydra@hydra02:~$ ftp 192.168.100.1
+Connected to 192.168.100.1.
+220 ADAM2 FTP Server ready.
+Name (192.168.100.1:hydra): adam2
+331 Password required for adam2.
+Password:
+230 User adam2 successfully logged in.
+Remote system type is UNIX.
+ftp> quote SETENV mtd4,0x90010000,0x901f0000
+200 SETENV command successful
+ftp> quote GETENV mtd4
+mtd4                  0x90010000,0x901f0000
+ftp> quote MEDIA FLSH
+200 Media set to FLSH.
+ftp> binary
+200 Type set to I.
+ftp> put /home/hydra/openwrt/svn/trunk/bin/openwrt-ar7-2.4-squashfs.bin "openwrt-ar7-2.4-squashfs.bin mtd4"
+local: /home/hydra/openwrt/svn/trunk/bin/openwrt-ar7-2.4-squashfs.bin remote: openwrt-ar7-2.4-squashfs.bin mtd4
+200 Port command successful.
+150 Opening BINARY mode data connection for file transfer.
+226 Transfer complete.
+1439077 bytes sent in 13.47 secs (104.3 kB/s)
+ftp> quote REBOOT
+221-Thank you for using the FTP service on ADAM2.
+221 Goodbye.
+ftp> quit
+}}}
+There is a pause before the file is transferred where the router erases the mtd4 block.  If you have a serial cable attached you can see the output in the adam2 console.
+
+After the file is transferred there is another pause while the image file is flashed to the chip, don't reboot your router during this time.  I (hydra) was watching the output on the serial console and didn't notice if control returned to the ftp client before flashing had finished, so wait about 1 minute if you're doing this without a serial cable attached.
+
+My router then rebooted into adam2 and then into openwrt, the entire log from the serial console was as follows:
+
+{{{
+ADAM2 Revision 0.22.03
+(C) Copyright 1996-2003 Texas Instruments Inc. All Rights Reserved.
+(C) Copyright 2003 Telogy Networks, Inc.
+Usage: setmfreq [-d] [-s sys_freq, in MHz] [cpu_freq, in MHz]
+Memory optimization Complete!
+Adam2_AR7RD >
+Press any key to abort OS load, or wait 5 seconds for OS to boot...
+Adam2_AR7RD > Erasing from 0xb0010000 to 0xb01f0000.
+FlashEraseBlock(b0010000,b01effff);
+..............................
+Erase Successful.
+......................Rebooting the system in 3 secs...
+ADAM2 Revision 0.22.03
+(C) Copyright 1996-2003 Texas Instruments Inc. All Rights Reserved.
+(C) Copyright 2003 Telogy Networks, Inc.
+Usage: setmfreq [-d] [-s sys_freq, in MHz] [cpu_freq, in MHz]
+Memory optimization Complete!
+Adam2_AR7RD >
+Press any key to abort OS load, or wait 5 seconds for OS to boot...
+Launching kernel decompressor.
+Kernel decompressor was successful ... launching kernel.
+LINUX started...
+CPU revision is: 00018448
+Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 16kB, 4-way, linesize 16 bytes.
+Linux version 2.4.32 (hydra@hydra02) (gcc version 3.4.6 (OpenWrt-2.0)) #2 Thu Oct 26 22:6
+Determined physical RAM map:
+ memory: 00020000 @ 14000000 (ROM data)
+ memory: 007e0000 @ 14020000 (usable)
+On node 0 totalpages: 2048
+zone(0): 2048 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/preinit noi0
+the pacing pre-scalar has been set as 600.
+Using 75.000 MHz high precision timer.
+Calibrating delay loop... 149.91 BogoMIPS
+Memory: 6188k/8192k available (1346k kernel code, 2004k reserved, 92k data, 72k init, 0k)
+Dentry cache hash table entries: 1024 (order: 1, 8192 bytes)
+Inode cache hash table entries: 512 (order: 0, 4096 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Checking for 'wait' instruction...  available.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0xa8610e00 (irq = 15) is a 16550A
+ttyS01 at 0xa8610f00 (irq = 16) is a 16550A
+VLYNQ INIT FAILED: Please try cold reboot.
+Vlynq CONFIG_AR7_VLYNQ_PORTS=2
+Vlynq Device vlynq0 registered with minor no 63 as misc device. Result=0
+VLYNQ 0 : init failed
+Vlynq Device vlynq1 registered with minor no 62 as misc device. Result=0
+VLYNQ 1 : init failed
+ar7_wdt: last system reset initiated by SW0 software reset
+ar7_wdt: timer margin 59 seconds (prescale 65535, change 57180, freq 62500000)
+ar7 flash device: 0x400000 at 0x10000000.
+ Amd/Fujitsu Extended Query Table v1.0 at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling fast programming due to code brokenness.
+Parsing ADAM2 partition map...
+Looking for mtd device :mtd0:
+Found a mtd0 image (0x90000), with size (0x160000).
+Assuming default rootfs offset of 0x90000
+Looking for mtd device :mtd1:
+Found a mtd1 image (0x10000), with size (0x80000).
+Looking for mtd device :mtd2:
+Found a mtd2 image (0x0), with size (0x10000).
+Assuming adam2 size of 0x10000
+Looking for mtd device :mtd3:
+Found a mtd3 image (0x1f0000), with size (0x10000).
+Looking for mtd device :mtd4:
+Found a mtd4 image (0x10000), with size (0x1e0000).
+Setting new rootfs offset to 0008512a
+Squashfs detected (size = 0xb008519e)
+Creating 5 MTD partitions on "Physically mapped flash":
+0x00000000-0x00010000 : "adam2"
+0x00010000-0x001f0000 : "linux"
+0x0008512a-0x00170000 : "rootfs"
+mtd: partition "rootfs" doesn't start on an erase block boundary -- force read-only
+0x001f0000-0x00400000 : "config"
+mtd: partition "config" extends beyond the end of device "Physically mapped flash" -- si0
+0x00170000-0x001f0000 : "OpenWrt"
+Initializing Cryptographic API
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+ip_conntrack version 2.1 (5953 buckets, 5953 max) - 360 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Preserving ADAM2 memory.
+Freeing unused kernel memory: 72k freed
+Algorithmics/MIPS FPU Emulator v1.5
+Unlocking linux ...
+switching to jffs2
+mount: Mounting /proc on /jffs/proc failed: No such file or directory
+jffs2 unusable; using ramdisk
+creating directories... done
+setting up symlinks... done
+mount: Mounting /rom/sys on /sys failed: Invalid argument
+init started:  BusyBox v1.2.1 (2006.10.26-21:42+0000) multi-call binary
+Please press Enter to activate this console. jffs2.bbc: SIZE compression mode activated.
+Using the MAC with external PHY
+Cpmac driver is allocating buffer memory at init time.
+Using the MAC with external PHY
+Cpmac driver Disable TX complete interrupt setting threshold to 20.
+CSLIP: code copyright 1989 Regents of the University of California
+PPP generic driver version 2.4.2
+registered device TI Avalanche SAR
+Initializing DSL interface
+size=10120
+size=38720
+__alloc_pages: 4-order allocation failed (gfp=0x20/0)
+failed atomic
+size=46432
+size=45312
+Texas Instruments ATM driver: version:[4.02.04.00]
+BusyBox v1.2.1 (2006.10.26-21:42+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ KAMIKAZE (bleeding edge, r5288) -------------------
+  * 10 oz Vodka       Shake well with ice and strain
+  * 10 oz Triple sec  mixture into 10 shot glasses.
+  * 10 oz lime juice  Salute!
+ ---------------------------------------------------
+root@OpenWrt:/#
+}}}
+
+=== Getting the ADSL Working via PPPoA (Manually) ===
+
+As I (Hydra) live in the UK and my ISP uses PPPoA the only thing I can test is PPPoA, other people have tested PPPoE and found it to work.
+
+At this time I'm currently unaware of how to correctly config /etc/config/network and/or any other scripts to automate the connection, hopefully someone can help me with this.
+
+Trying to find out what pppd settings to use for a PPPoA connection via way of google searches was impossible.  There appear to be loads of PPPoA HOWTO's out there but they are all very old none of them seem to go into any details about the pppd parameters.
+
+To find out what pppd settings I needed I reflashed back to my old router's firmware, then I reset my router back to it's default settings and the only thing i changed in it's config was the pppoa username and password, after which it connected itself to the internet ok.  I then used telnet to connect to the router.  I than ran {{{ps}}} to find the pid of the {{{pppd}}} program.  After I'd found the pid, (say, 374) I then would have just done {{{strings /proc/374/cmdline}}} but alas the firmware on my router didn't have strings installed.  So I went {{{cat /proc/374/cmdline > /var/tmp/pppdcmdline.bin}}} and created a webserver on the router so i could download the via http, port 8080 - {{{httpd -p 8080 -d /var/tmp}}} and then finally examine the file on a box equipped with either a hex editor or the "strings" program.
+
+The output from strings with the default PPPoA settings was as follows
+{{{
+hydra@hydra02:~/arm8100$ strings pppd-cmdline.bin
+/usr/sbin/pppd
+plugin
+pppoa
+0.38
+user
+me@myisp
+password
+mypassword
+nodetach
+defaultroute
+usepeerdns
+1500
+maxfail
+vc-encaps
+lcp-echo-failure
+lcp-echo-interval
+}}}
+
+This was when using PPPoA over VC-MUX, VCI 0, VPI 38, auto CHAP/PAP authentication.
+
+I then changed the default settings to use LLC, CHAP authentication, dial on demand and timeout from 60 to 120 and again ran strings, here's the output from which might be useful to determine what other pppd options must be catered for in any scripts.
+
+{{{
+hydra@hydra02:~/arm8100$ strings pppd-cmdline-llcchapondemandtimeout120.bin
+/usr/sbin/pppd
+plugin
+pppoa
+0.38
+user
+me@myisp
+password
+mypassword
+refuse-pap
+nodetach
+defaultroute
+usepeerdns
+1500
+maxfail
+llc-encaps
+debug
+demand
+idle
+}}}
+
+I've replaced my actual login with "me@myisp" and my actual password with "mypassword" in both outputs above.
+
+Note that there are missing numeric values for the options that numeric values, and that for some reason "mtu" wasn't shown even though it's value was.
+
+So, using the info above I tried firing up pppd using the following command line
+
+{{{
+/usr/sbin/pppd plugin /usr/lib/pppd/2.4.3/pppoatm.so 0.38 user me@myisp password mypassword nodetach defaultroute usepeerdns mtu 1500 vc-encaps debug
+}}}
+
+Of course that Didn't work as I'd forgotten to plug the adsl cable into the back of the router.  After plugging it back in and issuing the command again i was greeted with a "device in use message", so it looks like trying to start pppd without a sync'd dsl line needs a bit more work in the cleanup, maybe there's some other options that can be set which could help.
+
+After I rebooted and issued the command again to my utter amazement my router connected via PPPoA, here's the log:
+
+{{{
+Plugin /usr/lib/pppd/2.4.3/pppoatm.so loaded.
+using channel 1
+Using interface ppp0
+Connect: ppp0 <--> 0.38
+sent [LCP ConfReq id=0x1 <magic 0x7bb2d27a>]
+rcvd [LCP ConfReq id=0x89 <mru 9178> <auth chap MD5> <magic 0x1cc8b2fc>]
+sent [LCP ConfAck id=0x89 <mru 9178> <auth chap MD5> <magic 0x1cc8b2fc>]
+root@OpenWrt:/etc# sent [LCP ConfReq id=0x1 <magic 0x7bb2d27a>]
+rcvd [LCP ConfReq id=0x8a <mru 9178> <auth chap MD5> <magic 0x1cc8b2fc>]
+sent [LCP ConfAck id=0x8a <mru 9178> <auth chap MD5> <magic 0x1cc8b2fc>]
+rcvd [LCP ConfAck id=0x1 <magic 0x7bb2d27a>]
+rcvd [CHAP Challenge id=0x6a <313ed08780c0fb711f0ec7cc510c8b6aecfa28d43239fa6e3f04639cf0]
+sent [CHAP Response id=0x6a <2b173f87f95e1f7a28594305c881c4b4>, name = "me@myisp.com....]
+rcvd [CHAP Success id=0x6a ""]
+CHAP authentication succeeded
+CHAP authentication succeeded
+kernel does not support PPP filtering
+sent [IPCP ConfReq id=0x1 <compress VJ 0f 01> <addr 0.0.0.0> <ms-dns1 0.0.0.0> <ms-dns3 ]
+rcvd [IPCP ConfRej id=0x1 <compress VJ 0f 01>]
+sent [IPCP ConfReq id=0x2 <addr 0.0.0.0> <ms-dns1 0.0.0.0> <ms-dns3 0.0.0.0>]
+rcvd [IPCP ConfNak id=0x2 <addr 84.9.60.50> <ms-dns1 83.146.21.5> <ms-dns3 212.158.248.6]
+sent [IPCP ConfReq id=0x3 <addr 84.9.60.50> <ms-dns1 83.146.21.5> <ms-dns3 212.158.248.6]
+rcvd [IPCP ConfAck id=0x3 <addr 84.9.60.50> <ms-dns1 83.146.21.5> <ms-dns3 212.158.248.6]
+rcvd [IPCP ConfReq id=0x1b <addr 83.146.18.41>]
+sent [IPCP ConfAck id=0x1b <addr 83.146.18.41>]
+local  IP address 84.9.60.50
+remote IP address 83.146.18.41
+primary   DNS address 83.146.21.5
+secondary DNS address 212.158.248.6
+Script /etc/ppp/ip-up started (pid 310)
+Script /etc/ppp/ip-up finished (pid 310), status = 0x1
+
+root@OpenWrt:/etc# ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:30:54:40:14:54
+          inet addr:192.168.1.1  Bcast:192.168.1.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Base address:0x2800
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+ppp0      Link encap:Point-to-Point Protocol
+          inet addr:84.9.60.50  P-t-P:83.146.18.41  Mask:255.255.255.255
+          UP POINTOPOINT RUNNING NOARP MULTICAST  MTU:1500  Metric:1
+          RX packets:4 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:4 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:3
+          RX bytes:64 (64.0 B)  TX bytes:82 (82.0 B)
+}}}
+
+Now, my firmware doesn't have many packages compiled in right now, and i need to figure out which ones to use too.  But at least all the hardware appears to work so far!
+
+As a side note my router could connect to the internet ok (resolv.conf was correctly updated, too) however other machines on the lan could not so the firewall in the router (read iptables configuration) is obviously not correct, yet.
+
+=== Getting the ADSL Working via PPPoA (using the Kamikaze init scripts) ===
+
+Hopefully by the time you read this the updated pppoa.sh, ppp.sh scripts will be in svn at which point you can add a "wan" section to the end of your {{{/etc/config/network}}} file that looks like this:
+
+{{{
+config interface wan
+        option ifname   ppp0
+        option username "me@myisp"
+        option password "mypassword"
+        option proto    pppoa
+        option mtu      1500
+        option mru      1500
+        option vpi      0
+        option vci      38
+        option encapsulation    vc-encaps
+}}}
+
+I've manually specified the mtr/mru here, I need to confirm if those values are correct but they may not be optimal.  They work for me and I'm including them in the example above so you can see how to adjust them.
+
+With that config file in place, and the adam2 environment variable "modulation" correctly set (using adam2 ftp issue the command {{{quote "SETENV modulation,GDMT"}}} or GLITE or MMODE or T1413) you can check the DSL is ready by checking the output of {{{cat /proc/tiatm/avsar_modem_training}}} - it should read {{{SHOWTIME}}}
+
+Now the moment of truth, issue the command "ifup wan" which will run the ifup.sh script which parses the config file and runs the relevant commands to make the PPPoA connection via ADSL.  Feel free to read the ifup.sh and other scripts, doing so will give you a better understanding of how everything works.  For example, you should be able to see that each "option" statement in the config above is eventually passed to the "pppd" program as command line parameters.
+
+After running the "{{{ifup wan}}}" command you should be able to check the status of {{{ppp0}}} using the command {{{ifconfig ppp0}}}.  The route should also be setup, you can issue the {{{route}}} command to check that you have a default route that uses the ip address if the ppp0 interface as it's gateway.  Additionally the iptables chains should have been configured correctly for you, check with {{{iptables -t nat -L -v}}} to see if you've got some rules that use the "ppp0" interface and also check {{{iptables -L -v}}} too.  Finally, your {{{/etc/resolv.conf}}} should be updated with the dns servers that pppd should have been told about by your isp during the connection.
+
+You should then be able to ping something on the internet, e.g. {{{ping google.com}}}, and have the address resolved and icmp pings replied to.
+
+I'm informed that having a correct config should allow the interface to be automatically startup upon reboot, but this does not happen for me yet.
+
+=== Installing UPnP ===
+
+This is work in progress, I (hydra) and loswillios in #openwrt on freenode irc have been testing libupnp v1.3.1 and linuxigd v0.95 and I can report some success.
+
+The main reason for me even trying out OpenWRT was due to xbox live connection issues in Test Drive Unlimited which were apparently caused by a symmetric NAT and lack of UPnP.
+
+There are three packages which you need to install: libupnp, libpthread and linuxigd
+
+The arm8100 has very limited ram and flashram so to make way for them I had to disable everything except the bare minimum from the config so that the firmware image doesn't get too big and so the system has enough ram left.
+
+The links on this wiki's UPnP page to libupnp and linuxigd are older versions which probably don't work and/or might have bugs which have been fixed in later versions.
+
+You can download the package sources here:
+
+http://www.hydraservices.com/files/addontecharm8100/libupnp_1.3.1-package-src.tar
+
+and here:
+
+http://www.hydraservices.com/files/addontecharm8100/linuxigd_0.95-package-src.tar
+
+unpack them somewhere and then create symlinks from your kamikaze {{{trunk/package}}} folder to the unpacked package source folders. e.g.
+
+{{{
+cd ~/openwrt/svn/trunk/package
+ln -s ../../../3rdparty/linuxigd
+ln -s ../../../3rdparty/libupnp
+}}}
+
+then run {{{make menuconfig}}} and you should be able to find the packages and compile them into your firmware and reflash it.
+
+As of yet the init script for upnp hasn't been updated for kamikaze, so for now, here's how to start the upnp daemon (which should be done after you've brought up your ADSL link).
+
+{{{
+route add -net 239.0.0.0 netmask 255.0.0.0 eth0
+upnpd ppp0 eth0
+}}}
+
+There's a tool you can get to test your UPnP connect from a windows xp box, you can grab it here.  Make sure you enable the "upnp framework" as a firewall exception on your windows xp box though.
+
+http://noeld.com/programs.asp?cat=dstools#upnptest
+
+It should display something like this:
+
+http://www.hydraservices.com/files/addontecharm8100/arm8100-upnp1.png
+
+From Windows XP you can also create port mappings on the router, don't ask me what happens after the router is rebooted as I've not tried yet ;)
+
+Like this:
+
+http://www.hydraservices.com/files/addontecharm8100/arm8100-upnp2.png
+
+More to follow!
+
+=== Firmware images and configs ===
+
+You can download my current kamikaze firmware image and config from here:
+
+http://www.hydraservices.com/files/addontecharm8100/openwrt-arm8100_20061104.tgz
+
+== References ==
+[http://www.hynix.com/datasheet/eng/dram/details/dram_01_HY57V641620HGT.jsp Spec of onboard RAM]
+
+[http://www.hynix.com/datasheet/pdf/dram/HY57V641620HG(L)T-xI(Rev1.0).pdf Datasheet for onboard RAM]
+
+----
+ CategoryModel ["CategoryAR7Device"]
+ . CategoryDslModems
+ . CategorySupportedInKamikaez7_07

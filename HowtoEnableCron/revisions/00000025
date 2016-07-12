@@ -1,0 +1,157 @@
+'''HowtoEnableCron'''
+
+
+[[TableOfContents]]
+
+
+= Introduction =
+
+Cron jobs are useful to repeat things on configurable intervals. For example
+you can update your IP address on a [:DDNSHowTo:DDNS service] or you can sync
+the routers time with {{{rdate}}} once a day.
+
+You may know some more useful tasks for cron on your Wrt router.
+
+
+= Requirements =
+
+ * a standard OpenWrt White Russian installation (works with all release
+ candidates)
+ * {{{rdate}}} or the {{{ntpclient}}} (both optional) to sync the time on your
+ router
+
+
+= Installation =
+
+{{{Crond}}} is installed by default. !OpenWrt uses the !BusyBox {{{crond}}}.
+
+
+= Configuration =
+
+== Create a init script for crond ==
+
+First you have to create a init script so that {{{crond}}} will start up
+automatically on each bootup of your router. We call it {{{S51crond}}} and it
+should go in the {{{/etc/init.d}}} directory. To create it via copy & paste
+do:
+
+{{{
+cat > /etc/init.d/S51crond
+}}}
+
+{{{
+#!/bin/sh
+#
+# crond           Starts crond
+#
+mkdir -p /etc/spool/cron/crontabs
+mkdir -p /var/spool/cron
+mkdir -p /var/lock
+if [ ! -e /var/spool/cron/crontabs ]
+then
+ ln -s /etc/spool/cron/crontabs/ /var/spool/cron/crontabs
+fi
+
+start() {
+ echo -n "Starting crond: "
+ /usr/sbin/crond -c /var/spool/cron/crontabs
+ touch /var/lock/crond
+ echo "OK"
+}
+
+stop() {
+ echo -n "Stopping crond: "
+ killall crond
+ rm -f /var/lock/crond
+ echo "OK"
+}
+
+restart() {
+ stop
+ start
+}
+
+case "$1" in
+ start)
+  start
+  ;;
+ stop)
+  stop
+  ;;
+ restart|reload)
+  restart
+  ;;
+ *)
+  echo $"Usage: $0 {start|stop|restart}"
+  exit 1
+esac
+
+exit $?
+}}}
+
+After pasting it, press {{{ENTER}}} and then hit {{{CTRL+D}}} keys to save the
+file.
+
+Now make sure the init script is executable and start it with
+
+{{{
+chmod a+x /etc/init.d/S51crond
+/etc/init.d/S51crond start
+}}}
+
+
+== Testing crond (optional) ==
+
+Create a minute job in the root crontab file:
+
+{{{
+echo "*/1 * * * * date > /tmp/crontest" >> /var/spool/cron/crontabs/root
+}}}
+
+Wait a minute, and see {{{/tmp/crontest}}} file:
+
+{{{
+cat /tmp/crontest
+}}}
+
+
+== Creating a cron job ==
+
+The cron jobs are defined in the {{{/etc/spool/cron/crontabs/root}}} file. 
+{{{crond}}} reads the file.
+You have two ways on adding a cron job to this file.
+
+The first one is just to create the {{{root}}} file with {{{echo}}} like this:
+
+{{{
+echo "0 * * * * /usr/sbin/rdate time.fu-berlin.de" >> /var/spool/cron/crontabs/root
+}}}
+
+or use {{{crontab -e}}} (calls the {{{vi}}} editor) to edit the cron job file.
+Copy & paste
+
+{{{
+0 * * * * /usr/sbin/rdate time.fu-berlin.de
+}}}
+
+than hit {{{ESC}}} and enter {{{:wq}}} to save the file.
+
+The example cron job will sync the routers time every hour using {{{rdate}}}.
+
+When done you can list the cron jobs with
+
+{{{
+crontab -l
+}}}
+
+{{{
+0 * * * * /usr/sbin/rdate time.fu-berlin.de
+}}}
+
+That's it.
+
+
+= Links =
+
+ * Cron job calculator
+ [[BR]]- [http://www.csgnetwork.com/crongen.html]

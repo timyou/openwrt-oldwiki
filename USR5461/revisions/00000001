@@ -1,0 +1,351 @@
+== US Robotics 5461 ==
+
+= Hardware =
+* Macronix 29LV160CBTC-70G = 2 MB FLASH
+* ISSI IS4232200C1-6T RKKK66400D 0545 = 8MB RAM
+* Broadcom BCM5350KPB5 HT0545 P11 756443 N5A = CPU (rev 0.2 i think)
+
+= Software =
+
+Booting nbd's latest micro:
+
+{{{
+CFE version 1.0.37 for BCM947XX (32bit,SP,LE)
+Build Date: Tue Mar  1 16:26:12 CST 2005 (root@localhost.localdomain)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena
+Initializing Devices.
+Boot partition size = 131072(0x20000)
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.91.37.0.1
+rndis0: Broadcom USB RNDIS Network Adapter (P-t-P)
+CPU type 0x29008: 200MHz
+Total memory: 8192 KBytes
+
+Total memory used by CFE:  0x80300000 - 0x8039A150 (631120)
+Initialized Data:          0x803302B0 - 0x803329A0 (9968)
+BSS Area:                  0x803329A0 - 0x80334150 (6064)
+Local Heap:                0x80334150 - 0x80398150 (409600)
+Stack Area:                0x80398150 - 0x8039A150 (8192)
+Text (code) segment:       0x80300000 - 0x803302B0 (197296)
+Boot area (physical):      0x0039B000 - 0x003DB000
+Relocation Factor:         I:00000000 - D:00000000
+
+CFE: Final init 0
+Device eth0:  hwaddr 00-14-C1-0B-DE-A9, ipaddr 192.168.0.109, mask 255.255.0.0
+        gateway not set, nameserver not set
+Reading :: Failed.: Timeout occured
+Loader:raw Filesys:raw Dev:flash0.os File: Options:(null)
+Loading: .. 3704 bytes read
+Entry at 0x80001000
+Closing network.
+Starting program at 0x80001000
+CPU revision is: 00029008
+Primary instruction cache 16kB, physically tagged, 2-way, linesize 16 bytes.
+Primary data cache 8kB, 2-way, linesize 16 bytes.
+Linux version 2.4.30 (nbd@arrakis) (gcc version 3.4.4 (OpenWrt-1.0)) #1 Sun Jul
+30 12:58:43 CEST 2006
+Setting the PFC value as 0x11
+Determined physical RAM map:
+ memory: 00800000 @ 00000000 (usable)
+On node 0 totalpages: 2048
+zone(0): 2048 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock2 rootfstype=squashfs,jffs2 init=/etc/pre
+init noinitrd console=ttyS0,115200
+CPU: BCM5350 rev 0 at 200 MHz
+Using 100.000 MHz high precision timer.
+Calibrating delay loop... 199.47 BogoMIPS
+Memory: 6160k/8192k available (1417k kernel code, 2032k reserved, 100k data, 84k
+ init, 0k highmem)
+Dentry cache hash table entries: 1024 (order: 1, 8192 bytes)
+Inode cache hash table entries: 512 (order: 0, 4096 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+PCI: Disabled
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+Squashfs 2.1-r2 (released 2004/12/15) (C) 2002-2004 Phillip Lougher
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI en
+abled
+ttyS00 at 0xb8000300 (irq = 2) is a 16550A
+ttyS01 at 0xb8000400 (irq = 0) is a 16550A
+b44.c:v0.93 (Mar, 2004)
+eth0: Broadcom 47xx 10/100BaseT Ethernet 00:14:c1:0b:de:a9
+ Amd/Fujitsu Extended Query Table v1.0 at 0x0040
+number of CFI chips: 1
+cfi_cmdset_0002: Disabling fast programming due to code brokenness.
+Flash device: 0x200000 at 0x1c000000
+bootloader size: 131072
+Physically mapped flash: Filesystem type: squashfs, size=0xc5eb7
+Creating 5 MTD partitions on "Physically mapped flash":
+0x00000000-0x00020000 : "cfe"
+0x00020000-0x001f0000 : "linux"
+0x0009cc00-0x00170000 : "rootfs"
+mtd: partition "rootfs" doesn't start on an erase block boundary -- force read-o
+nly
+0x001f0000-0x00200000 : "nvram"
+0x00170000-0x001f0000 : "OpenWrt"
+Initializing Cryptographic API
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+ip_conntrack version 2.1 (5953 buckets, 5953 max) - 328 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 84k freed
+Algorithmics/MIPS FPU Emulator v1.5
+Using /lib/modules/2.4.30/diag.o
+diag boardtype: 00000456
+Using /lib/modules/2.4.30/switch-core.o
+Using /lib/modules/2.4.30/switch-robo.o
+Probing device eth0: found!
+Data bus error, epc == 800a9134, ra == 800a9210
+Oops in traps.c::do_be, line 385:
+$0 : 00000000 1000fc00 00060000 000f3800 b8001428 00068db9 80000000 00000064
+$8 : 00000000 00000001 00002900 801942b0 0000048c 1000fc00 00000000 00000001
+$16: 80766d60 00000100 80766c00 80766d60 80597eb0 8075776c 00000000 00008914
+$24: ba2e8ba3 8019f5d4                   80596000 80597da0 7fff7c60 800a9210
+Hi : 00000000
+Lo : 000028fa
+epc   : 800a9134    Not tainted
+Status: 1000fc02
+Cause : 0000001c
+PrId  : 00029008
+Process ifconfig (pid: 25, stackpage=80596000)
+Stack:    800c313c 801c1514 80097288 8075776c 00000001 00008914 800aabfc
+ 80766d60 80150000 80766d60 80766c00 00000000 80766c00 800aaea0 00000000
+ 00008914 00000001 80766d60 80766d60 00000000 80766c00 00000000 80597eb0
+ 800aaff0 8019280c 807fa720 80766d60 00000000 80766d60 00000000 80766d60
+ 800ab720 00000004 80759080 00000000 80528920 80766c00 807fa720 80766c00
+ 00000000 ...
+Call Trace:   [<800c313c>] [<80097288>] [<800aabfc>] [<80150000>] [<800aaea0>]
+ [<800aaff0>] [<800ab720>] [<800c7a20>] [<8001ed0c>] [<800c92ac>] [<80108920>]
+ [<80109d20>] [<8010a0d4>] [<800491a8>] [<800c00e4>] [<80008a00>] [<8005bb0c>]
+
+Code: 00452021  3c020006  34458db9 <8c820000> 11200005  00461024  1040000f  0000
+0000  0802a457
+Segmentation fault
+sendto(): Network is unreachable
+sendto(): Network is unreachable
+}}}
+
+Booting regular firmware (Linux based):
+
+{{{
+Decompressing..........done
+
+
+CFE version 1.0.37 for BCM947XX (32bit,SP,LE)
+Build Date: Tue Mar  1 16:26:12 CST 2005 (root@localhost.localdomain)
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena
+Initializing Devices.
+Boot partition size = 131072(0x20000)
+et0: Broadcom BCM47xx 10/100 Mbps Ethernet Controller 3.91.37.0.1
+rndis0: Broadcom USB RNDIS Network Adapter (P-t-P)
+CPU type 0x29008: 200MHz
+Total memory: 8192 KBytes
+
+Total memory used by CFE:  0x80300000 - 0x8039A150 (631120)
+Initialized Data:          0x803302B0 - 0x803329A0 (9968)
+BSS Area:                  0x803329A0 - 0x80334150 (6064)
+Local Heap:                0x80334150 - 0x80398150 (409600)
+Stack Area:                0x80398150 - 0x8039A150 (8192)
+Text (code) segment:       0x80300000 - 0x803302B0 (197296)
+Boot area (physical):      0x0039B000 - 0x003DB000
+Relocation Factor:         I:00000000 - D:00000000
+
+CFE: Final init 0
+Device eth0:  hwaddr 00-14-C1-0B-DE-A9, ipaddr 192.168.0.109, mask 255.255.0.0
+        gateway not set, nameserver not set
+Reading :: Done. 1855516 bytes read
+<<< USR_MAGIC detected...>>>
+<<< usr file confirm...>>>
+<<< usr->magic: 30525355 >>><<< trx->magic: 30524448 >>><<< filesize: 1855488 >>
+>Programming...done. 1855488 bytes written
+Loader:raw Filesys:raw Dev:flash0.os File: Options:(null)
+Loading: ...... 1552384 bytes read
+Entry at 0x80001000
+Closing network.
+Starting program at 0x80001000
+CPU revision is: 00029008
+Primary instruction cache 16kb, linesize 16 bytes (2 ways)
+Primary data cache 8kb, linesize 16 bytes (2 ways)
+Linux version 2.4.20 (root@localhost.localdomain) (gcc version 3.2.3 with Broadc
+om modifications) #12 Thu Jan 5 17:36:42 CST 2006
+Setting the PFC to its default value
+Determined physical RAM map:
+ memory: 00800000 @ 00000000 (usable)
+On node 0 totalpages: 2048
+zone(0): 2048 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock2 noinitrd console=ttyS0,115200
+CPU: BCM5350 rev 0 at 200 MHz
+Calibrating delay loop... 199.47 BogoMIPS
+Memory: 6352k/8192k available (1331k kernel code, 1840k reserved, 108k data, 60k
+ init, 0k highmem)
+Dentry cache hash table entries: 1024 (order: 1, 8192 bytes)
+Inode cache hash table entries: 512 (order: 0, 4096 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 2048 (order: 1, 8192 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+PCI: Disabled
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI en
+abled
+ttyS00 at 0xb8000300 (irq = 2) is a 16550A
+ttyS01 at 0xb8000400 (irq = 0) is a 16550A
+PPP generic driver version 2.4.2
+ Amd/Fujitsu Extended Query Table v1.0 at 0x0040
+number of CFI chips: 1
+Flash device: 0x200000 at 0x1c000000
+Physically mapped flash: cramfs filesystem found at block 780
+Creating 4 MTD partitions on "Physically mapped flash":
+0x00000000-0x00020000 : "boot"
+0x00020000-0x001f0000 : "linux"
+0x000c3174-0x001f0000 : "rootfs"
+0x001f0000-0x00200000 : "nvram"
+sflash: found no supported devices
+usb.c: registered new driver hub
+usb-ohci.c: USB OHCI at membase 0xb8003000, IRQ 6
+usb-ohci.c: usb-00:03.0, PCI device 14e4:4715
+usb.c: new USB bus registered, assigned bus number 1
+hub.c: USB hub found
+hub.c: 2 ports detected
+usb.c: registered new driver usblp
+printer.c: v0.11: USB Printer Device Class driver
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+GRE over IPv4 tunneling driver
+ip_conntrack version 2.1 (64 buckets, 512 max) - 344 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+ipt_time loading
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.7 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (cramfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 60k freed
+Using /lib/modules/2.4.20/kernel/drivers/net/et/et.o
+insmod: il.o: no module by that name found
+Using /lib/modules/2.4.20/kernel/drivers/net/wl/wl.o
+Hit enter to continue...vlan0: Operation not supported
+eth1: Numerical result out of range
+eth1: Operation not supported
+eth1: Invalid argument
+eth1: Invalid argument
+SET_POWER - value: 76
+eth1: Invalid argument
+hotplug_net():Adding interface wds0.2
+RC: Set LED mode 3fc
+No interface specified. Quitting...
+vlan1: Operation not supported
+info, udhcp client (v0.9.8) started
+connect: Network is unreachable
+Hit enter to continue...No interface specified. Quitting...
+vlan1: No such process
+Hit enter to continue...
+
+
+BusyBox v0.60.0 (2006.01.05-18:51+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+# # ifconfig
+br0       Link encap:Ethernet  HWaddr 00:14:C1:0B:DE:A9
+          inet addr:192.168.0.109  Bcast:192.168.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+eth0      Link encap:Ethernet  HWaddr 00:14:C1:0B:DE:A9
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:0 (0.0 b)  TX bytes:1910 (1.8 kb)
+          Interrupt:4 Base address:0x1000
+
+eth1      Link encap:Ethernet  HWaddr 00:14:C1:0B:DE:A8
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+          Interrupt:3 Base address:0x7000
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING MULTICAST  MTU:16436  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+vlan0     Link encap:Ethernet  HWaddr 00:14:C1:0B:DE:A9
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 b)  TX bytes:128 (128.0 b)
+
+vlan1     Link encap:Ethernet  HWaddr 00:14:C1:0B:DE:A9
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 b)  TX bytes:1782 (1.7 kb)
+
+wds0.1    Link encap:Ethernet  HWaddr 00:14:C1:0B:DE:A8
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+wds0.2    Link encap:Ethernet  HWaddr 00:14:C1:0B:DE:A8
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+#
+}}}
+
+ - Flyashi
+----
+CategoryHomepage

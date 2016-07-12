@@ -1,0 +1,204 @@
+##language:en
+== Overview ==
+
+NOTE2: Pre-1444 hardware versions do have 4 MB flash and 16 MB RAM ...
+
+NOTE3: F5D7231-4 seems to have the same firmware. Hardware looks exactly the same. There even is a procedure to convert a 7230 v1444 into a 7231. (just change the firmware (look in [wiki:SeattleWireless:FrontPage Seattle Wireless] wiki))
+
+NOTE4: The Siemens [:OpenWrtDocs/Hardware/Siemens/SE505: SE505] (v2) is nearly exact the same router. It has fewer RAM (8MB) but more flash (4MB). Flashing a Belkin firmware is possible on the Siemens. LED control should be the same as SE505V2 - the same diag module patches for Whiterussian 0.9 "RC6+" should work! Refer to the SE505 (V2) section for RAM upgrade  and details on the new CFE! (Timo Beil).   
+
+NOTE5: See http://forum.openwrt.org/viewtopic.php?id=4929 for info on using OpenWRT with the v2000 revision.
+Although most patches are integrated, some don't work against recent trunk because the bcm947xx code was changed significantly since 2006. Serial flash driver for v2000 is not working - frank33
+
+NOTE6: A cut down version of RC5 will run on the v1444. Use the 4MB JFFS2 images. (Must be below 2MB) - star882
+
+NOTE7: Use the tftp installation method. This worked with the RC5 micro firmware on a pre-v1444 device, but I expect this will work on v1444 and post-v1444 devices too. Web interface upload is problematic since Belkin use a firmware header like linksys, but OpenWRT doesn't provide firmware images for belkin. The standard openwrt-brcm-2.4-<type>.trx images get rejected by the device. Belkin's customisations to the firmware add the ability to specify nvram settings as a footer section to the firmware. It should be possible to create a Belkin specific firmware that can uploaded via the Belkin web interface by following a method similar to that in this paper http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4.pdf
+
+NOTE8: This router is also sold in Europe in 2006 and 2007 under the brand Micradigital, with the revision F5D7230ec4. See  http://www.micradigital.com/Product.aspx?id=216667.
+
+NOTE9: The MicraDigital F5D7230ec4 (ver. 1020ec) is not based on a Broadcom chip, but an Atheros AR2315A (which can also run OpenWRT, it's a MIPS R4K core). With 2MB Flash (ST M25P16, 50MHz SPI) and 8MB SDRAM (IC4S16400-7T, 133MHz), it's a bit low on memory but there are Works In Progress here on similar configurations. The switch is a IC+ IP175C, looks quite complete, and the radio is integrated into the Atheros. 10-pin serial port and 14-pin (unsocketed) JTAG ports are accessible onboard. The board really looks like the reference design from Atheros http://www.atheros.com/pt/AR5006AP-G.htm, the parts are almost placed in the same way. There is an undetachable external antenna, and an noboard patch antenna. But on the first one a SMD coax connector is populated, and the PCB has room for a SMA connector. Pictures and serial sniffing coming soon. Maybe this one deserves its own page, as it is a different design (but really close to others on this Wiki)
+
+== GPIO ==
+
+|| Version || v1222de || v1444 ||
+|| GPIO0 || "Connected" LED || "Connected" LED ||
+|| GPIO1 || Pin 12 of J1 || EESK (on one end of R658 on the back near the switch chip) ||
+|| GPIO2 || switch reset (pad near R34 on the back) || EECS (on one end of R656 on the back near the switch chip) ||
+|| GPIO3 || "WLAN" LED || "WLAN" LED ||
+|| GPIO4 || unknown (*) || RC (on one end of R603 on the back near the switch chip) ||
+|| GPIO5 || "Power" LED || "Power" LED ||
+|| GPIO6 || switch WAN on/off (R54 on the top) || EEDI (on one end of R652 on the back near the switch chip) ||
+|| GPIO7 || Reset button (**) || Reset button ||
+
+(*)  I could not find GPIO4 on this device.
+
+(**) I did not verify this. I assumed this must be the reset button. (Limer)
+
+GPIO7 can be used for a different purpose by removing C365 (v1444) or C367 (v2000) from the board (near the memory chips and JTAG connector on a v1444, near reset button on a v2000). This will disconnect the watchdog circuit from the reset button. (Pull the plug to do a soft reset, use serial interface to do a hard reset.)
+
+On v1222de devices GPIO 1,2 and 6 can be used for a different purpose as well. To make GPIO 1 and 6 usable you need to remove R109 (near pin 12 of J1) and R54 (near the WAN chip). Then you can use them as shown in [http://wwwhomes.uni-bielefeld.de/joehlschlaeger/hw/BelkinF5D7230-4v1222de/GPIOfront_small.jpg GPIOfront_small.jpg] or [http://wwwhomes.uni-bielefeld.de/joehlschlaeger/hw/BelkinF5D7230-4v1222de/GPIOfront.jpg GPIOfront.jpg].
+Making GPIO2 usable is a little bit more difficult: If you dont need the switch you just have to cut a trace pitch and connect a wire as shown in [http://wwwhomes.uni-bielefeld.de/joehlschlaeger/hw/BelkinF5D7230-4v1222de/GPIOback_small.jpg GPIOback_small.jpg] or [http://wwwhomes.uni-bielefeld.de/joehlschlaeger/hw/BelkinF5D7230-4v1222de/GPIOback.jpg GPIOback.jpg]. If you DO need the switch take a look at GPIOfront_small.jpg or GPIOfront.jpg. (Limer)
+
+Credit to:
+
+The OpenWRT community for making OpenWRT.
+
+Belkin for making a nice, cheap router.
+
+Nicole for Bluetoothing me the GPIO utility.
+
+star882 for contributing her knowledge of electronics to this site and probing the wiring. :)
+
+== JTAG ==
+
+If you have bricked your router (e.g. as I did by erasing the nvram) JTAG can be found (at least for rev 1000 and 1010) as decribed in this thread:
+http://www.dd-wrt.com/phpBB2/viewtopic.php?t=5080
+If you want to use HairyDairyMaid's debrick utility (wrt54g), you may need to add support for the flash devices (Fuijitsu 29DL323BE) as described here:
+http://forum.openwrt.org/viewtopic.php?pid=50800
+Despite the problems described in this thread, adding the two lines
+{{{
+  { 0x0004, 0x2253, size4MB, CMD_TYPE_AMD, "MBM29DL323BE 2Mx16 BotB    (4MB)"   ,8,size8K,     63,size64K,   0,0,        0,0        },
+  { 0x0004, 0x2250, size4MB, CMD_TYPE_AMD, "MBM29DL323TE 2Mx16 TopB    (4MB)"   ,63,size64K,   8,size8K,     0,0,        0,0        },
+}}}
+lets the tool automatically detect the flash device with the debrick tool v4.8. CPU detection and flash erasing work as expected, however I wasn't able to write a valid CFE. No errors during write, but the backup dumped after writing shows invalid values at a couple of places. This was done with an unbuffered JTAG cable, maybe I'll try again with a buffered one.(JoergAlbert)
+
+== Serial ==
+
+On v4000,v5000,v6000,etc you can add a serial port which can be very useful if used correctly.  The pinout is the same as the USR5463.  If you connect to that terminal you can enter bootloader command mode by pressing any key when it says "Press any key to enter bootloader mode."  Press enter to get help after that.  Just don't erase the bootloader.  I don't take any responsibility for anybody erasing their bootloader or anything else bricking their router.  If you wait after that prompt, you can press enter after all the text has passed to get more help for the Belkin firmware.  Also, after that prompt you can press G to start a tftp client.  This text should be very useful.
+
+== Links ==
+
+There are a number of public forums and web sites where the installation of open source firmware for the Belkin F5D7230-4 is being discussed and published.
+
+
+=== Forums ===
+
+ 1. http://www.seattlewireless.net/index.cgi/Belkin_20F5D7230_2d4 :: Seattle Wireless "Belkin F5D7230-4"
+ 2. http://www.broadbandreports.com/forum/remark,10837191~mode=flat~days=9999 :: Broad Band Reports "Belkin Firmware Image Header"
+ 3. http://www.openwrt.org/forum/viewtopic.php?t=546 :: OpenWRT "General Discussion"
+## 4. http://www.chupa.nl/forum/showthread.php?t=601 :: Chupa Forum
+
+=== Development Pages ===
+
+ 1. http://www.efn.org/~rick/work/f5d7230/ :: Rick Bronson's "Hacking the Belkin F5D7230-4 Version 1444 router"
+ 2. http://www.codefu.org/weblogs/darkness/archives/000169.html :: "Building the Belkin F5D7230-4 GPL firmware" by darkness
+
+=== Serial Pages ===
+
+ 1. http://www.rwhitby.net/wrt54gs/serial.html :: Rod Whitby's "Linksys WRT54G / WRT54GS Dual Serial Port Mod"
+ 2. http://melbourne.wireless.vic.asn.au/wiki/?minitar :: Melbourne Wireless - Old Site
+ 3. http://www.compsys1.com/workbench/On_top_of_the_Bench/Max233_Adapter/max233_adapter.html :: Comp Sys MAX232 Adapters
+ 4. http://www.theforestnetworking.com/sveasoft/serial.php :: WRT54G & WRT54GS Serial Adaptor
+ 5. http://hamburg.freifunk.net/twiki/bin/view/Technisches/BasteleienUndBausaetze Serial mods. (german)
+
+=== Hardware Pages ===
+
+ 1. http://www.broadcom.com/products/product.php?product_id=BCM94712&category_id= :: Broadcom Corporation &#8211; BM94712 &#8211; 802.11b/54g&#8482; Integrated Wireless AP/Router Reference Design
+ 2. http://www.wi-fiplanet.com/news/article.php/2238881 :: Broadcom Intros New Integrated 11g Processor
+ 3. http://rage.against.org/LinksysWRT54G :: Moi Meme - LinksysWRT54G
+ 4. http://www.askey.com.tw/eportal/globalweb/browseCatDispatcher.jsp?catOid=-715&menuCatOid=-91 :: Equivalent Askey  Hardware
+ 
+
+=== Software Pages ===
+
+ 1. http://web.belkin.com/support/gpl.asp :: Belkin GPL Code
+ 2. http://www.linksys.com/support/gpl.asp :: Linksys GPL Code
+ 3. http://www.asus.com.tw/support/download/item.aspx?ModelName=WL-500g :: Asus GPL Code
+ 4. http://belkin.com/support/download/download.asp?download=F5D7230-4 :: Belkin Firmware
+
+
+=== Other Firmware Pages (that may yield useful firmware) ===
+
+ 1. http://openwrt.ksilebo.net/ :: Another link for OpenWRT
+ 2. http://sourceforge.net/projects/wifi-box/ :: Wi Fi Box
+ 3. http://sourceforge.net/projects/newbroadcom/ :: New-Broadcom Project
+ 4. http://www.portless.net/ewrt/ :: EWRT
+ 5. http://www.hyperdrive.be/hyperwrt/ :: HyperWRT
+
+
+=== Other Pages (that may yield useful information) ===
+
+ 1. http://www.linksysinfo.org :: Linksys WRT Information (similar/same platform as Belkin)
+
+== Documentation ==
+
+
+A good deal of documentation has been published in the public domain, regarding the Belkin F5D7230-4.  Most of this has been in the forums (above), but some has been collated in the documents below.
+
+If you have done something that you think might help someone else, write it up and post a link here!
+
+
+
+=== Understanding the Belkin extended firmware for OpenWRT development ===
+
+{{{
+    In this paper the Belkin F5D7230-4 is explored for
+    its availability as a fully integrated wireless 
+    firewall router and VPN end-point. This work must 
+    be done in order to achieve a best-practice 
+    security solution in the Small Office / Home Office
+    (SOHO) price-point. Where, while almost all of the
+    casual risks are equivalent to those experienced 
+    by large enterprise, no mitigation technologies 
+    are available at an appropriate cost. By collating
+    a mass of publicly available information, the paper
+    concludes by providing a root shell into the 
+    device, and a number of Linux-based reports on the 
+    hardware make-up of the router. It is hoped that
+    this information can be used to adapt the OpenWRT 
+    embedded Linux distribution, for this Belkin router.
+}}}
+
+
+Document URL;
+  http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4.pdf
+
+
+
+
+=== Attaining console access via the native Belkin serial port for OpenWRT development ===
+
+{{{
+    By collating a mass of publicly available
+    information, and experimenting with a single unit,
+    the paper concludes by providing a physical 
+    console into the device, providing local root user
+    level access, and a schematic diagram for a solder-
+    less project that will allow individuals to try
+    this experiment for themselves. It is hoped that 
+    this information can be used to debug open source 
+    firmware and to then adapt the OpenWRT, and 
+    Sveasoft, embedded Linux distributions for this 
+    Belkin router. 
+}}}
+
+
+Document URL;
+  http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4%20-%20Serial%20Console.pdf
+
+
+
+=== Compiling and Installing the GPL Broadcom Reference Firmware ===
+
+{{{
+    Belkin published the Broadcom reference firmware; 
+    a small Linux distribution, designed to act as a  
+    proof-of-concept and development environment for  
+    the Belkin engineers. To minimize the amount of  
+    experimentation required to adapt the OpenWRT and 
+    Sveasoft firmware for use on the Belkin, the  
+    published Broadcom reference firmware was compiled 
+    to see if it was functional, and able to provide  
+    driver and configuration information for the open 
+    source distributions. 
+    ... 
+    Furthermore, this process was developed rapidly 
+    due to the excellent work performed by Rick 
+    Bronson. 
+}}}
+
+
+Document URL;
+  http://midnightcode.org/papers/OpenWRT%20on%20the%20Belkin%20F5D7230-4%20%20-%20Broadcom%20Firmware.pdf
+----
+CategoryModel

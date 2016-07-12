@@ -1,0 +1,7 @@
+1235403033000000	00000001	SAVENEW	OpenWrtDocs(2f)Development(2f)SetupBuildEnvironmentHowTo	84.60.112.216	dslb-084-060-112-216.pools.arcor-ip.net	1176763174.32.16289		Initial creation
+1235407470000000	00000002	SAVE	OpenWrtDocs(2f)Development(2f)SetupBuildEnvironmentHowTo	84.60.112.216	dslb-084-060-112-216.pools.arcor-ip.net	1176763174.32.16289		Typos
+1235407600000000	00000003	SAVE	OpenWrtDocs(2f)Development(2f)SetupBuildEnvironmentHowTo	84.60.112.216	dslb-084-060-112-216.pools.arcor-ip.net	1176763174.32.16289		Added Mac OS X to table
+1235610145000000	00000004	SAVE	OpenWrtDocs(2f)Development(2f)SetupBuildEnvironmentHowTo	84.60.107.201	dslb-084-060-107-201.pools.arcor-ip.net	1176763174.32.16289		added more prerequisite packages
+1235675694000000	00000005	SAVE	OpenWrtDocs(2f)Development(2f)SetupBuildEnvironmentHowTo	84.60.117.159	dslb-084-060-117-159.pools.arcor-ip.net	1176763174.32.16289		need more harddisk space for all packages
+1235819252000000	00000006	SAVE	OpenWrtDocs(2f)Development(2f)SetupBuildEnvironmentHowTo	84.60.121.235	dslb-084-060-121-235.pools.arcor-ip.net	1176763174.32.16289		Even more harddisk space needed when compiling all extra packages,
+1236441496000000	00000007	SAVE	OpenWrtDocs(2f)Development(2f)SetupBuildEnvironmentHowTo	84.61.124.157	dslb-084-061-124-157.pools.arcor-ip.net	1176763174.32.16289		add ruby dependency

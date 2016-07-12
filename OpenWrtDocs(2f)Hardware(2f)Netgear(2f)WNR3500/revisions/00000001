@@ -1,0 +1,118 @@
+[[TableOfContents]]
+
+= Netgear WNR3500 =
+The WNR3500 is a Wireless-N Gigabit Router.  It uses a Marvell TopDog based design. 
+
+* 88F5180 processor
+* 88E6131 8 port gigabit Ethernet switch
+* 88W8363 Baseband/MAC
+* 88E1112 gigabit Ethernet PHY
+* 88W8060 2T3R Transceiver.
+
+All these parts are the same as in the WNR854T, except the Baseband/MAC, which is an 88W8161 in the WNR854T.  It's just a cut down version of the WNR854T:
+
+*Wireless on pcb instead of mini pci card
+*No Heatsink On The CPU (854T Does)
+*16 Meg Ram instead of 32 Meg
+*4 Meg flash instead of 8 Meg
+*500 Mhz Arm9 CPU = same
+
+== Hidden page ==
+In the default firmware, there is a hidden wifi configuration page that can be accessed by visiting
+http://www.routerlogin.net/WiFi_HiddenPage.htm
+
+For more details see [http://forum1.netgear.com/showthread.php?t=28037 netgear forum thread].
+
+== Telnet hack ==
+The [http://wiki.openwrt.org/OpenWrtDocs/Hardware/Netgear/TelnetConsole Telnet access on WNR3500] can be used to gain access to a terminal prompt in the default firmware.
+
+== Hardware details ==
+Here's some info from the telnet hack, posted originally in a [http://forum1.netgear.com/showthread.php?t=27618 netgear forum thread].
+
+{{{
+BusyBox v1.01 (2008.05.15-09:19+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+# version
+Release version : Netgear Wireless Router WNR3500
+U12H09200/V1.0.22/6.0.22
+Time : Jun 25 2008 09:41:43
+
+# cat /proc/version
+Linux version 2.4.27-vrs1 (weal@hotteam.cs) (gcc version 3.4.4 (release) (CodeSourcery ARM 2005q3-1)) #1 Wed Jun 25 09:39:13 CST 2008
+
+# cat /proc/cpuinfo
+Processor : ARM926EJ-Sid(wb) rev 0 (v5EJl)
+BogoMIPS : 332.59
+Features : swp half thumb fastmult
+
+Hardware : MV-88fxx81
+Revision : 0000
+Serial : 0000000000000000
+
+# cat /proc/meminfo
+total: used: free: shared: buffers: cached:
+Mem: 14909440 14405632 503808 0 880640 2088960
+Swap: 0 0 0
+MemTotal: 14560 kB
+MemFree: 492 kB
+MemShared: 0 kB
+Buffers: 860 kB
+Cached: 2040 kB
+SwapCached: 0 kB
+Active: 3880 kB
+Inactive: 2240 kB
+HighTotal: 0 kB
+HighFree: 0 kB
+LowTotal: 14560 kB
+LowFree: 492 kB
+SwapTotal: 0 kB
+SwapFree: 0 kB
+
+# ps x
+PID Uid VmSize Stat Command
+1 0 416 S init
+2 0 SW [keventd]
+3 0 SWN [ksoftirqd_CPU0]
+4 0 SW [kswapd]
+5 0 SW [bdflush]
+6 0 SW [kupdated]
+7 0 SW [mtdblockd]
+142 0 484 S swresetd
+144 0 380 S dnsRedirectReplyd
+146 0 1212 S httpd
+150 0 592 S dnsmasq -h -n -c 0 -N -i br0 -r /tmp/resolv.conf -u r
+151 0 504 S udhcpd /tmp/udhcpd.conf
+153 0 484 S ddnsd &
+159 0 476 S heartbeat
+163 0 604 S pot run
+165 0 940 S upnpd
+173 0 660 S /usr/sbin/email
+184 0 580 S lld2d br0
+222 0 532 S wpsd
+226 0 648 S wsccmd /tmp/wsc
+231 0 460 S /bin/sh
+234 0 648 S wsccmd /tmp/wsc
+235 0 648 S wsccmd /tmp/wsc
+239 0 572 S /usr/sbin/timesync /sbin/ntpclient
+240 0 440 S udhcpc -i eth0 -p /var/run/udhcpc0.pid -s /tmp/udhcpc
+243 0 648 R wsccmd /tmp/wsc
+248 0 648 R wsccmd /tmp/wsc
+249 0 648 S wsccmd /tmp/wsc
+250 0 648 S wsccmd /tmp/wsc
+251 0 648 S wsccmd /tmp/wsc
+252 0 648 S wsccmd /tmp/wsc
+253 0 648 S wsccmd /tmp/wsc
+254 0 696 S hostapd -W /tmp/wsc/hostapd.conf
+5795 0 536 S telnetd
+10292 0 500 S /bin/sh
+10493 0 552 R ps x
+#
+}}}
+
+----
+ . CategoryModel
+ . CategoryGigabitDevices
+ . Category80211nDevice
+----
+CategoryGigabitDevices

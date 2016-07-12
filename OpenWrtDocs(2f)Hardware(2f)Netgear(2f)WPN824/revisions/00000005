@@ -1,0 +1,19 @@
+Serial port is JP1, pinout as follows:
+
+{{{
+      1
+      o o - VCC
+ RX - o o
+      o o
+      o o
+ TX - o o
+GND - o o
+      JP1
+}}}
+
+[http://www.dslreports.com/forum/remark,14001273 Description of serial port on WPN824]
+
+[OpenWrtDocs/Hardware/Netgear/TelnetConsole Telnet access on WPN824]
+
+----
+CategoryModel

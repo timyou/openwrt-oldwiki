@@ -1,0 +1,36 @@
+diff -wur uuu/di624/kernels/ar231x/include/asm-mips/cpu.h di624/kernels/ar231x/include/asm-mips/cpu.h
+--- uuu/di624/kernels/ar231x/include/asm-mips/cpu.h	2006-03-21 06:40:36.000000000 -0500
++++ di624/kernels/ar231x/include/asm-mips/cpu.h	2007-11-10 22:40:25.000000000 -0500
+@@ -66,6 +66,7 @@
+ #define PRID_IMP_4KEC		0x8400
+ #define PRID_IMP_4KSC		0x8600
+ #define PRID_IMP_25KF		0x8800
++#define PRID_IMP_4KECR2		0x9000
+ #define PRID_IMP_24K		0x9300
+ 
+ #define PRID_IMP_UNKNOWN	0xff00
+Only in di624/kernels/ar231x/include/asm-mips: offset.h
+diff -wur uuu/di624/kernels/ar231x/arch/mips/ar531x/ar531xsetup.c di624/kernels/ar231x/arch/mips/ar531x/ar531xsetup.c
+--- uuu/di624/kernels/ar231x/arch/mips/ar531x/ar531xsetup.c	2006-03-21 06:40:20.000000000 -0500
++++ di624/kernels/ar231x/arch/mips/ar531x/ar531xsetup.c	2007-11-03 10:40:09.000000000 -0400
+@@ -70,7 +70,8 @@
+ get_system_type(void)
+ {
+ #if CONFIG_AR5315
+-	return "Atheros AR531X_COBRA";
++	return "Atheros AR5315";
++	//return "Atheros AR531X_COBRA";
+ #else
+ 	return "Atheros AR531X";
+ #endif
+diff -wur uuu/di624/kernels/ar231x/arch/mips/kernel/cpu-probe.c di624/kernels/ar231x/arch/mips/kernel/cpu-probe.c
+--- uuu/di624/kernels/ar231x/arch/mips/kernel/cpu-probe.c	2006-03-21 06:40:20.000000000 -0500
++++ di624/kernels/ar231x/arch/mips/kernel/cpu-probe.c	2007-11-19 08:30:54.000000000 -0500
+@@ -449,6 +449,7 @@
+ 		c->isa_level = MIPS_CPU_ISA_M32;
+ 		break;
+ 	case PRID_IMP_4KEC:
++	case PRID_IMP_4KECR2:
+ 		c->cputype = CPU_4KEC;
+ 		c->isa_level = MIPS_CPU_ISA_M32;
+ 		break;

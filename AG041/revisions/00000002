@@ -1,0 +1,6 @@
+Crappy but cheap (as in free) linksys DSL router
+
+
+["WAG54G"]shows the serial console output, except we use 115200 baud
+
+[http://www.samsung.com/Products/Semiconductor/SystemLSI/Networks/PersonalNTASSP/CommunicationProcessor/S3C2510A/um_s3c2510a_rev1.pdf  s3c2510a] userguide from Samsung

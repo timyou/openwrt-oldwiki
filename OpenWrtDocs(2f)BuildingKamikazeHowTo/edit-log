@@ -1,0 +1,35 @@
+1199673286000000	00000001	SAVENEW	OpenWrtDocs(2f)BuildingKamikazeHowTo	66.31.125.30	c-66-31-125-30.hsd1.ma.comcast.net	1199660766.2.12231		
+1200209839000000	00000002	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	87.1.223.163	host163-223-dynamic.1-87-r.retail.telecomitalia.it	1194744560.97.50893		
+1200279665000000	00000003	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	64.9.239.11	user-64-9-239-11.googlewifi.com	1142361980.51.2341		Edited out the story
+1200927558000000	00000004	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	196.1.58.55	grog.frogfoot.net	1182113101.22.37582		Minor tweak to give the working directory a more descriptive name.
+1201607062000000	00000005	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	83.135.173.84	i5387AD54.versanet.de	1201606422.56.29153		
+1202549508000000	00000006	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	196.30.245.149	cc2.jnb6.alter.net	1182113101.22.37582		Remove a space
+1206382414000000	00000007	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	91.66.128.197	91.66.128.197	1173010621.05.21249		
+1206980360000000	00000008	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	196.30.245.149	cc2.jnb6.alter.net	1182113101.22.37582		Remove redundant 
+1211793506000000	00000009	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	91.65.129.112	91-65-129-112-dynip.superkabel.de	1206382843.29.31374		
+1211793559000000	00000010	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	91.65.129.112	91-65-129-112-dynip.superkabel.de	1206382843.29.31374		
+1211793623000000	00000011	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	91.65.129.112	91-65-129-112-dynip.superkabel.de	1206382843.29.31374		
+1213484962000000	00000012	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	70.137.185.195	adsl-70-137-185-195.dsl.snfc21.sbcglobal.net	1142361980.51.2341		
+1213485052000000	00000013	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	70.137.185.195	adsl-70-137-185-195.dsl.snfc21.sbcglobal.net	1142361980.51.2341		
+1215204685000000	00000014	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	76.190.225.140	cpe-76-190-225-140.neo.res.rr.com	1215204404.62.5380		Fixed misspelling
+1217603818000000	00000015	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.152.23.130	p54981782.dip0.t-ipconnect.de	1217603622.32.33762		
+1221542540000000	00000016	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	64.9.237.184	user-64-9-237-184.googlewifi.com	1221530246.41.36977		
+1224357976000000	00000017	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	91.67.142.175	91-67-142-175-dynip.superkabel.de	1219318099.12.35091		
+1224358364000000	00000018	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	91.67.142.175	91-67-142-175-dynip.superkabel.de	1219318099.12.35091		
+1226550639000000	00000019	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	67.82.178.149	ool-4352b295.dyn.optonline.net	1224218558.35.45287		
+1235407980000000	00000020	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.112.216	dslb-084-060-112-216.pools.arcor-ip.net	1176763174.32.16289		Added link to SetupBuildEnvironmentHowTo
+1235678958000000	00000021	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.117.159	dslb-084-060-117-159.pools.arcor-ip.net	1176763174.32.16289		Explained the commands, added information link for Subversion
+1236215084000000	00000022	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.126.160	dslb-084-060-126-160.pools.arcor-ip.net	1176763174.32.16289		Echo a bell/beep/alert when make is done, useful when compiling all pkgs
+1236283923000000	00000023	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.127.159	dslb-084-060-127-159.pools.arcor-ip.net	1176763174.32.16289		Non-compilable packages to ease creating a private repository
+1236291369000000	00000024	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.127.159	dslb-084-060-127-159.pools.arcor-ip.net	1176763174.32.16289		added more non-compilable packages of revision 14750 
+1236339740000000	00000025	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	193.188.250.4	193.188.250.4	1176763174.32.16289		add ticket for libgd package
+1236355847000000	00000026	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.61.112.114	dslb-084-061-112-114.pools.arcor-ip.net	1176763174.32.16289		typo
+1236357818000000	00000027	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.61.112.114	dslb-084-061-112-114.pools.arcor-ip.net	1176763174.32.16289		typo
+1236373571000000	00000028	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.61.112.114	dslb-084-061-112-114.pools.arcor-ip.net	1176763174.32.16289		luasec got fixed
+1236385345000000	00000029	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.61.112.114	dslb-084-061-112-114.pools.arcor-ip.net	1176763174.32.16289		typo
+1237059999000000	00000030	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.101.102	dslb-084-060-101-102.pools.arcor-ip.net	1176763174.32.16289		libgd works, so removed from problem packafes
+1237060101000000	00000031	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.101.102	dslb-084-060-101-102.pools.arcor-ip.net	1176763174.32.16289		
+1237066354000000	00000032	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.101.102	dslb-084-060-101-102.pools.arcor-ip.net	1176763174.32.16289		Added tip for packages with download problems
+1237109163000000	00000033	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.123.14	dslb-084-060-123-014.pools.arcor-ip.net	1176763174.32.16289		another download tip, remove trailing slashes from path in Makefile
+1237115202000000	00000034	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.60.123.14	dslb-084-060-123-014.pools.arcor-ip.net	1176763174.32.16289		Only general information for non-compiling packages, use TRAC instead
+1237932623000000	00000035	SAVE	OpenWrtDocs(2f)BuildingKamikazeHowTo	84.61.127.87	dslb-084-061-127-087.pools.arcor-ip.net	1176763174.32.16289		Tip to store downloads outside the trunk folder, saving hd space

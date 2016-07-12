@@ -1,0 +1,40 @@
+'''Asus WL-520G'''
+
+The WL-520G is based on the Broadcom 5350 board. It has a 200MHz CPU, 2Mb flash and 8Mb RAM. The wireless NIC is integrated. In china, it's also marketed as "Asus WL-500G-X".
+
+'''CPU'''
+
+{{{
+# cat /proc/cpuinfo
+system type  : Broadcom BCM947XX
+processor  : 0
+cpu model  : BCM3302 V0.8
+BogoMIPS  : 199.47 wait instruction : no
+microsecond timers : yes
+tlb_entries  : 32
+extra interrupt vector : no
+hardware watchpoint : no
+VCED exceptions  : not available
+VCEI exceptions  : not available
+unaligned_instructions : 0
+dcache hits  : 2147282741
+dcache misses  : 3648528017
+icache hits  : 1097736
+icache misses  : 1090582658 instructions  : 0
+}}}
+
+Overclocking doesn't seem to be possible with the clkfreq variable but
+may be underclocked
+
+{{{
+# nvram set clkfreq=150
+# nvram commit
+# reboot
+}}}
+
+10 nov 2006: Kire: The normal version of openwrt is too big, too allow the passwd, to write to /etc/passwd (no jffs partition) therefore the system should be stripped down. I started from SVN revision 5473. I mainly removed the wlan-stuff to free some space. and some unnecessary modules. And then: IT WORKS. I left the status at WiP, because it does not function out of the box.
+
+16 Dec 2006 Jek(YauhenKharuzhy): Kamikadze works after customization. There are issues with small amount of memory.
+
+----
+ . CategoryModel

@@ -1,0 +1,16 @@
+1136376766000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	213.94.74.251	213.94.74.251	1136376388.38.19107		Initial rough draft
+1136379018000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	213.94.74.251	213.94.74.251	1136376388.38.19107		Initial rough draft, extension.
+1136381770000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	213.94.74.251	213.94.74.251	1136376388.38.19107		update oss link & initial IP
+1136833689000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	80.109.44.109	chello080109044109.6.14.vie.surfer.at	1136376388.38.19107		Updated table for 10 pin connector
+1136833757000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	80.109.44.109	chello080109044109.6.14.vie.surfer.at	1136376388.38.19107		Updated table for 10 pin connector
+1136839818000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	80.109.44.109	chello080109044109.6.14.vie.surfer.at	1136376388.38.19107		Update serial interface, add link for additional info.
+1136913342000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	85.76.95.153	ZKMMMDLII.dsl.saunalahti.fi	1136912879.06.23605		This is Atheros
+1140442510000000	00000008	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	85.124.28.123	85-124-28-123.dynamic.xdsl-line.inode.at	1140442165.51.44391		additional hardware information regarding CPU
+1141580539000000	00000009	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	80.109.44.109	chello080109044109.6.14.vie.surfer.at	1136376388.38.19107		Link to opossum.rat.at works again.
+1141580715000000	00000010	SAVE/REVERT	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	80.109.44.109	chello080109044109.6.14.vie.surfer.at	1136376388.38.19107	00000008	
+1141580836000000	00000011	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	80.109.44.109	chello080109044109.6.14.vie.surfer.at	1136376388.38.19107		Reverted to v8 due to probs with "GUI Mode". opossum.rat.at link works again.
+1163601234000000	00000012	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	81.191.46.210	host-81-191-46-210.bluecom.no	1163599908.21.41172		
+1163601842000000	00000013	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	81.191.46.210	host-81-191-46-210.bluecom.no	1163599908.21.41172		
+1211772039000000	00000014	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	58.161.9.211	CPE-58-161-9-211.nsw.bigpond.net.au	1211766590.1.32204		
+1211772434000000	00000015	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	58.161.9.211	CPE-58-161-9-211.nsw.bigpond.net.au	1211766590.1.32204		
+1211772953000000	00000016	SAVE	OpenWrtDocs(2f)Hardware(2f)Siemens(2f)SE551	58.161.9.211	CPE-58-161-9-211.nsw.bigpond.net.au	1211766590.1.32204		

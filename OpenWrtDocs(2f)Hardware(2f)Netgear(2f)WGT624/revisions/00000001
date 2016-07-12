@@ -1,0 +1,33 @@
+Netgear WGT624
+
+the WGT624 is based on an Atheros System on a Chip (Soc). It got a ar2312a MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+== Specs for WGT624 Rev1 ==
+Atheros Product Name: Atheros AR5001AP
+CPU: AR2312A-00
+Flash: 4MB
+RAM: 16MB
+Switch: Marvell
+
+One Antenna (2db)
+1 WAN-Ports
+4 LAN-Ports
+Powersupply: 5V
+
+
+== Serial == 
+It got populated Serial and JTAG-Headers.
+
+Serial-Layout
+Pin  3 RX
+Pin  9 TX
+Pin 12 GND
+
+Serial header is the 12 pin header near the power plug. JTAG is near the antenna.
+Serial pin 1 is the pin nearest to the cpu.
+
+I wanted to buy a prolific USB to serial cellphone cable at ebay, but they sent me an Silicon Labs cable, but this chipset is finaly supported in 2.6.12. Works great (usb 2-1.2: CP2101 converter now attached to ttyUSB0)
+
+Set your serial terminal (i.e. minicom) to 9600 8N1, I enabled software flow control, too.
+
+Serial login is 'Gearguy' password is 'Geardog'

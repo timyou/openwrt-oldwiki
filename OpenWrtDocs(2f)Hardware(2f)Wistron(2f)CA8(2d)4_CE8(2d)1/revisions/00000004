@@ -1,0 +1,183 @@
+[[TableOfContents]]
+= General =
+the Wistron CA8-4 is based on an Atheros System on a Chip (Soc). It got a ar2313 MIPS processor and ar5112 2.4/5GHz RoC. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+= Hardware =
+== Board spec ==
+ * Atheros product name: Atheros AR5002AP-X 802.11a/b/g WLAN Solution
+ * CPU: Atheros AR2313A
+ * RoC: Atheros AR5112A
+ * Flash: 32MBit / 4MB [http://www.spansion.com/products/S29JL032H.html SPANSION S29JL032H]
+ * RAM: 32MB [http://download.micron.com/pdf/datasheets/dram/sdram/256MbSDRAMx32.pdf Micron Chips (MT) 48LC8M32B2]
+ * Ethernet transceiver [http://www.icplus.com.tw/pp-IP101A.html IC+ IP101A]
+
+ * 1 x LAN RJ45
+ * Power supply: 5V DC
+== Serial ==
+Populated serial on JP1
+
+VCC = +3.3V
+
+{{{
+       1    JP1
+ VCC - []
+       ()
+  TX - ()
+       ()
+  RX - ()
+ GND - ()
+}}}
+
+ * baud: 115200
+ * 8 bit, 1 stop bit
+ * No parity
+
+= Software =
+== Standard Ovislink / Airlive firmware ==
+The AP ships with Linux 2.4.18-mips
+
+=== Boot loader ===
+{{{
+      ============================================
+        AR2313 Boot Loader Interface
+        V1.03e00 2006-1-02 (zImage)
+      ============================================
+
+Please choose the operation:
+   1: Load system code to SDRAM via TFTP.
+   2: Load system code then write to Flash via TFTP.
+   3: Boot system code via Flash.
+   4: Load calibration data then write to Flash via XModem.
+}}}
+3 seconds time out
+
+=== Linux boot ===
+{{{
+  ZImage -CRC = 0x1226dd06
+Copying image from flash to SDRAM ...
+flash start= 0xbfc50000; flash end= 0xbfe85000
+frequence_setup
+register_console
+min=0:CHIP:AR2313
+CPU revision is: 0001800a
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 16kb, linesize 16 bytes (4 ways)
+Linux version 2.4.18-mips (root@localhost.localdomain) (gcc version 2.95.4 20010
+319 (prerelease)) #2 €­ 4€ë 14 13:27:26 CST 2006
+Determined physical RAM map:
+ memory: 02000000 @ 00000000 (usable)
+Initial ramdisk at: 0x80343000 (1815109 bytes)
+On node 0 totalpages: 8192
+zone(0): 8192 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: ip=192.168.1.3:192.168.1.1::netmask::eth0
+
+calculating r4koff... 000dbba0(900000)
+Calibrating delay loop... 179.81 BogoMIPS
+Memory: 27044k/32768k available (1129k kernel code, 5724k reserved, 1912k data,
+4k init, 0k highmem)
+Dentry-cache hash table entries: 4096 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with no serial options enabled
+ttyS00 at 0xbc000000x (irq = 12) is a 16550A
+block: 64 slots per queue, batch=16
+RAMDISK driver initialized: 16 RAM disks of 6500K size 1024 blocksize
+loop: loaded (max 8 devices)
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 2048 bind 2048)
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+RAMDISK: Compressed image found at block 0
+Freeing initrd memory: 1772k freed
+VFS: Mounted root (ext2 filesystem).
+Freeing unused kernel memory: 4k freed
+Algorithmics/MIPS FPU Emulator v1.5
+Bummer, can't write to log on /dev/tty5!
+console=/dev/ttyS0
+init started:  BusyBox v0.60.5 (2006.04.14-05:26+0000) multi-call binary
+Bummer, can't write to log on /dev/tty5!
+Starting pid 8, console /dev/ttyS0: '/etc/rc.d/rcS'
+Using /lib/modules/2.4.18-mips/eth.o
+
+CE8-1 Eth ver: 3.17e00.2005
+Ethernet use flash address
+Ethernet For CA8-4
+ae531x ethMAC(0)= 00:4f:69:50:ffffffa7:ffffffcf
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: duplex 0, link 1
+full
+3.19.00 macCtl= 0x1010000c    macFlowCtl= 0x00000002
+100
+  sb = 00 4F 69 50 A7 CF
+ether_setup
+ae531x ethMAC(1)= 00:4f:69:50:ffffffa7:ffffffce
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth0: Phy Status=ffff
+eth1: duplex 0, link 1
+full
+3.19.00 macCtl= 0x1010000c    macFlowCtl= 0x00000002
+100
+  sb = 00 4F 69 50 A7 CE
+ether_setup
+Using /lib/modules/2.4.18-mips/wlan.o
+wlan: 0.7.1.1 BETA (Sam Leffler <sam@errno.com>)
+Using /lib/modules/2.4.18-mips/ath_hal.o
+Warning: loading ath_hal will taint the kernel: non-GPL license - Proprietary
+  See http://www.tux.org/lkml/#export-tainted for information about tainted modu
+les
+ath_hal: 0.9.5.4 BETA (Sam Leffler <sam@errno.com>)
+Using /lib/modules/2.4.18-mips/ath_pci.o
+ath_pci: 0.8.3.2 BETA (Sam Leffler <sam@errno.com>)
+EEPROM version: 0x4008
+ar5212EnableRadarDetection() ... ar5212EnableRadarDetection
+wlan0: 11a rates: 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wlan0: 11b rates: 1Mbps 2Mbps 5.5Mbps 11Mbps
+wlan0: 11g rates: 1Mbps 2Mbps 5.5Mbps 11Mbps
+wlan0: turbo rates: 6Mbps 9Mbps 12Mbps 18Mbps 24Mbps 36Mbps 48Mbps 54Mbps
+wlan0: 802.11 address: 00:4f:69:50:a7:cd
+wlan0: Atheros 5212: irq=5
+Using /lib/modules/2.4.18-mips/flashapi.o
+Bummer, can't write to log on /dev/tty5!
+Starting pid 19, console /dev/ttyS0: '/bin/sh'
+
+
+BusyBox v0.60.5 (2006.04.14-05:26+0000) Built-in shell (ash)
+Enter 'help' for a list of built-in commands.
+
+#   syslogd: Execute for syslog/udp/514
+maxvalidrate=10 11
+Connect with ANY channel
+* set rd: 33594, cc: 826
+Connect with ANY channel
+
+#
+}}}
+= Links =
+'''Manufacturer:'''
+ * [http://www.wneweb.com/wireless/wireless_AP.htm Wistron CA8-4 PCBA]
+
+'''Access points:'''
+ * [http://airlive.com Ovislink / Airlive]: [http://www.airlive.com/WLA5000AP.htm WLA-5000AP]
+
+'''GPL sources:'''
+ * [http://www.ovislinkcorp.com/GPL_WLA-5000AP.zip WLA-5000AP]
+ * [ftp://ftp.dlink.com/GPL/dwl2210ap/dwl2210ap-source_1.0.2.8.tar.gz DLink DWL-2210AP]

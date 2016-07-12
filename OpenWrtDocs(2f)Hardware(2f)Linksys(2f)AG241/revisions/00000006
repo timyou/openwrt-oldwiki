@@ -1,0 +1,38 @@
+= Linksys AG241 =
+Bootloader: ["PSPBoot"]
+
+== Picture (AG241-EU) ==
+attachment:ag241-eu.jpg
+
+== Serial console ==
+Note: this does not match with the picture above.  The description is exactly as written here, the new port is named JP4 and PIN1 is on the left side. So just flip the picture 90 degree to have the new layout.
+
+{{{
+|
+|    __
+|   |  |        <- Pin 1, GND
+|    --
+|   |  |        <- Pin 2, Not Connected
+|    --
+|   |  |        <- Pin 3, Router's Serial TX
+|    --
+|   |  |        <- Pin 4, Router's Serial RX
+|    --
+|   |  |        <- Pin 5, VCC
+|    --
+|    JP3
+|
+ \__led__led__led__led____________________
+                Front of AG241
+}}}
+Configure teminal with 38400 bauds, 8 bits, no parity, 1 stop bit (38400 8N1), hardware and software flow control both disabled.
+
+== Flash ==
+Since this device uses PSPBoot no flashing of openwrt via tftp is possible. Also no ftpd as with adam2 is available. The device seems to use the code pattern "AG3BPBOT" instead of "WAG2" so the image gets denied via tftp and http. The only solution I found to put openwrt on is to get the original sources from Linksys, recompile the image with an enabled telnetd and do the flashing with an mtd binary via telnet.
+
+You can get further infos from a forum thread
+
+http://forums.whirlpool.net.au/forum-replies.cfm?t=511748&p=8
+
+----
+ . ["CategoryAR7Device"]

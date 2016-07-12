@@ -1,0 +1,19 @@
+= Siemens Gigaset SX541 =
+
+The device is based on Texas Instrument AR7, so you need the [:AR7Port]
+in OpenWrt trunk.
+
+In addition, patches which support the BRN bootloader are needed.
+
+Currently, the kernel starts booting and crashs, so this is definitely
+work in progress...
+
+i have completly done a modell change to the smc version and back to siemens. incl up and downgrade of the bootloader, done by webinterface. only thing, i can't get work is the Marvel bridge, smc one seems to have a 8 port bridge, web-interface shows me them, but not able to access. lan ports of the siemens are working.
+information and files to come back to siemens bootloader can be found here
+http://www.ip-phone-forum.de/showthread.php?t=90353
+
+== Serial Console ==
+
+tbd.
+----
+CategoryModel ["CategoryAR7Device"]

@@ -1,0 +1,44 @@
+#pragma section-numbers off
+= WBD-500 =
+The WILIGEAR WBD-500 is a powerful, 500mW (27dBm) 2.4 GHz integrated radio board. 
+
+= Hardware =
+== Info ==
+||'''Architecture''' ||MIPS !R4Kc ||
+||'''Bootloader''' ||!RedBoot ||
+||'''System-On-Chip''' ||Atheros AR2315 ||
+||'''CPU Speed''' ||183 MHz ||
+||'''Flash size''' ||8 MiB ||
+||'''RAM''' ||32 MiB ||
+||'''Wireless''' ||Integrated 500mW Atheros 802.11b/g [[BR]] MMCX antenna connectors ||
+||'''Ethernet''' ||1x RJ45, 10/100 Base-TX, PoE, surge protection ||
+||'''USB''' ||No ||
+||'''Serial''' ||Yes ||
+||'''JTAG''' ||No ||
+||'''Power''' || 9V - 52V PoE and DC jack [[BR]] polarity independent with overvoltage protection ||
+
+= Installing OpenWrt with RedBoot =
+
+Get a TFTP server for your computer.
+
+WBD-500 can be loaded with the same OpenWrt firmware as [:OpenWrtDocs/Hardware/Fon/Fonera:Fonera] device. You have to download two files (right click and save as):
+
+ * [http://downloads.openwrt.org/kamikaze/7.09/atheros-2.6/openwrt-atheros-2.6-vmlinux.lzma openwrt-atheros-2.6-vmlinux.lzma]
+ * [http://downloads.openwrt.org/kamikaze/7.09/atheros-2.6/openwrt-atheros-2.6-root.squashfs openwrt-atheros-2.6-root.squashfs]
+
+Copy openwrt-atheros-2.6-vmlinux.lzma and openwrt-atheros-2.6-root.squashfs to your TFTP server's root directory (usually called tftpboot).
+
+Configure your local computer's IP address to 192.168.2.254. 
+
+Type the command to connect to the !RedBoot bootloader, but do not press Enter yet:
+{{{
+telnet 192.168.2.66 9000
+}}}
+Power on the WBD-500 board and press Enter at the moment Ethernet LED lights up (after about 10 sec.).
+Because timeslot for this is short, you might need several tries. As soon as you see the !RedBoot prompt, press Ctrl-C.
+If you are using Linux, Ctrl-C might not work at first, this is because telnet requires LINEMODE option to be enabled.
+You can enable this option by creating a file ~/.telnetrc with the following contents:
+{{{
+192.168.2.66 9000
+        mode line
+}}}

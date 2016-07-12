@@ -1,0 +1,9 @@
+'''Asus WL-500B'''
+
+The WL-500B is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb RAM.
+The wireless NIC is a mini-PCI card. `boot_wait` is on by default. It has 1x USB v1.1 and 1x LPT interface.
+
+The version 1 units have a Broadcom wireless card, version 2 has a Ralink.
+There is version 2 with Wireless PCI Adapter RT2400 / RT2460, PCI device 1814:0101 (rev 0).
+----
+CategoryModel

@@ -1,0 +1,30 @@
+1149124833000000	00000001	SAVENEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	212.202.23.48	port-212-202-23-48.dynamic.qsc.de	1149018005.72.63574		
+1149197794000000	00000002	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	68.118.111.220	68-118-111-220.dhcp.kgpt.tn.charter.com	1148260561.75.59690		
+1149197830000000	00000003	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	68.118.111.220	68-118-111-220.dhcp.kgpt.tn.charter.com	1148260561.75.59690		
+1151520259000000	00000004	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	68.165.149.226	h-68-165-149-226.cmbrmaor.covad.net	1140546319.29.18790		TTL not TLL!
+1163716656000000	00000005	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	85.207.165.7	7-165-207-85.strcechy.adsl-llu.static.bluetone.cz	1163620107.99.35124		Serial console on Asus WL-500gP without opening the cover
+1163716738048449	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	85.207.165.7	7-165-207-85.strcechy.adsl-llu.static.bluetone.cz	1163620107.99.35124	wl500gp_serial_tool.png	
+1163716888914261	99999999	ATTNEW	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	85.207.165.7	7-165-207-85.strcechy.adsl-llu.static.bluetone.cz	1163620107.99.35124	wl500gp_serial.jpg	
+1163717042000000	00000006	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	85.207.165.7	7-165-207-85.strcechy.adsl-llu.static.bluetone.cz	1163620107.99.35124		
+1163717110000000	00000007	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	85.207.165.7	7-165-207-85.strcechy.adsl-llu.static.bluetone.cz	1163620107.99.35124		
+1172776315000000	00000008	SAVE/REVERT	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	216.31.249.246	216-31-249-246.static-ip.telepacific.net	1096303201.7.12400	00000004	
+1172776443598059	99999999	ATTDEL	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	216.31.249.246	216-31-249-246.static-ip.telepacific.net	1096303201.7.12400	wl500gp_serial_tool.png	
+1172776452215580	99999999	ATTDEL	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	216.31.249.246	216-31-249-246.static-ip.telepacific.net	1096303201.7.12400	wl500gp_serial.jpg	
+1176651604000000	00000009	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	71.134.210.122	ppp-71-134-210-122.dsl.sndg02.pacbell.net	1176651428.86.46815		typos
+1178232790000000	00000010	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	142.165.96.187	142-165-96-187.yktn.hsdb.sasknet.sk.ca	1170429892.98.332		Putty finally supports serial consoles, having included the years-old Tutty patch at last.
+1178232851000000	00000011	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	142.165.96.187	142-165-96-187.yktn.hsdb.sasknet.sk.ca	1170429892.98.332		
+1182515414000000	00000012	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	193.247.190.249	193.247.190.249	1182515182.91.26308		
+1182824833000000	00000013	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		USB kit
+1182825402000000	00000014	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		
+1194119293000000	00000015	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	66.102.80.243	cbl-66-102-80-243.wtccommunications.ca	1193787179.04.52585		the original MAX232 is a 5V device and we need 3.3V
+1195948846000000	00000016	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	70.176.72.75	ip70-176-72-75.ph.ph.cox.net	1195948079.7.8702		more compatible cell phone cables
+1204837624000000	00000017	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		
+1218896239000000	00000018	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		
+1221246271000000	00000019	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	171.71.36.222	171.71.36.222	1142361980.51.2341		
+1222853088000000	00000020	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	216.99.214.10	bonneville.tdb.com	1135034504.05.59481		elaborating on serial consoles a bit
+1222855873000000	00000021	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	216.99.214.10	bonneville.tdb.com	1135034504.05.59481		some specific links to sources of cables
+1223282345000000	00000022	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	216.99.214.10	bonneville.tdb.com	1135034504.05.59481		add some more vendor links
+1223283108000000	00000023	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	216.99.214.10	bonneville.tdb.com	1135034504.05.59481		Radio Shack doesn't carry these anymore, removing
+1228156708000000	00000024	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	68.216.143.165	68.216.143.165	1228044875.8.30700		Added the digital multimeter method for determining serial port pins
+1235106520000000	00000025	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	69.107.73.116	adsl-69-107-73-116.dsl.pltn13.pacbell.net	1150779081.4.62318		Added link to another level converter and updated eBay link
+1236040450000000	00000026	SAVE	OpenWrtDocs(2f)Customizing(2f)Hardware(2f)Serial_Console	66.218.54.163	gimpelevich.san-francisco.ca.us	1176052207.83.14651		fix zonet link, add ez-hook, op-ed

@@ -1,0 +1,14 @@
+= ZyXEL P-334WT =
+The ZyXEL P-334WT is a Firewall router with 4-port Switch with built-in 802.11g Access Point.
+== Details ==
+||'''CPU'''||Infineon/ADMtek ADM5120 (BGA)||
+||'''Bootloader'''||["Bootbase"]||
+||'''OS'''||ZyNOS||
+||'''Flash'''||4MB 1xMacronix 29LV320BT-90||
+||'''RAM'''||16MB 1xHynix HY57V283220T-7||
+||'''WLAN'''||Texas Instruments TNETW113OGVF (mini-PCI)||
+||'''USB'''||no||
+||'''Serial'''||yes||
+||'''JTAG'''||yes||
+
+CategoryModel ["CategoryADM5120Device"]

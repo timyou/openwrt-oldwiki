@@ -1,0 +1,3 @@
+The SE515 hardware is the same as the Dynalink RTA770W. In fact it is sometimes referred to be RTA770BW where B stands for Annex B but the ADSL modem can handle both Annex A and B. This just depends on the flashed firmware.
+
+For more information see [:OpenWrtDocs/Hardware/Dynalink/RTA770W]

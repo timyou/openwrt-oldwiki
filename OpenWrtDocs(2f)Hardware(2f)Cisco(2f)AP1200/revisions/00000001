@@ -1,0 +1,12 @@
+Cisco AP 1200
+
+{{{
+CPU : PowerPC 405GP
+Flash : 8Mo
+RAM : 16Mo
+Ethernet :  yes
+JTAG : ?
+USB : no
+Serial : yes (Cisco cable needed)
+Wi-Fi : Cisco Aironet Mini PCI b/g
+}}}

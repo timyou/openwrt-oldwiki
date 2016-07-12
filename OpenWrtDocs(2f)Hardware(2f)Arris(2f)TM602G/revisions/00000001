@@ -1,0 +1,168 @@
+The Arris '''TM602G''' is cable modem based on ??? chip. Ethernet, USB, and RJ11 phone ports are provided. The modem is compatible with DOCSIS and (?)EuroDOCSIS standards.
+
+= Hardware =
+
+ * Main Chip: ???
+ * Ram: ?? MB SDRAM
+ * Flash: ?? MB
+
+== Connectors ==
+
+On back-side, in top-down order:
+
+ * RJ11
+ * RJ11
+ * RJ45
+ * USB
+ * Cable Coax
+ * Power
+
+== Leds ==
+
+In front panel. Green, unless otherwise stated. In top-down order:
+
+ * Power
+ * DS
+ * US
+ * Online
+ * Link
+ * Telephone 1
+ * Telephone 2
+ * Battery
+
+= Software =
+Unknown
+
+= Accessing =
+
+== Opening the Case ==
+
+Four philips' screws, one under a Warranty Label (under a foot).
+
+== Ethernet Access ==
+
+Unknown
+
+== Serial Header ==
+
+There is a 4-pin TTL-level serial header inside. The default baud rate is 9600.
+
+
+= Luke's =
+
+http://dashjr.org/gallery/v/tech/tm602g/
+
+== Serial Output ==
+
+{{{
+UART Initialized
+BOOTCR:     0x01b80911
+Reset Type: 0x00000000 (Hardware) ***OR*** Reset Type: 0x00000002 (Watchdog)
+Chip CVR:   0x00100304 (Puma4 1.0)
+SDRAM Size: 0x02000000
+TESTING SDRAM
+.+.+.+
+SDRAM IS GOOD
+
+
+ARRIS Image Starter v06.03
+ARRIS, Inc. (C) 2001 - 2006
+
+
+Trying Flash Table A...GOOD
+
+Unzipping DOCSIS
+Computing CRC on zip image...GOOD
+Decompressing Load (LZMA).........................................GOOD
+Computing CRC on SDRAM image...GOOD
+
+Unzipping Application
+Computing CRC on zip image...GOOD
+Decompressing Load (LZMA)......................................GOOD
+Computing CRC on SDRAM image...GOOD
+
+DOCSIS load...GOOD
+App load......GOOD
+
+Running DOCSIS...
+
+
+PSAVE_init: copied 36 instructions to internal sram
+PSAVE_init: PDCR = 0x1b000110
+PSAVE_init: PRCR = 0x0000004e
+Installed MIPS exception handler
+PSAVE_init: copied 36 instructions to internal sram
+
+PSAVE_init: PDCR = 0x1b000110
+
+PSAVE_init:
+CPU is Puma-4: MIPS core speed is 212500000 Hz (200 Ticks Per Second)
+
+
+
+
+                           `!MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM::~
+                               ``!MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM!:~` ~
+                                    !MMMMMMMMMMMMMMMMMMMMMMM!:`     :~~
+                                     :MMMMMMMMMMMMMMMM!~        :~~~~
+                                   .:MMMMMMMMMM!:~           ~~~~~~
+                              ..:MMMMMMM!:~`             :~~~~~~~
+                         .:MMMMMM:~`                ::~~~~~~~~~
+                    .:MMMMM:~                    .!!!!!!: ~~~~
+              ..:MMM:~`                         .!!!!`      ~
+        ..:MM:~`                                !!`
+   .:M:~`
+
+
+        AA              RRRRRRR          RRRRRRR          III         SSSSS
+       AAAA             RRRRRRRRR        RRRRRRRRR        III       SSSSSSSSS
+      AAAAAA            RRR    RRR       RRR    RRR       III      SSS    SS
+     AAA  AAA           RRR   RRRR       RRR   RRRR       III       SSSS
+    AAA    AAA          RRRRRRRRR        RRRRRRRRR        III         SSSSSS
+   AAAAAAAAAAAA         RRR  RRR         RRR  RRR         III            SSSS
+  AAA        AAA        RRR   RRR        RRR   RRR        III       SS    SSS
+ AA            AA       RRR    RRR       RRR    RRR       III      SSSSSSSSS
+A                A      RRR       R      RRR       R      III        SSSSS
+
+
+
+
+
+======================= Load Info =======================
+Built On:       Thu Nov 29 17:03:00 EST 2007
+Built By:       ccbuild
+Build View:     TS050237C_112907A
+Build System:   SunOS hackett sun4u
+Build Name:     TS050
+}}}
+
+== Chips ==
+{{{
+	TM602G
+	V5.2.31
+NAM???
+NT5DS16M16OS | nt5ds16m16cgs
+
+Legerity
+Le88246DLC
+J E G
+0802HBJ
+(C) 2006
+
+(image of Texas with an 'i')
+TNETC4710ZDW
+B1AH19W
+EI (underlined)
+
+	TM602
+	V 5.2.31  A3
+	MX2421 (X in pen over this)
+MX 108012N
+29LV320C910-922 |         BTC-9097
+Z 129100A1
+TAIWAN
+}}}
+
+----
+
+CategoryModel CategoryCableModem

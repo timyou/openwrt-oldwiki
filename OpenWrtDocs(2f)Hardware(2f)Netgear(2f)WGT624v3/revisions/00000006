@@ -1,0 +1,40 @@
+[[TableOfContents]]
+
+= Netgear WGT624 =
+the WGT624 v3 is based on an Atheros System on a Chip (Soc). It has an AR2316A MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+
+== Specs for WGT624 Rev3 ==
+
+ * CPU: AR2316A? NOT VERIFIED
+ * Flash: 2MB Macronix 25L1605AMC
+ * RAM: 8MB  Samsung K4S281632F-UC75
+ * Switch: Marvell 88E6060
+ * Wireless: AR5315
+ * One External Antenna (2db)
+ * One Internal Antenna, etched onto PCB.
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 12VDC @1A positive tip
+
+== Photos ==
+Some photos are here: http://linuxpmi.org/trac/wiki/WGT624v3Pics
+
+== Serial or JTAG ==
+Its got an unpopulated header of some sort labeled JP1. not yet verified whether its serial or JTAG.
+
+== Telnet ==
+This unit can be telneted into via the telnetenable hack documented on [:OpenWrtDocs/Hardware/Netgear/TelnetConsole].
+
+some useful commands are:
+
+{{{
+U12H05500> wla get hardware
+wlan0 revisions: mac 11.0 phy 4.8 analog 7.0
+  PCI Vendor ID: 0x168c, Device ID: 0x13
+  Sub Vendor ID: 0x168c, Sub Device ID: 0x13
+chip is ar5315
+}}}
+
+----
+ . CategoryModel

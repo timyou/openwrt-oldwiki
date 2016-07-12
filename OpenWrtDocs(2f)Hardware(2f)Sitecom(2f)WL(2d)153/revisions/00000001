@@ -1,0 +1,3 @@
+= serial =
+labeled T1, near the leds.
+vcc, rx, gnd, tx

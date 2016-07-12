@@ -1,0 +1,114 @@
+Describe OpenWrtDocs/Hardware/Netgear/SC101 here.
+
+texas instrument mips cpu based san system with two ide drives and one ethernet port
+
+some infos can be found here http://www.smallnetbuilder.com/content/view/24757/75/1/1/
+
+there is a serial 3.3v with 9600 8N1! [cybermaus: Where please, I cannot locate it..]
+
+{{{
+Minimal POST completed...     Success.
+PSPBoot1.0 rev: 0.10.4
+(Current mac address = 00-14-6c-59-24-19s, Inc. All Rights Reserved.
+Already exist available mac address...
+Press ESC for monitor... 2
+(psbl) help
+ls                boot              df                cp
+tftp              printenv          setenv            unsetenv
+help              fmt               reboot            dm
+cat               rm                oclk              defragenv
+fa                info              version
+(psbl) ls
+FlashDiskDump for /
+     drwxrwxrwx 0:0 a:  0 i:0 Jul 27, 1999  2:17:40am       2 etc
+     drwxrwxrwx 0:0 a:  0 i:0 Jul 27, 1999  2:17:40am       2 bin
+     drwxrwxrwx 0:0 a:  0 i:0 Jul 27, 1999  2:17:40am       2 ttyS
+      rwxrwxrwx 0:0 a: -1 i:2 Jan  1, 1970 12:00:00am 1394978 vxWorks
+(psbl) fa
+Current Flash Allocation:
+section :   PSBL, base : 0xb0000000, size :     103008 bytes
+section :    ENV, base : 0xb0020000, size :      65536 bytes
+section :    FFS, base : 0xb0030000, size :    1900544 bytes
+no unallocated space left on flash
+(psbl) printenv
+MEMSZ           0x00800000
+FLASHSZ         0x00200000
+MODETTY0        9600,n,8,1,hw
+MODETTY1        9600,n,8,1,hw
+PATH            /bin:/ttyS
+CPUFREQ         125000000
+SYSFREQ         125000000
+PROMPT          psbl
+IPA             192.168.1.1
+IPA_SVR         192.168.1.100
+SUBNET_MASK     255.255.255.0
+BOOTCFG         m:f:"vxWorks"
+HWA_0           00-14-6c-59-24-19
+(psbl) info
+CHIP ID: AVALANCHE-D (0x2), REV: 0x1
+EMIF runnimg at Full rate of the processor.
+Processor running in Big Endian mode.
+Processor clock is Synchronous to internal bus (VBUS) clock.
+(psbl) df
+Mounted File Systems: 1
+Slot: 0, Total: 1900544, Used: 1395069, Available: 505475 (in bytes)
+(psbl) version
+PSPBoot1.0 rev: 0.10-4
+Build: using [gcc-2.96 19990621 VxWorks 5.4] at [10:29:56 May  5 2005]
+Compiled for RDK006 board in Big Endian mode.
+Optional modules included ('+') or not ('-'):
+ +tibinary +elf +gzip +ffs +tftp -ftp +dhcp -pcapp
+(psbl)}}}
+
+Addition by cybermaus:
+
+== Device ==
+
+The netgear SC101 is a two drive IDE/PATA SAN system. It is not usable as network share through FTP, SMB/CIFS or NFS, but needs a Windows installed driver to make it appear as local drive. It uses a proprietary SAN over IP technology from Zetera called ZSAN. No drivers for Linux or any other than Windows exists. The Windows drivers are quite nice and run on Vista. It can reach about 6.5MB/s.
+
+The device supports RAID-0 and RAID-1, but even though 2 drives are in the same box, the mirroring is done over the network, so drains the performance further. Another slightly disappointing feature is it uses its own file system. You cannot take out the drive, and use it in another housing and read the data. 
+
+Off topic, I like the comparable Ximeta NDAS technology better: Linux support, choice of file system and better performance, but I would probably like OpenWRT even more, if it can fit in the meager 2MB/8MB. 
+
+I found the following hardware on the board:
+
+ *CPU    : TNETV2005ZGW (Texas Instruments)
+ *Flash  : 29LV160CBTC-90G (MX) 2Mbyte 
+ *RAM    : EM63825TS-6G (EtronTech) probably 8Mbyte 
+ *Power  : AIC 1084PM linear regulator, MP1583DM switched regulator 
+ *?????  : ICS 6800010 0615 (ICS) (probably ETH line buffer) 
+ *Various logic 2x VCH245A 1x LVC244A 1x LVC32A (Philips)
+
+== Power ==
+Because the 12V input of the SC101 is directly fed to the IDE/ATA drives, this device is pretty strict in the quality of power (unlike many other OpenWRT devices that have a nominal input, but in fact because of switched regulator usually run on whatever you give them) The MP1583 I suspect is a switched regulator that creates the 5V from the 12V line. Used Cap is 16V, but as stated, because of the drives I would not experiment with the input voltage. The AIC 1084 is a linear regulator that would then create the 3.3V from the 5V Actual drawn power, with no drives attached is xx mA
+
+== CPU ==
+As stated a Texas Instruments TI TNETV2005ZGW processor, which is said to run on 125Mhz, but I could not locate a spec sheet. I suspect it must have an onboard IDE bus, as I cannot find any other chip. A TQ25.000 crystal is located near the CPU
+
+== IDE bus ==
+
+There is in fact a single IDE port, with both its channels used for the two drives. The cable is the old 40 ribbon type with cable select punch-out holes. Note that the central header is used for the print, and either end for the drives, so the cable select holes may not be as usual. Because a 40 pin cable is used, the drives cannot operator above UDMA 33MB. But as the LAN only has 100Mb/s, I guess a 33MB/s drive throughput is more than enough to flood the LAN
+
+Still, I wonder if replacing the cable would be beneficial. Maybe the higher UDMA's cause less CPU overhead, creating more efficient use of processor. Maybe the opposite. Maybe TI's onboard IDE has no UDMA at all, only DMA, so it is completely not relevant (still no spec sheet of the CPU). In any case, replacing the able would allow folding it so that both drives can have their metal top site against the metal hull of the SC101, providing better cooling, so I will probably replace the cable anyway.
+
+== Headers ==
+
+ *SW1 reset switch 
+ *J1  To power for drives and status leds (probably also 4 GPIO for LEDs) 
+ *J2  IDE header (1 port, 2 channels) 
+ *J3  Cannot find any J3, but existance of J4 and J% infers it must exist on the design
+ *J4  Possibly 20 pin JTAG, though I cannot map even the ground connections to any known JTAG. Or 14 pin JTAG *and* Serial in a custom format ? 
+ *J5: Non-driven 3 pin header, silk screen shape hints at 3-pin fan header, but supporting components are missing anyway.
+
+== GPIO ==
+
+One to the SW1 obviously. Further, there are 4 data lines lines going to the power/led subprint. 2 of them seem to come directly from the IDE bus, I suspect drive activity is one of them, so two would be general IO. And there are only 3 LEDs on the sub print, and one unused solder pad. There may be a free I/O
+
+== Sub-board ==
+
+Connector J1 leads to a sub-print that powers the drives. It is a very simply 20 pin header, with 6 pins 12V, 6 pins GND, 4 pins 5V and 4 I/O pins, driving the 3 LEDs. The sub-print seems to have 2 unused pad-pairs, one connected to the 12V line, one to the unused I/O.
+
+== Images ==
+attachment:sc101%20print%20top.jpg
+
+attachment:sc101%20print%20bottom.jpg

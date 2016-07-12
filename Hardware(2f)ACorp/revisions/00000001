@@ -1,0 +1,6 @@
+== ACorp ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''boot_wait''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Status''' ||
+||LAN122 || ||[http://focus.ti.com/general/docs/bcg/bcggencontent.tsp?templateId=6116&navigationId=11917&path=templatedata/cm/general/data/bcgmiddl/ar7_cpe Texas Instruments AR7] TNETD7200 @212MHz ||4Mb ||16Mb ||None ||None || ||Yes ||Yes ||Yes ||Untested? ||
+||LAN422 || ||[http://focus.ti.com/general/docs/bcg/bcggencontent.tsp?templateId=6116&navigationId=11917&path=templatedata/cm/general/data/bcgmiddl/ar7_cpe Texas Instruments AR7] TNETD7200 @212MHz ||4Mb ||16Mb ||None ||Marvell 88E6060 || ||Yes ||Yes ||No ||Untested? ||
+||W422G || ||[http://focus.ti.com/general/docs/bcg/bcggencontent.tsp?templateId=6116&navigationId=11917&path=templatedata/cm/general/data/bcgmiddl/ar7_cpe Texas Instruments AR7] TNETD7200 @212MHz ||4Mb ||16Mb ||TNETW1150 ||Marvell 88E6060 ||PSPBoot ||Yes ||Yes ||No ||Untested? ||
+||W400G || ||[http://focus.ti.com/general/docs/bcg/bcggencontent.tsp?templateId=6116&navigationId=11917&path=templatedata/cm/general/data/bcgmiddl/ar7_cpe Texas Instruments AR7] TNETD7300A @150MHz ||4Mb ||16Mb ||TNETW1130 ||Realtek RTL8305SC ||PSPBoot ||No ||No ||No ||Untested? ||

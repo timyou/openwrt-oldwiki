@@ -1,0 +1,36 @@
+= Netgear DG834N =
+As of today there are two versions of this router known as DG834N and DG834Nv2. The information below is about DG834N model.
+Apparently it has much in common with [:OpenWrtDocs/Hardware/Netgear/DG834GT:DG834GT].
+
+''' Cpu Info '''
+
+{{{
+# cat /proc/cpuinfo
+system type             : 96358GW-16
+processor               : 0
+cpu model               : BCM6358 V1.0
+BogoMIPS                : 299.00
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+unaligned access                : 259371093
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+''' Flash partitions '''
+
+{{{
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 002cb000 00010000 "fs"
+mtd1: 003e0000 00010000 "tag+fs+kernel"
+mtd2: 00010000 00002000 "bootloader"
+mtd3: 00010000 00010000 "nvram"
+mtd4: 00010000 00002000 "bootloader"
+}}}
+
+----
+CategoryModel ["CategoryBCM63xx"]

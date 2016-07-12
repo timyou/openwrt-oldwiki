@@ -1,0 +1,46 @@
+OpenWrtDocs/KamikazeConfiguration/PackagesOnExternalMediaHowTo under construction ...
+
+= TODO =
+
+ * Rewrite the init scripts to use UCI
+
+= /sbin/init for e.g. ASUS WL-500g Premium =
+
+{{{
+#!/bin/sh
+
+boot_dev="/dev/scsi/host0/bus0/target0/lun0/part1"
+
+for module in usbcore ehci-hcd scsi_mod sd_mod usb-storage jbd ext3; do {
+        insmod $module
+}; done
+
+sleep 2s
+mount -o rw "$boot_dev" /mnt
+
+[ -x /mnt/sbin/init ] && {
+        . /bin/firstboot
+        pivot /mnt /mnt
+}
+exec /bin/busybox init}}}
+
+= /sbin/init script for e.g. ASUS WL-700g Encore =
+
+{{{
+#!/bin/sh
+
+boot_dev="/dev/ide/host0/bus0/target0/lun0/part1"
+
+for module in ide-core aec62xx ide-detect ide-disk jbd ext3; do {
+	insmod $module
+}; done
+
+sleep 5s
+mount -o rw "$boot_dev" /opt
+
+[ -x /opt/sbin/init ] && {
+	. /bin/firstboot
+	pivot /opt /opt
+}
+
+exec /bin/busybox init}}}

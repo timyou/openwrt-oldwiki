@@ -1,0 +1,17 @@
+'''Airlink AR525W'''
+
+=== Serial Ports ===
+This model has an unpopulated 9-pin header that exposes a 3.3V serial port. Some pins are listed below:
+
+||Pin 1 ||Tx ||Pin 2 || ||
+||Pin 3 || ||Pin 4 ||Rx ||
+||Pin 5 || ||Pin 6 ||3.3v ||
+||Pin 7 || ||Pin 8 || ||
+||Pin 9 ||GND || || ||
+
+Board view, component side:
+
+{{{
+  [   ] [RX] [  ] [  ] [TX] <
+        [G ] [  ] [  ] [3v]
+}}}

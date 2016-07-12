@@ -1,0 +1,17 @@
+'''CPU:''' Intel IXP420 @ 266 MHz
+'''Flash:''' Intel 8MB
+'''RAM:''' 16MB
+there are two ADM6996L chips inside, one for the lan ports, one for the wan ports
+
+COM1 is serial. pinout as follows:
+
+{{{
+      1
+      o o
+      o o
+GND - o o
+      o o - RX
+      o o - TX
+}}}
+
+JP2 seems to be standard 20-pin ARM JTAG. CN1 seems to be header for a miniPCI slot.

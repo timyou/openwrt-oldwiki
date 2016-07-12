@@ -1,0 +1,5 @@
+=Asus WL600g=;
+
+the device run linux, the firmware upgrade on [http://support.asus.com/download/download.aspx?SLanguage=en-us&model=WL-600g AsusSite]
+is a squashedfs and some other data appended to it (a kernel?)
+The squashfs is 2.0 but it uses an unknown compression method so only file listing is possible.

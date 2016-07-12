@@ -1,0 +1,131 @@
+[[TableOfContents]]
+
+= Linksys WAG354G =
+
+
+
+The Linksys WAG354G is an ADSL gateway with wireless  acccess point integrated.
+
+
+== Specifications ==
+
+
+ADSL2/2+ support up to 24Mbit/s+
+
+4 port switch
+
+Wireless 802.11b/g
+
+=== Hardware ===
+
+
+Platform: ''TI AR7WRD''
+
+SoC: ''TNETD7300AGDW''
+
+Processor: ''MIPS 4KEc V4.8'' @ 150 MHz
+
+4 port switch: ''Infineon ADM6996L''
+
+Wireless chipset: ''TI TNETW1130''
+
+Expansions: '''minipci slot''' for wireless card (maybe can be used for other cards?)
+
+Internal: 
+
+[http://www.hughe.co.uk/pub/pics/tech/openwrt/WAG354G_big.jpg Big size]
+
+attachment:WAG354G_small.jpg
+
+
+----
+
+'''Serial console'''
+
+Serial console can be plugged to JP5: connector lacks, it has to be soldered on the board.
+Pinout 
+
+{{{                   JP5_______
+  |                      gnd nc  rx  tx  vcc
+  |                       [ ]  [ ]  [ ]  [ ]  [ ]  
+  |                          
+  |
+  |___ _ ___|-|____|-|__leds___|-|_|-|_|-|_|-|___ _ _ _
+}}}
+
+[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Linksys/WAG354G?action=AttachFile&do=get&target=serial-wag354G.png Serial Console Schematic]
+
+Configure teminal with 38400 bauds, 8 bits, no parity, 1 stop bit (38400 8N1)
+
+----
+
+'''JTAG'''
+
+to be written (& tested)...
+
+----
+
+'''Gpio'''
+
+to be written (& tested)...
+
+----
+
+'''Mods'''
+
+to be written (& tested)...
+
+-----
+
+=== Software ===
+
+
+'''Bootloader''' 
+
+["PSPBoot"] 1.2 rev: 0.22.17
+
+
+'''Code Patterns'''
+
+''WA31'' for Annex A (ADSL over POTS) devices
+
+''WA32'' for Annex B devices
+
+----
+
+'''Flash layout'''
+
+{{{
+      
+0x2f0000   fs                           3008K       (mtd0)                   0x900e0000,0x903d0000
+0x0C0000  kernel             ---> 768K   +     "        = (mtd1)  0x90020000,0x903d0000
+0x020000  BL                    ---> 128K  (mtd2)                        0x90000000,0x90020000
+0x020000  lang partition ---> 128K  (mtd4)                        0x903d0000,0x903f0000
+0x010000  nvram               --->  64K  (mtd3)                        0x903f0000,0x90400000
+________________                     _______
+0x400000  TOT                       4096K
+
+}}}
+
+--------------------------------------------
+
+
+== Running OpenWRT ==
+
+'''WARNING''' This page is a work in progress.  So far I (IanJackson) am just collecting information found in various other places (eg, IRC logs) together.
+
+Known problems:
+
+* `Crashes occasionally' for some people or with some devices.  Currently not known whether this is a hardware problem.
+
+* Using the tftp procedure to upload an openwrt image seems for some people to disable the tftp facility in PSPBoot, so that future upgrades have to be done from within openwrt.  However this didn't happen to me -IanJackson.
+
+=== Enable ADSL ===
+
+If you flash openwrt to wag354g you may want to use adsl. All the info can be found on the [http://wiki.openwrt.org/OpenWrtDocs/Hardware/D-Link/DSL-502T D-Link 502T page], in the section 1.3 "Enabling ADSL".
+
+
+
+
+----
+ . ["CategoryAR7Device"]    

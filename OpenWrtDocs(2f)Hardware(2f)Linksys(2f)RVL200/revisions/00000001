@@ -1,0 +1,313 @@
+{{{
+00162002
+
+Copyright 2004 Cavium Networks, Inc.
+Detected SDRAM size: 0x04000000identify_features : family[2000]
+addPoloFeatures : subfamily[6] miiIndex[0]
+
+PMON version 6.10.6 [EB], Fri May 12 23:37:37 CST 2006
+
+Chip select 0, Flash chip CFI generic 0001, address 0xbf800000, size 0x800000
+Chip select 1, Flash chip CFI generic 0001, address 0xbf000000, size 0x800000
+Ethernet MAC address 00:02:d8:00:00:00, IP address 192.168.254.214
+CPU type BRECIS 2000. ErrorEPC (may be PC before reset): 8011f55c.
+CPU clock frequency 200 MHz Assumed. Avail RAM 65068 KBytes.
+Type 'h' for on-line help.
+
+
+
+file size[2883520] GetImageChecksum[25f070a1] data_buffer[bfc40040] strip_hdr[0]
+file size[8388608] GetImageChecksum[43aa1470] data_buffer[bf000000] strip_hdr[0]
+file size[3629056] GetImageChecksum[1d26dcad] data_buffer[bf800000] strip_hdr[0]
+copy to ram address[81500000] kernel size[c9cea]
+copy bfc40040 81500000 c9cea
+g 81500000
+
+Inflating image 81503b18 to 80100000
+block 45
+Total blocks 45
+original crc 0x5f74a587 and length 0x1dc048
+last memory location used = 80065a10, status = 0
+UART clock set to 1562500
+
+LINUX started...
+Clock rate set to 200000000
+CPU revision is: 0001830a
+Primary instruction cache 16kb, linesize 16 bytes (4 ways)
+Primary data cache 16kb, linesize 16 bytes (4 ways)
+
+
+
+Linux version 2.4.20-br264 (root@new-host-6) (gcc version 3.2 20030604 (BRECIS u
+Clinux)) #1 äºäº 7ææ 13 11:14:43 CST 2007
+Determined physical RAM map:
+ memory: 00001000 @ 00000000 (reserved)
+ memory: 000ff000 @ 00001000 (ROM data)
+ memory: 0020e000 @ 00100000 (reserved)
+ memory: 03cbd200 @ 0030e000 (usable)
+On node 0 totalpages: 16331
+zone(0): 16331 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line:  console=ttyS0,57600
+calculating r4koff... 000f4240(1000000)
+CPU frequency 200.00 MHz
+Calibrating delay loop... 199.88 BogoMIPS
+Memory: 61480k/62196k available (1587k kernel code, 716k reserved, 75k data, 228
+k init)
+Dentry cache hash table entries: 8192 (order: 4, 65536 bytes)
+Inode cache hash table entries: 4096 (order: 3, 32768 bytes)
+Mount-cache hash table entries: 1024 (order: 1, 8192 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 16384 (order: 4, 65536 bytes)
+POSIX conformance testing by UNIFIX
+pcibios_init: assign resources, scan the buses.
+Scanning bus 00
+Found 00:80 [177d/0003] 001000 00
+PCI: Enabling parity checking for device 00:10.0
+Fixups for bus 00
+Bus scan for 00 returning with max=00
+pci_fixup.c:pcibios_fixup_irqs:133 slot 16, func 0, pin 1, old irq 0
+pci_fixup.c:pcibios_fixup_irqs:196 slot 16, func 0, pin 1, new irq 0
+pcibios_fixup_ioresources: start=00000100, end=000001FF
+pcibios_fixup_ioresources: start=00000200, end=000002FF
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+JFFS2 version 2.1. (C) 2001, 2002 Red Hat, Inc., designed by Axis Communications
+ AB.
+pty: 256 Unix98 ptys configured
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI en
+abled
+ttyS00 at 0xbc000100 (irq = 19) is a 16550A
+HDLC line discipline: version $Revision: 1.1.1.1 $, maxframe=4096
+N_HDLC line discipline registered.
+Blkmem copyright 1998,1999 D. Jeff Dionne
+Blkmem copyright 1998 Kenneth Albanowski
+Blkmem 1 disk images:
+0: BF000000-BF7D8FFF [VIRTUAL BF000000-BF7D8FFF] (RO)
+RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
+*******Init PHY_NETLINK********!
+*******Init PHY_NETLINK Status = [0]********!
+brecismspeth.c:mspeth_init:4726 constant timer 0, 14, 25000, 220, bc000058
+PPP generic driver version 2.4.2
+Copy engine driver installed
+b_flash flash device: bf800000 at 800000
+b_flash flash device: bf000000 at 800000
+0: offset=0x0,size=0x20000,blocks=64
+Using buffer write method
+Creating 4 MTD partitions on "flash0":
+0x00700000-0x00800000 : " general partition"
+0x00400000-0x00440000 : " pmon"
+0x00440000-0x00700000 : " image1"
+0x00000000-0x00400000 : " image3"
+0: offset=0x0,size=0x20000,blocks=64
+Using buffer write method
+Creating 1 MTD partitions on "flash1":
+0x00000000-0x00800000 : " image2"
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 4096 bind 4096)
+Linux IP multicast router 0.06 plus PIM-SM
+ip_conntrack version 2.1 (510 buckets, 4080 max) - 360 bytes per conntrack
+ip_conntrack_pptp version 1.9 loaded
+ip_nat_pptp version 1.5 loaded
+ip_tables: (C) 2000-2002 Netfilter core team
+ipt_time loading
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+VFS: Mounted root (cramfs filesystem) readonly.
+Freeing prom memory: 1020kb freed
+Freeing unused kernel memory: 228k freed [80290000-802c9000]
+Algorithmics/MIPS FPU Emulator v1.5
+
+Starting /etc/rc
+Mount the second cramfs partition
+This assumes that flash0_1 is set up to point to the fs2_romdisk.img
+Set up loopback interface
+Expand the ramdisk
+Mount ramdisk as /var
+Mount /proc
+/flash stuff
+tar: Removing leading '/' from member names
+Create /var/tmp/
+Create /var/run/utmp
+Enabling IP forwarding
+Starting inetd
+  No inetd to start
+Warning: loading /sbin/pkp_drv.o will taint the kernel: non-GPL license - CAVIUM
+File: /sbin/boot_mc2.out
+        Version = CN1000-MC-Boot-1.98
+        Code length = 20236     Data length = 152
+0: name=/sbin/boot_mc2.out, index=0, core=0
+File: /sbin/plus_ssl2.out
+        Version = CNLite-MC-SSLa-PLUS-2.01
+        Code length = 28944     Data length = 1304
+1: name=/sbin/plus_ssl2.out, index=3, core=1
+File: /sbin/main_ipsec2.out
+        Version = CNLite-MC-IPSECc-MAIN-2.00
+        Code length = 28332     Data length = 144
+2: name=/sbin/main_ipsec2.out, index=4, core=1
+CSP1 core assignments
+      BOOT : 0x000000
+   SSL_SPM : 0x000001
+ IPSEC_MLM : 0x000002
+Mounting Unix 98 PTY
+Optimizing linux kernel
+Enabling tftpd
+fd=3
+=== insert switch module ===
+    ADM6996I init_module
+    init_ioctl success 0
+    init_adm69xx set qos queue_1 weight [0025/2000]
+    init_adm69xx set qos queue_2 weight [0026/4000]
+    init_adm69xx set qos queue_3 weight [0027/8000]
+    set_default_system_conteol_reg reg[11] val[a020]
+    set_default_cpu_port_config reg[09] val[041f]
+    set_default_forwarding_group reg[20] val[81d5]
+    set_default_output_tag_bypass reg[2a] val[0000]
+    set_default_new_transmit_tag [0a/5504]
+    set_default_vlan_priority_forward [1e/ffd5]
+    Memory test init
+    init_ioctl success 0
+=== insert lldp module ===
+insmod: nk_lldp: no module by that name found
+Starting SSL VPN
+Warning: loading /lib/modules/2.4.20-br264/kernenkrtc register
+l/drivers/char/NKRTC/nkrtcm.o will taint the kernel: no license
+Starting webBoot task
+sizeof(buf)=32
+mac[ 0:16:b6:82:c9:5e
+serial no[DN0006800808]
+WAN1 MAC (default) WAN1 MACCLONE=0016B682C95F
+    Set port 01 Status pvid[1]
+        port 01 config PxVID Reg[0x29] val[0x0000]
+        port 01 auto [0x03 / 0x048f]
+    Set port 02 Status pvid[1]
+        port 02 config PxVID Reg[0x2a] val[0x0000]
+        port 02 auto [0x05 / 0x048f]
+    Set port 03 Status pvid[1]
+        port 03 config PxVID Reg[0x2b] val[0x0000]
+        port 03 auto [0x07 / 0x048f]
+    Set port 04 Status pvid[1]
+        port 04 config PxVID Reg[0x2b] val[0x0000]
+        port 04 auto [0x08 / 0x048f]
+    auto
+    Write PHY CONTROL Reg value[00003100]
+    Write PHY Auto-Negotiation Reg value[000005e1]
+
+    SET_VLAN_PRIORITY reg[0e] val[fa41]
+    SET_DSCP_PRIORITY reg[6c] val[0000]
+    SET_DSCP_PRIORITY reg[6d] val[0000]
+    SET_DSCP_PRIORITY reg[6e] val[5555]
+    SET_DSCP_PRIORITY reg[6f] val[aaaa]
+    SET_DSCP_PRIORITY reg[70] val[aaaa]
+    SET_DSCP_PRIORITY reg[71] val[ffff]
+    SET_DSCP_PRIORITY reg[72] val[aaaa]
+    SET_DSCP_PRIORITY reg[73] val[aaaa]
+    SET PRIORITY Queue WEIGHT reg[25] val[2000]
+    SET PRIORITY Queue WEIGHT reg[26] val[4000]
+    SET PRIORITY Queue WEIGHT reg[27] val[8000]
+(QVM) update setting config******************
+nkrtc run
+ASH_DO_INIT: 1
+eth0: AUTO NEGOTIATION COMPLETE
+eth0: PHY is in AUTO NEGOTIATION MODE
+eth0: PHY is set for 100Mbps Full Duplex
+802.1Q Disable: system init
+eth0: port 1(eth2) entering learning state
+eth0: port 1(eth2) entering forwarding state
+eth0: topology change detected, propagating
+start
+godhcps write lease
+killall: udhcpd: no process killed
+godhcps stop
+ dhcps_ip_mac_bining_read_lease could not open input file /etc/udhcpd.leases
+godhcps start
+, udhcp server (v0.9.6) started
+gontp stop
+gontp start
+init iptables
+snmp disabled
+kill rip
+iptables: Bad rule (does a matching rule exist in that chain?)
+start rip
+netlink4ms param= 0ffff
+    netlink4ms
+static route add inf[LAN]
+    netlinkctl
+godhcpc start WAN1
+Stopping upnpdkillall: upnpd: no process killed
+SIOCDELRT: No such process
+Starting Pluto (FreeS/WAN Version 1.97)
+  including X.509 patch with traffic selectors (Version 0.9.32)
+  including NAT-Traversal patch (Version 0.6)
+ike_alg_register_enc(): Activating OAKLEY_DES_CBC: Ok (ret=0)
+ike_alg_register_enc(): Activating OAKLEY_AES_CBC: Ok (ret=0)
+Changing to directory '/etc/ipsec.d/cacerts'
+  Warning: empty directory
+Changing to directory '/etc/ipsec.d/crls'
+  Warning: empty directory
+OpenPGP certificate file '/etc/pgpcert.pgp' not found
+keylen = 24
+encrypt/decrypt running ..
+
+Fri Apr  4 06:20:52 UTC 2008
+
+# 3des test PASSED
+random number generation PASSED
+
+# uname -a
+Linux router 2.4.20-br264 #1 äºäº 7ææ 13 11:14:43 CST 2007 POLO unknown
+# free
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  63188992 52523008 10665984        0  3674112  6336512
+Swap:        0        0        0
+# cat /proc/cpuinfo
+BRECIS MIPS 4km
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00100000 00020000  general partition
+mtd1: 00040000 00020000  pmon
+mtd2: 002c0000 00020000  image1
+mtd3: 00400000 00020000  image3
+mtd4: 00800000 00020000  image2
+# ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:16:B6:82:C9:5E
+          inet addr:192.168.1.1  Bcast:192.168.1.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+
+eth2      Link encap:Ethernet  HWaddr 00:16:B6:82:C9:5E
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          Interrupt:10
+
+eth18     Link encap:Ethernet  HWaddr 00:16:B6:82:C9:5E
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          Interrupt:10
+
+eth1      Link encap:Ethernet  HWaddr 00:16:B6:82:C9:5F
+          UP BROADCAST NOTRAILERS  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          Interrupt:26
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:1 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+
+#
+}}}

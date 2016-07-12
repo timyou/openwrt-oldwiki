@@ -1,0 +1,20 @@
+1221534191000000	00000001	SAVENEW	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	64.9.237.184	user-64-9-237-184.googlewifi.com	1221530246.41.36977		
+1221539987000000	00000002	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	64.9.237.184	user-64-9-237-184.googlewifi.com	1221530246.41.36977		
+1221540049000000	00000003	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	64.9.237.184	user-64-9-237-184.googlewifi.com	1221530246.41.36977		
+1221826021000000	00000004	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	84.9.60.50	host-84-9-60-50.dslgb.com	1135297889.5.50658		port range notation
+1226310890000000	00000005	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	71.202.177.104	c-71-202-177-104.hsd1.ca.comcast.net	1150779081.4.62318		Fix typo in dest option of example rule
+1226363854000000	00000006	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	71.202.177.104	c-71-202-177-104.hsd1.ca.comcast.net	1150779081.4.62318		Fix port 22 example
+1227744510000000	00000007	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	78.142.134.186	vie-078-142-134-186.dsl.sil.at	1227743932.37.48951		In 8.09_RC1 (r13118), "proto" is used; else you get both a tcp and udp rule.
+1229734804000000	00000008	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	69.17.73.250	meme-net.meme.com	1229559609.04.10861		Where zone names come from (I guess)
+1229747305000000	00000009	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	69.17.73.250	meme-net.meme.com	1229559609.04.10861		"masq" does not "enable IP" on the zone.
+1233595044000000	00000010	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233595136000000	00000011	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233595230000000	00000012	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233595491000000	00000013	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233595560000000	00000014	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233595631000000	00000015	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233596661000000	00000016	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233596774000000	00000017	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233596834000000	00000018	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233597040000000	00000019	SAVE	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091		
+1233597174000000	00000020	SAVE/REVERT	OpenWrtDocs(2f)Kamikaze(2f)FirewallConfiguration	91.65.128.129	91-65-128-129-dynip.superkabel.de	1219318099.12.35091	00000009	

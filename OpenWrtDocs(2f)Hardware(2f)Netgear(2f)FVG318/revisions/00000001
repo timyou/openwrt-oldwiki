@@ -1,0 +1,160 @@
+[[TableOfContents]]
+
+= Netgear FVG318 v1 =
+
+The FVG318 is based on an Atheros [http://www.atheros.com/pt/AR5006AP-GS.htm AR5006AP (aka AR2316) SoC].
+No idea if AtherosPort of OpenWRT supports it.
+
+== Specs of FVG318 v1 ==
+ * CPU: AR2316
+ * Flash: ST 25P32V6P (SPI, 4 MByte)
+ * RAM: Mosel-Vitelic V54C3128164VBI7 (8Mbit x 16)
+ * Switch: 2x Marvell 88E6060
+ * Ports: 8x LAN, 1x WAN
+ * Antenna: 1, detachable, RP-SMA
+ * FCC ID: PY305200007
+
+You find [https://fjallfoss.fcc.gov/prod/oet/forms/blobs/retrieve.cgi?attachment_id=592352&native_or_pdf=pdf internal pictures] in the FCC database.
+
+== Serial Port ==
+
+The serial port is located on JP1:
+ * Pin 1: Vcc (3.3V)
+ * Pin 2: Rx
+ * Pin 3: Tx
+ * Pin 4: Ground
+
+Speed is 9600.
+
+== JTAG ==
+
+J500 close to JP1 might be a [http://www.linux-mips.org/wiki/JTAG#JTAG_headers 14 pin standard EJTAG header] (not verified yet).
+
+== Bootloader / OS ==
+
+This unit runs VxWorks:
+{{{
+ar531xPlus rev 0x00000087 firmware startup...
+WARNING: bootrom did not start the watchdog.
+disable vlan -
+tas
+
+Atheros AR5315 default version 4.0.0.167
+
+@$"
+ 1 
+auto-booting...
+
+Attaching to TFFS... done.
+Loading /fl/apimg1...
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+yyyyyyyyyyyyyyyyyyyyyyyyyyy
+after fd= 4 file open
+2693568
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+Starting at 0x806846e0...
+
+WARNING: bootrom did not start the watchdog.
+0x000000                                                    /fl/  - Volume is OK 
+Reading Configuration File "/fl/apcfg".
+Configuration file checksum: 4ca11 is good
+in ae531xMacAddressGet, MACInfo->unit is 0
+disable vlan 
+muxDevLoad failed for index 2
+muxDevLoad failed for index 3
+apInit: no wlan device
+AP initilization failed!
+Attached TCP/IP interface to ae unit 0
+Attaching interface lo0...done
+Error setting inet address of ae0 to 192.168.0.1, errno = 0x11
+ERROR: AP start-up failed!  Wireless network services disabled.
+
+iGateway Initialization Started
+ setbootline 
+Error in IAPLstFtpLoad
+Error in extnat add record 30467
+WanMakeConnectionEx :: Wan Connection Type is: 2
+WanMakeConnectionEx :: Wan Connection Type is: 2
+WanMakeConnectionEx :: Wan Connection Type is: 2
+WanMakeConnectionEx :: Wan Connection Type is: 2
+Netgear modules configuration loaded 
+
+
+*******************************************
+
+       FVG318 Image version 1.0.48
+BSP version: NEW 2.4
+create time: 09:26:00, Jul. 13th, 2007
+
+
+*******************************************
+}}}
+
+You may enter a '''Boot Menu''' by pressing ESC shortly after {{{Atheros AR5315 default version 4.0.0.167}}} is displayed. Press '''?''' for a summary of commands there:
+
+{{{
+ar531xPlus rev 0x00000087 firmware startup...
+WARNING: bootrom did not start the watchdog.
+disable vlan -
+tas
+
+Atheros AR5315 default version 4.0.0.167
+
+
+ 1
+oot]: ^?
+
+ ?                     - print this list
+ @                     - boot (load and go)
+ p                     - print boot params
+ c                     - change boot params
+ e                     - print fatal exception
+ v                     - print version
+ B                     - change board data
+ S                     - show board data
+ n netif               - print network interface device address
+ $dev(0,procnum)host:/file h=# e=# b=# g=# u=usr [pw=passwd] f=# 
+                           tn=targetname s=script o=other 
+ boot device: tffs=drive,removable     file name: /tffs0/vxWorks 
+ Boot flags:           
+   0x02  - load local system symbols 
+   0x04  - don't autoboot 
+   0x08  - quick autoboot (no countdown) 
+   0x20  - disable login security 
+   0x40  - use bootp to get boot parameters
+   0x80  - use tftp to get boot image 
+   0x100 - use proxy arp 
+
+available boot devices:Enhanced Network Devices
+ ae0 tffs
+}}}
+
+Setting '''boot flag''' to 0x20 helped me to recover a device where the firmware 2.1.12.40 (Europe version)
+crashed with
+{{{
+WARNING: bootrom did not start the watchdog.
+
+boardData checksum failed!
+/fl/  - Volume is OK 
+disable vlan 
+ae0 loaded
+ae1 loaded
+Attached TCP/IP interface to ae unit 0
+Attaching interface lo0...done
+Error setting inet address of ae0 to 192.168.1.20, errno = 0x11
+
+Adding 13187 symbols for standalone.
+Initializing platform components...
+
+Breakpoint Exception
+Caused by an Integer Divide by Zero
+Exception Program Counter: 0x800197ec
+Status Register: 0x10009401
+Cause Register: 0x10800024
+Task: 0x80fffdf0 "tRootTask"^G
+-> help
+}}}
+
+== OpenWRT on the Device ==
+
+I don't know if we can boot OpenWRT via tftp as described for the [:OpenWrtDocs/Hardware/Netgear/WGT624:Netgear WGT624].

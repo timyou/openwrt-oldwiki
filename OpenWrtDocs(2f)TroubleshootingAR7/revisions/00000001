@@ -1,0 +1,95 @@
+/!\ ~+'''WARNING'''+~ '''THIS GUIDE IS CURRENTLY WORK IN PROGRESS!'''
+
+[:OpenWrtDocs]
+[[TableOfContents]]
+
+= Troubleshooting AR7 device with ADAM2 bootloader =
+
+== Obtaining ADAM2 IP ==
+
+=== by device model name ===
+
+See here [:OpenWrtDocs/InstallingAR7#head-c4b218f29067ebd2e50fb42617c6a9f4228834d4] (NOTE: default ADAM2 IP shown, it can be changed)
+
+=== by telnet with original firmware ===
+
+You can sniff ADAM2 IP in advance (before you try to re-flash device) and write it down. Telnet to your device with original firmware, use "root" as login, and your device's admin password ("admin" by default), than
+{{{
+# cat /proc/ticfg/env | grep my_ipaddress
+}}}
+
+You should see something like this:
+{{{
+my_ipaddress    10.8.8.8
+}}}
+
+NOTE: some devices comes with disabled telnet, you can't use this method with them
+NOTE: OpenWRT port's kernel contains no /proc/ticfg/env handler, thus you can't look up ADAM2 IP with OpenWRT already flashed in
+
+== by serial console ==
+
+Another method is using serial console and ADAM2 itself to find out it's IP
+
+Attach serial console, power up device, console will show something like this:
+{{{
+ADAM2 Revision 0.22.02
+(C) Copyright 1996-2003 Texas Instruments Inc. All Rights Reserved.
+(C) Copyright 2003 Telogy Networks, Inc.
+Usage: setmfreq [-d] [-s sys_freq, in MHz] [cpu_freq, in MHz]
+Memory optimization Complete!
+
+Adam2_AR7RD >
+Press any key to abort OS load, or wait 3 seconds for OS to boot...
+}}}
+
+Press a key within specified period, and issue "printenv" command. You will see:
+{{{
+Adam2_AR7RD > printenv
+---skipped---
+my_ipaddress          10.8.8.8
+---skipped---
+Adam2_AR7RD >
+}}}
+
+see here for more details:
+http://www.seattlewireless.net/index.cgi/ADAM2
+
+== Restoring mtd3 partition ==
+
+Use telnet to port 21 to access ADAM2, than type in "USER adam2" and hit enter, next type "PASS adam2" and hit enter once more. Full transcript will be like this:
+{{{
+$ telnet 10.8.8.8 21
+Trying 10.8.8.8...
+Connected to 10.8.8.8 (10.8.8.8).
+Escape character is '^]'.
+220 ADAM2 FTP Server ready.
+USER adam2
+331 Password required for adam2.
+PASS adam2
+230 User adam2 successfully logged in.
+}}}
+NOTE: Use correct ADAM2 IP found in previous step instead of 10.8.8.8
+
+Once you logged in, you can issue "GETENV <varname>" to find out value of ADAM2 envirounment variable or "SETENV <varname>,value" to change it. Something like this:
+{{{
+GETENV mtd0
+mtd0                  0x900a0000,0x903e0000
+
+SETENV mtd0,0x900a0000,0x903e0000
+200 SETENV command successful
+}}}
+NOTE: GETENV displays varname and value separated whith spaces, while SETENV requires varname and value to be separated whith comma (","). Additional commas within value is okay.
+
+4 variables is essential for successful operation:
+||variable||default value||
+||mtd0||0x900a0000,0x903f0000||
+||mtd1||0x90010000,0x900a0000||
+||mtd2||0x90000000,0x90010000||
+||mtd3||0x903f0000,0x90400000||
+
+Alternatively, you can set only mtd3 variable, and then upload entire mtd block. It's a good idea to save all mtd's before you begin to reflash you device. Or mtd3 can be found here:
+http://mcmcc.bat.ru/dlinkt/restore_mtd3_50xT.rar
+
+= Troubleshooting AR7 device with PSPBoot bootloader =
+
+/!\ To be writen...

@@ -1,0 +1,5 @@
+== Samsung ==
+||'''Model''' ||'''Version''' ||'''Platform & Frequency''' ||'''Flash''' ||'''RAM''' ||'''Wireless NIC''' ||'''Switch''' ||'''Serial''' ||'''JTAG''' ||'''USB''' ||'''Status''' ||
+||[http://www.samsung.com/global/business/telecommunication/productInfo.do?ctgry_group=14&ctgry_type=32&b2b_prd_id=215 SMT-G3010] || ||Infineon AMAZON (MIPS 4KEc) @ 235 MHZ ||16 MB ||64 MB ||NA ||Infineon ADM6996I ||Yes ||Yes ||Yes ||1x 2.0 ||[:OpenWrtDocs/Hardware/Samsung/SMT-G3010:WIP] ||
+||[http://www.samsung.com/global/business/telecommunication/productInfo.do?ctgry_group=14&ctgry_type=32&b2b_prd_id=218 SMT-G3210] || ||Infineon AMAZON (MIPS 4KEc) @ 235 MHZ ||16 MB ||64 MB ||Atheros AR2414A-001 ||Infineon ADM6996I ||Yes ||Yes ||Yes ||1x 2.0 ||[:OpenWrtDocs/Hardware/Samsung/SMT-G3210:WIP] ||
+||[http://www.samsung.com/global/business/telecommunication/productInfo.do?ctgry_group=14&ctgry_type=32&b2b_prd_id=219 SMT-G3220] || ||Infineon AMAZON (MIPS 4KEc) @ 235 MHZ ||16 MB ||64 MB ||Atheros AR2414A-001 ||Infineon ADM6996I ||Yes ||Yes ||Yes ||1x 2.0 ||[:OpenWrtDocs/Hardware/Samsung/SMT-G3220:WIP] ||

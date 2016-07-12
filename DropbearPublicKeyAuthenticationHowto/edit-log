@@ -1,0 +1,36 @@
+1127831584000000	00000001	SAVENEW	DropbearPublicKeyAuthenticationHowto	84.145.13.162	p54910DA2.dip0.t-ipconnect.de	1117454370.53.3153		
+1127831625000000	00000002	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.13.162	p54910DA2.dip0.t-ipconnect.de	1117454370.53.3153		
+1127834430000000	00000003	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.13.162	p54910DA2.dip0.t-ipconnect.de	1117454370.53.3153		
+1127838296000000	00000004	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.13.162	p54910DA2.dip0.t-ipconnect.de	1117454370.53.3153		
+1127838327000000	00000005	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.13.162	p54910DA2.dip0.t-ipconnect.de	1117454370.53.3153		
+1129377534000000	00000006	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.23.156	p5491179C.dip0.t-ipconnect.de	1117454370.53.3153		
+1129377666000000	00000007	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.23.156	p5491179C.dip0.t-ipconnect.de	1117454370.53.3153		
+1129401560000000	00000008	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.23.156	p5491179C.dip0.t-ipconnect.de	1117454370.53.3153		
+1130231771000000	00000009	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.32.116	p54912074.dip0.t-ipconnect.de	1117454370.53.3153		
+1130960574000000	00000010	SAVE	DropbearPublicKeyAuthenticationHowto	66.133.216.136	user-118bm48.cable.mindspring.com	1130879525.7.35920		Switched the order of the last section's code
+1131193838000000	00000011	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.33.21	p54912115.dip0.t-ipconnect.de	1117454370.53.3153		Replaced the inline images (screenshots) with links.
+1131194918000000	00000012	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.33.21	p54912115.dip0.t-ipconnect.de	1117454370.53.3153		
+1132312390000000	00000013	SAVE	DropbearPublicKeyAuthenticationHowto	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		rewrite and simplify after testing WR RC3
+1132353051000000	00000014	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.51.35	p54913323.dip0.t-ipconnect.de	1117454370.53.3153		Updated: some cosmetic changes
+1132825643000000	00000015	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.46.253	p54912EFD.dip0.t-ipconnect.de	1117454370.53.3153		Updated for RC4
+1136426048000000	00000016	SAVE	DropbearPublicKeyAuthenticationHowto	65.110.244.151	gw-dsrw-iastate.student.iastate.edu	1136426020.82.12507		rc3 doesn't work.
+1141152099000000	00000017	SAVE	DropbearPublicKeyAuthenticationHowto	190.48.40.28	190-48-40-28.speedy.com.ar	1141069029.42.58467		Added troubleshooting section.
+1141902102000000	00000018	SAVE	DropbearPublicKeyAuthenticationHowto	84.145.76.163	p54914CA3.dip.t-dialin.net	1117454370.53.3153		remove obsolete screenshot URLs
+1143550865000000	00000019	SAVE	DropbearPublicKeyAuthenticationHowto	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		remove RC4 references
+1143551031000000	00000020	SAVE	DropbearPublicKeyAuthenticationHowto	144.135.190.104	c104.190.135.144.satellite.bigpond.com	1128046764.51.56629		
+1144618175000000	00000021	SAVE	DropbearPublicKeyAuthenticationHowto	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Small typo so far, I'll return for more later.
+1144692412000000	00000022	SAVE	DropbearPublicKeyAuthenticationHowto	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Readability improvement.
+1144942934000000	00000023	SAVE	DropbearPublicKeyAuthenticationHowto	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Adding the link to PuTTY with PKCS#11 functionality.
+1144943530000000	00000024	SAVE	DropbearPublicKeyAuthenticationHowto	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Disabling telnetd start after the successfull dropbear configuration.
+1144943828000000	00000025	SAVE	DropbearPublicKeyAuthenticationHowto	213.170.100.118	wst.quantum.ru	1137110467.94.32811		Final touch on stopping the telnet daemon.
+1144943943000000	00000026	SAVE	DropbearPublicKeyAuthenticationHowto	213.170.100.118	wst.quantum.ru	1137110467.94.32811		
+1157873645000000	00000027	SAVE	DropbearPublicKeyAuthenticationHowto	70.18.196.125	pool-70-18-196-125.ny325.east.verizon.net	1154031366.0.763		
+1159821163000000	00000028	SAVE	DropbearPublicKeyAuthenticationHowto	66.119.160.154	66.119.160.154	1116442853.89.19865		Added second instance strategy for allowing password logins for local connections and disallowing password logins for remote connections.
+1177352352000000	00000029	SAVE	DropbearPublicKeyAuthenticationHowto	84.61.207.213	dslb-084-061-207-213.pools.arcor-ip.net	1176763174.32.16289		
+1177354663000000	00000030	SAVE	DropbearPublicKeyAuthenticationHowto	84.61.207.213	dslb-084-061-207-213.pools.arcor-ip.net	1176763174.32.16289		Putty details and simple tunnel example, link to WinSCP info, firewall information
+1177354902000000	00000031	SAVE	DropbearPublicKeyAuthenticationHowto	84.61.207.213	dslb-084-061-207-213.pools.arcor-ip.net	1176763174.32.16289		
+1177624578000000	00000032	SAVE	DropbearPublicKeyAuthenticationHowto	206.172.35.227	206.172.35.227	1145645919.51.36090		
+1213636115000000	00000033	SAVE	DropbearPublicKeyAuthenticationHowto	88.112.5.135	a88-112-5-135.elisa-laajakaista.fi	1213382896.46.52943		changed "Disable password login (Kamikaze Method)" from file edit to uci method
+1213641190000000	00000034	SAVE	DropbearPublicKeyAuthenticationHowto	88.112.5.135	a88-112-5-135.elisa-laajakaista.fi	1213382896.46.52943		adjusted kamikaze example from 22 to 50022
+1224525465000000	00000035	SAVE	DropbearPublicKeyAuthenticationHowto	91.67.142.175	91-67-142-175-dynip.superkabel.de	1219318099.12.35091		
+1229088156000000	00000036	SAVE	DropbearPublicKeyAuthenticationHowto	82.182.15.54	1-1-2-7a.vta.sth.bostream.se	1229087405.93.36971		Fixed very important typo when manually converting SSH2 file

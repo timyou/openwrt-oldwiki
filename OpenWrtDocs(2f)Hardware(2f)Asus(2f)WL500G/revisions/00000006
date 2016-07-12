@@ -1,0 +1,9 @@
+'''Asus WL-500G'''
+
+The WL-500G is based on the Broadcom 4710 board. It has a 125MHz CPU, 4Mb flash and 16Mb RAM.
+It has an USB v1.1 Port and a parallel port. No serial port, but a JTAG interface.
+The wireless NIC is a mini-PCI card. boot_wait is on by default. 
+You can not configure the network switch to use different IP configurations for every LAN port.
+There are two network cards integrated, one for the 4 LAN ports and one for the WAN port. 
+
+Here is a nice photo of the internals: http://www.ixbt.com/comm/wireless/asus-wl-500g/minipci.jpg

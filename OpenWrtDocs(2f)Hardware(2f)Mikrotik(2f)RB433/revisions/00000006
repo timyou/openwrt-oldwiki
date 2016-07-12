@@ -1,0 +1,153 @@
+=== Hardware ===
+
+RB433 and RB433AH are rather similar boards, except for the microSD slot (RB433AH only), CPU frequency (300 vs. 680 MHz) and RAM size (64 vs. 128 MB).
+
+==== RB433 ====
+http://routerboard.com/img/rb433s.jpg
+[http://www.routerboard.com/pdf/rb433.pdf Datasheet]
+
+==== RB433AH ====
+http://routerboard.com/img/rb433AHm.jpg
+[http://routerboard.com/pdf/rb433ah.pdf Datasheet]
+
+=== Netboot ===
+
+The bootloader of RB433 is able to load an image in elf format via BOOTP into RAM and execute it.
+
+==== Build the Target ====
+You need to get svn trunk. Choose "Target System" == "Atheros AR71xx", "Target Images" == "ramdisk". Build it.
+Copy '''bin/openwrt-ar71xx-vmlinux-initramfs.elf''' into the tftpd directory, e.g. into '''/tftpboot/rb433.netboot'''.
+
+==== Setup the Host ====
+You need BOOTP and TFTP server on your host machine, e.g. '''dnsmasq''' and '''tftpd-hpa'''.
+
+===== dnsmasq Configuration =====
+
+Changes in /etc/dnsmasq.conf:
+
+ * allow a DHCP range, e.g. {{{ dhcp-range=192.168.6.100,192.168.6.119 }}}
+ * allocate an IP address to the board, e.g. {{{ dhcp-host=00:0c:42:XX:XX:XX,192.168.6.101 }}} (replace the XX with the MAC address of your board!)
+ * set filename (produced above) and tftpd server for BOOTP, e.g. {{{ dhcp-boot=/tftpboot/rb433.netboot,boothost,192.168.6.1 }}}
+
+===== Start tftpd server =====
+May be already done by (x)inetd, for '''tftpd-hpa''' I had to execute:
+{{{ in.tftpd -l }}}
+
+==== Setup the Target ====
+
+ * Connect to the serial port with a null modem cable (115200, 8N1).
+ * Press a key shortly after powering the board.
+ * Press '''o''' to change the boot device 
+ * Press '''e''' to boot from ethernet in the future.
+ * Press '''x''' to leave setup (<key>-o-e-x is needed only once, the boot method is saved in non-volatile memory)
+
+If everything is setup correctly it should look like:
+{{{
+RouterBOOT booter 2.16
+
+RouterBoard 433AH
+
+CPU frequency: 680 MHz
+  Memory size: 128 MB
+
+Press any key within 2 seconds to enter setup..
+trying bootp protocol.......... OK
+Got IP address: 192.168.6.101
+resolved mac address 4E:80:00:00:00:00
+Gateway: 192.168.6.1
+transfer started ................................... transfer ok, time=7.16s
+setting up elf image... OK
+jumping to kernel code
+Linux version 2.6.26.7 (joerga@thinkpad) (gcc version 4.1.2) #2 Mon Nov 10 11:23:37 CET 2008
+console [early0] enabled
+...
+}}}
+
+=== Permanent Installation ===
+You need a working '''netboot''' first, see above.
+
+==== Erase the NAND Flash ====
+If you want to install OpenWRT permanently into the NAND flash you once need to erase the NAND flash
+to get rid of the RouterOS stuff:
+
+ * connect via serial line
+ * press a key shortly after powering the RB433 up
+ * press '''e''' and type '''yes''' to format the flash from the bootloader
+
+==== Setup the Host ====
+An http server is required on the host, e.g. micro-httpd.
+To set it up I added the line
+{{{
+www	stream	tcp	nowait root	/usr/sbin/tcpd /usr/sbin/micro-httpd /tftpboot
+}}}
+into '''/etc/inetd.conf'''
+
+==== Build the Target ====
+You need to get svn trunk. Choose "Target System" == "Atheros AR71xx", "Target Images" == "tgz". Build it.
+Copy '''bin/openwrt-ar71xx-vmlinux.elf''' and '''openwrt-ar71xx-rootfs.tgz''' into the httpd root directory , 
+e.g. into '''/tftpboot/''' (see setup of ''micro-httpd'' above).
+
+==== Install OpenWRT into Flash ====
+ * Start '''netboot''' (see above).
+ * Press ENTER to get a shell prompt.
+ * Execute:
+{{{
+wget2nand http://<host ip address>
+}}}
+e.g.
+{{{
+wget2nand http://192.168.6.1
+}}}
+This script will set an IP address via dhcp on br-lan.
+The output should look like:
+{{{
+root@OpenWrt:/# wget2nand http://192.168.6.1                                    
+killall: udhcpc: no process killed                                              
+udhcpc (v1.11.3) started                                                        
+Sending discover...                                                             
+Sending select for 192.168.6.101...                                             
+Lease of 192.168.6.101 obtained, lease time 3600                                
+adding router 192.168.6.1                                                       
+deleting old routes                                                             
+adding dns 192.168.6.1                                                          
+Erasing filesystem...                                                           
+Mounting /dev/mtdblock2 as new root and /dev/mtdblock1 as kernel partition      
+yaffs: dev is 32505858 name is "mtdblock2"                                      
+yaffs: passed flags ""                                                          
+yaffs: Attempting MTD mount on 31.2, "mtdblock2"                                
+yaffs: auto selecting yaffs1                                                    
+yaffs: dev is 32505857 name is "mtdblock1"                                      
+yaffs: passed flags ""                                                          
+yaffs: Attempting MTD mount on 31.1, "mtdblock1"                                
+yaffs: auto selecting yaffs1                                                    
+Erasing existing files...                                                       
+rm: cannot remove '/tmp/wget2nand-rootfs/lost+found': Directory not empty       
+Copying filesystem...                                                           
+Connecting to 192.168.6.1 (192.168.6.1:80)                                      
+-                      0% |                               |     0  --:--:-- ETA/
+./jffs/                                                                         
+./tmp/                                                                          
+./www/                                                                          
+...
+Image written, you can now reboot.  Remember to change the boot source to Boot from Nand 
+}}}
+ * Power-cycle the RB433 and change the boot source to NAND.
+=== Switch setup ===
+
+==== Ethernet Jacks ====
+The ethernet jacks are mapped to port numbers of the IP175C switch (looking at the front of the board):
+{{{
+[ port 4 (PoE)] ( serial ) [port 1] [port 2]
+}}}
+Currently (svn trunk r13124) eth0 is mapped onto port4, while eth1 uses port1 and port2. Port1 and Port2 are not switched in the default config.
+If you want this behaviour, you need kmod-switch with phorn's patches and
+{{{
+uci set network.0=switch
+uci set network.0.vlan1="1 2 5*u"
+/etc/init.d/network restart
+}}}
+
+=== Useful Links ===
+ * [http://rb1xx.ozo.com/doku.php#netboot_howto Netboot for RB1xx]
+ * [http://inst.eecs.berkeley.edu/~pathorn/ip175c/ phorn's patches for IP175C support with kmod-switch and swconfig]
+ * [http://forum.openwrt.org/viewtopic.php?pid=76183 a thread about RB433, IP175C and kmod-switch]

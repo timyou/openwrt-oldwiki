@@ -1,0 +1,236 @@
+= Table of Contents =
+[[TableOfContents(2)]]
+
+= Siemens Gigaset SX551 =
+The Siemens Gigaset SX551 is an WLAN DSL Router. This device is also distibuted with a modified firmware by the Dutch provider KPN as the first generation Experia box (silver version). This is the version I (SA007) have.
+
+= Basic hardware info =
+The device has the following connectors on the rear (left to right).
+
+ * Auxiliary antenna.
+ * Telephone 1 connector (POTS).
+ * Telephone 2 connector (POTS).
+ * Line connector (Fallback).
+ * ADSL input connector.
+ * 4 numbered RJ45 10/100 MBit connectors.
+ * One USB 2.0 Port (2nd can be added with soldering).
+ * Reset button.
+ * Large On/Off button.
+ * Power connector (12V 1.2A).
+ * Main antenna.
+It supports ADSL/ADSL2/ADSL2+ connections, WEP/WPA. Standard the USB port can be used for a fileserver (FAT only) or a very small number of printers.
+
+= Opening the casing =
+First remove the 4 screws on the bottom site (inside the U shaped anti-skid pads). Around the device there are 5 clips, to click them open you must pull the underside outward. The clips are:
+
+ * Rear.
+  * Above the reset button.
+ * Sides.
+  * Centered.
+ * Front.
+  * Around OK LED.
+  * Around Tel1 LED.
+= Extended hardware information =
+== Main processor ==
+The main processor is an [http://www.ti.com Texas Instruments] [http://focus.ti.com.cn/pdfs/bcg/ar7wi_fact_sheet.pdf TNETD7300AZDW] Processor, covered by a soldered in place cooler, an AR7 that should work with the ["AR7Port"] of openWRT (yet untested).
+
+== Memory ==
+Onboard is a [http://www.psc.com.tw/english/index.jsp PSC] [http://www.zentel.com.tw/datasheet/256SD(3)PSC_V14-1.pdf A2V46S40BTP] 256Mbit (32MiB) SDRAM Memory chip.
+
+== Flash ==
+The flash chip is an [http://www.excelsemi.com/ Excelsemi] [http://www.excelsemi.com/newsub_2_2.htm ES29LV160DB-70RTG] 16Mbit (2MiB) 3.0V Flash memory, hopefully this is enough for OpenWRT.
+
+== USB 2.0 Controller ==
+The device probably will not have any USB problems since the USB controller is a seperate chip. The controller is a [http://www.via.com.tw/ VIA] [http://www.via.com.tw/en/products/peripherals/usb/vt6212l/ VT6212L]. A 4-port USB 2.0 Host controller. Unfortunatly only one port is external by default, but this can be expanded to 2 ports by adding some components and a larger connector, as soon as this works it will be posted here.
+
+== VoIP Controller ==
+VoIP is done by a VoicePump VP101X12DQC Chip (located at the bottom side of the PCB). This chip is not yet supported. An [http://www.legerity.com/ LegerIty] [http://www.legerity.com/products.php?cid=&sid=13&bpid=46 Le9502BTC] Provides a ringing interface circuit. Some other inferfacing is done by a [http://www.clare.com/Products/LITELINK.htm LiteLink] [http://www.clare.com/Products/LITELINK.htm CPC5621A] Phone Line Interface IC Both seem to connect to the VoicePump.
+
+== Switch chip ==
+The internal switch is a [http://www.marvell.com/ Marvell] [http://www.marvell.com/products/switching/linkstreet/LinkStreet_88E6060.pdf 88E6060-RCJ1] 6-port (4 external, 1 to the router itself, 1 unused) 10/100 switch with autosensing.
+
+== Wireless card ==
+I removed the wlan card from the SX551 and plugged it into my laptop:
+{{{
+# lspci
+02:02.0 Ethernet controller: Atheros Communications, Inc. AR5212 802.11abg NIC (rev 01)
+
+# lspci -n
+02:02.0 0200: 168c:0013 (rev 01)
+
+# lspci -v
+02:02.0 Ethernet controller: Atheros Communications, Inc. AR5212 802.11abg NIC (rev 01)
+        Subsystem: Accton Technology Corporation Unknown device 4412
+        Flags: bus master, medium devsel, latency 168, IRQ 11
+        Memory at c0210000 (32-bit, non-prefetchable) [size=64K]
+        Capabilities: [44] Power Management version 2
+
+# lspci -vv
+02:02.0 Ethernet controller: Atheros Communications, Inc. AR5212 802.11abg NIC (rev 01)
+        Subsystem: Accton Technology Corporation Unknown device 4412
+        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV+ VGASnoop- ParErr- Stepping- SERR+ FastB2B-
+        Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR-
+        Latency: 168 (2500ns min, 7000ns max), Cache Line Size: 32 bytes
+        Interrupt: pin A routed to IRQ 11
+        Region 0: Memory at c0210000 (32-bit, non-prefetchable) [size=64K]
+        Capabilities: [44] Power Management version 2
+                Flags: PMEClk- DSI- D1- D2- AuxCurrent=375mA PME(D0-,D1-,D2-,D3hot-,D3cold-)
+                Status: D0 PME-Enable- DSel=0 DScale=2 PME-
+}}}
+Which means it is an normal Atheros card which should work flawlessly with [http://www.madwifi.org MadWifi].
+
+== Hardware with unknown function ==
+[http://www.ti.com/ Texas Instruments] TNETV100PZ, probably some sort of companion chip of the AR7.
+
+This may be a VLYNQ to PCI bridge, used for the WiFi and USB controllers.
+
+= Pinouts =
+I'm still figuring out pinouts. Most headers are useless and only used to glue the wireless wires to.
+
+Userless headers:
+
+ * P1 - Next to the wlan card.
+ * P2 - At the far side of the wlan card.
+ * P3 - At an slight angle nest to the 4-port RJ45 block.
+ * P4 - In the corner of the auxilery antenna.
+ * P5 - Between the USB 2.0 controller and the main processor.
+JP4 - 4 Pin, directly connects to the Line port on the rear of the modem. J4 - 10 Pin. Serial console.
+
+ 1. Not connected.
+ 1. Not connected.
+ 1. RXD.
+ 1. Not connected.
+ 1. TXD.
+ 1. Not connected.
+ 1. Not connected.
+ 1. Not connected.
+ 1. Gnd.
+ 1. +3.3V.
+= Serial console =
+A serial console can be conneced to J4, according to the pinout above.
+
+The serial signals are at a 3.3V level, so you need to use a level convertor, see ["OpenWrtDocs/Customizing/Hardware/Serial Console"]
+
+The serial signal itself is 115200 baud, 8 databits, 1 stopbit, no parity (8N1).
+
+= Rescue mode =
+
+The SX551 has a rescue mode, which is reached by holding start while powering on the device, and then pressing 'reset' three times. In this mode, the router is reachable at 192.168.2.1 and runs a webserver. The webpages on that are password-protected: the username and password have been found, though. The username is root, the password is LAYS?8<}HJ?]W.i&c*oV[ouHwzM:QMV]9:XQ(u (yes, the complete string). This mode is quite useless, though: First of all, it'll only accept files which have BRN4519JW[null] as the last few bytes. A bit of hexediting can solve this, but the second problem is that it doesn't seem to recognize the flash: at the serial console, this shows up:
+{{{
+upgrade CGI > process content-type...                                           
+boundary=-----------------------------3334805413133863571136168153              
+endbound=-----------------------------3334805413133863571136168153--            
+content-length: 1485187                                                         
+lens_up=0, call recv(), recv() returned, lens_up=512...                         
+remove 0xD, 0xA                                                                 
+remove 0xD, 0xA                                                                 
+remove 0xD, 0xA                             
+parse file upload                                                               
+value: sx551-w-a-fw1_08_SWD-for-bootloader.bin                                  
+remove 0xD, 0xA                                                                 
+content-type upg_buf = Content-Type: application/octet-stream                   
+remove 0xD, 0xA                  
+remove 0xD, 0xA                                                                 
+remove 0xD, 0xA                                                                 
+remove 0xD, 0xA
+#####8<#####
+count=1484810                                                    
+comparing UI...                                                                 
+comparing FW...                                                                 
+found signature: 78h 56h 34h 12h                                                
+ulImgLens=254705, LENGTH[2]-12=1769460                                          
+length checking OK                                                              
+search_signature: image's lens = 254976                                         
+write to flash task...                                                          
+period_task running 1200                                                        
+                                                                                
+update UI and FW, length=1484800...                                             
+Flash not found                 
+}}}                   
+
+= Original bootlog =
+{{{
+===========================================================
+ TI ADSL AR7300 Loader 0.71.4 build Oct 18 2005 11:13:40
+                 Broad Net Technology, INC.
+===========================================================
+ESS ES29LV160D bottom boot 16-bit mode found
+Copying boot params.....DONE
+Flash Checking  Passed.
+Unzipping  web at 0x94f30000 ... [LZMA] done
+Unzipping code at 0x94000000 ... [LZMA] done
+}}}
+That really is all...
+
+In the rescue-mode, which can be reached by pressing the reset when you start de device and then pressing the reset three times after that. (tnx equinoxe for that tip)
+
+Then the output becomes:
+
+{{{
+===========================================================
+ TI ADSL AR7300 Loader 0.71.4 build Oct 18 2005 11:13:40
+                 Broad Net Technology, INC.
+===========================================================
+ESS ES29LV160D bottom boot 16-bit mode found
+Copying boot params.....DONE
+Reset button was pressed
+Click 1...
+Click 2...
+Click 3...
+Activating recovery tool...
+Unzipping  web at 0x94f30000 ... [ZIP] done
+Unzipping code at 0x94000000 ... [ZIP] done
+Boot ETCPIP running ...
+In C_Entry() function ...
+install_exception
+sys_irq_init
+system startup...
+tcpip_startup...
+ESS ES29LV160D bottom boot 16-bit mode found
+pBootParams=B01F0000
+Set flash memory layout to BPARAMS+RECOVER_KERNEL
+Bootcode version: 0.71.4
+Serial number: J622411250
+Hardware version: 01
+!!No configuration file present!!
+default route: 0.0.0.0
+BufferInit:
+BUF_HDR_SZ=16 BUF_ALIGN_SZ=0 BUFFER_OFFSET=80
+BUF_BUFSZ0=384 BUF_BUFSZ1=1632
+NUM_OF_B0=500 NUM_OF_B1=500
+BUF_POOL0_SZ=200000 BUF_POOL1_SZ=824000
+Buf0_Block b4330bc0  Buf1_Block b42678f0
+BUF0[0]=0xb4330bc0 BUF1[0]=0xb42678f0
+buffer0 pointer init OK!
+buffer1 pointer init OK!
+init_if() ; gConfig.Interface[0].Link_Type is [4]
+Interface 0 ip = 127.0.0.1
+init_if() ; gConfig.Interface[1].Link_Type is [1]
+MAC Address: 00:01:e3:da:90:69
+MAC1 [RX=128 TX=1]: TI External PHY
+Interface 1 ip = 192.168.2.1
+init_if() ; gConfig.Interface[2].Link_Type is [0]
+RUNTASK id=1 if_task if0...
+RUNTASK id=2 if_task if1...
+RUNTASK id=3 timer_task...
+RUNTASK id=4 period_task...
+RUNTASK id=5 dhcp_daemon...
+RUNTASK httpd...
+RUNTASK id=8 dhcpd_mgmt_task...
+Starting Multitask...
+MTstart2() begin  ...
+period_task running!!!
+httpd: listen at 192.168.2.1:80
+dhcpd_mgmt_task started...
+period_task running 60
+}}}
+In this mode it does respond to some input.
+
+Pressing u or U gives a list of some (non-intresting) debug info about transmitted and received packets.
+
+Those are the only 2 ascii characters the console responds to with a message other than "I'm still alive ..."
+
+= OpenWRT status =
+Untested
+
+CategoryModel ["CategoryAR7Device"]

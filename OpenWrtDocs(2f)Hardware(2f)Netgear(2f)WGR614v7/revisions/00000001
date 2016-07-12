@@ -1,0 +1,19 @@
+[[TableOfContents]]
+
+= Netgear WGR614v7 =
+The WGR614v7 has been reported to run on the Atheros 2317 chip an might be a work in progress according to the table of hardware.
+
+== Hardware ==
+ * Atheros Product Name: Atheros AR5001AP
+ * CPU: Atheros 2317
+ * Flash: 2MB Macronix 25L1605 (according to http://forum.openwrt.org/viewtopic.php?id=9707 )
+ * RAM: 8MB IC42S16400  (according to http://forum.openwrt.org/viewtopic.php?id=9707 )
+ * Switch: ??
+ * One Antenna (2db)
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: ??
+
+
+== Software ==
+You need to run telnetable to be able to use the telnet port: http://wiki.openwrt.org/OpenWrtDocs/Hardware/Netgear/TelnetConsole

@@ -1,0 +1,29 @@
+[[TableOfContents]]
+
+= Netgear WGT624 =
+the WGT624 v3 is based on an Atheros System on a Chip (Soc). It got a ar2312a MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+
+== Specs for WGT624 Rev3 ==
+ * THESE SPECS ARE NOT VERIFIED YET
+
+ * Atheros Product Name: Atheros AR5001AP
+ * CPU: AR2312A-00
+ * Flash: 4MB
+ * RAM: 16MB
+ * Switch: Marvell
+ * One Antenna (2db)
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 12VDC @1A positive tip
+Some photos are here: http://linuxpmi.org/trac/wiki/WGT624v3Pics
+
+== Serial ==
+Its got an unpopulated header of some sort labeled JP1. not yet verified whether its serial or JTAG.
+
+}}}
+
+Can anyone post a working kernel binary for the 624v1, to double check it's not a build problem? Maybe this is why the Netgear v1/v2 firmware is incompatible with the v3. Perhaps the ar531xPlus needs a different patch.
+
+----
+ . CategoryModel

@@ -1,0 +1,17 @@
+= Netgear DG834 v1 =
+== Hardware ==
+|| CPU || TI AR7 (TNETD7301GDU) ||
+|| Flash || 4 MByte (MX 29LV320ABTC-90, [http://www.mxic.com.tw/QuickPlace/hq/PageLibrary4825740B00298A3B.nsf/h_Index/BD6966A6FBA6FB8E48257428001E7D9F/?OpenDocument datasheet]) ||
+|| SDRAM || 16 MByte (ISSI IS42S16800A-7T, [http://www.issi.com/pdf/42S16800A.pdf datasheet]) ||
+|| LAN MAC/PHY Switch || Marvell 88E6060-RCJ ||
+== Serial Console ==
+The serial port is JP603, it is on the LEFT side of the PCB
+{{{
+ ________________right__________________
+|                                       \
+_power   Pin 1: GND      ----> [] 
+_plug    Pin 2: TX       ----> () 
+|        Pin 3: VCC(3.3V)----> ()
+|        Pin 4: RX       ----> ()
+|                           JP603
+}}}

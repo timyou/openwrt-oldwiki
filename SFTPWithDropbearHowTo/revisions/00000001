@@ -1,0 +1,39 @@
+[:OpenWrtDocs]
+[[TableOfContents]]
+
+
+= Introduction =
+This HOWTO explains how to configure SFTP for use with the Dropbear SSH package.  Dropbear is typically used because of its small size and pre-installation in White Russian RC3.
+
+= Activating Dropbear =
+Dropbear is a small SSH daemon that comes pre-installed on White Russian RC3.  However, while Dropbear comes pre-installed it is not active by default.  To activate Dropbear use the following command
+
+{{{
+passwd
+}}}
+After you enter this command, you will be prompted to input the password that you want to assign the user "root".  Once this is done, White Russian will disable the telnet daemon and activate the SSH daemon.  
+
+= Installing the SFTP module =
+Once the SSH daemon is working it is now time to begin installing the SFTP portion.  To do this enter the following commands
+
+{{{
+ipkg update
+ipkg install openssh-sftp-server
+mkdir -p /usr/libexec
+ln -s /usr/lib/sftp-server /usr/libexec/sftp-server
+}}}
+
+= Windows SFTP clients =
+Once both SSH and SFTP are installed you will be able to securely access the routers files via a secure connection.  Two of the most popular clients that support SFTP are the [http://www.chiark.greenend.org.uk/~sgtatham/putty/ Putty SFTP client] and the [http://filezilla.sourceforge.net/ FileZilla] graphical client.  While the FileZilla client is actually built upon the Putty client they will be treated here as if they are two distinct clients.
+
+== FileZilla ==
+The FileZilla client is an ideal choice for most windows users.  The graphical interface and relatively small learning curve allows the user to begin actively using the software immediately.
+
+The download page is [http://sourceforge.net/project/showfiles.php?group_id=21558 Here].
+The user’s forum is [http://filezilla.sourceforge.net/forum/ Here].
+
+== Putty SFTP ==
+Called PSFTP the Putty SFTP client is a robust and stable implementation of the secure file transfer protocol.  While good, Putty's client is command-line based.  If you are used to graphical clients, use FileZilla instead.
+
+Putty's download page is [http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html Here].
+Putty's documentation page is [http://www.chiark.greenend.org.uk/~sgtatham/putty/docs.html Here].

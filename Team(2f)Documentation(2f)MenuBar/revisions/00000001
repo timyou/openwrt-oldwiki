@@ -1,0 +1,1 @@
+||<tablestyle="font-size: 0.85em; text-align: center; border: none; width: 100%; background-color: #f1f1ed; font-weight: bold; table-layout: fixed;">  [:Team/Documentation: Home] || [:Team/Documentation/Projects: Projects] || [:Team/Documentation/GettingStarted:Getting Started] || [:Team/Documentation/Contact:Contact us] ||

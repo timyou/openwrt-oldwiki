@@ -1,0 +1,54 @@
+[[TableOfContents]]
+= Linksys AG241 =
+== Specifications AG241v2 ==
+
+Bootloader: ["ADAM2"]
+
+== Specifications AG241v2-EU ==
+
+Switch 4-Port ADSL Router with Firewall/QoS Control (ADSL 2/2+ Compliant)
+
+ * - CPU: Texas Instruments AR7 MIPS-based, TNETD7200ZDW
+ * - Flash chip: 4Mbytes, Macronix, [http://www.macronix.com/QuickPlace/hq/PageLibrary48256F5500439ED0.nsf/h_CE4C9490FDF4280B48256F550043C6D8/209CFCBBF4BCCB9148257031002F02E6/$File/MX29LV320CTBver17.pdf?OpenElement 29LV320CTTC-70G], 32Mbit NOR-type Flash Memory organized as 4M x 8
+ * - SDRAM: 16Mbytes, MIRA, P2V28S40CTP, 3.3V at 143MHz organised as 8M x 16.
+ * - Switch: Infineon, [http://www.infineon.com/cgi-bin/ifx/portal/ep/channelView.do?channelId=-65146&channelPage=/ep/channel/productOverview.jsp&pageTypeId=17099 ADM6996LC]
+ * - Wireless NIC: '''NONE'''
+ * - 4x-ethernet-port transformer: LHB, 20pt1024xlx
+ * - Bootloader: ["PSPBoot"]
+
+== Picture (AG241v2-EU) ==
+attachment:ag241-eu.jpg
+
+== Serial console ==
+Note: this does not match with the picture above.  The description is exactly as written here, the new port is named JP4 and PIN1 is on the left side. So just flip the picture 90 degree to have the new layout.
+
+attachment:serial_console_pins_ttl.jpg
+
+{{{
+Pins Connections:
+
+  - Pin 1, '''GND'''
+  - Pin 2, Not Connected
+  - Pin 3, Router's Serial '''RX'''
+  - Pin 4, Router's Serial '''TX'''
+  - Pin 5, '''VCC'''
+
+Configure teminal with:
+
+   - Baud Rate: '''38400''' bauds. 
+   - Data: '''8''' bits.
+   - Parity: '''no''' parity.
+   - Stop: '''1''' stop bit.
+   - Flow Control: '''none'''
+
+}}}
+
+== Flash ==
+Since this device uses PSPBoot no flashing of openwrt via tftp is possible. Also no ftpd as with adam2 is available. The device seems to use the code pattern "AG3BPBOT" instead of "WAG2" so the image gets denied via tftp and http. The only solution I found to put openwrt on is to get the original sources from Linksys, recompile the image with an enabled telnetd and do the flashing with an mtd binary via telnet.
+
+You can get further infos from a forum thread
+
+http://forums.whirlpool.net.au/forum-replies.cfm?t=511748&p=8
+
+----
+ . ["CategoryAR7Device"]

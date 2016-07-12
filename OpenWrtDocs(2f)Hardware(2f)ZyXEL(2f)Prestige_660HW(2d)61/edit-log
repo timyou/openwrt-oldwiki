@@ -1,0 +1,17 @@
+1139779371000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		Initial Prestige 660HW-61 info page
+1139780100000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		aesthetic fixes
+1139850490000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		
+1139851173000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		added exact zyxel firmware download url
+1146569622000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	84.58.146.160	dslb-084-058-146-160.pools.arcor-ip.net	1146569058.26.24022		
+1150924963000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	212.202.20.123	port-212-202-20-123.dynamic.qsc.de	1150924155.86.2025		
+1150925215000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	212.202.20.123	port-212-202-20-123.dynamic.qsc.de	1150924155.86.2025		
+1150925893000000	00000008	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	212.202.20.123	port-212-202-20-123.dynamic.qsc.de	1150924155.86.2025		
+1150926185000000	00000009	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	212.202.20.123	port-212-202-20-123.dynamic.qsc.de	1150924155.86.2025		
+1150926532000000	00000010	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	212.202.20.123	port-212-202-20-123.dynamic.qsc.de	1150924155.86.2025		
+1150926566000000	00000011	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	212.202.20.123	port-212-202-20-123.dynamic.qsc.de	1150924155.86.2025		
+1150926740000000	00000012	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	212.202.20.123	port-212-202-20-123.dynamic.qsc.de	1150924155.86.2025		
+1167959004000000	00000013	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		Someone has booted an uClinux kernel no ZyXEL Prestige series :-)
+1177369978000000	00000014	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		Bootloader flashing commands on ZyXEL
+1177370557000000	00000015	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		Corrected ATDO command to match HW-61's addresses... *not tested on real hardware*
+1177370795000000	00000016	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	62.57.0.38	nopcode.org	1133015086.72.63092		BE comment on status
+1223045475000000	00000017	SAVE	OpenWrtDocs(2f)Hardware(2f)ZyXEL(2f)Prestige_660HW(2d)61	147.83.152.2	147.83.152.2	1133015086.72.63092		Clarify that this is MIPS-based, *not* ARM

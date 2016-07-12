@@ -1,0 +1,683 @@
+= General Information =
+Belkin's N+ Wireless Router (F5D8235-4) features a USB Storage port on the back of the router for connecting USB storage devices such as an external hard drive or thumb drive to the network. This router also features gigabit Ethernet ports for a wired connection. The N+ router is based on the draft 802.11n 2.0.
+
+= Hardware =
+http://download.dsmg600.info/people/sala/F5D8235-4/serial/belkin_nplus_board.jpg
+
+{{{
+CPU: Ralink RT2880F
+RAM: 32MB
+Flash: 8MB
+Wi-Fi: Ralink RT2820
+Switch: Realtek RTL8366SR
+USB: NEC?
+}}}
+
+= Serial port =
+Serials console baudrate is : 57600,8n1
+== Pinout ==
+Serial console is available on J1, pinout as follow :
+{{{
+TXD 0 0
+    0 0
+    0 0 GND
+RXD 0 0 GND
+    0
+}}}
+
+== U-Boot environment ==
+TIP: Looks like actual bootdelay is 1 seconds or less. This means you'll need to press down needed boot operation number before you'll power up your router. If you still miss selecting needed operation number, then just let it finish booting, type reboot and start pressing operation number you'll want to pass to U-Boot.
+{{{
+U-Boot 1.1.3 (Jun 12 2008 - 15:40:46)
+
+Board: RT2880 DRAM:  32 MB
+relocate_code Pointer at: 8bfa8000
+
+ twe0 set to <NULL>
+
+ toe0 set to <NULL>
+flash_protect ON: from 0xBC400000 to 0xBC424D03
+protect on 71
+protect on 72
+protect on 73
+flash_protect ON: from 0xBC430000 to 0xBC43FFFF
+protect on 74
+*** Warning - bad CRC, using default environment
+
+============================================
+Ralink UBoot Version: 2.0
+--------------------------------------------
+ASIC 2880_MP (MAC to GigaMAC Mode)
+DRAM COMPONENT: 128Mbits
+DRAM BUS: 32BIT
+Total memory: 32Mbytes
+Date:Jun 12 2008  Time:15:40:46
+============================================
+ D-CACHE set to 4 way
+ I-CACHE set to 4 way
+
+ ##### The CPU freq = 266 MHZ ####
+
+ SDRAM bus set to 32 bit
+ SDRAM size =32 Mbytes
+
+Please choose the operation:
+   1: Load system code to SDRAM via TFTP.
+   2: Load system code then write to Flash via TFTP.
+   3: Boot system code via Flash (default).
+   4: Entr boot command line interface.
+   5: Load ucos code to SDRAM via TFTP.
+
+You choosed 4
+
+ 0
+Net:
+ eth_register
+Eth0 (10/100-M)
+ enetvar=ethaddr,Eth addr:00:AA:BB:CC:DD:18
+ 00:AA:BB:CC:DD:18:
+
+ eth_current->name = Eth0 (10/100-M)
+
+
+4: System Enter Boot Command Line Interface.
+
+U-Boot 1.1.3 (Jun 12 2008 - 15:40:46)
+
+ main_loop !!
+
+ In main_loop !!
+
+
+
+ CONFIG_BOOTDELAY
+### main_loop entered: bootdelay=3
+
+### main_loop: bootcmd="tftp"
+RT2880 # help
+?       - alias for 'help'
+boot    - boot default, i.e., run 'bootcmd'
+bootd   - boot default, i.e., run 'bootcmd'
+bootm   - boot application image from memory
+bootp   - boot image via network using BootP/TFTP protocol
+cp      - memory copy
+echo    - echo args to console
+erase   - erase FLASH memory
+help    - print online help
+loopback   - Ralink eth loopback test !!
+md      - memory display
+mdio   - Ralink PHY register R/W command !!
+mm      - memory modify (auto-incrementing)
+mw      - memory write (fill)
+nm      - memory modify (constant address)
+printenv- print environment variables
+protect - enable or disable FLASH write protection
+run     - run commands in an environment variable
+saveenv - save environment variables to persistent storage
+setenv  - set environment variables
+spicmd  - read/write data from/to eeprom or vtss
+tftpboot- boot image via network using TFTP protocol
+version - print monitor version
+RT2880 #
+
+
+
+RT2880 # printenv
+bootcmd=tftp
+bootdelay=3
+baudrate=57600
+ethaddr="00:AA:BB:CC:DD:10"
+ipaddr=10.10.10.123
+serverip=10.10.10.3
+preboot=echo;echo
+ramargs=setenv bootargs root=/dev/ram rw
+addip=setenv bootargs $(bootargs) ip=$(ipaddr):$(serverip):$(gatewayip):$(netmaf
+addmisc=setenv bootargs $(bootargs) console=ttyS0,$(baudrate) ethaddr=$(ethaddr1
+flash_self=run ramargs addip addmisc;bootm $(kernel_addr) $(ramdisk_addr)
+kernel_addr=BFC40000
+u-boot=u-boot.bin
+load=tftp 8A100000 $(u-boot)
+u_b=protect off 1:0-1;era 1:0-1;cp.b 8A100000 BC400000 $(filesize)
+loadfs=tftp 8A100000 root.cramfs
+u_fs=era bc540000 bc83ffff;cp.b 8A100000 BC540000 $(filesize)
+test_tftp=tftp 8A100000 root.cramfs;run test_tftp
+stdin=serial
+stdout=serial
+stderr=serial
+ethact=Eth0 (10/100-M)
+
+Environment size: 783/65532 bytes
+RT2880 #
+}}}
+
+== Bootlog ==
+{{{
+U-Boot 1.1.3 (Jun 12 2008 - 15:40:46)
+
+Board: RT2880 DRAM:  32 MB
+relocate_code Pointer at: 8bfa8000
+
+ twe0 set to <NULL>
+
+ toe0 set to <NULL>
+flash_protect ON: from 0xBC400000 to 0xBC424D03
+protect on 71
+protect on 72
+protect on 73
+flash_protect ON: from 0xBC430000 to 0xBC43FFFF
+protect on 74
+*** Warning - bad CRC, using default environment
+
+============================================
+Ralink UBoot Version: 2.0
+--------------------------------------------
+ASIC 2880_MP (MAC to GigaMAC Mode)
+DRAM COMPONENT: 128Mbits
+DRAM BUS: 32BIT
+Total memory: 32Mbytes
+Date:Jun 12 2008  Time:15:40:46
+============================================
+ D-CACHE set to 4 way
+ I-CACHE set to 4 way
+
+ ##### The CPU freq = 266 MHZ ####
+
+ SDRAM bus set to 32 bit
+ SDRAM size =32 Mbytes
+
+Please choose the operation:
+   1: Load system code to SDRAM via TFTP.
+   2: Load system code then write to Flash via TFTP.
+   3: Boot system code via Flash (default).
+   4: Entr boot command line interface.
+   5: Load ucos code to SDRAM via TFTP.
+
+You choosed 3
+
+ 0
+
+3: System Boot system code via Flash.
+## Booting image at bc450000 ...
+   Image Name:   Linux Kernel Image
+   Created:      2009-01-20  17:43:23 UTC
+
+ System Control Status = 0x02910084
+   Image Type:   MIPS Linux Kernel Image (gzip compressed)
+   Data Size:    1189927 Bytes =  1.1 MB
+   Load Address: 8a000000
+   Entry Point:  88244040
+   Verifying Checksum ... OK
+   Uncompressing Kernel Image ... OK
+No initrd
+## Transferring control to Linux (at address 88244040) ...
+## Giving linux memsize in MB, 32
+
+Starting kernel ...
+
+
+THIS IS ASIC - VERSION B
+ramsize = 32 MBytes
+rambase not set, set to default (0x08000000)
+MEMORY DESCRIPTOR dump:
+[0,882e3810]: base<08000000> size<02000000> type<Free RAM memory>
+
+ The CPU feqenuce set to 266 MHz
+CPU revision is: 0001906c
+icache: sets:256, ways:4, linesz:16 ,total:16384, waybit:12, flags:0x0
+dcache: sets:256, ways:4, linesz:16 ,total:16384, waybit:12, flags:0x0
+i waysize = 4096, d waysize = 4096, i sets= 256, d sets=256
+Primary instruction cache 16kB, physically tagged, 4-way, linesize 16 bytes.
+Primary data cache 16kB, 4-way, linesize 16 bytes.
+[setup_scache]:1032
+Linux version 2.4.30 (root@localhost.localdomain) (gcc version 3.3.6) #297 Wed Jan 21 01:42:19 CST 2009
+Determined physical RAM map:
+ memory: 02000000 @ 08000000 (usable)
+On node 0 totalpages: 40960
+zone(0): 40960 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: console=ttyS1,57600n8 root=/dev/mtdblock2
+cause = 50c08308, status = 10007f00
+calculating r4koff... 0028b0aa(2666666)
+CPU frequency 266.67 MHz
+Using 133.333 MHz high precision timer.
+Calibrating delay loop... 266.24 BogoMIPS
+Memory: 28036k/32768k available (2311k kernel code, 4732k reserved, 232k data, )
+Dentry cache hash table entries: 32768 (order: 6, 262144 bytes)
+Inode cache hash table entries: 16384 (order: 5, 131072 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 8192 (order: 3, 32768 bytes)
+Page-cache hash table entries: 65536 (order: 6, 262144 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+pci.c pcibios_init():840
+BAR0 at slot 0 = 8
+pci.c pcibios_fixup_resources():640
+bus = 0, dev = 0, fun = 0
+pci.c pcibios_fixup_resources():640
+bus = 0, dev = 17, fun = 0
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x14
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x18
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x1c
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x20
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x24
+pci.c pcibios_fixup_resources():640
+bus = 0, dev = 17, fun = 1
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x14
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x18
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x1c
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x20
+pci.c pcibios_fixup_resources():748  devid=0x11, baseaddr = 0x24
+dev= 0x885fbc00
+dev= 0x885e3000
+dev= 0x885e3400
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+fuse init (API version 7.5)
+fuse distribution version: 2.5.3
+pty: 256 Unix98 ptys configured
+Ralink RT2880 gpio driver initialized
+Gemtek LED init...
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI ed
+ttyS00 at 0x300500 (irq = 9) is a 16550A
+ttyS01 at 0x300c00 (irq = 8) is a 16550A
+HDLC line discipline: version $Revision: 1.1.1.1 $, maxframe=4096
+N_HDLC line discipline registered.
+RA2880 Ethernet Driver Initilization. v1.01  256 rx/tx descriptors allocated!
+RA2880 Ethernet Driver Initilization. v1.01  256 rx/tx descriptors allocated, m!
+Netlink init ok!
+PROC INIT OK!
+PPP generic driver version 2.4.2
+PPP Deflate Compression module registered
+PPP BSD Compression module registered
+MPPE/MPPC encryption/compression module registered
+SCSI subsystem driver Revision: 1.00
+kmod: failed to exec /sbin/modprobe -s -k scsi_hostadapter, errno = 2
+kmod: failed to exec /sbin/modprobe -s -k scsi_hostadapter, errno = 2
+FLASH_API: MAN_ID=C2 DEV_ID=22CB SIZE=8MB
+physmap flash device: 800000 at bf400000
+ Amd/Fujitsu Extended Query Table v1.1 at 0x0040
+number of CFI chips: 1
+Region0: SectorSize=0x2000 SectorNum=8
+Region1: SectorSize=0x10000 SectorNum=127
+cfi_cmdset_0002: Using word write method.
+cfi_cmdset_0002: Disabling fast programming due to code brokenness.
+Using physmap partition definition
+Creating 5 MTD partitions on "RT2880 SOC Physically mapped flash":
+0x00000000-0x00050000 : "uboot"
+mtd: Giving out device 0 to uboot
+0x00050000-0x007e0000 : "Kernel and Rootfs"
+mtd: Giving out device 1 to Kernel and Rootfs
+0x00180000-0x007e0000 : "Rootfs"
+mtd: Giving out device 2 to Rootfs
+0x007e0000-0x007f0000 : "Nvram"
+mtd: Giving out device 3 to Nvram
+0x007f0000-0x00800000 : "Factory"
+mtd: Giving out device 4 to Factory
+usb.c: registered new driver usbdevfs
+usb.c: registered new driver hub
+ehci_hcd 00:11.1: PCI device 1033:00e0
+ehci_hcd 00:11.1: irq 2, pci mem c0801000
+usb.c: new USB bus registered, assigned bus number 1
+ehci_hcd 00:11.1: USB 2.0 enabled, EHCI 1.00, driver 2003-Dec-29/2.4
+hub.c: USB hub found
+hub.c: 3 ports detected
+host/usb-uhci.c: $Revision: 1.1.1.1 $ time 01:42:19 Jan 21 2009
+host/usb-uhci.c: High bandwidth mode enabled
+host/usb-uhci.c: v1.275:USB Universal Host Controller Interface driver
+host/usb-ohci.c: USB OHCI at membase 0xc0803000, IRQ 2
+host/usb-ohci.c: usb-00:11.0, PCI device 1033:0035
+usb.c: new USB bus registered, assigned bus number 2
+hub.c: USB hub found
+hub.c: 3 ports detected
+IPv6 v0.8 for NET4.0
+IPv6 over IPv4 tunneling driver
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 1024 buckets, 8Kbytes
+TCP: Hash tables configured (established 16384 bind 32768)
+IPv4 over IPv4 tunneling driver
+GRE over IPv4 tunneling driver
+Linux IP multicast router 0.06 plus PIM-SM
+ip_conntrack version 2.1 (1280 buckets, 10240 max) - 316 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team, Type=Fully Cone
+ipt_time loading
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+create_proc_read_write_entry: fail
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+FAT: bogus logical sector size 12544
+UMSDOS: msdos_read_super failed, mount aborted.
+FAT: bogus logical sector size 12544
+FAT: bogus logical sector size 12544
+VFS: Mounted root (squashfs filesystem) readonly.
+Mounted devfs on /dev
+Freeing prom memory: 0kb freed
+Freeing unused kernel memory: 92k freed
+console started
+trying to start /sbin/init
+trying to strt /etc/init
+trying to start /bin/init
+Algorithmics/MIPS FPU Emulator v1.5
+MDIO_CFG = 1f01dc01
+GDMA1_FWD_CFG = 90000
+DSP_EN OFF version driver
+
+phy_tx_ring = 09c41000, tx_ring = a9c41000, size: 16 bytes
+
+phy_rx_ring = 09c40000, rx_ring = a9c40000, size: 16 bytes
+
+
+BusyBox v1.1.0 (2009.02.23-15:33+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+#sysinit: [sysinit]
+# Initializing USB Mass Storage driver...
+usb.c: registered new driver usb-storage
+USB Mass Storage support registered.
+MTD_open
+MTD_ioctl
+Invalid ioctl 540d (MEMGETINFO = 40204d01)
+MTD_read
+MTD_close
+insmod: reset_btn.o: no module by that name found
+Starting Watchdog function !!!!!!!
+cat: /proc/watchdog_ctrl_folder/watchdog_ctrl_run: No such file or directory
+/proc/sys/kernelMTD_open
+/panic_on_oops: MTD_read
+cannot create
+MTD_close
+Done
+Clean storage nvram value!!
+# update nvram with default list!
+blink_status=0
+Close USB_BLINK led...
+# interfaces_init......
+rmmod: rtl: Success
+rtl_major = 253
+0 smi_init check[0x0105]=0x8366
+Gemtek Link status init.
+rtl8366s_getEthernetPHY fail for 5!!!!
+rtl8366s_getEthernetPHY fail for 6!!!!
+rtl8366s_getEthernetPHY fail for 7!!!!
+rtl8366s_getEthernetPHY fail for 8!!!!
+rtl8366s_getEthernetPHY fail for 9!!!!
+rtl8366s_getEthernetPHY fail for 10!!!!
+rtl8366s_getEthernetPHY fail for 11!!!!
+rtl8366s_getEthernetPHY fail for 12!!!!
+rtl8366s_getEthernetPHY fail for 13!!!!
+rtl8366s_getEthernetPHY fail for 14!!!!
+rtl8366s_getEthernetPHY fail for 15!!!!
+RTL8366RS driver SetVLan initialized
+RTL8366RS driver initChip initialized
+rtl8366s_getEthernetPHY fail for 5!!!!
+rtl8366s_getEthernetPHY fail for 6!!!!
+rtl8366s_getEthernetPHY fail for 7!!!!
+rtl8366s_getEthernetPHY fail for 8!!!!
+rtl8366s_getEthernetPHY fail for 9!!!!
+rtl8366s_getEthernetPHY fail for 10!!!!
+rtl8366s_getEthernetPHY fail for 11!!!!
+rtl8366s_getEthernetPHY fail for 12!!!!
+rtl8366s_getEthernetPHY fail for 13!!!!
+rtl8366s_getEthernetPHY fail for 14!!!!
+rtl8366s_getEthernetPHY fail for 15!!!!
+RTL8366RS driver SetVLan initialized
+vid 1 member:3e untag:1e
+vid 2 member:21 untag:1
+port=0,VID=2,priority=0
+port=1,VID=1,priority=0
+port=2,VID=1,priority=0
+port=3,VID=1,priority=0
+port=4,VID=1,priority=0
+port=5,VID=1,priority=0
+RTL_GET_GREEN_ETHERNET Success!!!
+RTL_GET_GREEN_ETHERNET : tx is 0, rx is 0
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.0, enabled : 0 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.1, enabled : 0 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.2, enabled : 0 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.3, enabled : 0 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.4, enabled : 0 !!!
+rtl:rtl_ge_read : 0
+RTL_SET_GREEN_ETHERNET Success!!!
+RTL_GET_GREEN_ETHERNET Success!!!
+RTL_GET_GREEN_ETHERNET : tx is 1, rx is 1
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.0, enabled : 1 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.1, enabled : 1 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.2, enabled : 1 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.3, enabled : 1 !!!
+RTL_GET_GREEN_ETHERNET : rtl8366s_getAsicPowerSaving is phyNo.4, enabled : 1 !!!
+rtl:rtl_ge_read : 1
+Setting ra0 configuration....
+Bring up ra0 interface....
+2860 version : 1.8.3.0 (Jan 20 2009)
+
+
+=== pAd = c094a000, size = 483400 ===
+
+<-- RTMPAllocAdapterBlock, Status=0
+RX DESC a96ba000  size = 2048
+<-- RTMPAllocTxRxRingMemory, Status=0
+1. Phy Mode = 9
+2. Phy Mode = 9
+3. Phy Mode = 9
+MCS Set = ff ff 00 00 00
+Main bssid = 00:1c:df:d5:9a:38
+The UUID Hex string is:2880288028801880a880001cdfd59a38
+The UUID ASCII string is:28802880-2880-1880-a880-001cdfd59a38!
+<==== RTMPInitialize, Status=0
+0x1300 = 00064380
+interface ra0 does not exist!
+No need to change ra0 to Nintendo NDS capable
+No need to change ra0 to Nintendo NDS capable...Complete
+killall: rt2860apd: no process killed
+rt2860apd: not found
+Mssid : init mode
+killall : No such file or directory
+killall: wscd: no process killed
+ra0       mac:
+[0x0000102c]:73031e46
+vlan1: Setting MAC address to  00 1c df d5 9a 38.
+device eth2 entered promiscuous mode
+VLAN (vlan1):  Setting underlying device (eth2) to promiscious mode.
+vlan1: dev_set_promiscuity(master, 1)
+device vlan1 entered promiscuous mode
+device ra0 entered promiscuous mode
+ra0: attempt to add interface with same source address.
+br0: port 2(ra0) entering listening state
+br0: port 1(vlan1) entering listening state
+# lan services init......
+killall: rt2860apd: no process killed
+rt2860apd: No such file or directory
+easyconf: start 20080820
+easyconf: Waiting for client to connect...
+route: resolving gw
+route: resolving gw
+route: resolving gw
+route: resolving gw
+route: resolving gw
+br0: port 2(ra0) entering learning state
+br0: port 1(vlan1) entering learning state
+killall : No such file or directory
+killall: wscd: no process killed
+(2121)Service enable wireless
+# wan_init......
+Set country code to eu!!!
+br0: port 2(ra0) entering forwarding state
+br0: topology change detected, propagating
+br0: port 1(vlan1) entering forwarding state
+br0: topology change detected, propagating
+vlan2: Setting MAC address to  00 13 10 1f a4 5a.
+Close speed boot up led...
+Changing password for guest
+Bad password: too short.
+
+Warning: weak password (continuing).
+Jan  1 00:00:10 passwd[215]: password for `guest' changed by user `root'
+Password changed.
+Can't load /etc/smb.conf - run testparm to debug it
+httpd : This is httpd...ssl_enabled is 1
+(easystorage.c->main(201)) Easystorage Start 20080820
+}}}
+
+= System Information =
+'''1) cat /proc/version'''
+{{{
+Linux version 2.4.30 (root@localhost.localdomain) (gcc version 3.3.6) #297 Wed Jan 21 01:42:19 CST 2009
+}}}
+
+'''2) cat /proc/cpuinfo'''
+{{{
+system type             : Palmchip Surfboard
+processor               : 0
+cpu model               : unknown V6.12
+BogoMIPS                : 266.24
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 16
+extra interrupt vector  : yes
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+'''3) cat /proc/meminfo'''
+{{{
+        total:    used:    free:  shared: buffers:  cached:
+Mem:  28803072 26460160  2342912        0  2109440  8671232
+Swap:        0        0        0
+MemTotal:        28128 kB
+MemFree:          2288 kB
+MemShared:           0 kB
+Buffers:          2060 kB
+Cached:           8468 kB
+SwapCached:          0 kB
+Active:           5008 kB
+Inactive:         5584 kB
+HighTotal:           0 kB
+HighFree:            0 kB
+LowTotal:        28128 kB
+LowFree:          2288 kB
+SwapTotal:           0 kB
+SwapFree:            0 kB
+}}}
+
+'''4) cat /proc/mtd'''
+{{{
+dev:    size   erasesize  name
+mtd0: 00050000 00010000 "uboot"
+mtd1: 00790000 00010000 "Kernel and Rootfs"
+mtd2: 00660000 00010000 "Rootfs"
+mtd3: 00010000 00010000 "Nvram"
+mtd4: 00010000 00010000 "Factory"
+}}}
+
+'''5) cat /proc/interrupts'''
+{{{
+           CPU0
+  2:          0       Surfboard  ehci_hcd, usb-ohci
+  3:     103797       Surfboard  eth2
+  4:     145937       Surfboard  ra0
+  6:      97185       Surfboard  timer
+  7:          0       Surfboard  rt2880_gpio
+  8:        175       Surfboard  serial
+
+ERR:          0
+}}}
+
+'''6) ps'''
+{{{
+  PID  Uid     VmSize Stat Command
+    1 root        236 S   /bin/init
+    2 root            SW  [keventd]
+    3 root            SWN [ksoftirqd_CPU0]
+    4 root            SW  [kswapd]
+    5 root            SW  [bdflush]
+    6 root            SW  [kupdated]
+   10 root            SW  [mtdblockd]
+   11 root            SW  [khubd]
+   20 root        384 S   /bin/sh
+   39 root        480 S   resetC
+   42 root        776 S < gpio_ctrl
+   44 root        384 S   psmon
+   93 root            SW  [rtmpWscHandle]
+  137 root        340 S   syslogd
+  140 root       1072 S < httpd
+  148 root        220 S   easyconf
+  150 root        296 S   easystorage
+  170 root        300 S   telnetd
+  180 root        948 S   ledctrl
+  190 root        272 S   if_traffic
+  192 root        908 S   wan_connect
+  222 root        340 S   lld2d br0
+  243 root        776 S   pppd vlan2
+  400 root       1036 S   dnsmasq -z br0 -n -o -u root -r /var/resolv.conf -H /
+  414 root        896 S   /usr/sbin/udhcpd /tmp/udhcpd.conf
+  464 root        392 S   /bin/radvd -C /var/radvd.conf -d 1
+  940 root       1440 S   /usr/local/samba/sbin/nmbd
+ 1093 root       1500 S   /usr/local/samba/sbin/smbd
+ 1250 root        516 S   /usr/sbin/conn_log
+ 5759 guest       496 S   -sh
+ 8901 guest       488 S   -sh
+ 9652 guest       344 R   ps
+}}}
+
+= OpenWrt =
+At the time of writing this page, OpenWrt is not supported.
+
+DD-WRT has target in their svn http://svn.dd-wrt.com:8000/dd-wrt/browser/src/linux/rt2880 but I have no information how will it work in F5D8235-4.
+
+= Original firmware hacks =
+== GPL source code ==
+Buildable source code is available at http://www.belkin.com/support/opensource/
+
+For 1.01.19 firmware - F5D8235v1-1.01.19-GPL.tar.gz
+
+For 1.01.21 firmware - F5D8235v1-1.01.21-GPL.tar.gz
+
+== Enable telnet ==
+Go to http://belkin/ver.htm and set "Start telnetd for debug" parameter to 1. You will also need to add telnetd binary to firmware image or recompile busybox with telnetd applet. To disable telnetd go to http://belkin/ver.htm and set "Start telnetd for debug" parameter to 0.
+
+'''USE AT YOUR OWN RISK:''' Firmware images with telnetd are available at http://download.dsmg600.info/?dir=./people/sala/F5D8235-4
+
+== USB audio ==
+Needed modules are located at http://download.dsmg600.info/?dir=./people/sala/F5D8235-4/usb-sound
+{{{
+# insmod soundcore.o && insmod audio.o
+}}}
+
+{{{
+usb.c: registered new driver audio
+usbaudio: device 2 audiocontrol interface 0 has 1 input and 1 output AudioStreaming interfaces
+usbaudio: device 2 interface 2 altsetting 1 channels 1 framesize 2 configured
+usbaudio: valid input sample rate 48000
+usbaudio: valid input sample rate 44100
+usbaudio: device 2 interface 2 altsetting 1: format 0x00000010 sratelo 44100 sratehi 48000 attributes 0x01
+usbaudio: device 2 interface 1 altsetting 0 does not have an endpoint
+usbaudio: device 2 interface 1 altsetting 1 channels 2 framesize 2 configured
+usbaudio: valid output sample rate 48000
+usbaudio: valid output sample rate 44100
+usbaudio: device 2 interface 1 altsetting 1: format 0x01000010 sratelo 44100 sratehi 48000 attributes 0x01
+usbaudio: registered dsp 14,3
+usbaudio: constructing mixer for Terminal 6 type 0x0301
+usbaudio: warning: found 1 of 2 logical channels.
+usbaudio: assuming that a stereo channel connected directly to a mixer is missing in search (got Labtec headset?). Should be fine.
+usbaudio: registered mixer 14,0
+usbaudio: constructing mixer for Terminal 7 type 0x0101
+usbaudio: registered mixer 14,16
+usb_audio_parsecontrol: usb_audio_state at 8906dd40
+audio.c: v1.0.0:USB Audio Class driver
+}}}
+
+Right now I have some problem compiling working mpg123.
+
+----
+
+CategoryModel
+ . CategoryGigabitDevices
+ . Category80211nDevice

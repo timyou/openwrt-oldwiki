@@ -1,0 +1,222 @@
+Rename from ["OpenWrtDocs/Hardware/Airlink/AR525W"]
+
+'''Airlink101 AR525W'''
+
+GPL tarball : http://www.airlink101.com/support/files/AR525W_GPL_v1.0.38_20051222.tgz
+
+=== Serial Ports ===
+This model has an unpopulated 9-pin header that exposes a 3.3V serial port. Some pins are listed below:
+
+||Pin 1 ||Tx ||Pin 2 || 3.3V||
+||Pin 3 || ||Pin 4 || ||
+||Pin 5 || ||Pin 6 ||GND ||
+||Pin 7 || Rx ||Pin 8 ||GND ||
+||Pin 9 || || || ||
+
+Board view, component side:
+
+{{{
+  [   ] [RX] [  ] [  ] [TX] <
+        [G ] [G ] [  ] [3v]
+}}}
+
+Serial connection parameters are : 38400,8N1
+
+The bootloader is RedBoot, and is a highly modified version by Dante Su. No sources are provided yet for RedBoot, only an incorrect binary image in the GPL tarball. Equivalent source is on the LinkSys FTP site.
+
+Boot log :
+
+{{{
++Ethernet eth0: MAC address 00:00:01:02:03:04
+IP: 192.168.1.1/255.255.255.0, Gateway: 192.168.1.254
+Default server: 0.0.0.0
+
+RedBoot(tm) bootstrap and debug environment [ROM]
+Non-certified release, version v2_0 - built 18:31:11, Aug  4 2005
+
+Platform: PC (I386)
+Copyright (C) 2000, 2001, 2002, Red Hat, Inc.
+
+RAM: 0x00000000-0x000f0000, 0x00072ed0-0x000a0000 available
+ver 00:0003  05-24-05
+
+<press Ctrl+C to enter prompt mode>
+
+# Activate RDC-Keilven's RS232 Patch V2
+RedBoot>
+# Kernel size = 721702 bytes
+# FW size = 2823008 bytes
+
+# fwcheck: base = 0x00400000, size = 0x00000400
+# Firmware Checksum O.K
+# Kernel copying......BEGIN
+# Kernel copying......FINISH
+
+mem_size: 1000000
+Linux version 2.4.29 (terence@cvs2) (gcc version 3.4.1) #123 Tue Aug 2 11:54:21 CST 2005
+BIOS-provided physical RAM map:
+ BIOS-e801: 0000000000000000 - 000000000009f000 (usable)
+ BIOS-e801: 0000000000100000 - 0000000001000000 (usable)
+16MB LOWMEM available.
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+DMI not present.
+Kernel command line: console=ttyS0,38400 root=/dev/mtdblock1 noinitrd
+Initializing CPU#0
+#sysinit: [sysinit]
+
+
+BusyBox v1.00 (2005.08.02-03:56+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+# Using /etc/resetDefault.o
+This is the parent process, pid = 28
+# update nvram with default list!
+# interfaces_init......
+Using /etc/rt61ap.o
+This is the child process, pid = 31
+Setting ra0 configuration....
+CountryRegion=5
+BssidNum=1
+SSID=airlink
+WirelessMode=0
+TxRate=0
+Channel=6
+BeaconPeriod=100
+DtimPeriod=1
+TxPower=100
+BGProtection=0
+RTSThreshold=2346
+FragThreshold=2346
+TxBurst=1
+ShortSlot=1
+PktAggregate=1
+NoForwarding=0
+NoForwardingBTNBSSID=0
+HideSSID=0
+Key1Type=0
+Key1Str=
+Key2Type=0
+Key2Str=
+Key3Type=0
+Key3Str=
+Key4Type=0
+Key4Str=
+WdsEnable=0
+AutoChannelSelect=0
+RekeyInterval=3600
+WPAPSK=
+AccessPolicy0=0
+RADIUS_Server=0.0.0.0
+RADIUS_Port=1812
+RADIUS_Key=
+own_ip_addr=192.168.1.1
+session_timeout_interval=0
+DisableOLBC=1
+AuthMode=WEPAUTO
+EncrypType=NONE
+DefaultKeyID=1
+BasicRate=15
+IEEE8021X=0
+# lan services init......
+Start UPnP
+# wan_init......
+
+ Configuration file: /var/RT61AP/RT61AP.dat
+ conf->SsidNum=1
+ IP address: '0.0.0.0'
+ RADIUS_Port: '1812'
+ Line 36: empty shared secret is not allowed.
+ RADIUS_Key: '', Key_len: 0
+ session_timeout policy = not use
+ Read Session Timeout Interval  0 seconds.
+ Set Session Timeout Interval  3600 seconds.
+ 1 errors found in configuration file '/var/RT61AP/RT61AP.dat'
+ Could not allocate memory for rtapd->conf
+httpd : This is httpd...ssl_enabled is 0
+}}}
+
+OpenWrt boot log :
+
+{{{
+Linux version 2.4.34 (fainelli@anaconda.int-evry.fr) (gcc version 3.4.6 (OpenWrt-2.0)) #2 Sun Mar 4 12:35:40 CET 2007
+BIOS-provided physical RAM map:
+ BIOS-e801: 0000000000000000 - 000000000009f000 (usable)
+ BIOS-e801: 0000000000100000 - 0000000001000000 (usable)
+16MB LOWMEM available.
+On node 0 totalpages: 4096
+zone(0): 4096 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+DMI not present.
+Kernel command line: console=ttyS0,38400 root=/dev/mtdblock1 noinitrd
+Initializing CPU#0
+Calibrating delay loop... 57.13 BogoMIPS
+Memory: 14172k/16384k available (1109k kernel code, 1824k reserved, 228k data, 72k init, 0k highmem)
+Checking if this processor honours the WP bit even in supervisor mode... Ok.
+Dentry cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+CPU:     After generic, caps: 00000000 00000000 00000000 00000000
+CPU:             Common caps: 00000000 00000000 00000000 00000000
+CPU: Cyrix Cx486SLC
+Checking 'hlt' instruction... OK.
+Checking for popad bug... OK.
+POSIX conformance testing by UNIFIX
+PCI: Using configuration type 1
+PCI: Probing PCI hardware
+PCI: Probing PCI hardware (bus 00)
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+Registering mini_fo version $Id$
+devfs: v1.12c (20020818) Richard Gooch (rgooch@atnf.csiro.au)
+devfs: boot_options: 0x1
+JFFS2 version 2.1. (C) 2001 Red Hat, Inc., designed by Axis Communications AB.
+squashfs: version 3.0 (2006/03/15) Phillip Lougher
+keyboard: Timeout - AT keyboard not present?(ed)
+keyboard: Timeout - AT keyboard not present?(f4)
+Serial driver version 5.05c (2001-07-08) with MANY_PORTS SHARE_IRQ SERIAL_PCI enabled
+ttyS00 at 0x03f8 (irq = 4) is a 16550A
+RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
+rdc: RDC R6040 net driver, version 0.6 (9July2004)
+rdc: RDC R6040 net driver, version 0.6 (9July2004)
+PCI: Setting latency timer of device 00:08.0 to 64
+rdc: RDC R6040 net driver, version 0.6 (9July2004)
+PCI: Setting latency timer of device 00:09.0 to 64
+PPP generic driver version 2.4.2
+flash device: 400000 at ffc00000
+## Decide to use AMD/Fujitsu Standard command set.
+## MFG ID = 0x007F, DEV ID = 0x22F6
+Total size = 4 MB
+Creating 5 MTD partitions on "RDC3210 Flash":
+0x00000000-0x003c0000 : "linux"
+0x000c0000-0x003c0000 : "romfs"
+0x003c0000-0x003d0000 : "nvram"
+0x003d0000-0x003e0000 : "factory"
+0x003e0000-0x00400000 : "bootldr"
+Initializing Cryptographic API
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 1024 bind 2048)
+IPv4 over IPv4 tunneling driver
+GRE over IPv4 tunneling driver
+Linux IP multicast router 0.06 plus PIM-SM
+ip_conntrack version 2.1 (5953 buckets, 5953 max) - 356 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+NET4: Ethernet Bridge 008 for NET4.0
+jffs2_scan_eraseblock(): End of filesystem marker found at 0x100000
+jffs2_build_filesystem(): unlocking the mtd device... done.
+jffs2_build_filesystem(): erasing all blocks after the end marker... done.
+VFS: Mounted root (jffs2 filesystem) readonly.
+Mounted devfs on /dev
+Freeing unused kernel memory: 72k freed
+jffs2.bbc: SIZE compression mode activated.
+}}}

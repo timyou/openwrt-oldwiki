@@ -1,0 +1,45 @@
+The Scientific-Atlanta WebStar '''DPC2100''' is cable modem based on Broadcom BCM3349 chip. Ethernet and USB ports are provided. The modem is compatible with DOCSIS and EuroDOCSIS standards(?).
+
+See ["BroadcomBCM33xxPort"] for general progress on porting to this SoC.
+
+= Hardware =
+
+ * Main Chip: Broadcom QAMLink® BCM3349KPB
+ * Ram: ?? MB SDRAM ()
+ * Flash: ?? MB ()
+
+== Connectors ==
+
+On back-side, in left-to-right order:
+
+ * Power
+ * RJ45
+ * USB
+ * Cable Coax
+
+== Leds ==
+
+In front panel. Green, unless otherwise stated. In left-to-right order:
+
+ * PC
+ * Cable
+ * Send
+ * Receive
+ * Power
+
+= Software =
+By default, the DPC2100 comes with ???
+
+= Accessing DPC2100 =
+
+== Opening the Case ==
+
+Two annoying screws (not flatblade or phillips) under the front rubber feet (adhesively attached). Then you need to pull it apart a certain way...
+
+== Ethernet Access ==
+
+Standard firmware provides configuration interface using HTTP.
+
+----
+
+CategoryModel CategoryCableModem CategoryBCM33xx

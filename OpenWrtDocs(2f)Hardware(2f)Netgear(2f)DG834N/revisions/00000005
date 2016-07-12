@@ -1,0 +1,51 @@
+= Netgear DG834N =
+As of today there are two versions of this router/modem known as DG834N and DG834Nv2. According to the [http://kbserver.netgear.com/kb_web_files/n101777.asp official information] the differences are:
+ * DG834Nv2 has added a pushbutton on the front panel for Wi-Fi Protected Setup, also referred to as “Push “N” Connect”.
+ * DG834Nv2 LEDs have been redefined
+Both models use the same firmware.
+
+||Platform||[http://www.broadcom.com/products/DSL/xDSL-CPE-Solutions/BCM6358 BCM6358] V1.0||
+||Flash||4MB (MX29LV320CBTC-70G)||
+||SDRAM||16MB (EM6A9160TS-5G)||
+||Switch||BCM5325||
+||WLAN||[http://linuxwireless.org/en/users/Drivers/b43#unsupported BCM4321] (PCI ID 14e4:4329)||
+
+Apparently it has much in common with [:OpenWrtDocs/Hardware/Netgear/DG834GT:DG834GT].
+
+''' Cpu Info '''
+
+{{{
+# cat /proc/cpuinfo
+system type             : 96358GW-16
+processor               : 0
+cpu model               : BCM6358 V1.0
+BogoMIPS                : 299.00
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+unaligned access                : 259371093
+VCED exceptions         : not available
+VCEI exceptions         : not available
+}}}
+
+''' Flash Partitions '''
+
+{{{
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 002cb000 00010000 "fs"
+mtd1: 003e0000 00010000 "tag+fs+kernel"
+mtd2: 00010000 00002000 "bootloader"
+mtd3: 00010000 00010000 "nvram"
+mtd4: 00010000 00002000 "bootloader"
+}}}
+
+''' See Also '''
+
+ * [:OpenWrtDocs/BroadcomBCM63xxPort:BroadcomBCM63xxPort]
+ * [http://www.xbitlabs.com/articles/networking/print/netgear-dg834n.html Netgear DG834N - photos of PCB]
+
+----
+CategoryModel ["CategoryBCM63xx"]

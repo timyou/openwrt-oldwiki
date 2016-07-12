@@ -1,0 +1,4 @@
+1140433687000000	00000001	SAVENEW	ThrottleConnectionsHowTo	211.31.61.170	c211-31-61-170.rivrw1.nsw.optusnet.com.au	1140432417.59.17728		
+1177359354000000	00000002	SAVE	ThrottleConnectionsHowTo	84.61.192.115	dslb-084-061-192-115.pools.arcor-ip.net	1176763174.32.16289		Updated to WR 0.9: prerouting_wan, input_wan, no variables necessary, more correct usage of ipt_recent
+1200101150000000	00000003	SAVE	ThrottleConnectionsHowTo	81.167.161.127	127.81-167-161.customer.lyse.net	1199390040.16.39763		
+1227350087000000	00000004	SAVE	ThrottleConnectionsHowTo	212.60.157.241	212.60.157.241	1227349616.04.25110		

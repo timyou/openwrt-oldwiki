@@ -1,0 +1,179 @@
+[[TableOfContents]]
+
+= Netgear WGT624 v3 =
+the WGT624 v3 is based on an Atheros System on a Chip (Soc). It has an AR2316A MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+== Hardware Versions ==
+
+there appear to be multiple versions of the 'v3' router. the one described on this page is the following:
+
+{{{
+Hardware Version  	V3H1
+Firmware Version 	V2.0.16_1.0.1NA
+}}}
+
+This information can be found at the top of the 'router status page' in the web interface.
+
+It can also be found via the telnet hack (see below)
+
+== Specs for WGT624 v3 -- HW REV V3H1 ==
+
+ * CPU: AR2316A? NOT VERIFIED
+ * Flash: 2MB Macronix 25L1605AMC
+ * RAM: 8MB  Samsung K4S281632F-UC75
+ * Switch: Marvell 88E6060
+ * Wireless: AR5315
+ * One External Antenna (2db)
+ * One Internal Antenna, etched onto PCB.
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 12VDC @1A positive tip
+
+== Photos ==
+
+=== HW REV V3H1 ===
+Some photos are here: http://linuxpmi.org/trac/wiki/WGT624v3Pics
+
+== Serial or JTAG ==
+
+=== HW REV V3H1 ===
+Its got an unpopulated header of some sort labeled JP1. not yet verified whether its serial or JTAG.
+
+== Telnet ==
+This unit can be telneted into via the telnetenable hack documented on [:OpenWrtDocs/Hardware/Netgear/TelnetConsole].
+
+It took me several attempts (more than a dozen) to get this to work. if it fails, you have to power cycle the router to try again.
+
+=== Useful Commands ===
+
+==== version ====
+
+{{{
+U12H05500> version
+Release version : Netgear Wireless Router WGT624v3h1
+                  U12H05500/V2.0.16/1.0.1NA
+         Time   : Aug 21 2006, 16:56:10
+}}}
+
+==== wla get hardware ====
+{{{
+U12H05500> wla get hardware
+wlan0 revisions: mac 11.0 phy 4.8 analog 7.0
+  PCI Vendor ID: 0x168c, Device ID: 0x13
+  Sub Vendor ID: 0x168c, Sub Device ID: 0x13
+chip is ar5315
+}}}
+
+==== show flashShow ====
+{{{
+U12H05500> show flashShow
+base: 0xa8000000 type 0x0 size 0x200000 blockSize 0x10000 width 32
+block size 0x10000 num 0
+block size 0x10000 num 65536
+block size 0x10000 num 131072
+block size 0x10000 num 196608
+block size 0x10000 num 262144
+block size 0x10000 num 327680
+block size 0x10000 num 393216
+block size 0x10000 num 458752
+block size 0x10000 num 524288
+block size 0x10000 num 589824
+block size 0x10000 num 655360
+block size 0x10000 num 720896
+block size 0x10000 num 786432
+block size 0x10000 num 851968
+block size 0x10000 num 917504
+block size 0x10000 num 983040
+block size 0x10000 num 1048576
+block size 0x10000 num 1114112
+block size 0x10000 num 1179648
+block size 0x10000 num 1245184
+block size 0x10000 num 1310720
+block size 0x10000 num 1376256
+block size 0x10000 num 1441792
+block size 0x10000 num 1507328
+block size 0x10000 num 1572864
+block size 0x10000 num 1638400
+block size 0x10000 num 1703936
+block size 0x10000 num 1769472
+block size 0x10000 num 1835008
+block size 0x10000 num 1900544
+block size 0x10000 num 1966080
+block size 0x10000 num 2031616
+
+This is an unprotected flash.
+}}}
+
+==== show mem ====
+{{{
+U12H05500> show mem
+
+FREE LIST:
+  num     addr      size
+  --- ---------- ----------
+    1 0x80fe7310       2368
+    2 0x80c62840     137072
+    3 0x80fe2b50         48
+    4 0x8046cee0    5755904
+
+
+SUMMARY:
+ status   bytes    blocks   avg block  max block
+ ------ --------- -------- ---------- ----------
+current
+   free   5895392        4    1473848   5755904
+  alloc   6241296     3562       1752        -
+cumulative
+  alloc   6729072     3688       1824        -
+}}}
+
+==== show interface ====
+{{{
+     0 multicast packets received
+     0 multicast packets sent
+     0 input errors; 0 output errors
+     0 collisions; 0 dropped
+mirror (unit number 0):
+     Flags: (0x8063) UP BROADCAST MULTICAST ARP RUNNING 
+     Type: ETHERNET_CSMACD
+     Internet address: 192.168.1.1
+     Broadcast address: 192.168.1.255
+     Netmask 0xffffff00 Subnetmask 0xffffff00
+     Ethernet address is 00:14:6c:a4:d9:54
+     Metric is 0
+     Maximum Transfer Unit size is 1500
+     36889 octets received
+     56920 octets sent
+     551 packets received
+     588 packets sent
+     551 unicast packets received
+     541 unicast packets sent
+     0 non-unicast packets received
+     47 non-unicast packets sent
+     0 input discards
+     0 input unknown protocols
+     0 input errors
+     0 output errors
+     0 collisions; 0 dropped
+et (unit number 1):
+     Flags: (0x8b63) UP BROADCAST MULTICAST PROMISCUOUS ARP RUNNING 
+     Type: ETHERNET_CSMACD
+     Ethernet address is 00:14:6c:a4:d9:55
+     Metric is 0
+     Maximum Transfer Unit size is 1500
+     0 octets received
+     0 octets sent
+     0 packets received
+     104 packets sent
+     0 unicast packets received
+     0 unicast packets sent
+     0 non-unicast packets received
+     104 non-unicast packets sent
+     0 input discards
+     1 input unknown protocols
+     0 input errors
+     0 output errors
+     0 collisions; 0 dropped
+}}}
+----
+ . CategoryModel

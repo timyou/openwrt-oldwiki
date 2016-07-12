@@ -1,0 +1,15 @@
+'''Asus WL-300G'''
+
+The Asus WL-300G is a compact 802.11G AP with built-in antenna. It is based on the Broadcom 4702. Broadcom AirForce-based 802.11g radio is part of the main board. WL-300G supports 802.3af Power over Ethernet.
+
+http://www.seattlewireless.net/index.cgi/AsusWL_2d300g
+
+There is no Serial interface, external NS15c550 UART is requred.
+
+Experiments show that the WL-300G behaves mostly like the [:OpenWrtDocs/Hardware/Asus/WL500G:WL-500G], for the purpose of the documentation expressed in this wiki. The main differences are :
+
+ * no USB port
+ * no LPT port
+ * no WAN port for WL-300G
+ * WL300G LEDs are named "Power", "LAN" and "AIR"
+ * no "DMZ" LED on WL-300G.

@@ -1,0 +1,40 @@
+[[TableOfContents]]
+= Viewsonic WR-100 =
+the WR-100 is based on a Broadcom BCM4712 CPU at 200 MHz.  As such it can use a nearly-stock OpenWRT build.
+
+The biggest problem with this AP is that it is limited to 8MB ram, which requires a minimal build.
+
+== JTAG ==
+
+The AP ships with boot_wait disabled, so you have to install a JTAG header or use the Bacardi solution: http://forum.openwrt.org/viewtopic.php?pid=16731#p16731 .
+
+It also appears to have an unpopulated serial header.
+
+You have to read the NVRAM, and then modify the file to turn boot_wait on.  I used sed:
+
+cat NVRAM.BIN.xxx | sed -e s/boot_wait=off/boot_wait=on/ > NVRAM.BIN.changed
+
+and then used hexedit to add a FF to the very end of the file to keep the length correct.
+
+Flash the modified NVRAM.BIN back to the router.
+
+== Prepare the image ==
+
+The stock images won't boot.  Based on the bacardi post, I assume it has to do with the diag module.  So download the toolchain (see [http://wiki.openwrt.org/Faq#head-2cc945e46ed242ed9339fbf6ca640a272865f969] ).
+
+Once you have the buildroot installed, use make menuconfig and deselect httpd from the busybox config, diag from the kernel config, and webif from the openwrt packages config.
+
+BIG FAT WARNING:  If you leave the webif in, most likely your image won't boot because it will be too big for the limited RAM in this AP.
+
+Start the toolchain building; the first time it will take some hours to complete.
+
+At the end you should have trx files in ./bin.
+
+== Transfer the image to the AP ==
+
+Now you can transfer the files using the standard tftp method.  You won't have a web interface, but you should be able to access your AP via telnet and ssh.
+
+Enjoy!
+
+----
+ . CategoryModel 

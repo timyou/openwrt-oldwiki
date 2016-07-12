@@ -1,0 +1,20 @@
+Describe OpenWrtDocs/Hardware/Airlink101/AR680W here.
+'''Airlink101 AR680W'''
+
+=== Serial Port ===
+
+This model has an unpopulated 4-pin header that exposes a serial port. The pins are listed below:
+||Pin1||Rx||
+|| || ||
+||Pin2||3.3V||
+||Pin3||GND||
+||Pin4||Tx||
+
+If this doesn't work try to swap Tx and Rx.
+The Serial port settings are: 
+38400 8N1 
+Hardware Flow Control : No    
+Software Flow Control : No
+The bootloader is u-boot.
+
+boot log {{{ 

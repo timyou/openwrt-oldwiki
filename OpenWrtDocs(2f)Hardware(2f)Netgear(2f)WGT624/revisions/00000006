@@ -1,0 +1,83 @@
+= Netgear WGT624 =
+
+the WGT624 is based on an Atheros System on a Chip (Soc). It got a ar2312a MIPS processor. There is an ongoing process porting OpenWRT to this chip: AtherosPort
+
+== Specs for WGT624 Rev1 ==
+ * Atheros Product Name: Atheros AR5001AP
+ * CPU: AR2312A-00
+ * Flash: 4MB
+ * RAM: 16MB
+ * Switch: Marvell
+
+ * One Antenna (2db)
+ * 1 WAN-Ports
+ * 4 LAN-Ports
+ * Powersupply: 5V
+
+Some photos are here: http://home.fhtw-berlin.de/~s0502837/wgt624/
+
+== Serial ==
+It got populated Serial and JTAG-Headers.
+
+Serial-Layout:
+ * Pin  3 RX
+ * Pin  9 TX
+ * Pin 12 GND
+
+Serial header is the 12 pin header near the power plug. JTAG is near the antenna.
+Serial pin 1 is the pin nearest to the cpu.
+
+I wanted to buy a prolific USB to serial cellphone cable at ebay, but they sent me an Silicon Labs cable. This chipset is finally supported in 2.6.12. Works great (usb 2-1.2: CP2101 converter now attached to ttyUSB0)
+
+Set your serial terminal (i.e. minicom) to 9600 8N1, I enabled software flow control, too.
+
+Serial login is 'Gearguy' password is 'Geardog'
+
+== VxWorks ==
+
+it is running VxWorks and a rather crappy webinterface, so it makes tons of sense to port linux to it.
+{{{
+U12H01700> windsh
+
+-> version
+VxWorks (for Atheros AR5001AP default) version VxWorks5.4.2.
+Kernel: WIND version 2.5.
+Made on May  3 2005, 18:48:19.
+Boot line:
+tffs:(0,0):/fl/APIMG1 e=192.168.1.20:0xffffff00 f=0x8 o=et
+value = 70 = 0x46 = 'F'
+}}}
+
+
+== Firmware ==
+My WGT624 came with firmware 4.2.7 which introduces problems with further upgrades because it changes the board id. Therefore 4.2.7 isn't avaible, but if you got this firmware version, you can fix it, if you intercept bootloader by pressing ESC rather immediatly after powering up. It will look like this:
+{{{
+ar531x rev 0x00005743 firmware startup...
+SDRAM TEST...PASSED
+
+Atheros AR5001AP default version 0.0.0.225
+
+[Boot]: S
+name:    Atheros AR5001AP default
+board ID:U12H017T00_NETGEAR
+magic:   35333131
+cksum:   544d
+rev:     4
+major:   1
+minor:   0
+pciid:   0013
+wlan0:   no  ff:ff:ff:ff:ff:ff
+wlan1:   yes 00:09:5b:87:de:ac
+enet0:   yes 00:09:5b:87:de:ad
+enet1:   no  ff:ff:ff:ff:ff:ff
+uart0:   yes
+sysled:  yes, gpio 7
+factory: yes, gpio 6
+serclk:  internal
+cpufreq: calculated 180000000 Hz
+sysfreq: calculated 45000000 Hz
+memcap:  disabled
+watchdg: enabled
+}}}
+
+This is how it should like like, but if the board ID is like U12H013T00_NETGEAR (that's what it was on 4.2.7) it won't accept any further firmware updates, so you have to change it back to U12H017T00_NETGEAR in order to flash either 4.2.8 or the beta firmware 4.2.10. You can this board ID with 'B' on the bootprompt.

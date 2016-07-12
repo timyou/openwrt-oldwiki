@@ -1,0 +1,49 @@
+'''[http://www.compex.com.sg/home/photobig/WP18.jpg]Compex WP18'''
+
+Compex WP18 is a Single Board Computer based upon the Intel XScale IXP42x CPU. It features up to 533MHz processor operation and integrates 2 Type III Mini PCI Slots which allows DualBand support. Embedded with 32MB memory and 4MB flash, WP18 provides the ideal platform to kickstart any wireless profile. WP18 includes an integrated Power over Ethernet (PoE) that allows WP18 to be used in areas where power outlets are not readily available. The WP18 includes several advance features such as serial port (console redirection) and watchdog timer making WP18 ideal for any type of industrial applications.
+
+WP18, besides using Compex Firmware, another alternative involves using Redboot Loader & Snapgear. These will be available in source codes upon request. With the Redboot Loader & Snapgear, Linux hobbyists or professional developers are able to develop or customize more functionality on WP18.
+||<tablewidth="1140px" tablestyle="WIDTH: 1140px; HEIGHT: 613px"35%>'''''Feature''' '' ||||<64% style="TEXT-ALIGN: left">'''''WP18''' '''Specification''''' ||
+||<35%>Processor ||<32%>'''''IXP422 @ 266MHz''' '' ||<32%>'''''IXP425 @ 533MHz''''' ||
+||<35%>Description ||<32%>Dual Band Access Point with Integrated PoE ||<32%>Dual Band Access Point with Integrated PoE ||
+||<35%>System Memory ||<32%>'''''32MB (128MB max)''' '' ||<32%>'''''64MB (128MB max)''''' ||
+||<35%>Flash Memory ||<32%>'''''4MB/8MB (32MB max)''' '' ||<32%>'''''8MB (32MB max)''''' ||
+||<35%>Mini-PCI Slot ||<32%>2 ||<32%>2 ||
+||<35%>10 / 100 Ethernet Port ||<32%>5 ||<32%>5 ||
+||<35%>RS232 Serial Port ||<32%>1 ||<32%>1 ||
+||<35%>Console Interface ||<32%>Yes ||<32%>Yes ||
+||<35%>Push Button Reset ||<32%>Yes ||<32%>Yes ||
+||<35%>Compex PoE Plus ||<32%>Yes ||<32%>Yes ||
+||<35%>802.3af PoE ||<32%>Yes ||<32%>Yes ||
+||<35%>USB Device Interface ||<32%>- ||<32%>- ||
+||<35%>JTAG Debug Interface ||<32%>Yes ||<32%>Yes ||
+||<35%>Watch-dog Timer ||<32%>Yes ||<32%>Yes ||
+||<35%>Surge Arrestor ||<32%>- ||<32%>- ||
+||<35%>DC Input Voltage ||<32%>5V DC ||<32%>5V DC ||
+||<35%>Power Consumption (Typ) ||<32%>5W without any miniPCI card ||<32%>5W without any miniPCI card ||
+||<35%>Operating Temperature ||<32%>0°C to 55°C ||<32%>0°C to 55°C ||
+||<35%>Board Size (mm) ||<32%>166.4x126x1.6 ||<32%>166.4x126x1.6 ||
+||<35%>OS Used ||<32%>Linux-2.4.27 uc for ARM ||<32%>Linux-2.4.27 uc for ARM ||
+
+
+Internal serial port (labeled JP4, @115200bps):
+
+{{{
+            oo
+            oo - GND
+LEDS   TX - oo         LAN
+       RX - oo
+            oo - VCC
+            oo
+
+
+}}}
+----
+'''''WP18 package for developers'''''
+||<tablewidth="960px"width="248px" style="VERTICAL-ALIGN: top">'''ORDER CODE ''' ||<width="712px" style="VERTICAL-ALIGN: top">'''CONTENTS ''' ||
+||<width="248px" style="VERTICAL-ALIGN: top">P-S4 OEMWP181A ||<width="712px" style="VERTICAL-ALIGN: top; TEXT-ALIGN: left" |2>1. WP18 IXP422 (266MHz CPU) Bare-board (Pre-loaded with Compex Firmware) 2. Bareboard embedded with 32MB SDRAM / 4MB Flash ||
+||<width="248px" style="VERTICAL-ALIGN: top">P-S4 OEMWP186A (For RoHS) ||
+||<width="248px" style="VERTICAL-ALIGN: top">P-S4 OEMWP183B ||<width="712px" style="VERTICAL-ALIGN: top; TEXT-ALIGN: left" |2>1. WP18 IXP425 (533MHz CPU) Bare-board (Pre-loaded with Compex Firmware) 2. Bareboard embedded with 64MB SDRAM / 8MB Flash ||
+||<width="248px" style="VERTICAL-ALIGN: top">P-S4 OEMWP186B (For RoHS) ||
+||<width="248px" style="VERTICAL-ALIGN: top">WP18 3B DEV KIT ||<width="712px" style="VERTICAL-ALIGN: top; TEXT-ALIGN: left" |3>1. WP18 IXP425 (533MHz CPU) Bare-board (Pre-loaded with Compex Firmware) 2. Bareboard embedded with 64MB SDRAM/8MB Flash 3. Wireless G mini-PCI (Compex WLM54G) 4. Wireless AG mini-PCI (Compex WLM54AG) 5. PoE+ Injector (Compex PoE+1A4815) 6. JTAG Programmer (Cable from PC to JTAG Programmer included) (Cable from PC to Serial Converter included) 7. Serial Converter 8. 5V DC Adapter ||
+||<width="248px" style="VERTICAL-ALIGN: top">WP18 6B DEV KIT (For RoHS on WP18 Bareboard) ||

@@ -1,0 +1,16 @@
+1135882253000000	00000001	SAVENEW	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	168.103.54.221	kollasch.net	1120505591.8.16746		move info about this model to seperate page
+1140613121000000	00000002	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	194.136.12.35	c.ncc.fi	1135673555.87.30402		
+1167377346000000	00000003	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	70.7.37.189	h460725bd.area7.spcsdns.net	1167377156.43.36306		Add note about Sprint using WRT54G3G.
+1173617322385039	99999999	ATTNEW	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	84.60.98.4	dslb-084-060-098-004.pools.arcor-ip.net	1166276112.52.41591	WRT54G3G_Serial.jpg	
+1173617943000000	00000004	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	84.60.98.4	dslb-084-060-098-004.pools.arcor-ip.net	1166276112.52.41591		
+1173618003000000	00000005	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	84.60.98.4	dslb-084-060-098-004.pools.arcor-ip.net	1166276112.52.41591		
+1173770368000000	00000006	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	69.109.106.88	adsl-69-109-106-88.dsl.pltn13.pacbell.net	1150779081.4.62318		Fixed typos and reworded sentances to increase clarity
+1182716278000000	00000007	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	83.178.7.99	m83-178-7-99.cust.tele2.se	1182715631.93.2733		add v1.1
+1182717168000000	00000008	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	83.178.7.99	m83-178-7-99.cust.tele2.se	1182715631.93.2733		add sno
+1186656821000000	00000009	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	80.217.219.89	c80-217-219-89.bredband.comhem.se	1182715631.93.2733		add v2.0, add code patterns
+1186657089000000	00000010	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	80.217.219.89	c80-217-219-89.bredband.comhem.se	1182715631.93.2733		
+1186657274000000	00000011	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	80.217.219.89	c80-217-219-89.bredband.comhem.se	1182715631.93.2733		change warning at top, this device works fine
+1186657402000000	00000012	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	80.217.219.89	c80-217-219-89.bredband.comhem.se	1182715631.93.2733		
+1205787206000000	00000013	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	12.32.14.200	msvres1.msvlp.com	1205786493.2.27765		
+1216593552000000	00000014	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	70.59.21.204	70-59-21-204.hlrn.qwest.net	1209098643.05.21295		Initial cleanup, clarifications; will be making several updates in the near-term
+1216704991000000	00000015	SAVE	OpenWrtDocs(2f)Hardware(2f)Linksys(2f)WRT54G3G	70.59.21.204	70-59-21-204.hlrn.qwest.net	1209098643.05.21295		Many more changes; 3g bits, clarifications, and so on.

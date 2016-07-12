@@ -1,0 +1,41 @@
+'''''''''' '''COMPEX WP54-6E''''''''''(New Version)'''
+
+''''
+
+''__(This page is at an early stage of development. Please feel free to update) __''
+
+The Compex WP54 is a small, well-made device with two Ethernet ports and Atheros wireless that support both, Compex firmware and Open-WRT Firmware.
+
+There are several different versions are available for WP54 and only 2 type of WP54 is supporting Open-WRT. It is '''''WP54-6B '''and''''' WP54-6E''''' ''(New Version)''. ''
+
+'''__Compex WP54 ''That Support Open-''WRT.__'''
+
+ * '''''WP54-6B''''' = more likely same as WP54-1B board, but this board with ROHS standard is support Open-WRT.
+ * '''''WP54-6E''''' = The Latest WP54 Model That support Open-WRT run in IEEE802.3af standard PoE and Compex PoE Plus. It is also [http://en.wikipedia.org/wiki/ROHS ROHS] standard. This model support both Compex and Open-WRT Firmware.
+'''__Compex WP54 THAT ''DO NOT'' SUPPORT Open-WRT (Normal function).__'''
+
+ * '''WP54 1A''' = Standard Wireless device that able to run in 7Modes(AP,Client, P to P, Gateway, P to multiple P,WL Routing Client and WL Adapter)
+ * '''WP54 1B''' =''' '''can be powered either by 5V DC Supply or 802.3af PoE, using a jumper selection available on the board.
+ * '''WP54 1C''' = Wireless Device that support [http://wiki.openwrt.org/AccessPoint Access Point] Mode and Client mode only.
+ * '''WP54 1D''' = can be powered either via a separate 24V DC PSU or a proprietary 24V DC PoE injector or real 802.3af PoE.
+ * '''WP54 6D''' = It is [http://wiki.openwrt.org/applets/FCKeditor/editor/http:/en.wikipedia.org/wiki/ROHS ROHS] Standard and able to run in IEEE802.3af standard PoE and Compex PoE Plus.
+'''''Compex for developer'''''
+||<tablewidth="861px" tablestyle="WIDTH: 861px; HEIGHT: 126px">'''Purpose''' ||'''''WHY IS DEVELOPMENT KIT USEFUL? ''''' ||
+||Develop Open-WRT on WP54 ||Serial Converter can be used to debug the Open-WRT firmware. ||
+||Port Own Firmware Over to WP54 ||Serial Converter can be used to debug the Serial Output messages. ||
+||Port Own Firmware and Loader Over to WP54 ||JTAG Programmer can be used to load in your loader. ||
+
+
+''''''
+
+'''OpenWRT Packets Information'''
+||<tablewidth="861px" tablestyle="WIDTH: 861px; HEIGHT: 175px">'''''CODE''''' ||'''''CONTENTS''''' ||
+||'''''''' ''P-C5 OEMWP546E ''''' ||• WP54 6E Bare-board (Pre-Loaded with Compex Firmware) ||
+||''WP54AG 6E ''''DEV KIT'' ||• WP54 6E Bareboard (Pre-loaded with Compex Firmware) • Wireless AG mini-PCI (Compex WLM54AG) • PoE+ Injector (Compex PoE+1A4815) • JTAG Programmer (Cable from PC to JTAG Programmer included) • Serial Converter (Cable from PC to Serial Converter included) • 24V DC Power Supply ||
+
+
+''Related Link''''' '''
+
+[http://compex.com.sg/home/OEM/Downloads/OpenWRT_WP54_6E_Bareboard_DSv2.7.pdf Datasheet] = Provide Technical Specification and Ordering Information.
+
+[http://compex.com.sg/home/OEM/Downloads/WP54_Board_Product_Manual_Rev1.4.pdf Hardware Manual] = its provide information about hardware. GPIO bit mapping, Serial Port, Serial Console Setting, Jtag Port, Power Supply Jumper Setting,

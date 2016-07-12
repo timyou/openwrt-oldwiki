@@ -1,0 +1,11 @@
+--- linux-2.4.30/drivers/sound/sound_core.c	2001-09-30 21:26:08.000000000 +0200
++++ linux-2.4.30-mips/drivers/sound/sound_core.c	2006-04-27 09:02:55.121895736 +0200
+@@ -174,7 +174,7 @@
+ 	}
+ 	
+ 	if (r == low)
+-		sprintf (name_buf, "%s", name);
++		strcpy (name_buf, name);
+ 	else
+ 		sprintf (name_buf, "%s%d", name, (r - low) / SOUND_STEP);
+ 	s->de = devfs_register (devfs_handle, name_buf,

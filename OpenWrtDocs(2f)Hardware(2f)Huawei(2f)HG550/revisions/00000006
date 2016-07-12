@@ -1,0 +1,600 @@
+= Home Gateway 550 Huawei ( 9Box ) =
+== Pictures: ==
+http://hindukush.zehome.com/~ed/9box1.jpg
+http://hindukush.zehome.com/~ed/9box2.jpg
+
+== Informations: ==
+This box is used by 9Telecom, French ISP.
+
+
+
+
+
+== Debugging: ==
+=== Bootup messages: ===
+{{{
+CFE version 1.0.37-0.6 for BCM96348 (32bit,SP,BE) 
+Build Date: Thu Oct 13 22:38:22 CST 2005 () 
+Copyright (C) 2000,2001,2002,2003 Broadcom Corporation.
+
+Initializing Arena.
+Initializing Devices.
+Auto-negotiation timed-out
+10 MB Half-Duplex (assumed)
+CPU type 0x29107: 256MHz, Bus: 128MHz, Ref: 32MHz
+
+Total memory used by CFE:  0x80401000 - 0x80522CD0 (1187024)
+Initialized Data:          0x8041AE30 - 0x8041C670 (6208)
+BSS Area:                  0x8041C670 - 0x80420CD0 (18016)
+Local Heap:                0x80420CD0 - 0x80520CD0 (1048576)
+Stack Area:                0x80520CD0 - 0x80522CD0 (8192)
+Text (code) segment:       0x80401000 - 0x8041AE28 (106024)
+Boot area (physical):      0x00523000 - 0x00563000
+Relocation Factor:         I:00000000 - D:00000000
+
+Board IP address                : 192.168.1.1:ffffff00
+Host IP address                 : 192.168.1.100
+Gateway IP address              :
+Run from flash/host (f/h)       : f
+Default host run file name      : vmlinux
+Default host flash file name    : bcm963xx_fs_kernel
+Boot delay (0-9 seconds)        : 1
+Board Id Name                   : 96348GW
+Psi size in KB                  : 24
+Number of MAC Addresses (1-32)  : 11
+Base MAC Address                : 00:03:c9:d5:3a:9a
+Ethernet PHY Type               : Internal
+Memory size in MB               : 16
+
+*** Press any key to stop auto run (1 seconds) ***
+Auto run second count down: 0
+Code Address: 0x80010000, Entry Address: 0x8001046c
+Decompression OK!
+Entry at 0x8001046c
+Closing network.
+Starting program at 0x8001046c
+Total Flash size: 4096K with 71 sectors
+96348GW prom init
+CPU revision is: 00029107
+Primary instruction cache 16kb, linesize 16 bytes (2 ways)
+Primary data cache 8kb, linesize 16 bytes (2 ways)
+Linux version 2.4.17 (root@Tuff) (gcc version 3.1) #1 Fri Oct 14 23:48:03 CST 2005
+Determined physical RAM map:
+ memory: 00fa0000 @ 00000000 (usable)
+On node 0 totalpages: 4000
+zone(0): 4000 pages.
+zone(1): 0 pages.
+zone(2): 0 pages.
+Kernel command line: root=/dev/mtdblock0 ro
+bcm_console_setup
+Calibrating delay loop... 254.77 BogoMIPS
+Memory: 14216k/16000k available (1165k kernel code, 1784k reserved, 80k data, 48k init, 0k)
+Dentry-cache hash table entries: 2048 (order: 2, 16384 bytes)
+Inode-cache hash table entries: 1024 (order: 1, 8192 bytes)
+Mount-cache hash table entries: 512 (order: 0, 4096 bytes)
+Buffer-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Page-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Checking for 'wait' instruction...  unavailable.
+POSIX conformance testing by UNIFIX
+mpi: No Card is in the PCMCIA slot
+PCI: Fixing up bus 0
+Linux NET4.0 for Linux 2.4
+Based upon Swansea University Computer Society NET3.039
+Initializing RT netlink socket
+Starting kswapd
+brcmboard: brcm_board_init entry
+Module bcm63xx_cons.c v1.1 Oct 14 2005 23:49:01
+Software Watchdog Timer: 0.05, timer margin: 1 sec
+block: 64 slots per queue, batch=16
+PPP generic driver version 2.4.1
+NET4: Linux TCP/IP 1.0 for NET4.0
+IP Protocols: ICMP, UDP, TCP, IGMP
+IP: routing cache hash table of 512 buckets, 4Kbytes
+TCP: Hash tables configured (established 512 bind 1024)
+Linux IP multicast router 0.06 plus PIM-SM
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+Ebtables v2.0 registered<6>NET4: Ethernet Bridge 008 for NET4.0
+802.1Q VLAN Support v1.6  Ben Greear <greearb@candelatech.com>
+vlan Initialization complete.
+VFS: Mounted root (cramfs filesystem) readonly.
+Freeing unused kernel memory: 48k freed
+init started:  BusyBox v0.60.4 (2005.10.14-16:11+0000) multi-call binary
+Algorithmics/MIPS FPU Emulator v1.5
+
+
+BusyBox v0.60.4 (2005.10.14-16:11+0000) Built-in shell (msh)
+Enter 'help' for a list of built-in commands.
+
+
+Loading drivers and kernel modules...
+
+atmapi: init_module entry 0xc0007060
+blaadd: blaa_detect entry
+adsl: adsl_init entry
+var 1.0 initialised
+Endpoint: endpoint_init entry
+BOS: Enter bosInit
+BOS: Enter bosAppInit
+BOS: Exit bosAppInit
+BOS: Exit bosInit
+Endpoint: endpoint_init COMPLETED
+Broadcom BCM6348A2 Ethernet Network Device v0.1 Oct 15 2005 00:01:54 External PHY
+eth0 Link UP, 10M, Half Duplex
+BCM63xx_ENET: 100 MB Full-Duplex (auto-neg)
+eth0: MAC Address: 00:03:C9:D5:3A:9A
+Broadcom BCM6348A2 Ethernet Network Device v0.1 Oct 15 2005 00:01:54 Internal PHY
+eth1 Link UP, 10M, Half Duplex
+BCM63xx_ENET: Auto-negotiation timed-out
+BCM63xx_ENET: 10 MB Half-Duplex (assumed)
+eth1: MAC Address: 00:03:C9:D5:3A:9B
+Broadcom BCM6348A2 USB Network Device v0.3 May  2 2005 15:38:22
+usb0: MAC Address: 00 03 C9 D5 3A 9C
+usb0: Host MAC Address: 00 03 C9 D5 3A 9D
+PCI: Enabling device 00:01.0 (0004 -> 0006)
+wl0: Broadcom BCM4318 802.11 Wireless Controller 3.91.23.0
+BcmAdsl_Initialize=0xC00194B8, g_pFnNotifyCallback=0xC002DFF0
+AdslCoreHwReset: AdslOemDataAddr = 0xA0FF73B0
+
+==>   Bcm963xx Software Version: EchoLife HG550V100R001B01D065.mgcp.faxr.A2pB018b.d15   <==
+
+ add_br  name:br0 flag:0
+ add_if  name:usb0 flag:0
+device usb0 entered promiscuous mode
+br0: port 1(usb0) entering listening state
+br0: port 1(usb0) entering learning state
+br0: port 1(usb0) entering forwarding state
+br0: topology change detected, propagating
+ add_if  name:eth0 flag:0
+device eth0 entered promiscuous mode
+br0: port 2(eth0) entering listening state
+br0: port 2(eth0) entering learning state
+br0: port 2(eth0) entering forwarding state
+br0: topology change detected, propagating
+eth0 Link UP, 100M,Full Duplex,Auto Negotiation.
+ add_if  name:eth1 flag:0
+device eth1 entered promiscuous mode
+br0: port 3(eth1) entering listening state
+br0: port 3(eth1) entering learning state
+br0: port 3(eth1) entering forwarding state
+br0: topology change detected, propagating
+pvc2684d: Interface "nas_255_65535" created sucessfully
+
+atm_connect (TX: cl 1,bw 0-0,sdu 1524; RX: cl 1,bw 0-0,sdu 1524,AAL 5)
+blaadd: open error -125
+pvc2684d: Communicating over ATM 0.255.65535, encapsulation: LLC
+
+pvc2684d: Interface "nas_0_50" created sucessfully
+
+atm_connect (TX: cl 1,bw 0-0,sdu 1524; RX: cl 1,bw 0-0,sdu 1524,AAL 5)
+pvc2684d: Communicating over ATM 0.0.50, encapsulation: LLC
+
+pvc2684d: Interface "nas_0_65" created sucessfully
+
+atm_connect (TX: cl 1,bw 0-0,sdu 1524; RX: cl 1,bw 0-0,sdu 1524,AAL 5)
+pvc2684d: Communicating over ATM 0.0.65, encapsulation: LLC
+
+pvc2684d: Interface "nas_0_48" created sucessfully
+
+atm_connect (TX: cl 1,bw 0-0,sdu 1524; RX: cl 1,bw 0-0,sdu 1524,AAL 5)
+pvc2684d: Communicating over ATM 0.0.48, encapsulation: LLC
+
+pvc2684d: Interface "nas_0_49" created sucessfully
+
+atm_connect (TX: cl 1,bw 0-0,sdu 1524; RX: cl 1,bw 0-0,sdu 1524,AAL 5)
+pvc2684d: Communicating over ATM 0.0.49, encapsulation: LLC
+
+pvc2684d: Interface "nas_8_35" created sucessfully
+
+atm_connect (TX: cl 1,bw 0-0,sdu 1524; RX: cl 1,bw 0-0,sdu 1524,AAL 5)
+pvc2684d: Communicating over ATM 0.8.35, encapsulation: LLC
+
+ add_if  name:usb0 flag:0
+br0: port 1(usb0) entering disabled state
+device usb0 left promiscuous mode
+ add_if  name:usb0 flag:0
+device usb0 entered promiscuous mode
+br0: port 1(usb0) entering listening state
+br0: port 1(usb0) entering learning state
+br0: port 1(usb0) entering forwarding state
+br0: topology change detected, propagating
+ add_if  name:eth0 flag:0
+br0: port 2(eth0) entering disabled state
+device eth0 left promiscuous mode
+ add_if  name:eth0 flag:0
+device eth0 entered promiscuous mode
+br0: port 2(eth0) entering listening state
+br0: port 2(eth0) entering learning state
+br0: port 2(eth0) entering forwarding state
+br0: topology change detected, propagating
+ add_br  name:br1 flag:0
+ add_if  name:eth1 flag:0
+br0: port 3(eth1) entering disabled state
+device eth1 left promiscuous mode
+ add_if  name:eth1 flag:0
+device eth1 entered promiscuous mode
+br1: port 1(eth1) entering listening state
+br1: port 1(eth1) entering learning state
+br1: port 1(eth1) entering forwarding state
+br1: topology change detected, propagating
+ add_if  name:nas_0_48 flag:0
+device nas_0_48 is not a slave of br0
+ add_if  name:nas_0_48 flag:0
+device nas_0_48 entered promiscuous mode
+br1: port 2(nas_0_48) entering listening state
+br1: port 2(nas_0_48) entering learning state
+br1: port 2(nas_0_48) entering forwarding state
+br1: topology change detected, propagating
+ add_if  name:nas_0_49 flag:0
+device nas_0_49 is not a slave of br0
+ add_if  name:nas_0_49 flag:0
+device nas_0_49 entered promiscuous mode
+br1: port 3(nas_0_49) entering listening state
+br1: port 3(nas_0_49) entering learning state
+br1: port 3(nas_0_49) entering forwarding state
+br1: topology change detected, propagating
+ add_if  name:nas_0_50 flag:0
+device nas_0_50 is not a slave of br0
+ add_if  name:nas_0_50 flag:0
+device nas_0_50 entered promiscuous mode
+br1: port 4(nas_0_50) entering listening state
+br1: port 4(nas_0_50) entering learning state
+br1: port 4(nas_0_50) entering forwarding state
+br1: topology change detected, propagating
+ add_if  name:nas_0_65 flag:0
+device nas_0_65 is not a slave of br0
+ add_if  name:nas_0_65 flag:0
+device nas_0_65 entered promiscuous mode
+br1: port 5(nas_0_65) entering listening state
+br1: port 5(nas_0_65) entering learning state
+br1: port 5(nas_0_65) entering forwarding state
+br1: topology change detected, propagating
+ add_if  name:nas_8_35 flag:0
+device nas_8_35 entered promiscuous mode
+br1: port 6(nas_8_35) entering listening state
+br1: port 6(nas_8_35) entering learning state
+br1: port 6(nas_8_35) entering forwarding state
+br1: topology change detected, propagating
+br_cmd_enableportsnooping: arg0=0, arg1=(null)
+br_enable_port_snooping: enable=0
+Starting the MGCP application with the following parameters:
+
+Call Agent IP address: 192.168.1.100
+Gateway name: HUAWEI_HG550
+Interface name: br1
+Preferred codec: auto
+BOS: Enter bosInit
+BOS: Enter bosAppInit
+BOS: Exit bosAppInit
+BOS: Exit bosInit
+00:00:47 Calling callClient
+
+
+=====================================================
+Broadcom Canada, E-MTA CallClient.
+        Version: 1.1.
+        Build Date: Sep 14 2005 09:04:02.
+=====================================================
+
+00:00:47 GWCONFIG Data:
+00:00:47        CA_#1 Name  - ca@192.168.1.100
+00:00:47        CA_#2 Name  - ca@192.168.1.100
+00:00:47        GW Name     - HUAWEI_HG550
+00:00:47        Interface name  - br1
+00:00:47        Preferred Codec  - auto
+00:00:47        Country  - CHN
+00:00:47        AALN  - 0
+00:00:47        CA Port  - 2727
+00:00:47        MGC Port  - 2427
+00:00:47        TX Gain  - 0
+00:00:47        RX Gain  - 0
+00:00:47        PSTN Access Code  - 999
+00:00:47        Heartbeat Timer  - 60
+Created queue HDSP
+00:00:47 CALLCLIENT: Initializing endpoints
+00:00:47 Waiting for interface br1 to go up before proceeding with voice app...
+br1: port 1(eth1) entering disabled state
+br0: port 1(usb0) entering disabled state
+
+
+}}}
+
+=== Shell access ===
+
+Login: ""admin""
+Password: ""admin""
+
+==== Commands available ====
+
+{{{
+> help
+
+?
+help
+logout
+reboot
+adsl
+atm
+brctl
+cat
+df
+dumpcfg
+echo
+ifconfig
+kill
+arp
+defaultgateway
+dhcpserver
+dns
+lan
+passwd
+ppp
+remoteaccess
+restoredefault
+route
+save
+swversion
+wan
+ping
+ps
+pwd
+sntp
+sysinfo
+tftp
+voice
+wlctl
+ipfltout
+ipfltin
+macflt
+svcacl
+ipacl
+natsrc
+natacl
+showfailtimes
+}}}
+
+
+==== CPU Informations ====
+
+{{{
+
+> cat /proc/cpuinfo
+system type             : 96348GW
+processor               : 0
+cpu model               : BCM6348 V0.7
+BogoMIPS                : 254.77
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 32
+extra interrupt vector  : no
+hardware watchpoint     : no
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+
+}}}
+
+
+==== Flash and Memory ====
+{{{
+
+> df -h
+Filesystem                Size      Used Available Use% Mounted on
+/dev/mtdblock0            8.9M      8.9M         0 100% /
+tmpfs                   200.0k     92.0k    108.0k  46% /var
+
+
+> sysinfo
+Number of processes: 21
+ 12:03am  up 3 min,
+load average: 1 min:1.26, 5 min:0.75, 15 min:0.30
+              total         used         free       shared      buffers
+  Mem:        14264        13180         1084            0         1428
+ Swap:            0            0            0
+Total:        14264        13180         1084
+
+}}}
+
+==== Process launched ====
+{{{
+
+> ps -aux
+  PID TTY     Uid        Size State Command
+    1         admin      2736   S   init
+    2         admin         0   S   [keventd]
+    3         admin         0   S   [ksoftirqd_CPU0]
+    4         admin         0   S   [kswapd]
+    5         admin         0   S   [bdflush]
+    6         admin         0   S   [kupdated]
+    7         admin         0   S   [mtdblockd]
+   13         admin      2792   S   -sh
+   37         admin      3040   D   insmod adsldd.o
+   59         admin      2608   S   cfm
+  227         admin       604   S   pvc2684d
+  563         admin      2704   S   klogd
+  566         admin      2748   S   syslogd -C -l 7
+  571         admin      2584   S   sshd
+  573         admin      2584   S   telnetd
+  578         admin       944   S   bftpd
+  579         admin      2720   S   tftpd
+  599         admin      2928   S   vodsl mgcp_start 192.168.1.100 HUAWEI_HG550
+  604         admin      2584   S   httpd
+  622         admin      1176   S   pppd -c 8.35.1 -i nas_8_35 -u 0003c9d53a9a@
+ 1743         admin      2780   S   sh -c ps -aux
+ 1744         admin      2732   R   ps -aux
+
+
+}}}
+
+
+==== Network Interfaces ====
+
+{{{
+
+> ifconfig -a
+atm0            Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+                [NO FLAGS]  MTU:0  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+br0             Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9A
+                inet addr:192.168.1.251  Bcast:192.168.1.255  Mask:255.255.255.0
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:293 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:277 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0
+                RX bytes:28236 (27.5 kiB)  TX bytes:26544 (25.9 kiB)
+
+br1             Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9B
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+cpcs0           Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+                [NO FLAGS]  MTU:65535  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+dsl0            Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+                [NO FLAGS]  MTU:0  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+eth0            Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9A
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:296 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:277 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:33729 (32.9 kiB)  TX bytes:27760 (27.1 kiB)
+                Interrupt:30 Base address:0x6800
+
+eth1            Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9B
+                BROADCAST MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:15 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:1596 (1.5 kiB)
+                Interrupt:28 Base address:0x6000
+
+lo              Link encap:Local Loopback
+                inet addr:127.0.0.1  Mask:255.0.0.0
+                UP LOOPBACK RUNNING  MTU:16436  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:0
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_48        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A1
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_49        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A2
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_50        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9F
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_0_65        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A0
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_8_35        Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:A3
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+nas_255_65535   Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9E
+                UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+usb0            Link encap:Ethernet  HWaddr 00:03:C9:D5:3A:9C
+                BROADCAST MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+
+wl0             Link encap:Ethernet  HWaddr 00:16:38:5F:CE:5C
+                BROADCAST MULTICAST  MTU:1500  Metric:1
+                RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                collisions:0 txqueuelen:100
+                RX bytes:0 (0.0 iB)  TX bytes:0 (0.0 iB)
+                Interrupt:32
+
+}}}
+
+
+==== Modules loaded ====
+
+{{{
+
+
+> cat /proc/modules
+ipt_tcpmss_j            2524   0 (unused)
+ipt_state                552   0 (unused)
+ipt_mark_j               668   0 (unused)
+ipt_mark                 364   0 (unused)
+ipt_limit                956   0 (unused)
+ipt_REDIRECT             708   0 (unused)
+ipt_MASQUERADE          1380   0 (unused)
+ipt_LOG                 3532   0 (unused)
+ipt_FTOS                 972   0 (unused)
+ip_nat_wm               1208   0 (unused)
+ip_nat_tftp             1720   0 (unused)
+ip_nat_pt              58920   0 (unused)
+ip_nat_pptp             1692   0 (unused)
+ip_nat_irc              2296   0 (unused)
+ip_nat_ipsec            5628   0 (unused)
+ip_nat_h323             4672   0 (unused)
+ip_nat_ftp              3128   0 (unused)
+ip_conntrack_wm         1228   0 (unused)
+ip_conntrack_tftp       1548   0 (unused)
+ip_conntrack_pt        51156   0 (unused)
+ip_conntrack_pptp       3244   0 (unused)
+ip_conntrack_irc        2716   0 (unused)
+ip_conntrack_ipsec      7460   0 (unused)
+ip_conntrack_h323       5100   0 (unused)
+ip_conntrack_ftp        3804   0 (unused)
+iptable_mangle          1916   0 (unused)
+iptable_nat            18440   9 [ipt_REDIRECT ipt_MASQUERADE ip_nat_wm ip_nat_tftp ip_na]
+ip_conntrack           22992  10 [ipt_state ipt_REDIRECT ipt_MASQUERADE ip_nat_wm ip_nat_]
+iptable_filter          1708   0 (unused)
+ip_tables              14624  14 [ipt_tcpmss_j ipt_state ipt_mark_j ipt_mark ipt_limit ip]
+wl                    391424   0 (unused)
+bcm_usb                17568   0
+bcm_enet               21760   2
+endpointdd           1203760   0 (unused)
+bcmprocfs              10504   0
+adsldd                134196   0 (unused)
+blaa                    8084   0 (unused)
+atmapi                 51792   0 [adsldd blaa]
+
+
+}}}

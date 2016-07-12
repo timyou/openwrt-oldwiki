@@ -1,0 +1,18 @@
+#pragma section-numbers off
+
+= WNR834 =
+
+Netgear manufactured two distinctly different models of their WNR834 Rangemax Next single-band wireless-N broadband router:
+
+== WNR834B (Broadcom) ==
+
+[[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Netgear/WNR834B WNR834B]] is based on Broadcom's Intensi-Fi MIMO platform.
+
+
+
+
+== WNR834M (Marvell) ==
+
+[[http://wiki.openwrt.org/OpenWrtDocs/Hardware/Netgear/WNR834M WNR834M]] is based on Marvell's TopDog MIMO platform.
+----
+CategoryModel
